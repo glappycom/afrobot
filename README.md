@@ -1,0 +1,26 @@
+# AfroBot website
+
+Static site for **AfroBot**, a national youth program in AI agents and robotics.
+Born from the African diaspora. Built for every kid who's been left out of tech.
+
+Concept preview: dates, partners and costs on the site are proposals.
+
+## Structure
+- `index.html`, `styles.css`, `script.js`: the whole site. No build step.
+- `assets/`: logo and favicon SVGs (primary logo: D2 "Crown").
+- `fonts/`: self-hosted Outfit (headings), Inter (body) and Space Grotesk, all under the SIL Open Font License (licence files included).
+
+## Run locally
+Open `index.html` in a browser, or serve the folder:
+
+```
+python3 -m http.server 8000
+```
+
+## Deploy
+Deployed on Vercel as a static site from the repository root (`vercel.json`). Pushes to `main` deploy to production.
+
+## Preview switches
+- `?static` turns off scroll animations.
+- `?header=none|clay|green|green-signal|blue` header colour mocks (default: clay).
+- `?font=poppins` headline font preview.
