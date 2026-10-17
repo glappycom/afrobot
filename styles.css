@@ -337,3 +337,18 @@ h3,.aud-k,.countdown__event,.awards dt,.tiers li span:first-child,.val-list b,.m
 /* v7: audience framing */
 .hero__roots{color:var(--ink);font-weight:500}
 .values__roots{max-width:58ch;font-size:clamp(1.0625rem,1.3vw,1.25rem);line-height:1.5;margin:20px 0 40px;color:var(--ink-60,#555)}
+
+/* v8: real photos */
+.photo__img--real{background:var(--line)}
+.photo__img--real picture,.photo__img--real img{display:block;width:100%;height:100%}
+.photo__img--real img{object-fit:cover}
+
+/* v8: toned-down header options (?header=bone | ?header=deep); default stays clay */
+:root{--clay-deep:#B4472B}
+body[data-header="bone"]{--nav-bg:#F3EEE5;--nav-fg:#0E0F12;--nav-cta-bg:var(--clay);--nav-cta-fg:#fff}
+body[data-header="bone"] .nav{border-bottom:3px solid var(--clay)}
+body[data-header="bone"] .nav .btn--ink:hover{background:var(--clay-dk)}
+body[data-header="bone"] .sponsor{background:var(--ink)}
+body[data-header="bone"] .sponsor .display{color:#F3EEE5}
+body[data-header="deep"]{--nav-bg:var(--clay-deep);--nav-fg:#F3EEE5;--nav-cta-bg:#F3EEE5;--nav-cta-fg:#0E0F12}
+body[data-header="deep"] .sponsor{background:var(--clay-deep)}

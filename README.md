@@ -22,5 +22,5 @@ Deployed on Vercel as a static site from the repository root (`vercel.json`). Pu
 
 ## Preview switches
 - `?static` turns off scroll animations.
-- `?header=none|clay|green|green-signal|blue` header colour mocks (default: clay).
+- `?header=bone|deep` toned-down header options; `?header=none|green|green-signal|blue` older mocks (default: clay).
 - `?font=poppins` headline font preview.
