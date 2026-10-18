@@ -94,13 +94,13 @@ document.querySelectorAll('.founder__photo').forEach(btn => {
   btn.addEventListener('blur', () => btn.setAttribute('aria-pressed', 'false'));
 });
 
-// Preview only: ?hero=cutout shows the background-removed McKinney group on the page background (default stays the full photo)
-if (Q.get('hero') === 'cutout') {
+// Default hero is the background-removed McKinney group (v4 cut-out). Preview switch: ?hero=photo shows the full photo.
+if (Q.get('hero') === 'photo') {
   const fig = document.querySelector('.photo--hero');
   if (fig) {
-    fig.classList.add('photo--cutout');
+    fig.classList.remove('photo--cutout');
     const src = fig.querySelector('source'), img = fig.querySelector('img');
-    if (src) src.srcset = 'assets/photos/mckinney-build-day-2024-cutout.webp?v=4';
-    if (img) { img.src = 'assets/photos/mckinney-build-day-2024-cutout.png?v=4'; img.width = 1662; img.height = 1117; }
+    if (src) src.srcset = 'assets/photos/mckinney-build-day-2024.webp?v=5';
+    if (img) { img.src = 'assets/photos/mckinney-build-day-2024.jpg?v=5'; img.width = 1800; img.height = 1350; }
   }
 }
