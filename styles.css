@@ -647,3 +647,10 @@ html[data-bg="steel"] .program,html[data-bg="steel"] .divisions,html[data-bg="st
 html[data-bg="steel"] body[data-header="bone"]{--nav-bg:#E6E8EA}
 html[data-bg="steel"] .nav{background:#E6E8EA}
 html[data-bg="steel"] .tl li::before{background:#E6E8EA}
+
+/* ===== v23: steel is the default background (html[data-bg="steel"] in index.html); ?bg=bone restores bone/paper =====
+   Small clay text on steel uses Clay Text #AD3210: 5.3:1 on #E6E8EA, 5.8:1 on #F1F2F4 (Deep Clay #BF3712 was only 4.5:1).
+   Buttons stay Deep Clay #BF3712 with white text (5.6:1). */
+html[data-bg="steel"]:not([data-accent="blue"]){--clay-text:#AD3210}
+html[data-bg="steel"]:not([data-accent="blue"]) :is(.pill--clay,.steps__n,.pstat--clay,.aud-list a:hover,.theme__meta a,.tlink,.acc summary:hover,.fees article:nth-child(4) .fee,.val-list li:first-child b){color:var(--clay-text)}
+html[data-bg="steel"]:not([data-accent="blue"]) .tl__when::before{color:var(--clay-text)}

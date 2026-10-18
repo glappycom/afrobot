@@ -5,7 +5,8 @@ const LOGO = Q.get('logo') || 'afrobot';
 // Accent preview: ?accent=blue swaps every clay accent for Cobalt #1E4BD2 (default stays clay)
 const BLUE = Q.get('accent') === 'blue';
 if (BLUE) document.documentElement.dataset.accent = 'blue';
-if (Q.get('bg') === 'steel') document.documentElement.dataset.bg = 'steel';   // preview: cool stainless-steel page (bone is the default)
+// Background: steel is the default (set on <html> in index.html). ?bg=bone previews the previous warm bone/paper theme.
+if (Q.get('bg') === 'bone') { delete document.documentElement.dataset.bg; const tc = document.querySelector('meta[name="theme-color"]'); if (tc) tc.content = '#F3EEE5'; }
 const logoSrc = kind => LOGO === 'afrobot'
   ? `assets/logo-afrobot${kind === 'reversed' ? '-reversed' : ''}${BLUE ? '-blue' : ''}.svg`
   : `assets/logo-${LOGO}${kind === 'reversed' ? '-reversed' : ''}.svg`;
