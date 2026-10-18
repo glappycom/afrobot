@@ -82,3 +82,14 @@ if (FONT) document.body.dataset.font = FONT;
   [heroCta, ...stops].forEach(el => el && io.observe(el));
   addEventListener('scroll', update, { passive: true }); addEventListener('resize', update);
 })();
+
+// v25: founder photos lift on tap / keyboard press and settle on a second press (mouse uses :hover)
+document.querySelectorAll('.founder__photo').forEach(btn => {
+  btn.addEventListener('click', e => {
+    if (e.pointerType === 'mouse') return;
+    const on = btn.getAttribute('aria-pressed') !== 'true';
+    document.querySelectorAll('.founder__photo[aria-pressed="true"]').forEach(b => b.setAttribute('aria-pressed', 'false'));
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+  btn.addEventListener('blur', () => btn.setAttribute('aria-pressed', 'false'));
+});
