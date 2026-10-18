@@ -1,18 +1,21 @@
-// ---- Logo: E1 "Glow" is official. Archived directions: ?logo=d2|a|b|c
-const LOGO = new URLSearchParams(location.search).get('logo') || 'e1';
-document.querySelectorAll('img[data-logo]').forEach(img => {
-  img.src = `assets/logo-${LOGO}${img.dataset.logo === 'reversed' ? '-reversed' : ''}.svg`;
-});
+// ---- Logo: official lockup = E1 "Glow" icon + "afrobot" wordmark (Clay "af" + ink "robot").
+// Archived directions for comparison: ?logo=e1 (Space Grotesk lockup) | d2 | a | b | c
+const Q = new URLSearchParams(location.search);
+const LOGO = Q.get('logo') || 'afrobot';
 // Accent preview: ?accent=blue swaps every clay accent for Cobalt #1E4BD2 (default stays clay)
-if (new URLSearchParams(location.search).get('accent') === 'blue') document.documentElement.dataset.accent = 'blue';
+const BLUE = Q.get('accent') === 'blue';
+if (BLUE) document.documentElement.dataset.accent = 'blue';
+const logoSrc = kind => LOGO === 'afrobot'
+  ? `assets/logo-afrobot${kind === 'reversed' ? '-reversed' : ''}${BLUE ? '-blue' : ''}.svg`
+  : `assets/logo-${LOGO}${kind === 'reversed' ? '-reversed' : ''}.svg`;
+if (LOGO !== 'afrobot' || BLUE) document.querySelectorAll('img[data-logo]').forEach(img => { img.src = logoSrc(img.dataset.logo); });
 // Header: bone with a thin clay rule (no full clay backgrounds; clay is accent only). ?header=none = plain paper header.
-const HQ = new URLSearchParams(location.search).get('header');
-const HEADER = HQ === 'none' ? 'none' : 'bone';
+const HEADER = Q.get('header') === 'none' ? 'none' : 'bone';
 const topLogo = document.querySelector('.nav img[data-logo]');
-// E1: the ink logo (white face, ink eyes) works on every header colour; the footer (ink) uses the reversed logo.
-if (HEADER === 'none' || !['d2', 'e1'].includes(LOGO)) { delete document.body.dataset.header; }
-else { document.body.dataset.header = HEADER; if (topLogo) topLogo.src = LOGO === 'e1' ? 'assets/logo-e1.svg' : `assets/logo-d2-on-${HEADER}.svg`; }
-const fav = document.querySelector('[data-logo-favicon]'); if (fav) fav.href = `assets/favicon-${LOGO}.svg`;
+if (HEADER === 'none' || !['afrobot', 'e1', 'd2'].includes(LOGO)) { delete document.body.dataset.header; }
+else { document.body.dataset.header = HEADER; if (topLogo && LOGO === 'd2') topLogo.src = `assets/logo-d2-on-${HEADER}.svg`; }
+// Favicon is always the icon alone (E1 bone tile) unless an archived direction is previewed.
+const fav = document.querySelector('[data-logo-favicon]'); if (fav && !['afrobot', 'e1'].includes(LOGO)) fav.href = `assets/favicon-${LOGO}.svg`;
 
 // ---- Countdown (proposed: Dallas Regional, Sat 26 Jun 2027, 9:00 AM CT)
 (() => {

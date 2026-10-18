@@ -519,3 +519,8 @@ html[data-accent="blue"] .footer nav a:hover{color:var(--accent-on-ink)}
 @media (max-width:900px){
   .tlink,.theme__meta a{display:inline-block;min-height:0;padding-block:12px;margin-block:-12px}
 }
+
+/* v19: official lockup = E1 icon + "afrobot" wordmark */
+.nav__brand img{height:38px}
+.footer img{height:36px}
+@media (max-width:560px){.nav__brand img{height:34px}}
