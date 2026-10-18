@@ -21,7 +21,7 @@
 <meta property="og:image:alt" content="afrobot logo: the AfroBot icon and wordmark on steel">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://afrobot.org/assets/og-image.png">
-<link rel="stylesheet" href="styles.css?v=27">
+<link rel="stylesheet" href="styles.css?v=28">
 <script>if(new URLSearchParams(location.search).get("accent")==="blue")document.documentElement.dataset.accent="blue"</script>
 </head>
 <body data-header="bone">
@@ -290,20 +290,24 @@
       <div class="reg__text">
         <p class="label">Register interest</p>
         <h2 class="h1">Be first to know when Season 1 opens.</h2>
-        <p class="muted">Parents, coaches, schools, volunteers and sponsors are all welcome.</p>
-        <p class="note">Preview only. This form doesn't send anything yet.</p>
+        <p class="muted">Parents, students, schools, volunteers, mentors and sponsors are all welcome. Tell us a little about you and we&rsquo;ll be in touch.</p>
+        <p class="note">Fields marked <span aria-hidden="true">*</span><span class="sr">with an asterisk</span> are required. We only use your details to contact you about AfroBot.</p>
       </div>
-      <form class="form" id="interest" novalidate>
-      <label class="f"><span>Name</span><input name="name" autocomplete="name"></label>
-      <label class="f"><span>Email</span><input name="email" type="email" autocomplete="email"></label>
-      <label class="f f--half"><span>I am a</span><select name="role" id="role"><option>Parent or guardian</option><option>Coach or teacher</option><option>School or community group</option><option>Volunteer or mentor</option><option>Sponsor</option></select></label>
-      <label class="f f--half"><span>Nearest city</span><select name="city"><option>Dallas–Fort Worth</option><option>Houston</option><option>Atlanta</option><option>DC / Maryland</option><option>Somewhere else</option></select></label>
-      <fieldset class="f"><legend>Kids' ages (optional)</legend>
-        <label class="chk"><input type="checkbox" value="6-9"><span>6–9</span></label><label class="chk"><input type="checkbox" value="9-12"><span>9–12</span></label><label class="chk"><input type="checkbox" value="13-17"><span>13–17</span></label>
-      </fieldset>
-      <button class="btn btn--ink" type="submit">Keep me posted</button>
-      <p class="form__msg" role="status" hidden>Thank you. This preview doesn't store anything yet.</p>
-    </form>
+      <form class="form" id="interest" action="/api/interest" method="post" novalidate>
+        <div class="form__fields">
+          <label class="f f--half" for="if-name"><span>Name <i aria-hidden="true">*</i></span><input id="if-name" name="name" autocomplete="name" required maxlength="120" aria-describedby="if-name-err"><em class="f__err" id="if-name-err"></em></label>
+          <label class="f f--half" for="if-email"><span>Email <i aria-hidden="true">*</i></span><input id="if-email" name="email" type="email" inputmode="email" autocomplete="email" required maxlength="200" aria-describedby="if-email-err"><em class="f__err" id="if-email-err"></em></label>
+          <label class="f f--half" for="role"><span>I am a <i aria-hidden="true">*</i></span><select id="role" name="role" required aria-describedby="role-err"><option value="" selected disabled>Choose one</option><option>Parent/guardian</option><option>Student</option><option>School/educator</option><option>Volunteer/mentor</option><option>Sponsor/partner</option><option>Other</option></select><em class="f__err" id="role-err"></em></label>
+          <label class="f f--half" for="if-city"><span>City and state <i aria-hidden="true">*</i></span><input id="if-city" name="city" autocomplete="address-level2" placeholder="e.g. Dallas, TX" required maxlength="120" aria-describedby="if-city-err"><em class="f__err" id="if-city-err"></em></label>
+          <label class="f f--half" for="if-org"><span>Organization <b>(optional)</b></span><input id="if-org" name="organization" autocomplete="organization" maxlength="160" placeholder="School, group or company"></label>
+          <label class="f f--half" for="if-kids" id="if-kids-wrap" hidden><span>Number of kids and ages <b>(optional)</b></span><input id="if-kids" name="kids" maxlength="120" placeholder="e.g. 2 kids, ages 8 and 11"></label>
+          <label class="f" for="if-msg"><span>Message <b>(optional)</b></span><textarea id="if-msg" name="message" rows="3" maxlength="2000" placeholder="Anything you'd like us to know"></textarea></label>
+          <div class="f f--consent"><label class="consent" for="if-consent"><input id="if-consent" name="consent" type="checkbox" value="yes" required aria-describedby="if-consent-err"><span>You may contact me by email about AfroBot. <i aria-hidden="true">*</i></span></label><em class="f__err" id="if-consent-err"></em></div>
+          <div class="hp" aria-hidden="true"><label for="if-website">Website</label><input id="if-website" name="website" tabindex="-1" autocomplete="off"></div>
+        </div>
+        <button class="btn btn--clay" type="submit">Keep me posted</button>
+        <p class="form__msg" id="if-status" role="status" aria-live="polite" hidden></p>
+      </form>
     </div>
   </div>
 </section>
@@ -316,13 +320,13 @@
     <div class="col-5 col-md-12"><img data-logo="reversed" src="assets/logo-afrobot-reversed.svg" alt="afrobot" height="38"><p>Youth AI and robotics. Born from the African diaspora, built for every kid who&rsquo;s been left out of tech.</p></div>
     <nav class="c-7-9 col-md-6" aria-label="Program"><h4>Program</h4><a href="#program">How it works</a><a href="#tracks">Tracks</a><a href="#divisions">Divisions</a><a href="#season">Season 2027</a><a href="#faq">Questions</a></nav>
     <nav class="c-9-11 col-md-6" aria-label="Get involved"><h4>Get involved</h4><a href="#register">Register interest</a><a href="#sponsor">Sponsor</a><a href="#cost">Cost</a><a href="#safety">Safety</a></nav>
-    <div class="c-11-13 col-md-12"><h4>Contact</h4><span>Contact form coming soon</span><span class="dim">Dallas, Texas</span></div>
+    <div class="c-11-13 col-md-12"><h4>Contact</h4><a href="#register">Send us a message</a><span class="dim">Dallas, Texas</span></div>
     <div class="col-12 footer__base"><span>© 2026 AfroBot.</span><span>Concept preview. Dates, partners and costs are proposed.</span></div>
   </div>
 </footer>
 
 <a class="stickycta btn btn--clay" href="#register" aria-hidden="true" tabindex="-1">Register interest</a>
 
-<script src="script.js?v=27"></script>
+<script src="script.js?v=28"></script>
 </body>
 </html>

@@ -39,11 +39,57 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
   document.querySelectorAll('.mnav a').forEach(a => a.addEventListener('click', () => { n.classList.remove('is-open'); b.setAttribute('aria-expanded', 'false'); }));
 })();
 
-// ---- Placeholder form: nothing is sent
+// ---- Register interest form: posts to /api/interest (stored server-side), inline errors, success/error states
 (() => {
-  const f = document.getElementById('interest');
-  f.addEventListener('submit', e => { e.preventDefault(); f.querySelector('.form__msg').hidden = false; });
-  document.querySelectorAll('[data-sponsor]').forEach(a => a.addEventListener('click', () => { document.getElementById('role').value = 'Sponsor'; }));
+  const f = document.getElementById('interest'); if (!f) return;
+  const t0 = Date.now(), role = f.querySelector('#role'), kids = f.querySelector('#if-kids-wrap');
+  const status = f.querySelector('#if-status'), btn = f.querySelector('button[type="submit"]');
+  const KIDS = ['Parent/guardian', 'School/educator'];
+  const syncKids = () => { kids.hidden = !KIDS.includes(role.value); };
+  role.addEventListener('change', syncKids); syncKids();
+  document.querySelectorAll('[data-sponsor]').forEach(a => a.addEventListener('click', () => { role.value = 'Sponsor/partner'; syncKids(); }));
+  const EMAIL = /^[^\s@<>()[\]\\,;:"]+@[^\s@<>()[\]\\,;:"]+\.[A-Za-z]{2,}$/;
+  const fields = { name: f.elements.name, email: f.elements.email, role, city: f.elements.city, consent: f.elements.consent };
+  const setErr = (k, msg) => {
+    const el = fields[k], err = document.getElementById(el.getAttribute('aria-describedby'));
+    if (msg) el.setAttribute('aria-invalid', 'true'); else el.removeAttribute('aria-invalid');
+    if (err) err.textContent = msg || '';
+  };
+  const check = () => {
+    const e = {};
+    if (fields.name.value.trim().length < 2) e.name = 'Please enter your name.';
+    if (!EMAIL.test(fields.email.value.trim())) e.email = 'Please enter a valid email address.';
+    if (!role.value) e.role = 'Please choose the option that fits you best.';
+    if (fields.city.value.trim().length < 2) e.city = 'Please enter your city and state.';
+    if (!fields.consent.checked) e.consent = 'Please confirm we may contact you.';
+    return e;
+  };
+  Object.entries(fields).forEach(([k, el]) => el.addEventListener(el.type === 'checkbox' || el.tagName === 'SELECT' ? 'change' : 'blur', () => {
+    if (el.getAttribute('aria-invalid')) setErr(k, check()[k]);
+  }));
+  const show = (msg, kind) => { status.textContent = msg; status.dataset.kind = kind; status.hidden = false; };
+  f.addEventListener('submit', async ev => {
+    ev.preventDefault();
+    const errs = check(); Object.keys(fields).forEach(k => setErr(k, errs[k]));
+    const first = Object.keys(fields).find(k => errs[k]);
+    if (first) { fields[first].focus(); show('Please check the highlighted fields.', 'error'); return; }
+    const d = Object.fromEntries(new FormData(f).entries());
+    d.consent = fields.consent.checked; d.t = t0; d.page = location.href.split('#')[0];
+    if (kids.hidden) d.kids = '';
+    btn.disabled = true; btn.setAttribute('aria-busy', 'true'); btn.textContent = 'Sending…'; status.hidden = true;
+    try {
+      const r = await fetch('/api/interest', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(d) });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok && j.ok) {
+        f.classList.add('is-sent'); f.querySelector('.form__fields').hidden = true; btn.hidden = true;
+        show('Thank you! You’re on the list. We’ll email you when Season 1 opens.', 'ok'); status.setAttribute('tabindex', '-1'); status.focus();
+        return;
+      }
+      if (j.errors) { Object.keys(fields).forEach(k => setErr(k, j.errors[k])); show('Please check the highlighted fields.', 'error'); }
+      else show('Sorry, something went wrong and your details weren’t sent. Please try again in a moment.', 'error');
+    } catch { show('We couldn’t reach the server. Check your connection and try again.', 'error'); }
+    btn.disabled = false; btn.removeAttribute('aria-busy'); btn.textContent = 'Keep me posted';
+  });
 })();
 
 // ---- Restrained reveal

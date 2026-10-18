@@ -28,3 +28,8 @@ Deployed on Vercel as a static site from the repository root (`vercel.json`). Pu
 - `?accent=blue` preview with Cobalt #1E4BD2 accents instead of clay (default: clay). Blue share image: `assets/og-image-blue.png` (not wired to the meta tags).
 - Default background is steel #E6E8EA (subtle brushed streaks), alternate sections #F1F2F4, lines #CDD2D8, steel header with the clay rule. `?bg=bone` previews the previous bone/paper theme.
 - Hero: the McKinney group photo with its background removed (cut-out v4) sits on the steel page with a soft floor shadow. `?hero=photo` previews the full photo.
+
+## Register interest form
+- The form (`#interest`) posts JSON to `/api/interest` (Vercel function, `api/interest.js`). It validates fields, drops spam (hidden `website` honeypot, too-fast submits) and stores each submission as a private JSON file in the Vercel Blob store `afrobot-interest` (env `BLOB_READ_WRITE_TOKEN`, added automatically).
+- `GET /api/interest-export` with `Authorization: Bearer $INTEREST_EXPORT_TOKEN` returns all submissions (rows match the Google Sheet "AfroBot Interest" columns); `DELETE /api/interest-export?id=<id>` removes one.
+- Direct Google Sheet writes switch on when `GOOGLE_SERVICE_ACCOUNT_JSON` and `SHEET_ID` are set and the sheet is shared with the service account email.
