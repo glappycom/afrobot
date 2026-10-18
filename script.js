@@ -19,7 +19,7 @@ else { document.body.dataset.header = HEADER; if (topLogo && LOGO === 'd2') topL
 // Favicon is always the icon alone (H3 bone tile) unless an archived direction is previewed.
 const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== 'afrobot') fav.href = `assets/favicon-${LOGO}.svg`;
 
-// ---- Countdown (proposed: Dallas Regional, Sat 22 Jan 2028, 9:00 AM CT)
+// ---- Countdown (proposed: DC/Maryland Regional, Sat 11 Dec 2027, 9:00 AM ET)
 (() => {
   const el = document.getElementById('countdown'); if (!el) return;
   const t = new Date(el.dataset.target).getTime(), q = k => el.querySelector(`[data-u="${k}"]`);
