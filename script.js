@@ -1,4 +1,4 @@
-// ---- Logo: official lockup = E1 "Glow" icon + "afrobot" wordmark (one solid colour: ink on light, bone on ink).
+// ---- Logo: official lockup = H3 "Cutout" icon + "afrobot" wordmark (one solid colour: ink on light, bone on ink).
 // Archived directions for comparison: ?logo=e1 (Space Grotesk lockup) | d2 | a | b | c
 const Q = new URLSearchParams(location.search);
 const LOGO = Q.get('logo') || 'afrobot';
@@ -14,8 +14,8 @@ const HEADER = Q.get('header') === 'none' ? 'none' : 'bone';
 const topLogo = document.querySelector('.nav img[data-logo]');
 if (HEADER === 'none' || !['afrobot', 'e1', 'd2'].includes(LOGO)) { delete document.body.dataset.header; }
 else { document.body.dataset.header = HEADER; if (topLogo && LOGO === 'd2') topLogo.src = `assets/logo-d2-on-${HEADER}.svg`; }
-// Favicon is always the icon alone (E1 bone tile) unless an archived direction is previewed.
-const fav = document.querySelector('[data-logo-favicon]'); if (fav && !['afrobot', 'e1'].includes(LOGO)) fav.href = `assets/favicon-${LOGO}.svg`;
+// Favicon is always the icon alone (H3 bone tile) unless an archived direction is previewed.
+const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== 'afrobot') fav.href = `assets/favicon-${LOGO}.svg`;
 
 // ---- Countdown (proposed: Dallas Regional, Sat 26 Jun 2027, 9:00 AM CT)
 (() => {
