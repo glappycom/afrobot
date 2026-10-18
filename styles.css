@@ -654,3 +654,10 @@ html[data-bg="steel"] .tl li::before{background:#E6E8EA}
 html[data-bg="steel"]:not([data-accent="blue"]){--clay-text:#AD3210}
 html[data-bg="steel"]:not([data-accent="blue"]) :is(.pill--clay,.steps__n,.pstat--clay,.aud-list a:hover,.theme__meta a,.tlink,.acc summary:hover,.fees article:nth-child(4) .fee,.val-list li:first-child b){color:var(--clay-text)}
 html[data-bg="steel"]:not([data-accent="blue"]) .tl__when::before{color:var(--clay-text)}
+
+/* ===== v24: on ink, off-white (bone) text becomes pure white #FFFFFF in the default steel theme. Surfaces unchanged. ===== */
+html[data-bg="steel"] :is(.season,.footer,.footer nav a,.footer div>span,.footer nav>span,.sponsor .display){color:#FFFFFF}
+html[data-bg="steel"] body[data-header="bone"] .sponsor .display{color:#FFFFFF}
+html[data-bg="steel"] :is(.btn--ink,.btn--line:hover,.chk input:checked+span){color:#FFFFFF}
+html[data-bg="steel"] .footer .dim{color:var(--ink-40)!important}
+html[data-bg="steel"]:not([data-accent="blue"]) .footer nav a:hover{color:var(--clay)}
