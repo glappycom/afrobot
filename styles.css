@@ -353,3 +353,9 @@ body[data-header="bone"] .sponsor .display{color:#F3EEE5}
 .photo--hero .photo__img--real{aspect-ratio:3/2}
 .photo__video{display:block;width:100%;height:100%;object-fit:cover}
 @media (prefers-reduced-motion:reduce){.photo__video{display:none}.photo__img--real:has(.photo__video){background:url(assets/video/mckinney-build-day-2024-poster.jpg) center/cover}}
+
+/* v16: accent preview ?accent=blue. Every clay accent reads from --clay / --clay-dk, so swapping the variables swaps them all.
+   Cobalt #1E4BD2: 7.0:1 with white text (buttons), 6.1:1 on bone, 6.5:1 on paper. Hover #163AA6.
+   On ink (footer link hover) cobalt is too dark, so a light cobalt #7FA0FF (7.6:1 on ink) is used there. */
+html[data-accent="blue"]{--clay:#1E4BD2;--clay-dk:#163AA6;--clay-deep:#163AA6;--accent-on-ink:#7FA0FF}
+html[data-accent="blue"] .footer nav a:hover{color:var(--accent-on-ink)}

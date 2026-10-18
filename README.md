@@ -25,3 +25,4 @@ Deployed on Vercel as a static site from the repository root (`vercel.json`). Pu
 - `?header=none` plain paper header (default: bone with a thin clay rule). No full clay backgrounds: clay is accent only.
 - `?font=poppins` headline font preview.
 - `?logo=d2|a|b|c` archived logo directions.
+- `?accent=blue` preview with Cobalt #1E4BD2 accents instead of clay (default: clay). Blue share image: `assets/og-image-blue.png` (not wired to the meta tags).

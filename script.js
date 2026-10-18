@@ -3,6 +3,8 @@ const LOGO = new URLSearchParams(location.search).get('logo') || 'e1';
 document.querySelectorAll('img[data-logo]').forEach(img => {
   img.src = `assets/logo-${LOGO}${img.dataset.logo === 'reversed' ? '-reversed' : ''}.svg`;
 });
+// Accent preview: ?accent=blue swaps every clay accent for Cobalt #1E4BD2 (default stays clay)
+if (new URLSearchParams(location.search).get('accent') === 'blue') document.documentElement.dataset.accent = 'blue';
 // Header: bone with a thin clay rule (no full clay backgrounds; clay is accent only). ?header=none = plain paper header.
 const HQ = new URLSearchParams(location.search).get('header');
 const HEADER = HQ === 'none' ? 'none' : 'bone';
