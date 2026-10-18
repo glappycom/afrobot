@@ -1,5 +1,5 @@
-// ---- Logo direction: 'a' (default), 'b' or 'c'. Override with ?logo=b
-const LOGO = new URLSearchParams(location.search).get('logo') || 'd2';
+// ---- Logo: E1 "Glow" is official. Archived directions: ?logo=d2|a|b|c
+const LOGO = new URLSearchParams(location.search).get('logo') || 'e1';
 document.querySelectorAll('img[data-logo]').forEach(img => {
   img.src = `assets/logo-${LOGO}${img.dataset.logo === 'reversed' ? '-reversed' : ''}.svg`;
 });
@@ -7,8 +7,9 @@ document.querySelectorAll('img[data-logo]').forEach(img => {
 // Default header is clay with the ink logo and white visor. ?header=none shows the plain paper header.
 const HEADER = new URLSearchParams(location.search).get('header') || 'clay';
 const topLogo = document.querySelector('.nav img[data-logo]');
-if (HEADER === 'none' || LOGO !== 'd2') { delete document.body.dataset.header; }
-else { document.body.dataset.header = HEADER; if (topLogo) topLogo.src = `assets/logo-d2-on-${HEADER}.svg`; }
+// E1: the ink logo (white face, ink eyes) works on every header colour; the footer (ink) uses the reversed logo.
+if (HEADER === 'none' || !['d2', 'e1'].includes(LOGO)) { delete document.body.dataset.header; }
+else { document.body.dataset.header = HEADER; if (topLogo) topLogo.src = LOGO === 'e1' ? 'assets/logo-e1.svg' : `assets/logo-d2-on-${HEADER}.svg`; }
 const fav = document.querySelector('[data-logo-favicon]'); if (fav) fav.href = `assets/favicon-${LOGO}.svg`;
 
 // ---- Countdown (proposed: Dallas Regional, Sat 26 Jun 2027, 9:00 AM CT)
