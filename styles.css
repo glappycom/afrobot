@@ -682,3 +682,6 @@ html[data-bg="steel"]:not([data-accent="blue"]) .footer nav a:hover{color:var(--
   .founder__photo img,.founder__photo::after{transition:none!important}
   .founder__photo:hover img,.founder__photo:focus-visible img,.founder__photo[aria-pressed="true"] img{transform:none!important}
 }
+/* v26: crisp straight bottom crop (no fade); shadow sits just under the edge */
+.founder__photo::after{bottom:-3%;height:7%}
+.founder h3{margin-top:18px}
