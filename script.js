@@ -101,6 +101,6 @@ if (Q.get('hero') === 'cutout') {
     fig.classList.add('photo--cutout');
     const src = fig.querySelector('source'), img = fig.querySelector('img');
     if (src) src.srcset = 'assets/photos/mckinney-build-day-2024-cutout.webp';
-    if (img) { img.src = 'assets/photos/mckinney-build-day-2024-cutout.png'; img.width = 1669; img.height = 1096; }
+    if (img) { img.src = 'assets/photos/mckinney-build-day-2024-cutout.png'; img.width = 1662; img.height = 1117; }
   }
 }

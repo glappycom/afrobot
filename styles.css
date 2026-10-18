@@ -690,5 +690,5 @@ html[data-bg="steel"]:not([data-accent="blue"]) .footer nav a:hover{color:var(--
 .photo--cutout .photo__img,.photo--cutout .photo__img--real{aspect-ratio:auto!important;background:none;overflow:visible;position:relative}
 .photo--cutout .photo__img img{height:auto;object-fit:contain;position:relative;z-index:1}
 .photo--cutout .photo__img::after{content:"";position:absolute;left:4%;right:4%;bottom:-1.5%;height:16%;z-index:0;border-radius:50%;
-  background:radial-gradient(closest-side,rgba(14,15,18,.16),rgba(14,15,18,0))}
+  background:radial-gradient(closest-side,rgba(14,15,18,.10),rgba(14,15,18,0))}
 .photo--cutout{max-width:1180px;margin-inline:auto}
