@@ -93,3 +93,14 @@ document.querySelectorAll('.founder__photo').forEach(btn => {
   });
   btn.addEventListener('blur', () => btn.setAttribute('aria-pressed', 'false'));
 });
+
+// Preview only: ?hero=cutout shows the background-removed McKinney group on the page background (default stays the full photo)
+if (Q.get('hero') === 'cutout') {
+  const fig = document.querySelector('.photo--hero');
+  if (fig) {
+    fig.classList.add('photo--cutout');
+    const src = fig.querySelector('source'), img = fig.querySelector('img');
+    if (src) src.srcset = 'assets/photos/mckinney-build-day-2024-cutout.webp';
+    if (img) { img.src = 'assets/photos/mckinney-build-day-2024-cutout.png'; img.width = 1669; img.height = 1096; }
+  }
+}
