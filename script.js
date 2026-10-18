@@ -5,6 +5,7 @@ const LOGO = Q.get('logo') || 'afrobot';
 // Accent preview: ?accent=blue swaps every clay accent for Cobalt #1E4BD2 (default stays clay)
 const BLUE = Q.get('accent') === 'blue';
 if (BLUE) document.documentElement.dataset.accent = 'blue';
+if (Q.get('bg') === 'steel') document.documentElement.dataset.bg = 'steel';   // preview: cool stainless-steel page (bone is the default)
 const logoSrc = kind => LOGO === 'afrobot'
   ? `assets/logo-afrobot${kind === 'reversed' ? '-reversed' : ''}${BLUE ? '-blue' : ''}.svg`
   : `assets/logo-${LOGO}${kind === 'reversed' ? '-reversed' : ''}.svg`;

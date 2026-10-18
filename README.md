@@ -26,3 +26,4 @@ Deployed on Vercel as a static site from the repository root (`vercel.json`). Pu
 - `?font=poppins` headline font preview.
 - `?logo=e1|d2|a|b|c` archived logo directions (e1 = previous E1 icon + Space Grotesk lockup).
 - `?accent=blue` preview with Cobalt #1E4BD2 accents instead of clay (default: clay). Blue share image: `assets/og-image-blue.png` (not wired to the meta tags).
+- `?bg=steel` preview: cool stainless-steel page #E6E8EA (subtle brushed streaks), alternate sections #F1F2F4, lines #CDD2D8, steel header with the clay rule (default: bone/paper).

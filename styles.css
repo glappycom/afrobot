@@ -524,3 +524,126 @@ html[data-accent="blue"] .footer nav a:hover{color:var(--accent-on-ink)}
 .nav__brand img{height:38px}
 .footer img{height:36px}
 @media (max-width:560px){.nav__brand img{height:34px}}
+
+/* ===== v22: symmetry restored (centered section headers, even grids, v17 rhythm) + full hero photo ===== */
+:root{--s-section:clamp(80px,8vw,128px);--s-head:clamp(48px,5vw,72px)}
+.sh{display:flex;flex-direction:column;align-items:center;text-align:center;max-width:980px;margin:0 auto var(--s-head)}
+.sh .h1{margin-top:18px;max-width:24ch;text-wrap:balance}
+.sh .display{margin-top:18px;text-wrap:balance}
+.sh__sub{margin-top:20px;max-width:60ch;color:var(--ink-60);font-size:clamp(1.0625rem,1.3vw,1.25rem);line-height:1.5;text-wrap:pretty}
+.sh__sub--note{font-size:var(--t-14);margin-top:16px}
+.sh .btn{margin-top:32px}
+.sh-label{text-align:center;margin-bottom:28px}
+.sh-foot{text-align:center;margin-top:40px}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:clamp(24px,4vw,64px);row-gap:48px}
+.sub-label{margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--ink)}
+
+/* section backgrounds alternate paper / bone for an even rhythm */
+.cost,.values{border-bottom:0}
+.program,.divisions,.faq{background:var(--bone)}
+.tracks{background:transparent}
+
+/* hero: the whole group, no face cropped (photo is 4:3) */
+.photo--hero .photo__img--real{aspect-ratio:3/2}
+.photo--hero .photo__img--real img{object-position:50% 45%}
+@media (max-width:1100px){.photo--hero .photo__img--real{aspect-ratio:4/3}.photo--hero .photo__img--real img{object-position:50% 50%}}
+
+/* audience: four even columns */
+.audience .container{display:block}
+.aud-list{grid-template-columns:repeat(4,minmax(0,1fr))}
+.aud-list li a{border-top:1px solid var(--ink)}
+.aud-list li:nth-child(n) a{border-top:1px solid var(--ink)}
+
+/* cost */
+.cost .two{max-width:1040px;margin:0 auto}
+.cost .two p{color:var(--ink-80);margin:0;font-size:var(--t-18);line-height:1.6}
+.fees{margin-top:72px}
+
+/* program: v17 3 x 2 steps */
+.steps{margin-top:0}
+.steps li{min-height:240px;padding:28px 32px 36px 0}
+.steps__final .steps__n{color:var(--clay)}
+.theme-band{margin-top:72px;padding-top:56px;border-top:1px solid var(--line);text-align:center}
+.theme-band .label{margin-bottom:16px}
+.theme-band .theme__name{font-size:clamp(1.9rem,3.4vw,3rem)}
+.theme-band .theme__meta{justify-content:center;margin-top:20px}
+
+/* tracks: two even columns */
+.tracks .h1{margin-bottom:0}
+.track .photo{margin-bottom:28px}
+
+/* divisions: v17 big numerals, three even columns */
+.div-list--big{margin-top:0}
+.div-list--big article{display:block;border-top:1px solid var(--ink);padding-top:24px}
+.div-list--big .age{display:block;font-size:clamp(4rem,8.5vw,8rem);line-height:.9;margin-bottom:28px;min-width:0}
+.div-list--big h3{font-size:var(--t-28);margin-bottom:10px}
+.div-list--big p{font-size:var(--t-16);max-width:36ch}
+
+/* values: 3 x 2 */
+.val-list{margin-top:0;grid-template-columns:repeat(3,minmax(0,1fr));row-gap:40px}
+.val-list b{font-size:clamp(1.75rem,2.8vw,2.5rem)}
+
+/* season: full-width schedule, then awards 3 x 2 */
+.season .sh__sub{color:var(--ink-40)}
+.table{margin-top:0}
+.awards-wrap{margin-top:96px}
+.awards{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:40px;margin-top:0;border-top:0}
+.awards div{display:block;border-top:1px solid var(--line-dk);border-bottom:0;padding:18px 0 0}
+.awards dt{font-size:var(--t-22);margin-bottom:8px}
+.awards dd{font-size:var(--t-14)}
+.awards div.awards__lead{grid-column:1/-1;display:block;text-align:center;border-top:1px solid var(--clay)!important;padding:28px 0 8px}
+.awards__lead dt{font-size:var(--t-h1);line-height:1;letter-spacing:-.03em}
+
+/* faq: centered column */
+.faq__body{max-width:880px;margin:0 auto}
+.acc{margin-top:0}
+
+/* founders + partners: two even columns */
+.partners .founders{grid-template-columns:repeat(2,minmax(0,1fr));margin:0}
+.partners .partner-list{margin-top:0;border-top:0}
+.partners .partner-list li:first-child{padding-top:6px}
+
+/* sponsor: centered */
+.sponsor .sh .label{color:var(--ink-40)}
+.sponsor .sh__sub{color:rgba(255,255,255,.88)}
+.tiers{margin-top:16px}
+
+/* register: two even columns */
+.two--reg{align-items:start}
+.reg__text .h1{margin:18px 0 16px;max-width:16ch}
+
+@media (min-width:901px){
+  .tr{grid-template-columns:3fr 3fr 4fr 2fr;padding:20px 0;font-size:var(--t-22)}
+  .th{padding:14px 0;font-size:var(--t-12)}
+}
+@media (max-width:1100px) and (min-width:901px){.aud-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:900px){
+  .two{grid-template-columns:1fr;row-gap:40px}
+  .aud-list{grid-template-columns:1fr}
+  .aud-list li:nth-child(n+2) a{border-top:0}
+  .sh{margin-bottom:40px}
+  .steps{grid-template-columns:1fr}
+  .steps li{min-height:0;padding:22px 0 26px}
+  .theme-band{margin-top:48px;padding-top:40px}
+  .theme-band .theme__meta{flex-direction:column;align-items:center;gap:8px}
+  .div-list--big{grid-template-columns:1fr;row-gap:36px}
+  .div-list--big .age{font-size:clamp(3.5rem,18vw,5rem);margin-bottom:16px}
+  .val-list{grid-template-columns:1fr 1fr;row-gap:24px}
+  .awards-wrap{margin-top:64px}
+  .awards{grid-template-columns:1fr;row-gap:20px}
+  .tr span:nth-child(4){display:none}
+  .tiers{margin-top:8px}
+  .cost .two p{font-size:var(--t-16)}
+}
+
+/* ===== v22 preview: ?bg=steel, cool stainless-steel gray (bone stays the default) =====
+   Page #E6E8EA (brushed: light-only streaks, never darker than #E6E8EA), cards/alt sections #F1F2F4, lines #CDD2D8.
+   Ink on #E6E8EA 15.6:1 · ink-60 5.4:1 · Deep Clay text 4.5:1 (AA) · white on Deep Clay buttons 5.6:1. */
+html[data-bg="steel"]{--paper:#E6E8EA;--steel-card:#F1F2F4;--line:#CDD2D8}
+html[data-bg="steel"] body{background-color:#E6E8EA;background-image:
+  repeating-linear-gradient(90deg,rgba(255,255,255,.22) 0 1px,rgba(255,255,255,0) 1px 3px,rgba(255,255,255,.12) 3px 4px,rgba(255,255,255,0) 4px 7px),
+  linear-gradient(180deg,#EBEDEF 0%,#E6E8EA 40%,#E8EAEC 100%);background-attachment:fixed}
+html[data-bg="steel"] .program,html[data-bg="steel"] .divisions,html[data-bg="steel"] .faq{background:var(--steel-card)}
+html[data-bg="steel"] body[data-header="bone"]{--nav-bg:#E6E8EA}
+html[data-bg="steel"] .nav{background:#E6E8EA}
+html[data-bg="steel"] .tl li::before{background:#E6E8EA}
