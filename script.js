@@ -56,3 +56,24 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav) fav.href = `
 // v5 font preview: ?font=poppins swaps headline face; default unchanged
 const FONT = new URLSearchParams(location.search).get('font');
 if (FONT) document.body.dataset.font = FONT;
+
+// ---- v18: FAQ deep links open their answer (e.g. #safety, #faq-included)
+(() => {
+  const open = () => { const t = location.hash && document.querySelector(location.hash); if (t && t.tagName === 'DETAILS') t.open = true; };
+  addEventListener('hashchange', open); open();
+  document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', () => { const t = document.querySelector(a.getAttribute('href')); if (t && t.tagName === 'DETAILS') t.open = true; }));
+})();
+
+// ---- v18: sticky "Register interest" on small screens; hidden at the top (hero CTA visible) and near the form/footer
+(() => {
+  const btn = document.querySelector('.stickycta'); if (!btn) return;
+  const heroCta = document.querySelector('.hero .actions'), stops = [document.getElementById('register'), document.querySelector('.footer')];
+  const seen = new Map();
+  const update = () => {
+    const show = matchMedia('(max-width: 900px)').matches && !seen.get(heroCta) && !stops.some(s => seen.get(s)) && scrollY > 200;
+    btn.classList.toggle('is-on', show); btn.setAttribute('aria-hidden', String(!show)); btn.tabIndex = show ? 0 : -1;
+  };
+  const io = new IntersectionObserver(es => { es.forEach(e => seen.set(e.target, e.isIntersecting)); update(); }, { rootMargin: '0px 0px 120px 0px' });
+  [heroCta, ...stops].forEach(el => el && io.observe(el));
+  addEventListener('scroll', update, { passive: true }); addEventListener('resize', update);
+})();
