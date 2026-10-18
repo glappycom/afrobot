@@ -1,4 +1,4 @@
-// ---- Logo: official lockup = E1 "Glow" icon + "afrobot" wordmark (Clay "af" + ink "robot").
+// ---- Logo: official lockup = E1 "Glow" icon + "afrobot" wordmark (one solid colour: ink on light, bone on ink).
 // Archived directions for comparison: ?logo=e1 (Space Grotesk lockup) | d2 | a | b | c
 const Q = new URLSearchParams(location.search);
 const LOGO = Q.get('logo') || 'afrobot';

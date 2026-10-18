@@ -7,7 +7,7 @@ Concept preview: dates, partners and costs on the site are proposals.
 
 ## Structure
 - `index.html`, `styles.css`, `script.js`: the whole site. No build step.
-- `assets/`: logo and favicon SVGs (official lockup: E1 "Glow" icon + "afrobot" wordmark, `logo-afrobot*.svg`; source files in the brand kit. `og-image.png` and `apple-touch-icon.png` are the social and home-screen images).
+- `assets/`: logo and favicon SVGs (official lockup: E1 "Glow" icon + single-colour "afrobot" wordmark, `logo-afrobot*.svg`; source files in the brand kit. `og-image.png` and `apple-touch-icon.png` are the social and home-screen images).
 - `fonts/`: self-hosted Outfit (headings), Inter (body) and Space Grotesk, all under the SIL Open Font License (licence files included).
 
 ## Run locally
