@@ -100,7 +100,7 @@ if (Q.get('hero') === 'cutout') {
   if (fig) {
     fig.classList.add('photo--cutout');
     const src = fig.querySelector('source'), img = fig.querySelector('img');
-    if (src) src.srcset = 'assets/photos/mckinney-build-day-2024-cutout.webp?v=3';
-    if (img) { img.src = 'assets/photos/mckinney-build-day-2024-cutout.png?v=3'; img.width = 1662; img.height = 1117; }
+    if (src) src.srcset = 'assets/photos/mckinney-build-day-2024-cutout.webp?v=4';
+    if (img) { img.src = 'assets/photos/mckinney-build-day-2024-cutout.png?v=4'; img.width = 1662; img.height = 1117; }
   }
 }
