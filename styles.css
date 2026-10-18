@@ -83,7 +83,6 @@ p+p{margin-top:16px}
 /* duotone placeholders: two tones + film grain, no illustration */
 .duo{background:var(--ink)}
 .duo::after{content:"";position:absolute;inset:0;pointer-events:none}
-.duo--clay{background:linear-gradient(180deg,#E8582F 0%,var(--clay) 55%,#C83A14 100%)}
 .duo--ink{background:linear-gradient(180deg,#24262C 0%,var(--ink) 100%)}
 .duo--stone{background:linear-gradient(180deg,#8C8478 0%,#5E584F 100%)}
 .duo--bone{background:linear-gradient(180deg,#F7F3EC 0%,#E7DFD2 100%)}
@@ -164,8 +163,8 @@ p+p{margin-top:16px}
 .partner-list__open .pname{color:var(--ink-40)}
 .partner-list__open a.pstat{color:var(--ink)}
 
-.sponsor{background:var(--clay);color:#fff;padding-block:var(--s-section)}
-.sponsor .display{color:#fff}
+.sponsor{background:var(--ink);color:#fff;padding-block:var(--s-section);border-top:4px solid var(--clay)}
+.sponsor .display{color:var(--bone)}
 .sponsor__side{align-self:end}
 .sponsor__side p{font-size:var(--t-18);line-height:1.55;margin-bottom:32px;color:rgba(255,255,255,.9)}
 .tiers{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:var(--gutter);margin-top:112px}
@@ -304,7 +303,7 @@ p+p{margin-top:16px}
 .footer nav a .dim{display:inline}
 fieldset.f{display:block}
 
-/* Header colour mocks: ?header=green | green-signal | blue | clay */
+/* Header colour variables (bone is the only live option) */
 :root{--green:#078C3C;--signal-green:#11A35B;--blue:#1D4ED8}
 body[data-header] .nav{background:var(--nav-bg);border-color:transparent;backdrop-filter:none}
 body[data-header] .nav__links a{color:var(--nav-fg)}
@@ -316,7 +315,6 @@ body[data-header] .mnav{background:var(--nav-bg);color:var(--nav-fg)}
 body[data-header="green"]{--nav-bg:var(--green);--nav-fg:#F3EEE5;--nav-cta-bg:#F3EEE5;--nav-cta-fg:#0E0F12}
 body[data-header="green-signal"]{--nav-bg:var(--signal-green);--nav-fg:#F3EEE5;--nav-cta-bg:#0E0F12;--nav-cta-fg:#F3EEE5}
 body[data-header="blue"]{--nav-bg:var(--blue);--nav-fg:#F3EEE5;--nav-cta-bg:#F3EEE5;--nav-cta-fg:#0E0F12}
-body[data-header="clay"]{--nav-bg:var(--clay);--nav-fg:#0E0F12;--nav-cta-bg:#0E0F12;--nav-cta-fg:#fff}
 /* in the green mocks, green also becomes the action colour */
 body[data-header^="green"] .btn--clay{background:var(--green)}
 body[data-header^="green"] .btn--clay:hover{background:#056B2E}
@@ -343,15 +341,13 @@ h3,.aud-k,.countdown__event,.awards dt,.tiers li span:first-child,.val-list b,.m
 .photo__img--real picture,.photo__img--real img{display:block;width:100%;height:100%}
 .photo__img--real img{object-fit:cover}
 
-/* v8: toned-down header options (?header=bone | ?header=deep); default stays clay */
+/* Header (v15): bone is the default. No full clay backgrounds anywhere: clay is accent only (buttons, rules, highlights, tags). */
 :root{--clay-deep:#B4472B}
 body[data-header="bone"]{--nav-bg:#F3EEE5;--nav-fg:#0E0F12;--nav-cta-bg:var(--clay);--nav-cta-fg:#fff}
 body[data-header="bone"] .nav{border-bottom:3px solid var(--clay)}
 body[data-header="bone"] .nav .btn--ink:hover{background:var(--clay-dk)}
 body[data-header="bone"] .sponsor{background:var(--ink)}
 body[data-header="bone"] .sponsor .display{color:#F3EEE5}
-body[data-header="deep"]{--nav-bg:var(--clay-deep);--nav-fg:#F3EEE5;--nav-cta-bg:#F3EEE5;--nav-cta-fg:#0E0F12}
-body[data-header="deep"] .sponsor{background:var(--clay-deep)}
 
 /* v9: McKinney hero, build-day video, founder portraits */
 .photo--hero .photo__img--real{aspect-ratio:3/2}

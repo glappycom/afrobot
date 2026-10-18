@@ -3,9 +3,9 @@ const LOGO = new URLSearchParams(location.search).get('logo') || 'e1';
 document.querySelectorAll('img[data-logo]').forEach(img => {
   img.src = `assets/logo-${LOGO}${img.dataset.logo === 'reversed' ? '-reversed' : ''}.svg`;
 });
-// Header colour mocks (?header=green|green-signal|blue|clay)
-// Default header is clay with the ink logo and white visor. ?header=none shows the plain paper header.
-const HEADER = new URLSearchParams(location.search).get('header') || 'clay';
+// Header: bone with a thin clay rule (no full clay backgrounds; clay is accent only). ?header=none = plain paper header.
+const HQ = new URLSearchParams(location.search).get('header');
+const HEADER = HQ === 'none' ? 'none' : 'bone';
 const topLogo = document.querySelector('.nav img[data-logo]');
 // E1: the ink logo (white face, ink eyes) works on every header colour; the footer (ink) uses the reversed logo.
 if (HEADER === 'none' || !['d2', 'e1'].includes(LOGO)) { delete document.body.dataset.header; }
