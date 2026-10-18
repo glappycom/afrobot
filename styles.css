@@ -515,3 +515,7 @@ html[data-accent="blue"] .footer nav a:hover{color:var(--accent-on-ink)}
   .sponsor__side{margin-top:24px}
   .footer .c-11-13{margin-top:12px}
 }
+.tlink,.theme__meta a{border-bottom:0;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+@media (max-width:900px){
+  .tlink,.theme__meta a{display:inline-block;min-height:0;padding-block:12px;margin-block:-12px}
+}
