@@ -35,8 +35,14 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
 // ---- Mobile nav
 (() => {
   const b = document.querySelector('.nav__toggle'), n = document.querySelector('.nav');
-  b.addEventListener('click', () => b.setAttribute('aria-expanded', n.classList.toggle('is-open')));
-  document.querySelectorAll('.mnav a').forEach(a => a.addEventListener('click', () => { n.classList.remove('is-open'); b.setAttribute('aria-expanded', 'false'); }));
+  const close = () => { n.classList.remove('is-open'); b.setAttribute('aria-expanded', 'false'); };
+  b.addEventListener('click', () => {
+    const open = n.classList.toggle('is-open');
+    b.setAttribute('aria-expanded', String(open));
+    if (open) n.querySelector('.mnav a')?.focus();
+  });
+  document.querySelectorAll('.mnav a').forEach(a => a.addEventListener('click', close));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && n.classList.contains('is-open')) { close(); b.focus(); } });
 })();
 
 // ---- Register interest form: posts to /api/interest (stored server-side), inline errors, success/error states
@@ -48,6 +54,43 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
   const syncKids = () => { kids.hidden = !KIDS.includes(role.value); };
   role.addEventListener('change', syncKids); syncKids();
   document.querySelectorAll('[data-sponsor]').forEach(a => a.addEventListener('click', () => { role.value = 'Sponsor/partner'; syncKids(); }));
+  const INTENTS = {
+    join: { note: 'Joining the interest list is not enrollment and not team placement.' },
+    parent: { role: 'Parent/guardian', message: 'Parent or guardian inquiry.', note: 'You are writing as a parent or guardian. Ages are enough. Please do not add a full date of birth or a school ID.' },
+    student: { role: 'Parent/guardian', message: 'Parent or guardian submitting interest for a student. Participation is parent-managed.', note: 'Students take part through a parent or guardian. We do not create public profiles for children. If you are under 18, please ask a parent or guardian to send this.' },
+    mentor: { role: 'Volunteer/mentor', message: 'Mentor or volunteer inquiry. I understand screening is required before working with students.', note: 'Mentors and volunteers are screened before they work with students. Sending this form starts a conversation. It is not an approval.' },
+    volunteer: { role: 'Volunteer/mentor', message: 'Mentor or volunteer inquiry. I understand screening is required before working with students.', note: 'Mentors and volunteers are screened before they work with students. Sending this form starts a conversation. It is not an approval.' },
+    sponsor: { role: 'Sponsor/partner', message: 'Sponsorship inquiry. I would like to ask about sponsoring a student or a program.', note: 'This is a sponsorship inquiry. It is not a processed donation, and this form does not confirm tax deductibility.' },
+    partner: { role: 'Sponsor/partner', message: 'Partnership inquiry.', note: 'This is a partnership inquiry. It does not place a name or logo on the public site, and it is not a processed donation.' },
+    school: { role: 'School/educator', message: 'School or university inquiry.', note: 'Schools and universities can ask about a workshop or a pathway conversation. No institution is listed as a partner from this form.' },
+    manufacturer: { role: 'Sponsor/partner', message: 'Manufacturer or equipment inquiry.', note: 'This is an equipment or materials inquiry. It does not announce a public partnership.' },
+    assistance: { role: 'Parent/guardian', message: 'Financial assistance inquiry. I will not send financial documents.', note: 'Financial assistance inquiries do not ask for pay stubs, tax returns, benefit letters, or account numbers. Please do not send them.' },
+    discover: { role: 'Parent/guardian', message: 'Interest in Discover (suggested ages 5–8). I understand registration is not open yet.', note: 'Discover is not open for registration. Ages 5–8 are guidance. This list is not a place on a team.' },
+    build: { role: 'Parent/guardian', message: 'Interest in Build (suggested ages 9–12). I understand registration is not open yet.', note: 'Build is not open for registration. Ages 9–12 are guidance. This list is not a place on a team.' },
+    innovate: { role: 'Parent/guardian', message: 'Interest in Innovate (suggested ages 12–15). I understand registration is not open yet.', note: 'Innovate is not open for registration. Ages 12–15 are guidance. This list is not a place on a team.' },
+    compete: { role: 'Parent/guardian', message: 'Interest in competition preparation. I understand this is not team placement.', note: 'AfroBot is not affiliated with FIRST. The interest list is not team placement. Eligibility is set by the competition, not by this form.' },
+    advance: { role: 'Parent/guardian', message: 'Interest in Advance (suggested ages 15–18). I understand this is not an application for admission or a scholarship.', note: 'Advance does not guarantee admission, credit, or scholarships. Ages 15–18 are guidance.' }
+  };
+  const note = document.getElementById('form-context');
+  const msg = f.elements.message;
+  const prefills = new Set(Object.values(INTENTS).map((spec) => spec.message).filter(Boolean));
+  const applyIntent = (key) => {
+    const spec = INTENTS[key];
+    if (!spec) return;
+    if (spec.role) { role.value = spec.role; role.dispatchEvent(new Event('change')); }
+    if (msg) {
+      if (spec.message && (!msg.value.trim() || prefills.has(msg.value))) msg.value = spec.message;
+      else if (!spec.message && prefills.has(msg.value)) msg.value = '';
+    }
+    if (note) note.textContent = spec.note || '';
+  };
+  role.addEventListener('change', () => {
+    if (role.value === 'Student' && note) note.textContent = 'If you are under 18, please ask a parent or guardian to submit this form. Do not include a full date of birth or school ID.';
+  });
+  document.querySelectorAll('[data-intent]').forEach((a) => a.addEventListener('click', () => applyIntent(a.dataset.intent)));
+  const preset = document.getElementById('register')?.dataset.defaultIntent;
+  if (Q.get('intent')) applyIntent(Q.get('intent'));
+  else if (preset) applyIntent(preset);
   const EMAIL = /^[^\s@<>()[\]\\,;:"]+@[^\s@<>()[\]\\,;:"]+\.[A-Za-z]{2,}$/;
   const fields = { name: f.elements.name, email: f.elements.email, role, city: f.elements.city, consent: f.elements.consent };
   const setErr = (k, msg) => {
@@ -82,13 +125,13 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
       const j = await r.json().catch(() => ({}));
       if (r.ok && j.ok) {
         f.classList.add('is-sent'); f.querySelector('.form__fields').hidden = true; btn.hidden = true;
-        show('Thank you! You’re on the list. We’ll email you when Season 1 opens.', 'ok'); status.setAttribute('tabindex', '-1'); status.focus();
+        show('Thank you. You’re on the list. We’ll email you about AfroBot. This is not team placement.', 'ok'); status.setAttribute('tabindex', '-1'); status.focus();
         return;
       }
       if (j.errors) { Object.keys(fields).forEach(k => setErr(k, j.errors[k])); show('Please check the highlighted fields.', 'error'); }
       else show('Sorry, something went wrong and your details weren’t sent. Please try again in a moment.', 'error');
     } catch { show('We couldn’t reach the server. Check your connection and try again.', 'error'); }
-    btn.disabled = false; btn.removeAttribute('aria-busy'); btn.textContent = 'Keep me posted';
+    btn.disabled = false; btn.removeAttribute('aria-busy'); btn.textContent = 'Send interest';
   });
 })();
 
@@ -118,6 +161,7 @@ if (FONT) document.body.dataset.font = FONT;
 // ---- v18: sticky "Register interest" on small screens; hidden at the top (hero CTA visible) and near the form/footer
 (() => {
   const btn = document.querySelector('.stickycta'); if (!btn) return;
+  if (document.getElementById('register')) btn.setAttribute('href', '#register');
   const heroCta = document.querySelector('.hero .actions'), stops = [document.getElementById('register'), document.querySelector('.footer')];
   const seen = new Map();
   const update = () => {
@@ -141,6 +185,17 @@ document.querySelectorAll('.founder__photo').forEach(btn => {
 });
 
 // Default hero is the background-removed McKinney group (v4 cut-out). Preview switch: ?hero=photo shows the full photo.
+(() => {
+  const norm = (p) => {
+    const last = (p || '').split('?')[0].split('#')[0].replace(/\/+$/, '').split('/').filter(Boolean).pop() || 'index';
+    return last.replace(/\.html$/, '') || 'index';
+  };
+  const here = norm(location.pathname);
+  document.querySelectorAll('a[data-nav]').forEach((a) => {
+    if (norm(a.getAttribute('href')) === here) a.setAttribute('aria-current', 'page');
+  });
+})();
+
 if (Q.get('hero') === 'photo') {
   const fig = document.querySelector('.photo--hero');
   if (fig) {
