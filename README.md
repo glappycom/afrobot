@@ -27,7 +27,7 @@ Deployed on Vercel as a static site from the repository root (`vercel.json`). Pu
 - `?logo=e1|d2|a|b|c` archived logo directions (e1 = previous E1 icon + Space Grotesk lockup).
 - `?accent=blue` preview with Cobalt #1E4BD2 accents instead of clay (default: clay). Blue share image: `assets/og-image-blue.png` (not wired to the meta tags).
 - Default background is steel #E6E8EA (subtle brushed streaks), alternate sections #F1F2F4, lines #CDD2D8, steel header with the clay rule. `?bg=bone` previews the previous bone/paper theme.
-- The homepage uses the original McKinney 2024 photograph (AVIF, WebP, and JPEG), not the background-removed cutout. The page background is white. Type is self-hosted Public Sans. The action color is deep orange `#B9380F`.
+- The homepage uses the original McKinney 2024 photograph (AVIF, WebP, and JPEG), not the background-removed cutout. The page background is white. Type is self-hosted Public Sans. The action color is bright blue `#0A66E8`.
 
 ## Register interest form
 - The form (`#interest`) posts JSON to `/api/interest` (Vercel function, `api/interest.js`). It validates fields, drops spam (hidden `website` honeypot, too-fast submits) and stores each submission as a private JSON file in the Vercel Blob store `afrobot-interest` (env `BLOB_READ_WRITE_TOKEN`, added automatically).

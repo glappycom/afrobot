@@ -341,7 +341,7 @@ html:not([data-bg="steel"]) .band-card { background: var(--bone); }
   .photo--controlled .photo__video { display: block; }
 }
 
-/* White page, navy type, deep orange actions. Blue is only a small label color. */
+/* White page, navy type, bright blue actions. Warm yellow is only a small label accent. */
 html, body, html[data-bg="steel"] body {
   background: #fff;
   background-image: none;
@@ -351,21 +351,21 @@ html[data-bg="steel"] {
   --paper: #fff;
   --steel-card: #F4F6F8;
   --line: #E2E6EE;
-  --clay: #B9380F;
-  --clay-strong: #B9380F;
-  --clay-text: #B9380F;
+  --clay: #0A66E8;
+  --clay-strong: #0A66E8;
+  --clay-text: #0A66E8;
 }
 html[data-accent="blue"] {
-  --clay: #B9380F;
-  --clay-dk: #8C2A0A;
-  --clay-strong: #B9380F;
-  --clay-strong-dk: #8C2A0A;
-  --clay-text: #B9380F;
+  --clay: #0A66E8;
+  --clay-dk: #0047CC;
+  --clay-strong: #0A66E8;
+  --clay-strong-dk: #0047CC;
+  --clay-text: #0A66E8;
 }
 body[data-header="bone"] {
   --nav-bg: #fff;
   --nav-fg: #142033;
-  --nav-cta-bg: #B9380F;
+  --nav-cta-bg: #0A66E8;
   --nav-cta-fg: #fff;
 }
 .nav, html[data-bg="steel"] .nav, body[data-header="bone"] .nav {
@@ -552,10 +552,14 @@ h1, h2, h3, .h1, .h2, .display {
   min-width: 0;
 }
 .info-card__meta {
-  color: var(--gold);
-  font-size: 1rem;
+  display: inline-block;
+  background: var(--gold);
+  color: var(--ink);
+  font-size: 1.125rem;
   font-weight: 700;
+  line-height: 1.3;
   margin: 0 0 10px;
+  padding: 0.12em 0.4em;
 }
 .info-card h2, .info-card h3 { font-size: 1.45rem; margin: 0 0 8px; line-height: 1.15; }
 .info-card p { margin: 0; }
@@ -576,7 +580,7 @@ h1, h2, h3, .h1, .h2, .display {
   font-size: 1.0625rem;
   letter-spacing: 0;
   text-transform: none;
-  color: var(--gold);
+  color: var(--ink);
 }
 .f > span, .f legend { color: var(--ink); }
 .f > span i, .consent i, .f__err, .form__msg[data-kind="error"] { color: var(--danger); }
