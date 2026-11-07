@@ -2,9 +2,7 @@
 // Archived directions for comparison: ?logo=e1 (Space Grotesk lockup) | d2 | a | b | c
 const Q = new URLSearchParams(location.search);
 const LOGO = Q.get('logo') || 'afrobot';
-// Accent preview: ?accent=blue swaps every clay accent for Cobalt #1E4BD2 (default stays clay)
-const BLUE = Q.get('accent') === 'blue';
-if (BLUE) document.documentElement.dataset.accent = 'blue';
+const BLUE = false;
 // Background: steel is the default (set on <html> in index.html). ?bg=bone previews the previous warm bone/paper theme.
 if (Q.get('bg') === 'bone') { delete document.documentElement.dataset.bg; const tc = document.querySelector('meta[name="theme-color"]'); if (tc) tc.content = '#F3EEE5'; }
 const logoSrc = kind => LOGO === 'afrobot'
@@ -68,11 +66,11 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
     school: { role: 'School/educator', message: 'School or university inquiry.', note: '' },
     manufacturer: { role: 'Sponsor/partner', message: 'Manufacturer or equipment inquiry.', note: '' },
     assistance: { role: 'Parent/guardian', message: 'Financial assistance inquiry.', note: 'Do not send financial documents, tax forms, or account numbers.' },
-    discover: { role: 'Parent/guardian', message: 'Interest in Discover (suggested ages 5–8).', note: '' },
-    build: { role: 'Parent/guardian', message: 'Interest in Build (suggested ages 9–12).', note: '' },
-    innovate: { role: 'Parent/guardian', message: 'Interest in Innovate (suggested ages 12–15).', note: '' },
-    compete: { role: 'Parent/guardian', message: 'Interest in competition preparation.', note: '' },
-    advance: { role: 'Parent/guardian', message: 'Interest in Advance (suggested ages 15–18).', note: '' }
+    discover: { role: 'Parent/guardian', message: 'Interest in Discover (ages 6–9).', note: '' },
+    build: { role: 'Parent/guardian', message: 'Interest in Build (ages 9–12).', note: '' },
+    innovate: { role: 'Parent/guardian', message: 'Interest in Innovate (ages 13–17).', note: '' },
+    compete: { role: 'Parent/guardian', message: 'Interest in Compete (ages 13–17).', note: '' },
+    advance: { role: 'Parent/guardian', message: 'Interest in Advance (ages 13–17).', note: '' }
   };
   const note = document.getElementById('form-context');
   const msg = f.elements.message;

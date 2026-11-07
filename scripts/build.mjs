@@ -26,13 +26,13 @@ const orgJson = `<script type="application/ld+json">
 </script>`;
 
 const pages = [
-  ['index.html', 'home.html', 'AfroBot · Build robots. Ask questions.', 'Hands-on robotics and AI for kids.', '/', orgJson],
+  ['index.html', 'home.html', 'AfroBot · Build robots. Ask questions.', 'Hands-on robotics and AI for kids.', '/', orgJson + '\n<link rel="preload" as="image" href="assets/photos/mckinney-build-day-2024-960.avif" imagesrcset="assets/photos/mckinney-build-day-2024-960.avif 960w, assets/photos/mckinney-build-day-2024.avif 1800w" imagesizes="100vw" type="image/avif" fetchpriority="high">'],
   ['about.html', 'about.html', 'About · AfroBot', 'AfroBot is a kids-only youth robotics and AI program, founded by Dr. Unoma Okorafor and Dr. Russell Avre.', '/about', ''],
-  ['programs.html', 'programs.html', 'Programs · AfroBot', 'Sessions are not open yet. A $100 participation goal.', '/programs', ''],
-  ['competitions.html', 'competitions.html', 'Competitions · AfroBot', 'No competition calendar is confirmed.', '/competitions', ''],
-  ['university-pathways.html', 'university-pathways.html', 'University Pathways · AfroBot', 'AfroBot does not guarantee admission or scholarships.', '/university-pathways', ''],
+  ['programs.html', 'programs.html', 'Programs · AfroBot', 'Discover through Advance. $100 per child for a camp week is the participation goal.', '/programs', ''],
+  ['competitions.html', 'competitions.html', 'Competitions · AfroBot', 'One yearly competition, with 2027 hubs in Texas (DFW), Cameroon (Yaoundé), and Tanzania. Dates coming soon.', '/competitions', ''],
+  ['university-pathways.html', 'university-pathways.html', 'University Pathways · AfroBot', 'Older students mentor younger teams with an adult coach. AfroBot does not guarantee admission or scholarships.', '/university-pathways', ''],
   ['community.html', 'community.html', 'Community · AfroBot', 'Parents, students through a parent, mentors, sponsors, schools, and manufacturers can register interest.', '/community', ''],
-  ['partners.html', 'partners.html', 'Partners · AfroBot', 'No partner list is published.', '/partners', ''],
+  ['partners.html', 'partners.html', 'Partners · AfroBot', 'Sponsor goals for Discover, Build, Innovate, Compete, and Advance. No partners are named.', '/partners', ''],
   ['events.html', 'events.html', 'Events · AfroBot', 'No upcoming event is on the calendar. McKinney, Texas, 2024 was an AfroBot program.', '/events', ''],
   ['contact.html', 'contact.html', 'Contact · AfroBot', 'Write to AfroBot at info@afrobot.org or send the interest form.', '/contact', ''],
   ['privacy.html', 'privacy.html', 'Privacy · AfroBot', 'What the AfroBot interest form collects.', '/privacy', ''],
