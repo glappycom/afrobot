@@ -288,7 +288,7 @@ html:not([data-bg="steel"]) .band-card { background: var(--bone); }
 }
 .footer p { color: var(--on-ink-soft); max-width: 40ch; }
 .footer__brand { margin-bottom: 28px; }
-.footer__brand img { background: #fff; border-radius: 8px; padding: 6px 10px; height: 36px; width: auto; }
+.footer__brand img { height: 36px; width: auto; background: none; }
 .footer nav a { display: flex; align-items: center; min-height: 44px; margin-bottom: 0; }
 .footer a:visited { color: inherit; }
 .footer__base span:last-child { text-align: right; }
