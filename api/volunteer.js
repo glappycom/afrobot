@@ -62,8 +62,8 @@ export default async function handler(req, res) {
   if (Object.keys(errors).length) return res.status(422).json({ ok: false, error: 'validation', errors });
   if (!KIDS_ROLES.includes(s.role)) s.kids = '';
 
-  const url = process.env.SHEETS_WEBHOOK_URL;
-  const secret = process.env.SHEETS_WEBHOOK_SECRET;
+  const url = (process.env.SHEETS_WEBHOOK_URL || '').trim();
+  const secret = (process.env.SHEETS_WEBHOOK_SECRET || '').trim();
   if (!url || !secret) return res.status(503).json({ ok: false, error: 'not_configured' });
 
   const submittedAt = new Date().toISOString().replace('T', ' ').slice(0, 19);
@@ -89,6 +89,9 @@ export default async function handler(req, res) {
     console.error('volunteer forward failed', e.message);
     return res.status(502).json({ ok: false, error: 'forward' });
   }
-  if (!forwarded.ok) return res.status(502).json({ ok: false, error: 'forward' });
-  return res.status(200).json({ ok: true });
+  let payload = null;
+  try { payload = await forwarded.json(); } catch { payload = null; }
+  if (forwarded.ok && payload && payload.ok === true) return res.status(200).json({ ok: true });
+  const error = payload && typeof payload.error === 'string' && payload.error ? payload.error : 'forward';
+  return res.status(502).json({ ok: false, error });
 }
