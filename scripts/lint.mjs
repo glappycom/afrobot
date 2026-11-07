@@ -35,7 +35,7 @@ const requiredHome = [
   'McKinney Build Day',
   'Kids and mentors worked with robots in McKinney, Texas, in 2024.',
   'Affordable sessions',
-  '$100 participation goal',
+  '$100 per child for a camp week is the participation goal.',
   'Get session updates',
   'Your name (adult)',
   'This form is for adults.',
@@ -62,7 +62,7 @@ const banned = [
   [/tax-deductible|tax deductible|501\s*\(c\)\s*\(3\)|501c3/i, 'tax status'],
   [/renner|75082/i, 'street address'],
   [/\bsuite\b|\bunit\s+\d|\bapt\b/i, 'unit number'],
-  [/2025|2027|2028|2029|2030/, 'unconfirmed year'],
+  [/2025|2028|2029|2030/, 'unconfirmed year'],
   [/\d+(?:\.\d+)?\s*%/, 'percentage'],
 ];
 
@@ -90,9 +90,10 @@ for (const name of files) {
     seen.add(id);
   }
   for (const [re, label] of banned) if (re.test(html)) fail(name + ' contains banned pattern ' + label);
+  const allowedAmounts = new Set(['$100', '$1,000', '$5,000', '$10,000', '$25,000']);
   const money = html.match(/\$\d[\d,]*/g) || [];
-  for (const amount of money) if (amount !== '$100') fail(name + ' unexpected amount ' + amount);
-  if (money.includes('$100') && !/goal/i.test(html)) fail(name + ' uses $100 without calling it a goal');
+  for (const amount of money) if (!allowedAmounts.has(amount)) fail(name + ' unexpected amount ' + amount);
+  if (money.length && !/goal/i.test(html)) fail(name + ' shows a dollar amount without calling it a goal');
   if (/\bFIRST\b/.test(html)) fail(name + ' names FIRST');
   if (/scholarship/i.test(html) && !/does not guarantee|do not guarantee|no guarantee|not a scholarship|nothing here promises/i.test(html)) {
     fail(name + ' mentions scholarships without a non-guarantee');
@@ -123,14 +124,15 @@ const programs = fs.readFileSync(path.join(root, 'programs.html'), 'utf8');
 for (const line of requiredHome) if (!home.includes(line)) fail('homepage missing: ' + line);
 for (const line of retiredCopy) if (home.includes(line) || programs.includes(line)) fail('retired copy still present: ' + line);
 const homeStatus = home.replaceAll('Dates coming soon', '');
-if (/coming soon/i.test(homeStatus) || /coming soon/i.test(programs)) fail('Home or Programs still says coming soon');
+const programsStatus = programs.replaceAll('Dates coming soon', '');
+if (/coming soon/i.test(homeStatus) || /coming soon/i.test(programsStatus)) fail('Home or Programs still says coming soon');
 const mainNav = home.match(/<nav class="nav__links"[\s\S]*?<\/nav>/);
 if (!mainNav) fail('main nav missing');
 else {
-  for (const label of ['Programs', 'Events', 'About']) {
+  for (const label of ['Programs', 'Events', 'About', 'Volunteer', 'Partners']) {
     if (!mainNav[0].includes(label)) fail('nav missing ' + label);
   }
-  if (mainNav[0].includes('partners.html') || mainNav[0].includes('social.html')) fail('empty directory is in the primary nav');
+  if (mainNav[0].includes('social.html')) fail('empty directory is in the primary nav');
 }
 if (!home.includes('>Get updates<')) fail('header CTA missing');
 for (const label of ['Contact', 'Privacy', 'Terms', 'Child Safety', 'Accessibility', 'Volunteer', 'Partnership Inquiries', 'Social', 'Discuss sponsorship', 'Partner list']) {
@@ -158,7 +160,7 @@ function contrast(a, b) {
   const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x);
   return (hi + 0.05) / (lo + 0.05);
 }
-for (const [fg, bg, min] of [['#142033', '#FFFFFF', 4.5], ['#3E4C5E', '#FFFFFF', 4.5], ['#B9380F', '#FFFFFF', 4.5], ['#FFFFFF', '#B9380F', 4.5], ['#FFFFFF', '#8C2A0A', 4.5], ['#1F4E89', '#FFFFFF', 4.5], ['#142033', '#D6E8FF', 4.5], ['#FFFFFF', '#142033', 4.5], ['#D6DEEA', '#142033', 4.5], ['#9A3412', '#FFFFFF', 4.5]]) {
+for (const [fg, bg, min] of [['#142033', '#FFFFFF', 4.5], ['#3E4C5E', '#FFFFFF', 4.5], ['#B9380F', '#FFFFFF', 4.5], ['#FFFFFF', '#B9380F', 4.5], ['#FFFFFF', '#8C2A0A', 4.5], ['#FFFFFF', '#142033', 4.5], ['#D6DEEA', '#142033', 4.5], ['#9A3412', '#FFFFFF', 4.5]]) {
   const ratio = contrast(fg, bg);
   if (ratio < min) fail('contrast ' + fg + ' on ' + bg + ' is ' + ratio.toFixed(2));
 }
