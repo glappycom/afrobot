@@ -11,10 +11,10 @@ Depends on: nothing in the product. Must not depend on a new vendor, a new datas
 | Baseline notes in `docs/transformation/` | Assessment, sitemap, design plan, backlog, and risks exist and match the repo |
 | Design tokens and shared header, footer, form, role list | New pages use the partials. Logo, type, and clay rules match the design plan |
 | Homepage sections in the required order, with the required lines | A reader can move Access → Discover → Build → Compete → Advance without meeting a fake date, fee, partner, or metric |
-| Program cards | Five programs, guidance ages, “Coming soon / register interest”, no live price except the $10 goal sentence |
+| Program cards | Five programs, guidance ages, dates coming soon, no live price except the $100 participation goal |
 | Header and footer | Labels and order match `sitemap.md`. Stub pages say they are pending |
 | Interest form | Still posts to `/api/interest` with the same fields and roles. Intent only prefills role and message. Assistance path asks for no financial documents |
-| FIRST | Named only as a competition AfroBot is not affiliated with. Interest is not team placement |
+| Competitions | Do not name a competition brand. Interest is not team placement |
 | Safeguarding copy | Students are parent-managed. No public child profile. Mentors require screening |
 | Giving | Sponsorship inquiry language. No tax-deductibility claim |
 | Quality bar | `npm run site:build` and `npm run site:lint` pass. Keyboard, reduced motion, and the form’s error states work on desktop and mobile widths |

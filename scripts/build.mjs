@@ -7,6 +7,9 @@ const header = read('src/partials/header.html').trim();
 const footer = read('src/partials/footer.html').trim();
 const roles = read('src/partials/roles.html').trim();
 const register = read('src/partials/register.html').trim();
+const videoItems = read('src/partials/videos.html').trim().split(/(?=<article\b)/).map((item) => item.trim()).filter(Boolean);
+const videosHome = videoItems.slice(0, 3).join('\n');
+const videosAll = videoItems.join('\n');
 const layout = read('src/layout.html');
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
@@ -18,34 +21,36 @@ const orgJson = `<script type="application/ld+json">
   "name": "AfroBot",
   "url": "https://afrobot.org/",
   "email": "info@afrobot.org",
-  "description": "Kids-only youth robotics and AI program of Glappy Foundation.",
-  "parentOrganization": { "@type": "Organization", "name": "Glappy Foundation" }
+  "description": "Kids-only youth robotics and AI program."
 }
 </script>`;
 
 const pages = [
-  ['index.html', 'home.html', 'AfroBot · Every child deserves a chance to build the future', 'Affordable robotics, AI, and engineering education that helps young people move from curiosity to creation, from local communities to recognized competitions, and from limited access to meaningful opportunity.', '/', orgJson],
-  ['about.html', 'about.html', 'About · AfroBot', 'AfroBot is the kids-only youth robotics and AI program of Glappy Foundation, founded by Dr. Unoma Okorafor and Dr. Russell Avre.', '/about', ''],
-  ['programs.html', 'programs.html', 'Programs · AfroBot', 'Discover, Build, Innovate, Compete, and Advance. Age bands are guidance. Registration is not open yet.', '/programs', ''],
-  ['competitions.html', 'competitions.html', 'Competitions · AfroBot', 'AfroBot aims to prepare students for established competitions such as FIRST Tech Challenge. AfroBot is not affiliated with FIRST.', '/competitions', ''],
-  ['university-pathways.html', 'university-pathways.html', 'University Pathways · AfroBot', 'Further learning for older students. AfroBot does not guarantee admission or scholarships, and no universities are listed.', '/university-pathways', ''],
+  ['index.html', 'home.html', 'AfroBot · Build robots. Ask questions.', 'Hands-on robotics and AI for kids.', '/', orgJson],
+  ['about.html', 'about.html', 'About · AfroBot', 'AfroBot is a kids-only youth robotics and AI program, founded by Dr. Unoma Okorafor and Dr. Russell Avre.', '/about', ''],
+  ['programs.html', 'programs.html', 'Programs · AfroBot', 'Sessions are not open yet. A $100 participation goal.', '/programs', ''],
+  ['competitions.html', 'competitions.html', 'Competitions · AfroBot', 'No competition calendar is confirmed.', '/competitions', ''],
+  ['university-pathways.html', 'university-pathways.html', 'University Pathways · AfroBot', 'AfroBot does not guarantee admission or scholarships.', '/university-pathways', ''],
   ['community.html', 'community.html', 'Community · AfroBot', 'Parents, students through a parent, mentors, sponsors, schools, and manufacturers can register interest.', '/community', ''],
-  ['partners.html', 'partners.html', 'Partners · AfroBot', 'AfroBot does not publish a partner list. No logos are shown until an organization has agreed to be named.', '/partners', ''],
-  ['events.html', 'events.html', 'Events · AfroBot', 'No upcoming AfroBot events are scheduled. The McKinney build day in 2024 is a past community day.', '/events', ''],
+  ['partners.html', 'partners.html', 'Partners · AfroBot', 'No partner list is published.', '/partners', ''],
+  ['events.html', 'events.html', 'Events · AfroBot', 'No upcoming event is on the calendar. McKinney, Texas, 2024 was an AfroBot program.', '/events', ''],
   ['contact.html', 'contact.html', 'Contact · AfroBot', 'Write to AfroBot at info@afrobot.org or send the interest form.', '/contact', ''],
-  ['privacy.html', 'privacy.html', 'Privacy · AfroBot', 'What the AfroBot interest form collects, and what it does not. Full policy pending legal review.', '/privacy', ''],
-  ['terms.html', 'terms.html', 'Terms · AfroBot', 'Using this site is not enrollment, team placement, or a completed sponsorship. Full terms pending legal review.', '/terms', ''],
-  ['child-safety.html', 'child-safety.html', 'Child safety · AfroBot', 'AfroBot is a kids-only program. Students are parent-managed, mentors are screened, and child profiles are not public.', '/child-safety', ''],
+  ['privacy.html', 'privacy.html', 'Privacy · AfroBot', 'What the AfroBot interest form collects.', '/privacy', ''],
+  ['terms.html', 'terms.html', 'Terms · AfroBot', 'No session is open for registration from this site.', '/terms', ''],
+  ['child-safety.html', 'child-safety.html', 'Child safety · AfroBot', 'Children take part through a parent or guardian.', '/child-safety', ''],
   ['accessibility.html', 'accessibility.html', 'Accessibility · AfroBot', 'AfroBot aims for WCAG 2.2 AA. Report a barrier to info@afrobot.org.', '/accessibility', ''],
   ['volunteer.html', 'volunteer.html', 'Volunteer · AfroBot', 'Mentor and volunteer inquiries. Screening is required before working with students.', '/volunteer', ''],
-  ['partnership.html', 'partnership.html', 'Partnership inquiries · AfroBot', 'Sponsorship and partnership inquiries. This is not a donation checkout.', '/partnership', ''],
-  ['social.html', 'social.html', 'Social · AfroBot', 'AfroBot does not publish social media accounts on this site yet.', '/social', ''],
+  ['partnership.html', 'partnership.html', 'Partnership inquiries · AfroBot', 'Sponsorship and partnership inquiries.', '/partnership', ''],
+  ['social.html', 'social.html', 'Social · AfroBot', 'No social accounts are listed. Reach AfroBot at info@afrobot.org.', '/social', ''],
 ];
 
 for (const [out, src, title, description, urlPath, headExtra] of pages) {
   let content = read(path.join('src/pages', src)).trim();
   content = content.replaceAll('{{roles}}', roles);
+  content = content.replaceAll('{{videos-home}}', videosHome);
+  content = content.replaceAll('{{videos}}', videosAll);
   content = content.replace(/\{\{register(?::([a-z]+))?\}\}/g, (_, intent) => register.replaceAll('{{default-intent}}', intent || ''));
+  if (out === 'volunteer.html') content = content.replace('action="/api/interest"', 'action="/api/volunteer"');
   if (content.includes('{{')) throw new Error('Unresolved placeholder in ' + src);
   const html = layout
     .replaceAll('{{TITLE}}', esc(title))

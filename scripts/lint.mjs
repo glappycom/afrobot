@@ -18,32 +18,36 @@ if (intentBlock) for (const m of intentBlock[1].matchAll(/^\s{4}([a-z]+):/gm)) i
 
 const roleBlock = lib.match(/ROLES = \[([^\]]+)\]/);
 const serverRoles = roleBlock ? [...roleBlock[1].matchAll(/'([^']+)'/g)].map((m) => m[1]) : [];
-if (serverRoles.length !== 6) fail('Could not read server roles');
+if (serverRoles.length !== 5) fail('Could not read server roles');
+if (serverRoles.includes('Student')) fail('Student is still a server role');
 
 const requiredHome = [
-  'Every Child Deserves a Chance to Build the Future.',
-  'Affordable robotics, AI, and engineering education that helps young people move from curiosity to creation, from local communities to recognized competitions, and from limited access to meaningful opportunity.',
-  'Join the AfroBot Community',
-  'Explore Programs',
+  'Build robots. Ask questions.',
+  'Hands-on robotics and AI for kids.',
+  'Dates coming soon',
+  'Get updates',
+  'For Parents',
+  'For Community Leaders',
+  'Ask about hosting',
+  'For Partners',
+  'Discuss sponsorship',
+  'Planned sessions',
+  'McKinney Build Day',
+  'Kids and mentors worked with robots in McKinney, Texas, in 2024.',
+  'Affordable sessions',
+  '$100 participation goal',
+  'Get session updates',
+  'Your name (adult)',
+  'This form is for adults.',
+];
+
+const retiredCopy = [
+  'This page does not invent a statistic',
+  'That line is a direction, not a promise',
+  'This section has no counts and no percentages',
+  'Success Is Measured in Opportunity',
+  'World-Class Opportunities',
   'Sponsor a Student',
-  'Talent Is Everywhere. Opportunity Isn',
-  'From Curiosity to Opportunity',
-  'Find Your Starting Point',
-  'World-Class Opportunities. Community-Friendly Costs.',
-  'From Our Community to the Competition Stage.',
-  'The Journey Doesn',
-  'AfroBot helps students build more than robots. We help them build futures.',
-  'It Takes a Community to Build the Future.',
-  'Success Is Measured in Opportunity.',
-  'The Future Is Being Built.',
-  'Make Sure Every Child Has a Place in It.',
-  'Join AfroBot',
-  'Become a Mentor',
-  'Sponsor Opportunity',
-  'From Curiosity to Creation. From Community to the World.',
-  'Coming soon / register interest',
-  'not affiliated with FIRST',
-  'The interest list is not team placement.',
 ];
 
 const banned = [
@@ -87,9 +91,9 @@ for (const name of files) {
   }
   for (const [re, label] of banned) if (re.test(html)) fail(name + ' contains banned pattern ' + label);
   const money = html.match(/\$\d[\d,]*/g) || [];
-  for (const amount of money) if (amount !== '$10') fail(name + ' unexpected amount ' + amount);
-  if (money.includes('$10') && !/goal/i.test(html)) fail(name + ' uses $10 without calling it a goal');
-  if (/\bFIRST\b/.test(html) && !/not affiliated with FIRST/.test(html)) fail(name + ' mentions FIRST without the non-affiliation sentence');
+  for (const amount of money) if (amount !== '$100') fail(name + ' unexpected amount ' + amount);
+  if (money.includes('$100') && !/goal/i.test(html)) fail(name + ' uses $100 without calling it a goal');
+  if (/\bFIRST\b/.test(html)) fail(name + ' names FIRST');
   if (/scholarship/i.test(html) && !/does not guarantee|do not guarantee|no guarantee|not a scholarship|nothing here promises/i.test(html)) {
     fail(name + ' mentions scholarships without a non-guarantee');
   }
@@ -107,24 +111,44 @@ for (const name of files) {
   if (html.includes('id="interest"')) {
     const options = [...html.matchAll(/<option>([^<]+)<\/option>/g)].map((m) => m[1]);
     if (options.join('|') !== serverRoles.join('|')) fail(name + ' form roles do not match the API');
-    for (const field of ['name="name"', 'name="email"', 'name="role"', 'name="city"', 'name="organization"', 'name="kids"', 'name="message"', 'name="consent"', 'name="website"', 'action="/api/interest"']) {
+    const action = name === 'volunteer.html' ? 'action="/api/volunteer"' : 'action="/api/interest"';
+    for (const field of ['name="name"', 'name="email"', 'name="role"', 'name="city"', 'name="organization"', 'name="kids"', 'name="message"', 'name="consent"', 'name="website"', action]) {
       if (!html.includes(field)) fail(name + ' form missing ' + field);
     }
   }
 }
 
 const home = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+const programs = fs.readFileSync(path.join(root, 'programs.html'), 'utf8');
 for (const line of requiredHome) if (!home.includes(line)) fail('homepage missing: ' + line);
-for (const label of ['Home', 'About', 'Programs', 'Competitions', 'University Pathways', 'Community', 'Partners', 'Events']) {
-  if (!home.includes('>' + label + '<')) fail('nav missing ' + label);
+for (const line of retiredCopy) if (home.includes(line) || programs.includes(line)) fail('retired copy still present: ' + line);
+const homeStatus = home.replaceAll('Dates coming soon', '');
+if (/coming soon/i.test(homeStatus) || /coming soon/i.test(programs)) fail('Home or Programs still says coming soon');
+const mainNav = home.match(/<nav class="nav__links"[\s\S]*?<\/nav>/);
+if (!mainNav) fail('main nav missing');
+else {
+  for (const label of ['Programs', 'Events', 'About']) {
+    if (!mainNav[0].includes(label)) fail('nav missing ' + label);
+  }
+  if (mainNav[0].includes('partners.html') || mainNav[0].includes('social.html')) fail('empty directory is in the primary nav');
 }
-for (const label of ['Contact', 'Privacy', 'Terms', 'Child Safety', 'Accessibility', 'Volunteer', 'Partnership Inquiries', 'Social']) {
+if (!home.includes('>Get updates<')) fail('header CTA missing');
+for (const label of ['Contact', 'Privacy', 'Terms', 'Child Safety', 'Accessibility', 'Volunteer', 'Partnership Inquiries', 'Social', 'Discuss sponsorship', 'Partner list']) {
   if (!home.includes('>' + label + '<')) fail('footer missing ' + label);
 }
-if (!home.includes('Join the Community') || !home.includes('Sponsor a Student')) fail('header CTAs missing');
+if (home.includes('stickycta') || programs.includes('stickycta')) fail('sticky mobile bar is still in the page');
+if (home.includes('<option>Student</option>')) fail('Student role option is still on the form');
+if (home.includes('mckinney-build-day-2024-cutout')) fail('homepage still uses the group cutout');
+if (!home.includes('mckinney-build-day-2024.avif') || !home.includes('width="1800"') || !home.includes('height="1350"')) fail('homepage photo is missing avif or dimensions');
+const robots = fs.readFileSync(path.join(root, 'robots.txt'), 'utf8');
+const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
+if (!robots.includes('Sitemap: https://afrobot.org/sitemap.xml')) fail('robots.txt missing canonical sitemap');
+if (!sitemap.includes('https://afrobot.org/') || !sitemap.includes('https://afrobot.org/programs')) fail('sitemap missing canonical urls');
 
-const css = fs.readFileSync(path.join(root, 'components.css'), 'utf8');
-if (/color:\s*var\(--ink-40\)/.test(css)) fail('components.css uses ink-40 as text');
+const css = fs.readFileSync(path.join(root, 'components.css'), 'utf8') + fs.readFileSync(path.join(root, 'styles.css'), 'utf8') + fs.readFileSync(path.join(root, 'tokens.css'), 'utf8');
+if (/color:\s*var\(--ink-40\)/.test(fs.readFileSync(path.join(root, 'components.css'), 'utf8'))) fail('components.css uses ink-40 as text');
+if (!css.includes('Public Sans') || !css.includes('PublicSans-VF.woff2')) fail('Public Sans WOFF2 is not served');
+if (/url\(fonts\/Inter/.test(css) || /url\(fonts\/Outfit/.test(css)) fail('old body or display font is still requested');
 
 function lum(hex) {
   const c = hex.slice(1).match(/../g).map((x) => parseInt(x, 16) / 255).map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
@@ -134,12 +158,12 @@ function contrast(a, b) {
   const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x);
   return (hi + 0.05) / (lo + 0.05);
 }
-for (const [fg, bg, min] of [['#0E0F12', '#E6E8EA', 4.5], ['#5A5D66', '#E6E8EA', 4.5], ['#AD3210', '#E6E8EA', 4.5], ['#FFFFFF', '#BF3712', 4.5], ['#FFFFFF', '#0E0F12', 4.5], ['#D5D7DC', '#0E0F12', 4.5], ['#F2F3F5', '#0E0F12', 4.5]]) {
+for (const [fg, bg, min] of [['#142033', '#FFFFFF', 4.5], ['#3E4C5E', '#FFFFFF', 4.5], ['#B9380F', '#FFFFFF', 4.5], ['#FFFFFF', '#B9380F', 4.5], ['#FFFFFF', '#8C2A0A', 4.5], ['#1F4E89', '#FFFFFF', 4.5], ['#142033', '#D6E8FF', 4.5], ['#FFFFFF', '#142033', 4.5], ['#D6DEEA', '#142033', 4.5], ['#9A3412', '#FFFFFF', 4.5]]) {
   const ratio = contrast(fg, bg);
   if (ratio < min) fail('contrast ' + fg + ' on ' + bg + ' is ' + ratio.toFixed(2));
 }
 
-for (const file of ['script.js', 'api/interest.js', 'api/_lib.js', 'api/interest-export.js', 'scripts/build.mjs', 'scripts/lint.mjs']) {
+for (const file of ['script.js', 'api/interest.js', 'api/volunteer.js', 'api/_lib.js', 'api/interest-export.js', 'scripts/build.mjs', 'scripts/lint.mjs']) {
   const result = spawnSync(process.execPath, ['--check', path.join(root, file)], { encoding: 'utf8' });
   if (result.status !== 0) fail(file + ' failed node --check\n' + result.stderr);
 }

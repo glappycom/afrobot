@@ -4,68 +4,40 @@
 
 | Token | Value | Use |
 | --- | --- | --- |
-| Heading face | Outfit, weight 900 (Black) | Headlines only |
-| Body face | Inter | Text, navigation, forms |
-| Ink | `#0E0F12` | Text and the one-colour wordmark |
-| Ink 80 | `#2B2D33` | Secondary paragraphs |
-| Ink 60 | `#5A5D66` | Labels and notes. About 5.4:1 on steel |
-| Clay | `#E2461E` | Rules, focus rings, large marks. Not small text |
-| Clay text | `#AD3210` | Links and small accents. About 5.3:1 on steel |
-| Deep clay | `#BF3712` | Button fill with white text. About 5.6:1 |
-| Steel | `#E6E8EA` | Page background |
-| Steel card | `#F1F2F4` | Alternate bands |
-| Bone | `#F3EEE5` | Light button on ink |
-| White | `#FFFFFF` | Text on ink and on deep clay |
+| Type | Public Sans, self-hosted WOFF2 | One sans. Headlines are heavy. Body is at least 18px |
+| Ink | `#142033` | Text on white. About 16:1 |
+| Orange | `#B9380F` | Buttons, links, and the call-to-action band. White text on it is about 5.8:1. Hover is `#8C2A0A` |
+| Orange | `#B9380F` | The only accent, including age labels and the price underline. About 5.9:1 on white |
+| White | `#FFFFFF` | Page background |
+| Danger | `#9A3412` | Form errors |
 
-Wordmark: keep `assets/logo-afrobot.svg` on light surfaces and `assets/logo-afrobot-reversed.svg` on the footer. Do not recolor the wordmark with clay, and do not introduce a second lockup.
+Wordmark: keep `assets/logo-afrobot.svg` on white and `assets/logo-afrobot-reversed.svg` on the navy footer. Do not recolor the wordmark, and do not introduce a second lockup.
 
-Clay never fills a page section. Ink bands may carry a 4px clay rule.
+Deep orange fills buttons, links, and the main call-to-action band. Blue is only for small labels. Headlines stay left-aligned and heavy. Focus is a 2px near-black outline. There is no sticky mobile bar.
 
-The existing preview switches stay (`?accent=blue`, `?bg=bone`, `?logo=`, `?font=poppins`, `?header=none`, `?hero=photo`, `?static`).
+The header is one row: For Parents, For Community Leaders, For Partners, About, and a Get updates button. The mobile menu repeats those links.
 
-## Components
-
-New shared pieces, styled in `components.css` and fed by `tokens.css`:
-
-- Two-row header (wordmark and actions, then the eight links) and a scrollable mobile menu
-- Journey: five stages, columns on wide screens, a vertical rail under 1000px
-- Program card: name, guidance age, short description, schedule, price, registration
-- Cost pillars and a goal note that cannot be mistaken for a price table
-- Role cards for the six community paths
-- Measure list with no figures
-- Final ink band
-- Interior page hero, prose, pending note, pull quote, callout
-- Interest form partial, including a live region for the intent note
-
-Buttons keep the existing `.btn` sizes. Header actions are at least 44px tall. Footer links are at least 44px. Focus uses a 2px clay outline. Motion is limited to hover and the existing reveal script, and `prefers-reduced-motion: reduce` removes transitions, smooth scroll, and autoplay. The build-day video does not autoplay; it has controls and a text description.
+Buttons and header actions are at least 48px tall. The build-day video does not autoplay; it has controls and a text description.
 
 ## Homepage copy
 
-Required lines, in order:
+The homepage is short. Headline: “A place for kids to build robots and keep asking questions.” Say what AfroBot is (hands-on robotics and AI for kids, community-run) and that future sessions are being prepared. Primary action for parents: “Get session updates.” Secondary: “Ask about hosting” and “Talk about supporting AfroBot.”
 
-1. Headline: “Every Child Deserves a Chance to Build the Future.”
-2. Support: “Affordable robotics, AI, and engineering education that helps young people move from curiosity to creation, from local communities to recognized competitions, and from limited access to meaningful opportunity.”
-3. Actions: Join the AfroBot Community, Explore Programs, Sponsor a Student.
-4. “Talent Is Everywhere. Opportunity Isn’t.” No statistics.
-5. “From Curiosity to Opportunity.” Stages Access, Discover, Build, Compete, Advance, each a link.
-6. “Find Your Starting Point.” Discover (suggested ages 5–8), Build (9–12), Innovate (12–15), Compete (eligibility set by the competition), Advance (15–18). Ages are guidance. Schedule, price, and registration read as coming soon / register interest.
-7. “World-Class Opportunities. Community-Friendly Costs.” Shared equipment, sponsored places, volunteer mentors, and grants. An entry workshop around $10 is a goal, never a current price. Financial-assistance inquiry collects no financial documents.
-8. “From Our Community to the Competition Stage.” AfroBot aims to prepare students for established competitions such as FIRST Tech Challenge. The page says AfroBot is not affiliated with FIRST. The interest list is not team placement.
-9. “The Journey Doesn’t End With a Robot.” Includes “AfroBot helps students build more than robots. We help them build futures.” No guarantee of admission or scholarships.
-10. “It Takes a Community to Build the Future.” Separate paths for parents, students (parent-managed), mentors (screening required), sponsors, schools and universities, and manufacturers.
-11. “Success Is Measured in Opportunity.” Describes future measures. Shows no numbers.
-12. “The Future Is Being Built. Let’s Make Sure Every Child Has a Place in It.” Actions: Join AfroBot, Become a Mentor, Sponsor Opportunity.
-13. Tagline: “From Curiosity to Creation. From Community to the World.”
+Audience cards sit near the top: For Parents, For Community Leaders, For Partners.
 
-Hero photograph: the existing McKinney 2024 cut-out, captioned as that day. It is not a current event listing.
+“McKinney Build Day” uses facts already in the repo. “Affordable sessions” states a $100 participation goal. Do not say what the $100 covers. The homepage status is “Dates coming soon,” once, beside the updates button.
+
+Do not publish the scaffolding lines “This page does not invent a statistic…”, “That line is a direction, not a promise”, or “This section has no counts and no percentages.” Do not keep an empty “Success Is Measured in Opportunity” section.
+
+The McKinney photograph is the original, served as AVIF and WebP with width and height. It is not the background-removed cutout.
 
 ## Voice
 
-Plain and specific. Say when something is not open, not affiliated, or not a promise. Do not use a statistic, a date, a scholarship, a partner logo, or a dollar figure unless this plan allows it. The only dollar figure allowed on the marketing pages is the $10 workshop goal, in a sentence that calls it a goal.
+Plain and specific. Say when something is not open, not affiliated, or not a promise. Do not use a statistic, a date, a scholarship, a partner logo, or a dollar figure unless this plan allows it. The only dollar figure allowed on the marketing pages is the $100 participation goal, in a sentence that calls it a goal.
 
 Do not claim that gifts are tax-deductible. Call giving a sponsorship inquiry.
 
-Do not name UT Dallas, WhalesBot, K-Scale, Zeroth, LEGO, NSBE, venture firms, or universities. Do not treat FIRST as a partner. Do not use Disney or Baymax imagery or names.
+Do not name UT Dallas, WhalesBot, K-Scale, Zeroth, LEGO, NSBE, venture firms, universities, or a competition brand. Do not use Disney or Baymax imagery or names.
 
 ## Content states
 

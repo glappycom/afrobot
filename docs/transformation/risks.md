@@ -2,7 +2,7 @@
 
 ## Children and privacy
 
-The program is for minors. The interest form still allows the role `Student` and a free-text “kids” field, because removing them would change the API contract in the same release as the redesign. Copy tells anyone under 18 to have a parent or guardian submit, and asks people not to send a full date of birth, a school ID, or financial documents.
+The program is for minors. The interest form is for adults: the name field is labeled “Your name (adult)” and the `Student` role is no longer accepted by the page or the API. A free-text “kids” field remains optional for parents and educators, and asks for ages rather than a full date of birth. Copy tells anyone under 18 to have a parent or guardian submit, and asks people not to send a school ID or financial documents.
 
 Risk: a child submits anyway, or a parent writes a full name and school in the message. Mitigation now: the note, the parent-managed student path, and private Blob storage. Residual risk: staff must treat submissions as confidential. Phase 3 cannot ship child profiles until privacy and safeguarding tests pass. Public profiles are out of scope permanently.
 
@@ -10,13 +10,13 @@ The 2024 photos show children. They were already published. Phase 1 does not add
 
 ## False certainty
 
-The baseline page listed proposed 2027–28 dates, fees, awards, and scholarships. Republishing them as design would keep the same harm: a family could think registration is real. Phase 1 deletes that calendar and those prices. The $10 workshop may appear only as a goal.
+The baseline page listed proposed 2027–28 dates, fees, awards, and scholarships. Republishing them as design would keep the same harm: a family could think registration is real. Phase 1 deletes that calendar and those prices. The $100 participation goal may appear only as a goal.
 
-Risk: a later edit pastes the old season table back. Mitigation: `npm run site:lint` fails on 2027/2028, on dollar amounts other than `$10`, on percents, and on `$10` if the word “goal” is missing.
+Risk: a later edit pastes the old season table back. Mitigation: `npm run site:lint` fails on 2027/2028, on dollar amounts other than `$100`, on percents, and on `$100` if the word “goal” is missing.
 
 ## Partners, trademarks, and IP
 
-Naming a company implies an agreement. The public site must not list UT Dallas, WhalesBot, FIRST as a partner, K-Scale, Zeroth, LEGO, NSBE, venture firms, or university logos. FIRST Tech Challenge may be mentioned only with the sentence that AfroBot is not affiliated with FIRST. Lint requires that sentence on any HTML file that says FIRST.
+Naming a company implies an agreement. The public site must not list UT Dallas, WhalesBot, K-Scale, Zeroth, LEGO, NSBE, venture firms, or university logos. Do not name a competition brand. Lint fails if an HTML file names one.
 
 WAAW Foundation appears only as Dr. Okorafor’s affiliation. Glappy Foundation appears as the organization that runs AfroBot, not as a sponsor logo.
 
@@ -24,7 +24,7 @@ Disney and Baymax names and imagery are banned. Lint looks for those strings. Th
 
 ## Tax status
 
-Glappy Foundation’s 501(c)(3) good standing is unconfirmed. Calling a gift tax-deductible would be a false statement. The site says “sponsorship inquiry” and does not take payment. Lint rejects deductibility phrasing and “501(c)(3)”.
+Glappy Foundation’s 501(c)(3) good standing is unconfirmed. Calling a gift tax-deductible would be a false statement. Lint rejects deductibility phrasing and “501(c)(3)”.
 
 ## Address
 

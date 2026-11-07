@@ -1,18 +1,16 @@
 /* Tokens live in tokens.css. Later :root blocks in this file still override spacing and theme. */
-@import url("tokens.css?v=30");
-/* AfroBot v2 — 12-col grid, Outfit + Inter (SIL OFL, self-hosted) */
-@font-face{font-family:"Space Grotesk";src:url(fonts/SpaceGrotesk-VF.ttf) format("truetype");font-weight:300 700;font-display:swap}
-@font-face{font-family:"Outfit";src:url(fonts/Outfit-VF.ttf) format("truetype");font-weight:100 900;font-display:swap}
-@font-face{font-family:"Inter";src:url(fonts/Inter-VF.ttf) format("truetype");font-weight:100 900;font-display:swap}
+@import url("tokens.css?v=31");
+/* Public Sans, SIL OFL, self-hosted variable WOFF2. Weight comes from font-weight. */
+@font-face{font-family:"Public Sans";src:url("fonts/PublicSans-VF.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{background:var(--paper);color:var(--ink);font:400 var(--t-16)/1.6 var(--text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-feature-settings:"ss01","cv11"}
+body{background:var(--paper);color:var(--ink);font:400 var(--t-16)/1.6 var(--text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 img{display:block}
 a{color:inherit;text-decoration:none}
-::selection{background:var(--clay-strong);color:#fff}
+::selection{background:#F6E4DC;color:var(--ink)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .skip{position:absolute;left:-9999px}.skip:focus{left:16px;top:16px;z-index:100;background:#fff;padding:8px 14px}
-:focus-visible{outline:2px solid var(--clay);outline-offset:3px}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
 
 /* grid */
 .container{max-width:var(--max);margin-inline:auto;padding-inline:var(--margin)}
@@ -48,7 +46,7 @@ p+p{margin-top:16px}
 .pill--clay{color:var(--clay-strong)}
 
 /* nav */
-.nav{position:sticky;top:0;z-index:40;background:rgba(248,245,239,.9);backdrop-filter:saturate(1.2) blur(14px);border-bottom:1px solid transparent;transition:border-color .3s}
+.nav{position:sticky;top:0;z-index:40;background:#FFFFFF;backdrop-filter:none;border-bottom:1px solid transparent;transition:border-color .3s}
 .nav.is-scrolled{border-color:var(--line)}
 .nav__inner{display:flex;align-items:center;height:76px;gap:40px}
 .nav__brand img{height:34px;width:auto}
@@ -170,7 +168,7 @@ p+p{margin-top:16px}
 .f>span,.f legend{font:500 var(--t-12)/1 var(--text);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-60)}
 .f legend{margin-bottom:14px}
 .f input,.f select{font:400 var(--t-18)/1.3 var(--text);color:var(--ink);background:transparent;border:0;border-bottom:1px solid var(--ink-40);border-radius:0;padding:8px 0 12px;width:100%;appearance:none;transition:border-color .2s}
-.f select{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' stroke='%230E0F12' fill='none' stroke-width='1.4'/></svg>") right 2px center no-repeat}
+.f select{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' stroke='%2317241F' fill='none' stroke-width='1.4'/></svg>") right 2px center no-repeat}
 .f input:focus,.f select:focus{outline:none;border-color:var(--clay)}
 .chk{position:relative;display:inline-flex;margin:0 8px 8px 0;cursor:pointer}
 .chk input{position:absolute;opacity:0}
@@ -334,7 +332,7 @@ h3,.aud-k,.countdown__event,.awards dt,.tiers li span:first-child,.val-list b,.m
 
 /* Header (v15): bone is the default. No full clay backgrounds anywhere: clay is accent only (buttons, rules, highlights, tags). */
 :root{--clay-deep:#B4472B}
-body[data-header="bone"]{--nav-bg:#F3EEE5;--nav-fg:#0E0F12;--nav-cta-bg:var(--clay-strong);--nav-cta-fg:#fff}
+body[data-header="bone"]{--nav-bg:#FFFFFF;--nav-fg:#142033;--nav-cta-bg:var(--clay-strong);--nav-cta-fg:#fff}
 body[data-header="bone"] .nav{border-bottom:3px solid var(--clay)}
 body[data-header="bone"] .nav .btn--ink:hover{background:var(--clay-strong-dk)}
 body[data-header="bone"] .sponsor{background:var(--ink)}
@@ -445,11 +443,7 @@ html[data-accent="blue"] .footer nav a:hover{color:var(--accent-on-ink)}
 .footer__base{margin-top:56px}
 .footer div>span{display:block;font-size:var(--t-14);margin-bottom:10px;color:var(--bone)}
 
-/* sticky mobile CTA (shown by script on small screens, hidden near the form and footer) */
-.stickycta{display:none}
 @media (max-width:900px){
-  .stickycta{display:flex;justify-content:center;position:fixed;left:16px;right:16px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:50;height:52px;box-shadow:0 8px 24px rgba(14,15,18,.22);transform:translateY(calc(100% + 24px));opacity:0;transition:transform .35s var(--ease),opacity .25s}
-  .stickycta.is-on{transform:none;opacity:1}
   .tl{grid-template-columns:1fr;row-gap:0;margin-top:40px}
   .tl::before{left:5px;right:auto;top:6px;bottom:6px;width:1px;height:auto}
   .tl li{padding:0 0 24px 32px}
@@ -518,14 +512,14 @@ html[data-accent="blue"] .footer nav a:hover{color:var(--accent-on-ink)}
 
 /* ===== v22: symmetry restored (centered section headers, even grids, v17 rhythm) + full hero photo ===== */
 :root{--s-section:clamp(80px,8vw,128px);--s-head:clamp(48px,5vw,72px)}
-.sh{display:flex;flex-direction:column;align-items:center;text-align:center;max-width:980px;margin:0 auto var(--s-head)}
+.sh{display:flex;flex-direction:column;align-items:flex-start;text-align:left;max-width:none;margin:0 0 32px}
 .sh .h1{margin-top:18px;max-width:24ch;text-wrap:balance}
 .sh .display{margin-top:18px;text-wrap:balance}
 .sh__sub{margin-top:20px;max-width:60ch;color:var(--ink-60);font-size:clamp(1.0625rem,1.3vw,1.25rem);line-height:1.5;text-wrap:pretty}
 .sh__sub--note{font-size:var(--t-14);margin-top:16px}
 .sh .btn{margin-top:32px}
 .sh-label{text-align:center;margin-bottom:28px}
-.sh-foot{text-align:center;margin-top:40px}
+.sh-foot{text-align:left;margin-top:40px}
 .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:clamp(24px,4vw,64px);row-gap:48px}
 .sub-label{margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--ink)}
 
@@ -640,9 +634,9 @@ html[data-bg="steel"] .nav{background:#E6E8EA}
 html[data-bg="steel"] .tl li::before{background:#E6E8EA}
 
 /* ===== v23: steel is the default background (html[data-bg="steel"] in index.html); ?bg=bone restores bone/paper =====
-   Small clay text on steel uses Clay Text #AD3210: 5.3:1 on #E6E8EA, 5.8:1 on #F1F2F4 (Deep Clay #BF3712 was only 4.5:1).
+   Small clay text on steel uses Clay Text #8C3414: 5.3:1 on #E6E8EA, 5.8:1 on #F1F2F4 (Deep Clay #BF3712 was only 4.5:1).
    Buttons stay Deep Clay #BF3712 with white text (5.6:1). */
-html[data-bg="steel"]:not([data-accent="blue"]){--clay-text:#AD3210}
+html[data-bg="steel"]:not([data-accent="blue"]){--clay-text:#8C3414}
 html[data-bg="steel"]:not([data-accent="blue"]) :is(.pill--clay,.steps__n,.pstat--clay,.aud-list a:hover,.theme__meta a,.tlink,.acc summary:hover,.fees article:nth-child(4) .fee,.val-list li:first-child b){color:var(--clay-text)}
 html[data-bg="steel"]:not([data-accent="blue"]) .tl__when::before{color:var(--clay-text)}
 
@@ -689,15 +683,15 @@ html[data-bg="steel"]:not([data-accent="blue"]) .footer nav a:hover{color:var(--
 .form{display:block}
 .form__fields{display:grid;grid-template-columns:1fr 1fr;column-gap:var(--gutter);row-gap:26px}
 .form__fields[hidden],.f[hidden]{display:none}
-.f>span i,.consent i{font-style:normal;color:#AD3210}
+.f>span i,.consent i{font-style:normal;color:#8C3414}
 .f>span b{font-weight:500;text-transform:none;letter-spacing:0;color:var(--ink-60)}
 .f textarea{font:400 var(--t-18)/1.45 var(--text);color:var(--ink);background:transparent;border:0;border-bottom:1px solid var(--ink-40);border-radius:0;padding:8px 0 12px;width:100%;resize:vertical;min-height:88px;transition:border-color .2s}
 .f input::placeholder,.f textarea::placeholder{color:var(--ink-40)}
 .f textarea:focus{outline:none;border-color:var(--clay)}
 .f input:focus-visible,.f select:focus-visible,.f textarea:focus-visible{box-shadow:0 2px 0 0 var(--clay)}
 .f select:invalid{color:var(--ink-60)}
-.f [aria-invalid="true"]{border-color:#AD3210}
-.f__err{font:500 var(--t-14)/1.3 var(--text);font-style:normal;color:#AD3210;min-height:0}
+.f [aria-invalid="true"]{border-color:#8C3414}
+.f__err{font:500 var(--t-14)/1.3 var(--text);font-style:normal;color:#8C3414;min-height:0}
 .f__err:empty{display:none}
 .f--consent{gap:6px}
 .consent{display:flex;gap:12px;align-items:flex-start;cursor:pointer;font-size:var(--t-16,1rem);line-height:1.45;color:var(--ink-80);min-height:44px;padding-top:2px}
@@ -705,12 +699,12 @@ html[data-bg="steel"]:not([data-accent="blue"]) .footer nav a:hover{color:var(--
 .consent input:checked{background:var(--ink);border-color:var(--ink)}
 .consent input:checked::after{content:"";width:11px;height:6px;border:2px solid #fff;border-top:0;border-right:0;transform:translateY(-1px) rotate(-45deg)}
 .consent input:focus-visible{outline:2px solid var(--clay);outline-offset:2px}
-.consent input[aria-invalid="true"]{border-color:#AD3210}
+.consent input[aria-invalid="true"]{border-color:#8C3414}
 .hp{position:absolute!important;left:-10000px;width:1px;height:1px;overflow:hidden}
 .form .btn{margin-top:32px}
 .form .btn[disabled]{opacity:.7;cursor:progress}
 .form__msg{margin-top:20px}
-.form__msg[data-kind="error"]{border-left-color:#AD3210;color:var(--ink)}
+.form__msg[data-kind="error"]{border-left-color:#8C3414;color:var(--ink)}
 .form.is-sent .form__msg{margin-top:0;font:800 var(--t-22,1.375rem)/1.3 var(--display);color:var(--ink);border-left:3px solid var(--clay-strong);padding:6px 0 6px 18px}
 @media (max-width:760px){.form__fields{grid-template-columns:1fr}.form__fields .f--half{grid-column:1/-1}.form .btn{width:100%;justify-content:center}}
 .form .btn[hidden],.form__fields[hidden]{display:none!important}

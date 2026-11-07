@@ -1,4 +1,4 @@
-// ---- Logo: official lockup = H3 "Cutout" icon + "afrobot" wordmark (one solid colour: ink on light, bone on ink).
+// ---- Logo: header lockup = icon in #B9380F and wordmark in #142033. Footer lockup is white on navy.
 // Archived directions for comparison: ?logo=e1 (Space Grotesk lockup) | d2 | a | b | c
 const Q = new URLSearchParams(location.search);
 const LOGO = Q.get('logo') || 'afrobot';
@@ -55,21 +55,24 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
   role.addEventListener('change', syncKids); syncKids();
   document.querySelectorAll('[data-sponsor]').forEach(a => a.addEventListener('click', () => { role.value = 'Sponsor/partner'; syncKids(); }));
   const INTENTS = {
-    join: { note: 'Joining the interest list is not enrollment and not team placement.' },
-    parent: { role: 'Parent/guardian', message: 'Parent or guardian inquiry.', note: 'You are writing as a parent or guardian. Ages are enough. Please do not add a full date of birth or a school ID.' },
-    student: { role: 'Parent/guardian', message: 'Parent or guardian submitting interest for a student. Participation is parent-managed.', note: 'Students take part through a parent or guardian. We do not create public profiles for children. If you are under 18, please ask a parent or guardian to send this.' },
-    mentor: { role: 'Volunteer/mentor', message: 'Mentor or volunteer inquiry. I understand screening is required before working with students.', note: 'Mentors and volunteers are screened before they work with students. Sending this form starts a conversation. It is not an approval.' },
-    volunteer: { role: 'Volunteer/mentor', message: 'Mentor or volunteer inquiry. I understand screening is required before working with students.', note: 'Mentors and volunteers are screened before they work with students. Sending this form starts a conversation. It is not an approval.' },
-    sponsor: { role: 'Sponsor/partner', message: 'Sponsorship inquiry. I would like to ask about sponsoring a student or a program.', note: 'This is a sponsorship inquiry. It is not a processed donation, and this form does not confirm tax deductibility.' },
-    partner: { role: 'Sponsor/partner', message: 'Partnership inquiry.', note: 'This is a partnership inquiry. It does not place a name or logo on the public site, and it is not a processed donation.' },
-    school: { role: 'School/educator', message: 'School or university inquiry.', note: 'Schools and universities can ask about a workshop or a pathway conversation. No institution is listed as a partner from this form.' },
-    manufacturer: { role: 'Sponsor/partner', message: 'Manufacturer or equipment inquiry.', note: 'This is an equipment or materials inquiry. It does not announce a public partnership.' },
-    assistance: { role: 'Parent/guardian', message: 'Financial assistance inquiry. I will not send financial documents.', note: 'Financial assistance inquiries do not ask for pay stubs, tax returns, benefit letters, or account numbers. Please do not send them.' },
-    discover: { role: 'Parent/guardian', message: 'Interest in Discover (suggested ages 5–8). I understand registration is not open yet.', note: 'Discover is not open for registration. Ages 5–8 are guidance. This list is not a place on a team.' },
-    build: { role: 'Parent/guardian', message: 'Interest in Build (suggested ages 9–12). I understand registration is not open yet.', note: 'Build is not open for registration. Ages 9–12 are guidance. This list is not a place on a team.' },
-    innovate: { role: 'Parent/guardian', message: 'Interest in Innovate (suggested ages 12–15). I understand registration is not open yet.', note: 'Innovate is not open for registration. Ages 12–15 are guidance. This list is not a place on a team.' },
-    compete: { role: 'Parent/guardian', message: 'Interest in competition preparation. I understand this is not team placement.', note: 'AfroBot is not affiliated with FIRST. The interest list is not team placement. Eligibility is set by the competition, not by this form.' },
-    advance: { role: 'Parent/guardian', message: 'Interest in Advance (suggested ages 15–18). I understand this is not an application for admission or a scholarship.', note: 'Advance does not guarantee admission, credit, or scholarships. Ages 15–18 are guidance.' }
+    join: { note: '' },
+    updates: { role: 'Parent/guardian', message: 'Please send me updates when a session is being planned.', note: '' },
+    host: { role: 'Other', message: 'I would like to ask about hosting a session in our community.', note: '' },
+    support: { role: 'Sponsor/partner', message: 'I would like to talk about supporting AfroBot.', note: 'Tax treatment of a gift is not stated on this form.' },
+    parent: { role: 'Parent/guardian', message: 'Parent or guardian inquiry.', note: '' },
+    student: { role: 'Parent/guardian', message: 'Parent or guardian submitting interest for a student.', note: 'If you are under 18, ask a parent or guardian to send this.' },
+    mentor: { role: 'Volunteer/mentor', message: 'Mentor or volunteer inquiry.', note: '' },
+    volunteer: { role: 'Volunteer/mentor', message: 'Mentor or volunteer inquiry.', note: '' },
+    sponsor: { role: 'Sponsor/partner', message: 'I would like to ask about sponsoring a student or a program.', note: 'Tax treatment of a gift is not stated on this form.' },
+    partner: { role: 'Sponsor/partner', message: 'Partnership inquiry.', note: '' },
+    school: { role: 'School/educator', message: 'School or university inquiry.', note: '' },
+    manufacturer: { role: 'Sponsor/partner', message: 'Manufacturer or equipment inquiry.', note: '' },
+    assistance: { role: 'Parent/guardian', message: 'Financial assistance inquiry.', note: 'Do not send financial documents, tax forms, or account numbers.' },
+    discover: { role: 'Parent/guardian', message: 'Interest in Discover (suggested ages 5–8).', note: '' },
+    build: { role: 'Parent/guardian', message: 'Interest in Build (suggested ages 9–12).', note: '' },
+    innovate: { role: 'Parent/guardian', message: 'Interest in Innovate (suggested ages 12–15).', note: '' },
+    compete: { role: 'Parent/guardian', message: 'Interest in competition preparation.', note: '' },
+    advance: { role: 'Parent/guardian', message: 'Interest in Advance (suggested ages 15–18).', note: '' }
   };
   const note = document.getElementById('form-context');
   const msg = f.elements.message;
@@ -84,9 +87,6 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
     }
     if (note) note.textContent = spec.note || '';
   };
-  role.addEventListener('change', () => {
-    if (role.value === 'Student' && note) note.textContent = 'If you are under 18, please ask a parent or guardian to submit this form. Do not include a full date of birth or school ID.';
-  });
   document.querySelectorAll('[data-intent]').forEach((a) => a.addEventListener('click', () => applyIntent(a.dataset.intent)));
   const preset = document.getElementById('register')?.dataset.defaultIntent;
   if (Q.get('intent')) applyIntent(Q.get('intent'));
@@ -121,15 +121,17 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
     if (kids.hidden) d.kids = '';
     btn.disabled = true; btn.setAttribute('aria-busy', 'true'); btn.textContent = 'Sending…'; status.hidden = true;
     try {
-      const r = await fetch('/api/interest', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(d) });
+      const endpoint = f.getAttribute('action') || '/api/interest';
+      const r = await fetch(endpoint, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(d) });
       const j = await r.json().catch(() => ({}));
       if (r.ok && j.ok) {
         f.classList.add('is-sent'); f.querySelector('.form__fields').hidden = true; btn.hidden = true;
-        show('Thank you. You’re on the list. We’ll email you about AfroBot. This is not team placement.', 'ok'); status.setAttribute('tabindex', '-1'); status.focus();
+        show('Sent. We’ll email you.', 'ok'); status.setAttribute('tabindex', '-1'); status.focus();
         return;
       }
       if (j.errors) { Object.keys(fields).forEach(k => setErr(k, j.errors[k])); show('Please check the highlighted fields.', 'error'); }
-      else show('Sorry, something went wrong and your details weren’t sent. Please try again in a moment.', 'error');
+      else if (r.status === 429) show('Too many tries. Wait a few minutes.', 'error');
+      else show('Not sent. Try again later.', 'error');
     } catch { show('We couldn’t reach the server. Check your connection and try again.', 'error'); }
     btn.disabled = false; btn.removeAttribute('aria-busy'); btn.textContent = 'Send interest';
   });
@@ -158,21 +160,6 @@ if (FONT) document.body.dataset.font = FONT;
   document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', () => { const t = document.querySelector(a.getAttribute('href')); if (t && t.tagName === 'DETAILS') t.open = true; }));
 })();
 
-// ---- v18: sticky "Register interest" on small screens; hidden at the top (hero CTA visible) and near the form/footer
-(() => {
-  const btn = document.querySelector('.stickycta'); if (!btn) return;
-  if (document.getElementById('register')) btn.setAttribute('href', '#register');
-  const heroCta = document.querySelector('.hero .actions'), stops = [document.getElementById('register'), document.querySelector('.footer')];
-  const seen = new Map();
-  const update = () => {
-    const show = matchMedia('(max-width: 900px)').matches && !seen.get(heroCta) && !stops.some(s => seen.get(s)) && scrollY > 200;
-    btn.classList.toggle('is-on', show); btn.setAttribute('aria-hidden', String(!show)); btn.tabIndex = show ? 0 : -1;
-  };
-  const io = new IntersectionObserver(es => { es.forEach(e => seen.set(e.target, e.isIntersecting)); update(); }, { rootMargin: '0px 0px 120px 0px' });
-  [heroCta, ...stops].forEach(el => el && io.observe(el));
-  addEventListener('scroll', update, { passive: true }); addEventListener('resize', update);
-})();
-
 // v25: founder photos lift on tap / keyboard press and settle on a second press (mouse uses :hover)
 document.querySelectorAll('.founder__photo').forEach(btn => {
   btn.addEventListener('click', e => {
@@ -195,6 +182,20 @@ document.querySelectorAll('.founder__photo').forEach(btn => {
     if (norm(a.getAttribute('href')) === here) a.setAttribute('aria-current', 'page');
   });
 })();
+
+document.querySelectorAll('.video-play').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const id = btn.dataset.video;
+    if (!/^[A-Za-z0-9_-]{11}$/.test(id)) return;
+    const frame = document.createElement('iframe');
+    frame.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1';
+    frame.title = btn.getAttribute('aria-label').replace(/^Play video:\s*/, '');
+    frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+    frame.allowFullscreen = true;
+    frame.referrerPolicy = 'strict-origin-when-cross-origin';
+    btn.parentElement.replaceChildren(frame);
+  });
+});
 
 if (Q.get('hero') === 'photo') {
   const fig = document.querySelector('.photo--hero');

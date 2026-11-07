@@ -1,15 +1,14 @@
 <section class="page-hero">
   <div class="container">
     <p class="kicker">Events</p>
-    <h1 class="h1">Only events we can point to.</h1>
-    <p class="lead">No upcoming AfroBot event is scheduled on this site. When a date is real, it will be posted with a place and a way to ask about joining. Registering interest does not reserve a seat.</p>
+    <h1 class="h1">No upcoming AfroBot event is on the calendar.</h1>
   </div>
 </section>
 <section class="section">
   <div class="container">
     <div class="prose">
-      <h2>Past: McKinney, Texas, 2024</h2>
-      <p>A community build day was held in McKinney in 2024. The photographs and the clip below are from that day. They are not an invitation to a repeat date.</p>
+      <h2>McKinney Build Day</h2>
+      <p>Kids and mentors worked with robots in McKinney, Texas, in 2024.</p>
     </div>
     <div class="split gap-top">
       <figure class="photo">
@@ -18,13 +17,45 @@
             <source src="assets/video/mckinney-build-day-2024.mp4" type="video/mp4">
           </video>
         </div>
-        <figcaption>Build day, McKinney, Texas, 2024. Kids test robots they built on a mission mat. The clip has no spoken narration. A fuller audio description is not available yet. Press play to watch. Nothing starts on its own.</figcaption>
+        <figcaption>Kids and mentors worked with robots in McKinney, Texas, in 2024.</figcaption>
       </figure>
       <figure class="photo">
-        <div class="photo__img photo__img--real ratio-4x3"><picture><source srcset="assets/photos/mckinney-build-day-2024.webp" type="image/webp"><img src="assets/photos/mckinney-build-day-2024.jpg" alt="A big group of kids and mentors pose with the robots they built, three robots on the floor in front" width="1800" height="1350" loading="lazy" decoding="async"></picture></div>
-        <figcaption>The same build day, McKinney, Texas, 2024.</figcaption>
+        <div class="photo__img photo__img--real ratio-4x3"><picture><source srcset="assets/photos/mckinney-build-day-2024.avif" type="image/avif"><source srcset="assets/photos/mckinney-build-day-2024.webp" type="image/webp"><img src="assets/photos/mckinney-build-day-2024.jpg" alt="A big group of kids and mentors pose with the robots they built, three robots on the floor in front" width="1800" height="1350" loading="lazy" decoding="async"></picture></div>
       </figure>
     </div>
-    <p class="gap-top"><a class="btn btn--clay" href="index.html?intent=join#register">Register interest</a></p>
+    <div class="place-grid gap-top">
+      <figure>
+        <picture>
+          <source srcset="assets/photos/mckinney-ai-track-2024.webp" type="image/webp">
+          <img src="assets/photos/mckinney-ai-track-2024.jpg" alt="Kids at tables with their robots while a presenter teaches at a screen" width="1200" height="900" loading="lazy" decoding="async">
+        </picture>
+        <figcaption>An AI session in McKinney, Texas, in 2024.</figcaption>
+      </figure>
+      <figure>
+        <picture>
+          <source srcset="assets/photos/bamenda-desktop-focus.avif" type="image/avif">
+          <source srcset="assets/photos/bamenda-desktop-focus.webp" type="image/webp">
+          <img src="assets/photos/bamenda-desktop-focus.jpg" alt="Children focused on a desktop screen" width="980" height="735" loading="lazy" decoding="async">
+        </picture>
+        <figcaption>Students work at a desktop.</figcaption>
+      </figure>
+      <figure>
+        <picture>
+          <source srcset="assets/photos/bamenda-class-celebration.avif" type="image/avif">
+          <source srcset="assets/photos/bamenda-class-celebration.webp" type="image/webp">
+          <img src="assets/photos/bamenda-class-celebration.jpg" alt="A classroom group in white lab coats" width="980" height="735" loading="lazy" decoding="async">
+        </picture>
+        <figcaption>A class gathers indoors.</figcaption>
+      </figure>
+    </div>
+    <p class="gap-top"><a class="btn btn--clay" href="index.html?intent=updates#register">Get updates</a></p>
+  </div>
+</section>
+<section class="section band-quiet" id="stories" aria-labelledby="stories-title">
+  <div class="container">
+    <h2 id="stories-title" class="h1">Stories from the program</h2>
+    <div class="card-grid card-grid--stories">
+      {{videos}}
+    </div>
   </div>
 </section>
