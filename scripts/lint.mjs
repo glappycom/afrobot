@@ -24,8 +24,6 @@ if (serverRoles.includes('Student')) fail('Student is still a server role');
 const requiredHome = [
   'A place for kids to build robots and keep asking questions.',
   'hands-on robotics and AI for kids',
-  'It is community-run.',
-  'Future sessions are being prepared.',
   'Get session updates',
   'For Parents',
   'For Community Leaders',
@@ -34,10 +32,11 @@ const requiredHome = [
   'Talk about supporting AfroBot',
   'What happened in McKinney in 2024',
   'Keeping the cost within reach',
-  'A goal, not a price.',
+  '$10',
+  'goal',
   'Sessions are not open yet',
   'Your name (adult)',
-  'The interest list is not team placement.',
+  'This form is for adults.',
 ];
 
 const retiredCopy = [

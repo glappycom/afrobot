@@ -61,8 +61,8 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
     support: { role: 'Sponsor/partner', message: 'I would like to talk about supporting AfroBot.', note: 'Tax treatment of a gift is not stated on this form.' },
     parent: { role: 'Parent/guardian', message: 'Parent or guardian inquiry.', note: '' },
     student: { role: 'Parent/guardian', message: 'Parent or guardian submitting interest for a student.', note: 'If you are under 18, ask a parent or guardian to send this.' },
-    mentor: { role: 'Volunteer/mentor', message: 'Mentor or volunteer inquiry.', note: 'Mentors are screened before they work with students.' },
-    volunteer: { role: 'Volunteer/mentor', message: 'Mentor or volunteer inquiry.', note: 'Mentors are screened before they work with students.' },
+    mentor: { role: 'Volunteer/mentor', message: 'Mentor or volunteer inquiry.', note: '' },
+    volunteer: { role: 'Volunteer/mentor', message: 'Mentor or volunteer inquiry.', note: '' },
     sponsor: { role: 'Sponsor/partner', message: 'I would like to ask about sponsoring a student or a program.', note: 'Tax treatment of a gift is not stated on this form.' },
     partner: { role: 'Sponsor/partner', message: 'Partnership inquiry.', note: '' },
     school: { role: 'School/educator', message: 'School or university inquiry.', note: '' },
@@ -122,17 +122,16 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
     btn.disabled = true; btn.setAttribute('aria-busy', 'true'); btn.textContent = 'Sending…'; status.hidden = true;
     try {
       const endpoint = f.getAttribute('action') || '/api/interest';
-      const volunteer = endpoint === '/api/volunteer';
       const r = await fetch(endpoint, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(d) });
       const j = await r.json().catch(() => ({}));
       if (r.ok && j.ok) {
         f.classList.add('is-sent'); f.querySelector('.form__fields').hidden = true; btn.hidden = true;
-        show(volunteer ? 'Sent. We’ll email you.' : 'Thank you. You’re on the list. We’ll email you about AfroBot. This is not team placement.', 'ok'); status.setAttribute('tabindex', '-1'); status.focus();
+        show('Sent. We’ll email you.', 'ok'); status.setAttribute('tabindex', '-1'); status.focus();
         return;
       }
       if (j.errors) { Object.keys(fields).forEach(k => setErr(k, j.errors[k])); show('Please check the highlighted fields.', 'error'); }
       else if (r.status === 429) show('Too many tries. Wait a few minutes.', 'error');
-      else show(volunteer ? 'Not sent. Try again later.' : 'Sorry, something went wrong and your details weren’t sent. Please try again in a moment.', 'error');
+      else show('Not sent. Try again later.', 'error');
     } catch { show('We couldn’t reach the server. Check your connection and try again.', 'error'); }
     btn.disabled = false; btn.removeAttribute('aria-busy'); btn.textContent = 'Send interest';
   });
