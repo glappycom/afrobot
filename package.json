@@ -3,6 +3,10 @@
   "private": true,
   "type": "module",
   "engines": { "node": ">=20" },
+  "scripts": {
+    "site:build": "node scripts/build.mjs",
+    "site:lint": "node scripts/lint.mjs"
+  },
   "dependencies": {
     "@vercel/blob": "^2.8.2"
   }
