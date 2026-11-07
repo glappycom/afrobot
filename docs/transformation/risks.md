@@ -24,7 +24,7 @@ Disney and Baymax names and imagery are banned. Lint looks for those strings. Th
 
 ## Tax status
 
-Glappy Foundation’s 501(c)(3) good standing is unconfirmed. Calling a gift tax-deductible would be a false statement. The site says “sponsorship inquiry” and does not take payment. Lint rejects deductibility phrasing and “501(c)(3)”.
+Glappy Foundation’s 501(c)(3) good standing is unconfirmed. Calling a gift tax-deductible would be a false statement. Lint rejects deductibility phrasing and “501(c)(3)”.
 
 ## Address
 

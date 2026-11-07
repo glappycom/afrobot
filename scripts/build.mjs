@@ -33,11 +33,11 @@ const pages = [
   ['events.html', 'events.html', 'Events · AfroBot', 'No upcoming AfroBot events are scheduled. The McKinney build day in 2024 is a past community day.', '/events', ''],
   ['contact.html', 'contact.html', 'Contact · AfroBot', 'Write to AfroBot at info@afrobot.org or send the interest form.', '/contact', ''],
   ['privacy.html', 'privacy.html', 'Privacy · AfroBot', 'What the AfroBot interest form collects, and what it does not. Full policy pending legal review.', '/privacy', ''],
-  ['terms.html', 'terms.html', 'Terms · AfroBot', 'Using this site is not enrollment, team placement, or a completed sponsorship. Full terms pending legal review.', '/terms', ''],
+  ['terms.html', 'terms.html', 'Terms · AfroBot', 'Using this site is not enrollment or team placement. Full terms pending legal review.', '/terms', ''],
   ['child-safety.html', 'child-safety.html', 'Child safety · AfroBot', 'AfroBot is a kids-only program. Students are parent-managed, mentors are screened, and child profiles are not public.', '/child-safety', ''],
   ['accessibility.html', 'accessibility.html', 'Accessibility · AfroBot', 'AfroBot aims for WCAG 2.2 AA. Report a barrier to info@afrobot.org.', '/accessibility', ''],
   ['volunteer.html', 'volunteer.html', 'Volunteer · AfroBot', 'Mentor and volunteer inquiries. Screening is required before working with students.', '/volunteer', ''],
-  ['partnership.html', 'partnership.html', 'Partnership inquiries · AfroBot', 'Sponsorship and partnership inquiries. This is not a donation checkout.', '/partnership', ''],
+  ['partnership.html', 'partnership.html', 'Partnership inquiries · AfroBot', 'Sponsorship and partnership inquiries.', '/partnership', ''],
   ['social.html', 'social.html', 'Social · AfroBot', 'AfroBot does not publish social media accounts on this site yet.', '/social', ''],
 ];
 
