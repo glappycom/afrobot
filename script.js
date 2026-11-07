@@ -71,7 +71,7 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
     discover: { role: 'Parent/guardian', message: 'Interest in Discover (suggested ages 5–8).', note: '' },
     build: { role: 'Parent/guardian', message: 'Interest in Build (suggested ages 9–12).', note: '' },
     innovate: { role: 'Parent/guardian', message: 'Interest in Innovate (suggested ages 12–15).', note: '' },
-    compete: { role: 'Parent/guardian', message: 'Interest in competition preparation.', note: 'AfroBot is not affiliated with FIRST.' },
+    compete: { role: 'Parent/guardian', message: 'Interest in competition preparation.', note: '' },
     advance: { role: 'Parent/guardian', message: 'Interest in Advance (suggested ages 15–18).', note: '' }
   };
   const note = document.getElementById('form-context');

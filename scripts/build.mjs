@@ -26,17 +26,17 @@ const orgJson = `<script type="application/ld+json">
 </script>`;
 
 const pages = [
-  ['index.html', 'home.html', 'AfroBot · A place for kids to build robots and keep asking questions', 'AfroBot is hands-on robotics and AI for kids.', '/', orgJson],
+  ['index.html', 'home.html', 'AfroBot · Build robots. Ask questions.', 'Hands-on robotics and AI for kids.', '/', orgJson],
   ['about.html', 'about.html', 'About · AfroBot', 'AfroBot is a kids-only youth robotics and AI program, founded by Dr. Unoma Okorafor and Dr. Russell Avre.', '/about', ''],
-  ['programs.html', 'programs.html', 'Programs · AfroBot', 'Sessions are not open yet. $10 goal.', '/programs', ''],
-  ['competitions.html', 'competitions.html', 'Competitions · AfroBot', 'AfroBot aims to prepare students for established competitions such as FIRST Tech Challenge. AfroBot is not affiliated with FIRST.', '/competitions', ''],
+  ['programs.html', 'programs.html', 'Programs · AfroBot', 'Sessions are not open yet. A $100 participation goal.', '/programs', ''],
+  ['competitions.html', 'competitions.html', 'Competitions · AfroBot', 'No competition calendar is confirmed.', '/competitions', ''],
   ['university-pathways.html', 'university-pathways.html', 'University Pathways · AfroBot', 'AfroBot does not guarantee admission or scholarships.', '/university-pathways', ''],
   ['community.html', 'community.html', 'Community · AfroBot', 'Parents, students through a parent, mentors, sponsors, schools, and manufacturers can register interest.', '/community', ''],
   ['partners.html', 'partners.html', 'Partners · AfroBot', 'No partner list is published.', '/partners', ''],
   ['events.html', 'events.html', 'Events · AfroBot', 'No upcoming event is on the calendar. McKinney, Texas, 2024 was an AfroBot program.', '/events', ''],
   ['contact.html', 'contact.html', 'Contact · AfroBot', 'Write to AfroBot at info@afrobot.org or send the interest form.', '/contact', ''],
   ['privacy.html', 'privacy.html', 'Privacy · AfroBot', 'What the AfroBot interest form collects.', '/privacy', ''],
-  ['terms.html', 'terms.html', 'Terms · AfroBot', 'AfroBot is not affiliated with FIRST.', '/terms', ''],
+  ['terms.html', 'terms.html', 'Terms · AfroBot', 'No session is open for registration from this site.', '/terms', ''],
   ['child-safety.html', 'child-safety.html', 'Child safety · AfroBot', 'Children take part through a parent or guardian.', '/child-safety', ''],
   ['accessibility.html', 'accessibility.html', 'Accessibility · AfroBot', 'AfroBot aims for WCAG 2.2 AA. Report a barrier to info@afrobot.org.', '/accessibility', ''],
   ['volunteer.html', 'volunteer.html', 'Volunteer · AfroBot', 'Mentor and volunteer inquiries. Screening is required before working with students.', '/volunteer', ''],

@@ -30,7 +30,7 @@ In order, after the header:
 1. Headline and a short description of AfroBot
 2. Audience cards: For Parents, For Community Leaders, For Partners
 3. What happened in McKinney in 2024, with the original photograph
-4. Keeping the cost within reach, with the $10 goal
+4. Affordable sessions, with the $100 participation goal
 5. One note that sessions are not open
 6. The existing interest form
 7. Footer

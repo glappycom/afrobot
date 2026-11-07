@@ -7,7 +7,7 @@
 | Type | Public Sans, self-hosted WOFF2 | One sans. Headlines are heavy. Body is at least 18px |
 | Ink | `#142033` | Text on white. About 16:1 |
 | Orange | `#B9380F` | Buttons, links, and the call-to-action band. White text on it is about 5.8:1. Hover is `#8C2A0A` |
-| Blue | `#1F4E89` | Small labels only, such as ages. About 8.4:1 on white |
+| Orange | `#B9380F` | The only accent, including age labels and the price underline. About 5.9:1 on white |
 | White | `#FFFFFF` | Page background |
 | Danger | `#9A3412` | Form errors |
 
@@ -25,7 +25,7 @@ The homepage is short. Headline: “A place for kids to build robots and keep as
 
 Audience cards sit near the top: For Parents, For Community Leaders, For Partners.
 
-“What happened in McKinney in 2024” uses the original build-day photograph and only facts already in the repo. “Keeping the cost within reach” calls $10 a goal, not a price. One status note covers every program. Do not repeat “Coming soon” on each card.
+“McKinney Build Day” uses facts already in the repo. “Affordable sessions” states a $100 participation goal. Do not say what the $100 covers. The homepage status is “Dates coming soon,” once, beside the updates button.
 
 Do not publish the scaffolding lines “This page does not invent a statistic…”, “That line is a direction, not a promise”, or “This section has no counts and no percentages.” Do not keep an empty “Success Is Measured in Opportunity” section.
 
@@ -33,11 +33,11 @@ The McKinney photograph is the original, served as AVIF and WebP with width and 
 
 ## Voice
 
-Plain and specific. Say when something is not open, not affiliated, or not a promise. Do not use a statistic, a date, a scholarship, a partner logo, or a dollar figure unless this plan allows it. The only dollar figure allowed on the marketing pages is the $10 workshop goal, in a sentence that calls it a goal.
+Plain and specific. Say when something is not open, not affiliated, or not a promise. Do not use a statistic, a date, a scholarship, a partner logo, or a dollar figure unless this plan allows it. The only dollar figure allowed on the marketing pages is the $100 participation goal, in a sentence that calls it a goal.
 
 Do not claim that gifts are tax-deductible. Call giving a sponsorship inquiry.
 
-Do not name UT Dallas, WhalesBot, K-Scale, Zeroth, LEGO, NSBE, venture firms, or universities. Do not treat FIRST as a partner. Do not use Disney or Baymax imagery or names.
+Do not name UT Dallas, WhalesBot, K-Scale, Zeroth, LEGO, NSBE, venture firms, universities, or a competition brand. Do not use Disney or Baymax imagery or names.
 
 ## Content states
 

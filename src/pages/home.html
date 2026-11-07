@@ -9,11 +9,11 @@
     </div>
     <div class="hero__shade" aria-hidden="true"></div>
     <div class="hero__panel">
-      <h1 class="display">A place for kids to build robots and keep asking questions.</h1>
-      <p class="lead">AfroBot is hands-on robotics and AI for kids.</p>
+      <h1 class="display">Build robots. Ask questions.</h1>
+      <p class="lead">Hands-on robotics and AI for kids.</p>
       <div class="hero__actions">
         <a class="btn btn--clay" href="#register" data-intent="updates">Get updates</a>
-        <a class="btn btn--inverse" href="#register" data-intent="support">Support AfroBot</a>
+        <p class="hero__status">Dates coming soon</p>
       </div>
     </div>
   </div>
@@ -25,7 +25,11 @@
     <div class="audiences">
       <article class="audience-card" id="parents">
         <div class="audience-card__photo">
-          <img src="assets/photos/mckinney-build-day-2024.webp" alt="A big group of kids and mentors pose with the robots they built, three robots on the floor in front" width="1800" height="1350" loading="lazy" decoding="async">
+          <picture>
+            <source srcset="assets/photos/bamenda-classroom-laptops.avif" type="image/avif">
+            <source srcset="assets/photos/bamenda-classroom-laptops.webp" type="image/webp">
+            <img src="assets/photos/bamenda-classroom-laptops.jpg" alt="Children working at laptops in a classroom with a projected lesson" width="980" height="735" loading="lazy" decoding="async">
+          </picture>
         </div>
         <div class="audience-card__body">
           <h3>For Parents</h3>
@@ -34,7 +38,11 @@
       </article>
       <article class="audience-card" id="leaders">
         <div class="audience-card__photo">
-          <img src="assets/photos/mckinney-ai-track-2024.webp" alt="Kids at tables with their robots while a presenter teaches at a screen" width="1200" height="900" loading="lazy" decoding="async">
+          <picture>
+            <source srcset="assets/photos/bamenda-circuits.avif" type="image/avif">
+            <source srcset="assets/photos/bamenda-circuits.webp" type="image/webp">
+            <img src="assets/photos/bamenda-circuits.jpg" alt="Children gathered around a hands-on electronics activity" width="980" height="735" loading="lazy" decoding="async">
+          </picture>
         </div>
         <div class="audience-card__body">
           <h3>For Community Leaders</h3>
@@ -42,71 +50,82 @@
         </div>
       </article>
       <article class="audience-card" id="partners">
-        <div class="audience-card__photo audience-card__photo--robots">
-          <img src="assets/photos/mckinney-build-day-2024.webp" alt="Three robots sit on the floor in front of the group at the McKinney build day" width="1800" height="1350" loading="lazy" decoding="async">
+        <div class="audience-card__photo">
+          <picture>
+            <source srcset="assets/photos/bamenda-robotics-build.avif" type="image/avif">
+            <source srcset="assets/photos/bamenda-robotics-build.webp" type="image/webp">
+            <img src="assets/photos/bamenda-robotics-build.jpg" alt="Overhead view of a team assembling robotics components" width="980" height="735" loading="lazy" decoding="async">
+          </picture>
         </div>
         <div class="audience-card__body">
           <h3>For Partners</h3>
-          <a class="link" href="#register" data-intent="support">Talk about supporting AfroBot</a>
+          <a class="link" href="#register" data-intent="support">Discuss sponsorship</a>
         </div>
       </article>
     </div>
   </div>
 </section>
 
-<section class="section band-quiet" id="mckinney" aria-labelledby="mckinney-title">
-  <div class="container story">
-    <figure class="photo">
-      <div class="photo__img photo__img--real ratio-4x3">
-        <img src="assets/photos/mckinney-ai-track-2024.jpg" alt="Kids at tables with their robots while a presenter teaches at a screen" width="1200" height="900" loading="lazy" decoding="async">
-      </div>
-    </figure>
-    <div class="story__copy">
-      <h2 id="mckinney-title" class="h1">What happened in McKinney in 2024</h2>
-      <p>An AfroBot program was held in McKinney, Texas, in 2024.</p>
-      <p><a class="link" href="events.html">See the 2024 photos and clip</a></p>
+<section class="section band-quiet" id="sessions" aria-labelledby="sessions-title">
+  <div class="container">
+    <h2 id="sessions-title" class="h1">Planned sessions</h2>
+    <p>Discover, Build, Innovate, Compete, and Advance.</p>
+    <div class="card-grid card-grid--page gap-top">
+      <article class="info-card" id="discover">
+        <p class="info-card__meta">Suggested ages 5–8</p>
+        <h3><a href="programs.html#discover">Discover</a></h3>
+        <p>Playful building and simple machines, with an adult close by.</p>
+      </article>
+      <article class="info-card" id="build">
+        <p class="info-card__meta">Suggested ages 9–12</p>
+        <h3><a href="programs.html#build">Build</a></h3>
+        <p>A longer project: design something, make it, and test it with a team.</p>
+      </article>
+      <article class="info-card" id="innovate">
+        <p class="info-card__meta">Suggested ages 12–15</p>
+        <h3><a href="programs.html#innovate">Innovate</a></h3>
+        <p>Harder problems, including how AI tools are used and how a team explains its choices.</p>
+      </article>
+      <article class="info-card" id="compete">
+        <h3><a href="programs.html#compete">Compete</a></h3>
+        <p>Practice toward competitions.</p>
+      </article>
+      <article class="info-card" id="advance">
+        <p class="info-card__meta">Suggested ages 15–18</p>
+        <h3><a href="programs.html#advance">Advance</a></h3>
+        <p>Practice and guidance toward further learning.</p>
+      </article>
     </div>
+  </div>
+</section>
+
+<section class="section" id="costs" aria-labelledby="cost-title">
+  <div class="container cost-block">
+    <h2 id="cost-title" class="h1">Affordable sessions</h2>
+    <p>We're working toward a $100 participation goal.</p>
+    <p class="cost-block__action"><a class="btn btn--line" href="#register" data-intent="assistance">Ask about financial assistance</a></p>
+  </div>
+</section>
+
+<section class="section band-quiet" id="mckinney" aria-labelledby="mckinney-title">
+  <div class="container">
+    <h2 id="mckinney-title" class="h1">McKinney Build Day</h2>
+    <p>Kids and mentors worked with robots in McKinney, Texas, in 2024.</p>
+    <p class="gap-top"><a class="link" href="events.html">See the 2024 photos and clip</a></p>
   </div>
 </section>
 
 <section class="section" id="places" aria-labelledby="places-title">
   <div class="container">
-    <h2 id="places-title" class="h1">AfroBot in the US and Africa</h2>
-    <p class="places__lead">Past programs in Texas, Cameroon, and Nigeria.</p>
+    <h2 id="places-title" class="h1">From the program</h2>
     <div class="place-grid">
-      <figure>
-        <picture>
-          <source srcset="assets/photos/mckinney-build-day-2024.avif" type="image/avif">
-          <source srcset="assets/photos/mckinney-build-day-2024.webp" type="image/webp">
-          <img src="assets/photos/mckinney-build-day-2024.jpg" alt="A big group of kids and mentors pose with the robots they built, three robots on the floor in front" width="1800" height="1350" loading="lazy" decoding="async">
-        </picture>
-      </figure>
-      <figure>
-        <picture>
-          <source srcset="assets/photos/bamenda-robotics-build.avif" type="image/avif">
-          <source srcset="assets/photos/bamenda-robotics-build.webp" type="image/webp">
-          <img src="assets/photos/bamenda-robotics-build.jpg" alt="Overhead view of a team assembling robotics components" width="980" height="735" loading="lazy" decoding="async">
-        </picture>
-      </figure>
       <figure>
         <picture>
           <source srcset="assets/photos/bamenda-robotics-kit.avif" type="image/avif">
           <source srcset="assets/photos/bamenda-robotics-kit.webp" type="image/webp">
           <img src="assets/photos/bamenda-robotics-kit.jpg" alt="A small group studying instructions beside a robotics kit" width="980" height="735" loading="lazy" decoding="async">
         </picture>
-      </figure>
-      <figure>
-        <picture>
-          <source srcset="assets/photos/mckinney-ai-track-2024.webp" type="image/webp">
-          <img src="assets/photos/mckinney-ai-track-2024.jpg" alt="Kids at tables with their robots while a presenter teaches at a screen" width="1200" height="900" loading="lazy" decoding="async">
-        </picture>
-      </figure>
-      <figure>
-        <picture>
-          <source srcset="assets/photos/bamenda-circuits.avif" type="image/avif">
-          <source srcset="assets/photos/bamenda-circuits.webp" type="image/webp">
-          <img src="assets/photos/bamenda-circuits.jpg" alt="Children gathered around a hands-on electronics activity" width="980" height="735" loading="lazy" decoding="async">
-        </picture>
+        <figcaption>Students study a robotics kit.</figcaption>
       </figure>
       <figure>
         <picture>
@@ -114,20 +133,7 @@
           <source srcset="assets/photos/bamenda-coding-desktop.webp" type="image/webp">
           <img src="assets/photos/bamenda-coding-desktop.jpg" alt="Two children at a desktop with a block-coding screen" width="980" height="735" loading="lazy" decoding="async">
         </picture>
-      </figure>
-      <figure>
-        <picture>
-          <source srcset="assets/photos/bamenda-desktop-focus.avif" type="image/avif">
-          <source srcset="assets/photos/bamenda-desktop-focus.webp" type="image/webp">
-          <img src="assets/photos/bamenda-desktop-focus.jpg" alt="Children focused on a desktop screen" width="980" height="735" loading="lazy" decoding="async">
-        </picture>
-      </figure>
-      <figure>
-        <picture>
-          <source srcset="assets/photos/bamenda-class-celebration.avif" type="image/avif">
-          <source srcset="assets/photos/bamenda-class-celebration.webp" type="image/webp">
-          <img src="assets/photos/bamenda-class-celebration.jpg" alt="A classroom group in white lab coats" width="980" height="735" loading="lazy" decoding="async">
-        </picture>
+        <figcaption>Students code at a desktop.</figcaption>
       </figure>
       <figure>
         <picture>
@@ -135,6 +141,7 @@
           <source srcset="assets/photos/bamenda-lab-coats.webp" type="image/webp">
           <img src="assets/photos/bamenda-lab-coats.jpg" alt="An outdoor group in white lab coats" width="980" height="735" loading="lazy" decoding="async">
         </picture>
+        <figcaption>Students meet outdoors.</figcaption>
       </figure>
     </div>
   </div>
@@ -150,102 +157,10 @@
   </div>
 </section>
 
-<section class="section" id="costs" aria-labelledby="cost-title">
-  <div class="container cost-block">
-    <h2 id="cost-title" class="h1">Keeping the cost within reach</h2>
-    <div class="price-goal">
-      <p class="price-goal__n"><span class="mark">$10</span> goal</p>
-    </div>
-    <p class="cost-block__action"><a class="btn btn--line" href="#register" data-intent="assistance">Ask about financial assistance</a></p>
-  </div>
-</section>
-
-<section class="section band-quiet" id="sessions" aria-labelledby="sessions-title">
-  <div class="container">
-    <div class="status-note">
-      <h2 id="sessions-title">Sessions are not open yet</h2>
-      <p>Discover, Build, Innovate, Compete, and Advance are names for sessions we are preparing.</p>
-    </div>
-    <div class="card-grid card-grid--photos">
-      <article class="info-card info-card--photo">
-        <div class="info-card__photo">
-          <picture>
-            <source srcset="assets/photos/bamenda-classroom-laptops.avif" type="image/avif">
-            <source srcset="assets/photos/bamenda-classroom-laptops.webp" type="image/webp">
-            <img src="assets/photos/bamenda-classroom-laptops.jpg" alt="Children working at laptops in a classroom with a projected lesson" width="980" height="735" loading="lazy" decoding="async">
-          </picture>
-        </div>
-        <div class="info-card__body">
-          <p class="info-card__meta">Suggested ages 5–8</p>
-          <h3><a href="programs.html#discover">Discover</a></h3>
-          <p>Playful building and simple machines, with an adult close by.</p>
-        </div>
-      </article>
-      <article class="info-card info-card--photo">
-        <div class="info-card__photo">
-          <picture>
-            <source srcset="assets/photos/bamenda-robotics-build.avif" type="image/avif">
-            <source srcset="assets/photos/bamenda-robotics-build.webp" type="image/webp">
-            <img src="assets/photos/bamenda-robotics-build.jpg" alt="Overhead view of a team assembling robotics components" width="980" height="735" loading="lazy" decoding="async">
-          </picture>
-        </div>
-        <div class="info-card__body">
-          <p class="info-card__meta">Suggested ages 9–12</p>
-          <h3><a href="programs.html#build">Build</a></h3>
-          <p>A longer project: design something, make it, and test it with a team.</p>
-        </div>
-      </article>
-      <article class="info-card info-card--photo">
-        <div class="info-card__photo">
-          <picture>
-            <source srcset="assets/photos/bamenda-coding-desktop.avif" type="image/avif">
-            <source srcset="assets/photos/bamenda-coding-desktop.webp" type="image/webp">
-            <img src="assets/photos/bamenda-coding-desktop.jpg" alt="Two children at a desktop with a block-coding screen" width="980" height="735" loading="lazy" decoding="async">
-          </picture>
-        </div>
-        <div class="info-card__body">
-          <p class="info-card__meta">Suggested ages 12–15</p>
-          <h3><a href="programs.html#innovate">Innovate</a></h3>
-          <p>Harder problems, including how AI tools are used and how a team explains its choices.</p>
-        </div>
-      </article>
-      <article class="info-card info-card--photo">
-        <div class="info-card__photo">
-          <picture>
-            <source srcset="assets/photos/bamenda-robotics-kit.avif" type="image/avif">
-            <source srcset="assets/photos/bamenda-robotics-kit.webp" type="image/webp">
-            <img src="assets/photos/bamenda-robotics-kit.jpg" alt="A small group studying instructions beside a robotics kit" width="980" height="735" loading="lazy" decoding="async">
-          </picture>
-        </div>
-        <div class="info-card__body">
-          <h3><a href="programs.html#compete">Compete</a></h3>
-          <p>Practice toward competitions.</p>
-        </div>
-      </article>
-      <article class="info-card info-card--photo">
-        <div class="info-card__photo">
-          <picture>
-            <source srcset="assets/photos/bamenda-desktop-focus.avif" type="image/avif">
-            <source srcset="assets/photos/bamenda-desktop-focus.webp" type="image/webp">
-            <img src="assets/photos/bamenda-desktop-focus.jpg" alt="Children focused on a desktop screen" width="980" height="735" loading="lazy" decoding="async">
-          </picture>
-        </div>
-        <div class="info-card__body">
-          <p class="info-card__meta">Suggested ages 15–18</p>
-          <h3><a href="programs.html#advance">Advance</a></h3>
-          <p>Practice and guidance toward further learning.</p>
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
-
 <section class="cta-band" aria-labelledby="cta-title">
   <div class="container cta-band__inner">
-    <div>
-      <h2 id="cta-title">Want to hear when a session is real?</h2>
-    </div>
-    <a class="btn btn--inverse" href="#register" data-intent="updates">Get session updates</a>
+    <h2 id="cta-title">Get session updates.</h2>
+    <a class="btn btn--inverse" href="#register" data-intent="updates">Get updates</a>
   </div>
 </section>
 

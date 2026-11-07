@@ -22,19 +22,21 @@ if (serverRoles.length !== 5) fail('Could not read server roles');
 if (serverRoles.includes('Student')) fail('Student is still a server role');
 
 const requiredHome = [
-  'A place for kids to build robots and keep asking questions.',
-  'hands-on robotics and AI for kids',
-  'Get session updates',
+  'Build robots. Ask questions.',
+  'Hands-on robotics and AI for kids.',
+  'Dates coming soon',
+  'Get updates',
   'For Parents',
   'For Community Leaders',
   'Ask about hosting',
   'For Partners',
-  'Talk about supporting AfroBot',
-  'What happened in McKinney in 2024',
-  'Keeping the cost within reach',
-  '$10',
-  'goal',
-  'Sessions are not open yet',
+  'Discuss sponsorship',
+  'Planned sessions',
+  'McKinney Build Day',
+  'Kids and mentors worked with robots in McKinney, Texas, in 2024.',
+  'Affordable sessions',
+  '$100 participation goal',
+  'Get session updates',
   'Your name (adult)',
   'This form is for adults.',
 ];
@@ -89,9 +91,9 @@ for (const name of files) {
   }
   for (const [re, label] of banned) if (re.test(html)) fail(name + ' contains banned pattern ' + label);
   const money = html.match(/\$\d[\d,]*/g) || [];
-  for (const amount of money) if (amount !== '$10') fail(name + ' unexpected amount ' + amount);
-  if (money.includes('$10') && !/goal/i.test(html)) fail(name + ' uses $10 without calling it a goal');
-  if (/\bFIRST\b/.test(html) && !/not affiliated with FIRST/.test(html)) fail(name + ' mentions FIRST without the non-affiliation sentence');
+  for (const amount of money) if (amount !== '$100') fail(name + ' unexpected amount ' + amount);
+  if (money.includes('$100') && !/goal/i.test(html)) fail(name + ' uses $100 without calling it a goal');
+  if (/\bFIRST\b/.test(html)) fail(name + ' names FIRST');
   if (/scholarship/i.test(html) && !/does not guarantee|do not guarantee|no guarantee|not a scholarship|nothing here promises/i.test(html)) {
     fail(name + ' mentions scholarships without a non-guarantee');
   }
@@ -120,11 +122,12 @@ const home = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const programs = fs.readFileSync(path.join(root, 'programs.html'), 'utf8');
 for (const line of requiredHome) if (!home.includes(line)) fail('homepage missing: ' + line);
 for (const line of retiredCopy) if (home.includes(line) || programs.includes(line)) fail('retired copy still present: ' + line);
-if (/coming soon/i.test(home) || /coming soon/i.test(programs)) fail('Home or Programs still says coming soon');
+const homeStatus = home.replaceAll('Dates coming soon', '');
+if (/coming soon/i.test(homeStatus) || /coming soon/i.test(programs)) fail('Home or Programs still says coming soon');
 const mainNav = home.match(/<nav class="nav__links"[\s\S]*?<\/nav>/);
 if (!mainNav) fail('main nav missing');
 else {
-  for (const label of ['For Parents', 'For Community Leaders', 'For Partners', 'About']) {
+  for (const label of ['Programs', 'Events', 'About']) {
     if (!mainNav[0].includes(label)) fail('nav missing ' + label);
   }
   if (mainNav[0].includes('partners.html') || mainNav[0].includes('social.html')) fail('empty directory is in the primary nav');

@@ -10,13 +10,13 @@ The 2024 photos show children. They were already published. Phase 1 does not add
 
 ## False certainty
 
-The baseline page listed proposed 2027–28 dates, fees, awards, and scholarships. Republishing them as design would keep the same harm: a family could think registration is real. Phase 1 deletes that calendar and those prices. The $10 workshop may appear only as a goal.
+The baseline page listed proposed 2027–28 dates, fees, awards, and scholarships. Republishing them as design would keep the same harm: a family could think registration is real. Phase 1 deletes that calendar and those prices. The $100 participation goal may appear only as a goal.
 
-Risk: a later edit pastes the old season table back. Mitigation: `npm run site:lint` fails on 2027/2028, on dollar amounts other than `$10`, on percents, and on `$10` if the word “goal” is missing.
+Risk: a later edit pastes the old season table back. Mitigation: `npm run site:lint` fails on 2027/2028, on dollar amounts other than `$100`, on percents, and on `$100` if the word “goal” is missing.
 
 ## Partners, trademarks, and IP
 
-Naming a company implies an agreement. The public site must not list UT Dallas, WhalesBot, FIRST as a partner, K-Scale, Zeroth, LEGO, NSBE, venture firms, or university logos. FIRST Tech Challenge may be mentioned only with the sentence that AfroBot is not affiliated with FIRST. Lint requires that sentence on any HTML file that says FIRST.
+Naming a company implies an agreement. The public site must not list UT Dallas, WhalesBot, K-Scale, Zeroth, LEGO, NSBE, venture firms, or university logos. Do not name a competition brand. Lint fails if an HTML file names one.
 
 WAAW Foundation appears only as Dr. Okorafor’s affiliation. Glappy Foundation appears as the organization that runs AfroBot, not as a sponsor logo.
 

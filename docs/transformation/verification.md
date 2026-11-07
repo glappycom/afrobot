@@ -26,7 +26,7 @@ Unchanged on purpose:
 
 ## What was tested
 
-- `npm run site:build` writes the sixteen pages. `npm run site:lint` passed: one `h1` per page, required homepage lines, form fields match the API roles, internal links resolve, and the banned-claim checks (partners, tax status, street address, unconfirmed years, percentages, prices other than the `$10` goal) are clean. `node --check` passed on the site script, the API files, and the build and lint scripts.
+- `npm run site:build` writes the sixteen pages. `npm run site:lint` passed: one `h1` per page, required homepage lines, form fields match the API roles, internal links resolve, and the banned-claim checks (partners, tax status, street address, unconfirmed years, percentages, prices other than the `$100` participation goal) are clean. `node --check` passed on the site script, the API files, and the build and lint scripts.
 - Every page returned HTTP 200 from a local static server (`python3 -m http.server`).
 - Desktop (1440) and mobile (390) screenshots of the homepage. The wide layout shows the five stages in a row. The narrow layout stacks them on a vertical rail. Header actions are Join the Community and Sponsor a Student. The mobile menu lists the eight destinations plus both actions, and Escape closes it (checked in the browser debugger).
 - Interest form, against the local server so nothing was written to the production Blob store:
@@ -35,7 +35,7 @@ Unchanged on purpose:
   - “Ask about financial assistance” sets role to Parent/guardian, explains that no financial documents are wanted, and does not add a file upload.
   - Mentor sets Volunteer/mentor and the screening note. Sponsor sets Sponsor/partner.
   - A fully filled submit posts to `/api/interest` and, with no local function running, shows the existing failure message and does not mark the form sent.
-- A recorded browser pass scrolled the homepage (photo, journey, program cards, the $10 goal box, the FIRST non-affiliation section, the final call to action), repeated the assistance note and the empty-form errors, opened Child Safety and Privacy, and opened the hamburger menu at about 390px. No overlapping type or missing headline showed up in that pass.
+- A recorded browser pass scrolled the homepage (photo, journey, program cards, the $100 participation goal, the final call to action), repeated the assistance note and the empty-form errors, opened Child Safety and Privacy, and opened the hamburger menu at about 390px. No overlapping type or missing headline showed up in that pass.
 
 Contrast used for new text was checked in the linter: ink on steel about 15.6:1, ink-60 on steel about 5.4:1, clay text `#AD3210` on steel about 5.3:1, white on deep clay about 5.6:1. Brand clay `#E2461E` is used for rules and large marks, not for small text. `--ink-40` is not used for new text on steel.
 
