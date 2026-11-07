@@ -24,7 +24,7 @@ if (serverRoles.includes('Student')) fail('Student is still a server role');
 const requiredHome = [
   'A place for kids to build robots and keep asking questions.',
   'hands-on robotics and AI for kids',
-  'community-run, under Glappy Foundation',
+  'It is community-run.',
   'Future sessions are being prepared.',
   'Get session updates',
   'For Parents',

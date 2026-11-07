@@ -18,14 +18,13 @@ const orgJson = `<script type="application/ld+json">
   "name": "AfroBot",
   "url": "https://afrobot.org/",
   "email": "info@afrobot.org",
-  "description": "Kids-only youth robotics and AI program of Glappy Foundation.",
-  "parentOrganization": { "@type": "Organization", "name": "Glappy Foundation" }
+  "description": "Kids-only youth robotics and AI program."
 }
 </script>`;
 
 const pages = [
-  ['index.html', 'home.html', 'AfroBot · A place for kids to build robots and keep asking questions', 'AfroBot is hands-on robotics and AI for kids. It is community-run, under Glappy Foundation. Future sessions are being prepared.', '/', orgJson],
-  ['about.html', 'about.html', 'About · AfroBot', 'AfroBot is the kids-only youth robotics and AI program of Glappy Foundation, founded by Dr. Unoma Okorafor and Dr. Russell Avre.', '/about', ''],
+  ['index.html', 'home.html', 'AfroBot · A place for kids to build robots and keep asking questions', 'AfroBot is hands-on robotics and AI for kids. It is community-run. Future sessions are being prepared.', '/', orgJson],
+  ['about.html', 'about.html', 'About · AfroBot', 'AfroBot is a kids-only youth robotics and AI program, founded by Dr. Unoma Okorafor and Dr. Russell Avre.', '/about', ''],
   ['programs.html', 'programs.html', 'Programs · AfroBot', 'Discover, Build, Innovate, Compete, and Advance. Age bands are guidance. Registration is not open yet.', '/programs', ''],
   ['competitions.html', 'competitions.html', 'Competitions · AfroBot', 'AfroBot aims to prepare students for established competitions such as FIRST Tech Challenge. AfroBot is not affiliated with FIRST.', '/competitions', ''],
   ['university-pathways.html', 'university-pathways.html', 'University Pathways · AfroBot', 'Further learning for older students. AfroBot does not guarantee admission or scholarships, and no universities are listed.', '/university-pathways', ''],

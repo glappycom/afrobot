@@ -21,7 +21,7 @@ Buttons and header actions are at least 48px tall. The build-day video does not 
 
 ## Homepage copy
 
-The homepage is short. Headline: “A place for kids to build robots and keep asking questions.” Say what AfroBot is (hands-on robotics and AI for kids, community-run, under Glappy Foundation) and that future sessions are being prepared. Primary action for parents: “Get session updates.” Secondary: “Ask about hosting” and “Talk about supporting AfroBot.”
+The homepage is short. Headline: “A place for kids to build robots and keep asking questions.” Say what AfroBot is (hands-on robotics and AI for kids, community-run) and that future sessions are being prepared. Primary action for parents: “Get session updates.” Secondary: “Ask about hosting” and “Talk about supporting AfroBot.”
 
 Audience cards sit near the top: For Parents, For Community Leaders, For Partners.
 
