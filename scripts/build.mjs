@@ -50,6 +50,7 @@ for (const [out, src, title, description, urlPath, headExtra] of pages) {
   content = content.replaceAll('{{videos-home}}', videosHome);
   content = content.replaceAll('{{videos}}', videosAll);
   content = content.replace(/\{\{register(?::([a-z]+))?\}\}/g, (_, intent) => register.replaceAll('{{default-intent}}', intent || ''));
+  if (out === 'volunteer.html') content = content.replace('action="/api/interest"', 'action="/api/volunteer"');
   if (content.includes('{{')) throw new Error('Unresolved placeholder in ' + src);
   const html = layout
     .replaceAll('{{TITLE}}', esc(title))

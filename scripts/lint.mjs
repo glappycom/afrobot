@@ -110,7 +110,8 @@ for (const name of files) {
   if (html.includes('id="interest"')) {
     const options = [...html.matchAll(/<option>([^<]+)<\/option>/g)].map((m) => m[1]);
     if (options.join('|') !== serverRoles.join('|')) fail(name + ' form roles do not match the API');
-    for (const field of ['name="name"', 'name="email"', 'name="role"', 'name="city"', 'name="organization"', 'name="kids"', 'name="message"', 'name="consent"', 'name="website"', 'action="/api/interest"']) {
+    const action = name === 'volunteer.html' ? 'action="/api/volunteer"' : 'action="/api/interest"';
+    for (const field of ['name="name"', 'name="email"', 'name="role"', 'name="city"', 'name="organization"', 'name="kids"', 'name="message"', 'name="consent"', 'name="website"', action]) {
       if (!html.includes(field)) fail(name + ' form missing ' + field);
     }
   }
@@ -160,7 +161,7 @@ for (const [fg, bg, min] of [['#142033', '#FFFFFF', 4.5], ['#3E4C5E', '#FFFFFF',
   if (ratio < min) fail('contrast ' + fg + ' on ' + bg + ' is ' + ratio.toFixed(2));
 }
 
-for (const file of ['script.js', 'api/interest.js', 'api/_lib.js', 'api/interest-export.js', 'scripts/build.mjs', 'scripts/lint.mjs']) {
+for (const file of ['script.js', 'api/interest.js', 'api/volunteer.js', 'api/_lib.js', 'api/interest-export.js', 'scripts/build.mjs', 'scripts/lint.mjs']) {
   const result = spawnSync(process.execPath, ['--check', path.join(root, file)], { encoding: 'utf8' });
   if (result.status !== 0) fail(file + ' failed node --check\n' + result.stderr);
 }
