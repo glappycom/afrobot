@@ -672,7 +672,8 @@ h3, .audience-card h3, .info-card h2, .info-card h3 {
 }
 .video-play:focus-visible { outline: 3px solid #fff; outline-offset: -8px; }
 .video-facade iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-.video-card h3 { margin: 0; padding: 16px 20px 20px; font-size: 1.25rem; line-height: 1.3; }
+.video-card h2, .video-card h3 { margin: 0; padding: 16px 20px 20px; font-size: 1.25rem; line-height: 1.3; }
+.video-feature { max-width: 40rem; }
 .info-card {
   display: flex;
   flex-direction: column;
