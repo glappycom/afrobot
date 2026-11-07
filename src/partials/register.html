@@ -2,9 +2,8 @@
   <div class="container">
     <div class="two two--reg">
       <div class="reg__text">
-        <p class="label">Register interest</p>
         <h2 class="h1">Tell us how you want to take part.</h2>
-        <p class="muted">Parents and guardians, schools, mentors, sponsors, and other adults are welcome. Students take part through a parent or guardian. We use this only to reply about AfroBot.</p>
+        <p class="muted">This form is for adults. Parents and guardians, community leaders, mentors, and partners can write. A student takes part through a parent or guardian. We use this only to reply about AfroBot.</p>
         <p class="form-context" id="form-context" role="status"></p>
         <p class="note">Fields marked <span aria-hidden="true">*</span><span class="sr">with an asterisk</span> are required.</p>
         <ul class="form-guard">
@@ -16,9 +15,9 @@
       </div>
       <form class="form" id="interest" action="/api/interest" method="post" novalidate>
         <div class="form__fields">
-          <label class="f f--half" for="if-name"><span>Name <i aria-hidden="true">*</i></span><input id="if-name" name="name" autocomplete="name" required maxlength="120" aria-describedby="if-name-err"><em class="f__err" id="if-name-err"></em></label>
+          <label class="f f--half" for="if-name"><span>Your name (adult) <i aria-hidden="true">*</i></span><input id="if-name" name="name" autocomplete="name" required maxlength="120" aria-describedby="if-name-err"><em class="f__err" id="if-name-err"></em></label>
           <label class="f f--half" for="if-email"><span>Email <i aria-hidden="true">*</i></span><input id="if-email" name="email" type="email" inputmode="email" autocomplete="email" required maxlength="200" aria-describedby="if-email-err"><em class="f__err" id="if-email-err"></em></label>
-          <label class="f f--half" for="role"><span>I am a <i aria-hidden="true">*</i></span><select id="role" name="role" required aria-describedby="role-err"><option value="" selected disabled>Choose one</option><option>Parent/guardian</option><option>Student</option><option>School/educator</option><option>Volunteer/mentor</option><option>Sponsor/partner</option><option>Other</option></select><em class="f__err" id="role-err"></em></label>
+          <label class="f f--half" for="role"><span>I am a <i aria-hidden="true">*</i></span><select id="role" name="role" required aria-describedby="role-err"><option value="" selected disabled>Choose one</option><option>Parent/guardian</option><option>School/educator</option><option>Volunteer/mentor</option><option>Sponsor/partner</option><option>Other</option></select><em class="f__err" id="role-err"></em></label>
           <label class="f f--half" for="if-city"><span>City and state <i aria-hidden="true">*</i></span><input id="if-city" name="city" autocomplete="address-level2" placeholder="City, ST" required maxlength="120" aria-describedby="if-city-err"><em class="f__err" id="if-city-err"></em></label>
           <label class="f f--half" for="if-org"><span>Organization <b>(optional)</b></span><input id="if-org" name="organization" autocomplete="organization" maxlength="160" placeholder="School, group or company"></label>
           <label class="f f--half" for="if-kids" id="if-kids-wrap" hidden><span>Number of kids and ages <b>(optional)</b></span><input id="if-kids" name="kids" maxlength="120" placeholder="Ages are enough, for example 8 and 11"></label>

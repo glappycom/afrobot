@@ -18,32 +18,35 @@ if (intentBlock) for (const m of intentBlock[1].matchAll(/^\s{4}([a-z]+):/gm)) i
 
 const roleBlock = lib.match(/ROLES = \[([^\]]+)\]/);
 const serverRoles = roleBlock ? [...roleBlock[1].matchAll(/'([^']+)'/g)].map((m) => m[1]) : [];
-if (serverRoles.length !== 6) fail('Could not read server roles');
+if (serverRoles.length !== 5) fail('Could not read server roles');
+if (serverRoles.includes('Student')) fail('Student is still a server role');
 
 const requiredHome = [
-  'Every Child Deserves a Chance to Build the Future.',
-  'Affordable robotics, AI, and engineering education that helps young people move from curiosity to creation, from local communities to recognized competitions, and from limited access to meaningful opportunity.',
-  'Join the AfroBot Community',
-  'Explore Programs',
-  'Sponsor a Student',
-  'Talent Is Everywhere. Opportunity Isn',
-  'From Curiosity to Opportunity',
-  'Find Your Starting Point',
-  'World-Class Opportunities. Community-Friendly Costs.',
-  'From Our Community to the Competition Stage.',
-  'The Journey Doesn',
-  'AfroBot helps students build more than robots. We help them build futures.',
-  'It Takes a Community to Build the Future.',
-  'Success Is Measured in Opportunity.',
-  'The Future Is Being Built.',
-  'Make Sure Every Child Has a Place in It.',
-  'Join AfroBot',
-  'Become a Mentor',
-  'Sponsor Opportunity',
-  'From Curiosity to Creation. From Community to the World.',
-  'Coming soon / register interest',
-  'not affiliated with FIRST',
+  'A place for kids to build robots and keep asking questions.',
+  'hands-on robotics and AI for kids',
+  'community-run, under Glappy Foundation',
+  'Future sessions are being prepared.',
+  'Get session updates',
+  'For Parents',
+  'For Community Leaders',
+  'Ask about hosting',
+  'For Partners',
+  'Talk about supporting AfroBot',
+  'What happened in McKinney in 2024',
+  'Keeping the cost within reach',
+  'A goal, not a price.',
+  'Sessions are not open yet',
+  'Your name (adult)',
   'The interest list is not team placement.',
+];
+
+const retiredCopy = [
+  'This page does not invent a statistic',
+  'That line is a direction, not a promise',
+  'This section has no counts and no percentages',
+  'Success Is Measured in Opportunity',
+  'World-Class Opportunities',
+  'Sponsor a Student',
 ];
 
 const banned = [
@@ -114,17 +117,35 @@ for (const name of files) {
 }
 
 const home = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+const programs = fs.readFileSync(path.join(root, 'programs.html'), 'utf8');
 for (const line of requiredHome) if (!home.includes(line)) fail('homepage missing: ' + line);
-for (const label of ['Home', 'About', 'Programs', 'Competitions', 'University Pathways', 'Community', 'Partners', 'Events']) {
-  if (!home.includes('>' + label + '<')) fail('nav missing ' + label);
+for (const line of retiredCopy) if (home.includes(line) || programs.includes(line)) fail('retired copy still present: ' + line);
+if (/coming soon/i.test(home) || /coming soon/i.test(programs)) fail('Home or Programs still says coming soon');
+const mainNav = home.match(/<nav class="nav__links"[\s\S]*?<\/nav>/);
+if (!mainNav) fail('main nav missing');
+else {
+  for (const label of ['For Parents', 'For Community Leaders', 'For Partners', 'About']) {
+    if (!mainNav[0].includes(label)) fail('nav missing ' + label);
+  }
+  if (mainNav[0].includes('partners.html') || mainNav[0].includes('social.html')) fail('empty directory is in the primary nav');
 }
-for (const label of ['Contact', 'Privacy', 'Terms', 'Child Safety', 'Accessibility', 'Volunteer', 'Partnership Inquiries', 'Social']) {
+if (!home.includes('>Get updates<')) fail('header CTA missing');
+for (const label of ['Contact', 'Privacy', 'Terms', 'Child Safety', 'Accessibility', 'Volunteer', 'Partnership Inquiries', 'Social', 'Discuss sponsorship', 'Partner list']) {
   if (!home.includes('>' + label + '<')) fail('footer missing ' + label);
 }
-if (!home.includes('Join the Community') || !home.includes('Sponsor a Student')) fail('header CTAs missing');
+if (home.includes('stickycta') || programs.includes('stickycta')) fail('sticky mobile bar is still in the page');
+if (home.includes('<option>Student</option>')) fail('Student role option is still on the form');
+if (home.includes('mckinney-build-day-2024-cutout')) fail('homepage still uses the group cutout');
+if (!home.includes('mckinney-build-day-2024.avif') || !home.includes('width="1800"') || !home.includes('height="1350"')) fail('homepage photo is missing avif or dimensions');
+const robots = fs.readFileSync(path.join(root, 'robots.txt'), 'utf8');
+const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
+if (!robots.includes('Sitemap: https://afrobot.org/sitemap.xml')) fail('robots.txt missing canonical sitemap');
+if (!sitemap.includes('https://afrobot.org/') || !sitemap.includes('https://afrobot.org/programs')) fail('sitemap missing canonical urls');
 
-const css = fs.readFileSync(path.join(root, 'components.css'), 'utf8');
-if (/color:\s*var\(--ink-40\)/.test(css)) fail('components.css uses ink-40 as text');
+const css = fs.readFileSync(path.join(root, 'components.css'), 'utf8') + fs.readFileSync(path.join(root, 'styles.css'), 'utf8') + fs.readFileSync(path.join(root, 'tokens.css'), 'utf8');
+if (/color:\s*var\(--ink-40\)/.test(fs.readFileSync(path.join(root, 'components.css'), 'utf8'))) fail('components.css uses ink-40 as text');
+if (!css.includes('Public Sans') || !css.includes('PublicSans-VF.woff2')) fail('Public Sans WOFF2 is not served');
+if (/url\(fonts\/Inter/.test(css) || /url\(fonts\/Outfit/.test(css)) fail('old body or display font is still requested');
 
 function lum(hex) {
   const c = hex.slice(1).match(/../g).map((x) => parseInt(x, 16) / 255).map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
@@ -134,7 +155,7 @@ function contrast(a, b) {
   const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x);
   return (hi + 0.05) / (lo + 0.05);
 }
-for (const [fg, bg, min] of [['#0E0F12', '#E6E8EA', 4.5], ['#5A5D66', '#E6E8EA', 4.5], ['#AD3210', '#E6E8EA', 4.5], ['#FFFFFF', '#BF3712', 4.5], ['#FFFFFF', '#0E0F12', 4.5], ['#D5D7DC', '#0E0F12', 4.5], ['#F2F3F5', '#0E0F12', 4.5]]) {
+for (const [fg, bg, min] of [['#17241F', '#FAF7F0', 4.5], ['#245442', '#FAF7F0', 4.5], ['#3D5249', '#FAF7F0', 4.5], ['#FFFFFF', '#245442', 4.5], ['#17241F', '#F3C95B', 4.5], ['#F3C95B', '#17241F', 4.5], ['#E4DDD0', '#17241F', 4.5], ['#FAF7F0', '#17241F', 4.5], ['#8C3414', '#FAF7F0', 4.5], ['#FFFFFF', '#1B3F32', 4.5]]) {
   const ratio = contrast(fg, bg);
   if (ratio < min) fail('contrast ' + fg + ' on ' + bg + ' is ' + ratio.toFixed(2));
 }

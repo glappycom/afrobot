@@ -1,48 +1,47 @@
-/* AfroBot design tokens.
-   Headings: Outfit Black (900). Body: Inter.
-   Text: Ink. Clay is an accent only (rules, focus, button fill, large marks).
-   The wordmark stays one colour: ink on light, reversed on ink. */
+/* AfroBot tokens. One sans: Public Sans. Ivory page, forest actions, gold only as a highlight behind dark text. */
 :root {
-  --ink: #0E0F12;
-  --ink-80: #2B2D33;
-  --ink-60: #5A5D66;
-  --ink-40: #8E9099; /* fails on steel; do not use for text on light backgrounds */
-  --line: #DCD6CC;
-  --line-dk: #2A2C31;
-  --clay: #E2461E;
-  --clay-dk: #B9350F;
-  --clay-strong: #BF3712;
-  --clay-strong-dk: #A32E0E;
-  --clay-text: #AD3210;
-  --clay-deep: #B4472B;
-  --bone: #F3EEE5;
-  --paper: #F8F5EF;
+  --ink: #17241F;
+  --ink-80: #24312C;
+  --ink-60: #3D5249;
+  --ink-40: #4A5E56; /* 6.5:1 on ivory; still not for text on the dark footer */
+  --line: #E4D9C8;
+  --line-dk: #2A3A34;
+  --clay: #245442;
+  --clay-dk: #1B3F32;
+  --clay-strong: #245442;
+  --clay-strong-dk: #1B3F32;
+  --clay-text: #245442;
+  --clay-deep: #1B3F32;
+  --gold: #F3C95B;
+  --danger: #8C3414;
+  --bone: #FFFDF8;
+  --paper: #FAF7F0;
   --white: #fff;
-  --steel: #E6E8EA;
-  --steel-card: #F1F2F4;
-  --on-ink: #FFFFFF;
-  --on-ink-soft: #D5D7DC;
-  --display: "Outfit", "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --text: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--display);
+  --steel: #FAF7F0;
+  --steel-card: #FFFDF8;
+  --on-ink: #FAF7F0;
+  --on-ink-soft: #E4DDD0;
+  --display: "Public Sans", ui-sans-serif, system-ui, sans-serif;
+  --text: "Public Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--text);
   --font-body: var(--text);
   --color-ink: var(--ink);
   --color-clay: var(--clay);
   --color-clay-text: var(--clay-text);
-  --t-12: .75rem;
-  --t-14: .875rem;
-  --t-16: 1rem;
-  --t-18: 1.125rem;
-  --t-22: 1.375rem;
-  --t-28: 1.75rem;
-  --t-h2: clamp(1.75rem, 2.4vw, 2.25rem);
-  --t-h1: clamp(2.25rem, 4.4vw, 4rem);
-  --t-display: clamp(3.25rem, 9.2vw, 9rem);
+  --t-12: 1.125rem;
+  --t-14: 1.125rem;
+  --t-16: 1.125rem;
+  --t-18: 1.25rem;
+  --t-22: 1.5rem;
+  --t-28: 1.85rem;
+  --t-h2: clamp(1.85rem, 2.6vw, 2.4rem);
+  --t-h1: clamp(2.15rem, 3.4vw, 3.15rem);
+  --t-display: clamp(2.6rem, 4.6vw, 4.15rem);
   --gutter: 24px;
   --margin: clamp(20px, 4vw, 56px);
-  --max: 1360px;
-  --s-section: clamp(96px, 12vw, 176px);
+  --max: 1180px;
+  --s-section: clamp(4.5rem, 8vw, 7.25rem);
   --ease: cubic-bezier(.2, .7, .2, 1);
-  --header-offset: 8.5rem;
-  --focus: var(--clay);
+  --header-offset: 5.75rem;
+  --focus: #17241F;
 }

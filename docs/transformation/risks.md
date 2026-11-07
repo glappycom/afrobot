@@ -2,7 +2,7 @@
 
 ## Children and privacy
 
-The program is for minors. The interest form still allows the role `Student` and a free-text “kids” field, because removing them would change the API contract in the same release as the redesign. Copy tells anyone under 18 to have a parent or guardian submit, and asks people not to send a full date of birth, a school ID, or financial documents.
+The program is for minors. The interest form is for adults: the name field is labeled “Your name (adult)” and the `Student` role is no longer accepted by the page or the API. A free-text “kids” field remains optional for parents and educators, and asks for ages rather than a full date of birth. Copy tells anyone under 18 to have a parent or guardian submit, and asks people not to send a school ID or financial documents.
 
 Risk: a child submits anyway, or a parent writes a full name and school in the message. Mitigation now: the note, the parent-managed student path, and private Blob storage. Residual risk: staff must treat submissions as confidential. Phase 3 cannot ship child profiles until privacy and safeguarding tests pass. Public profiles are out of scope permanently.
 

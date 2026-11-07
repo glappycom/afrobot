@@ -56,6 +56,9 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
   document.querySelectorAll('[data-sponsor]').forEach(a => a.addEventListener('click', () => { role.value = 'Sponsor/partner'; syncKids(); }));
   const INTENTS = {
     join: { note: 'Joining the interest list is not enrollment and not team placement.' },
+    updates: { role: 'Parent/guardian', message: 'Please send me updates when a session is being planned.', note: 'This asks for session updates. It is not enrollment, and it does not hold a seat.' },
+    host: { role: 'Other', message: 'I would like to ask about hosting a session in our community.', note: 'This is a hosting question. It does not put a date on the calendar.' },
+    support: { role: 'Sponsor/partner', message: 'I would like to talk about supporting AfroBot.', note: 'This is a conversation about support. It is not a processed donation, and this form does not confirm tax deductibility.' },
     parent: { role: 'Parent/guardian', message: 'Parent or guardian inquiry.', note: 'You are writing as a parent or guardian. Ages are enough. Please do not add a full date of birth or a school ID.' },
     student: { role: 'Parent/guardian', message: 'Parent or guardian submitting interest for a student. Participation is parent-managed.', note: 'Students take part through a parent or guardian. We do not create public profiles for children. If you are under 18, please ask a parent or guardian to send this.' },
     mentor: { role: 'Volunteer/mentor', message: 'Mentor or volunteer inquiry. I understand screening is required before working with students.', note: 'Mentors and volunteers are screened before they work with students. Sending this form starts a conversation. It is not an approval.' },
@@ -84,9 +87,6 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
     }
     if (note) note.textContent = spec.note || '';
   };
-  role.addEventListener('change', () => {
-    if (role.value === 'Student' && note) note.textContent = 'If you are under 18, please ask a parent or guardian to submit this form. Do not include a full date of birth or school ID.';
-  });
   document.querySelectorAll('[data-intent]').forEach((a) => a.addEventListener('click', () => applyIntent(a.dataset.intent)));
   const preset = document.getElementById('register')?.dataset.defaultIntent;
   if (Q.get('intent')) applyIntent(Q.get('intent'));
@@ -156,21 +156,6 @@ if (FONT) document.body.dataset.font = FONT;
   const open = () => { const t = location.hash && document.querySelector(location.hash); if (t && t.tagName === 'DETAILS') t.open = true; };
   addEventListener('hashchange', open); open();
   document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', () => { const t = document.querySelector(a.getAttribute('href')); if (t && t.tagName === 'DETAILS') t.open = true; }));
-})();
-
-// ---- v18: sticky "Register interest" on small screens; hidden at the top (hero CTA visible) and near the form/footer
-(() => {
-  const btn = document.querySelector('.stickycta'); if (!btn) return;
-  if (document.getElementById('register')) btn.setAttribute('href', '#register');
-  const heroCta = document.querySelector('.hero .actions'), stops = [document.getElementById('register'), document.querySelector('.footer')];
-  const seen = new Map();
-  const update = () => {
-    const show = matchMedia('(max-width: 900px)').matches && !seen.get(heroCta) && !stops.some(s => seen.get(s)) && scrollY > 200;
-    btn.classList.toggle('is-on', show); btn.setAttribute('aria-hidden', String(!show)); btn.tabIndex = show ? 0 : -1;
-  };
-  const io = new IntersectionObserver(es => { es.forEach(e => seen.set(e.target, e.isIntersecting)); update(); }, { rootMargin: '0px 0px 120px 0px' });
-  [heroCta, ...stops].forEach(el => el && io.observe(el));
-  addEventListener('scroll', update, { passive: true }); addEventListener('resize', update);
 })();
 
 // v25: founder photos lift on tap / keyboard press and settle on a second press (mouse uses :hover)

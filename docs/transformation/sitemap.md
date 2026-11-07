@@ -12,19 +12,14 @@ Primary navigation, in this order:
 
 | Label | URL | Role of the page |
 | --- | --- | --- |
-| Home | `/` | Journey from access to advance, interest form |
+| For Parents | `/#parents` | Session updates for parents and guardians |
+| For Community Leaders | `/#leaders` | Ask about hosting |
+| For Partners | `/#partners` | Talk about supporting AfroBot. Not the empty partner directory |
 | About | `/about` | Program, Glappy Foundation, founders, values |
-| Programs | `/programs` | Access plus Discover, Build, Innovate, Compete, Advance |
-| Competitions | `/competitions` | Preparation for outside competitions; non-affiliation |
-| University Pathways | `/university-pathways` | Further learning without admission promises |
-| Community | `/community` | Parents, students, mentors, sponsors, schools, manufacturers |
-| Partners | `/partners` | Public roster. Empty on purpose until someone agrees to be named |
-| Events | `/events` | Only confirmed events. Today: McKinney 2024 as past, nothing upcoming |
 
-Header actions, in this order:
+One header action: **Get updates** → home interest form (`index.html?intent=updates#register`).
 
-1. **Join the Community** → home interest form (`index.html?intent=join#register`)
-2. **Sponsor a Student** → same form, sponsor intent (`index.html?intent=sponsor#register`)
+Programs, Competitions, University Pathways, Community, Events, and the empty Partner list stay in the footer. Social stays in the footer. They are not in the header.
 
 The mobile menu repeats the eight links and both actions. It is a `<button>` with `aria-expanded` and `aria-controls`, closes on Escape, and scrolls inside the viewport.
 
@@ -32,17 +27,13 @@ The mobile menu repeats the eight links and both actions. It is a `<button>` wit
 
 In order, after the header:
 
-1. Hero
-2. Talent Is Everywhere. Opportunity Isn’t.
-3. From Curiosity to Opportunity (five stages)
-4. Find Your Starting Point (five programs)
-5. World-Class Opportunities. Community-Friendly Costs.
-6. From Our Community to the Competition Stage.
-7. The Journey Doesn’t End With a Robot.
-8. It Takes a Community to Build the Future.
-9. Success Is Measured in Opportunity.
-10. Final call to action, then the existing interest form
-11. Footer, including the tagline
+1. Headline and a short description of AfroBot
+2. Audience cards: For Parents, For Community Leaders, For Partners
+3. What happened in McKinney in 2024, with the original photograph
+4. Keeping the cost within reach, with the $10 goal
+5. One note that sessions are not open
+6. The existing interest form
+7. Footer
 
 Stage links:
 

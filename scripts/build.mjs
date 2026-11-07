@@ -24,7 +24,7 @@ const orgJson = `<script type="application/ld+json">
 </script>`;
 
 const pages = [
-  ['index.html', 'home.html', 'AfroBot · Every child deserves a chance to build the future', 'Affordable robotics, AI, and engineering education that helps young people move from curiosity to creation, from local communities to recognized competitions, and from limited access to meaningful opportunity.', '/', orgJson],
+  ['index.html', 'home.html', 'AfroBot · A place for kids to build robots and keep asking questions', 'AfroBot is hands-on robotics and AI for kids. It is community-run, under Glappy Foundation. Future sessions are being prepared.', '/', orgJson],
   ['about.html', 'about.html', 'About · AfroBot', 'AfroBot is the kids-only youth robotics and AI program of Glappy Foundation, founded by Dr. Unoma Okorafor and Dr. Russell Avre.', '/about', ''],
   ['programs.html', 'programs.html', 'Programs · AfroBot', 'Discover, Build, Innovate, Compete, and Advance. Age bands are guidance. Registration is not open yet.', '/programs', ''],
   ['competitions.html', 'competitions.html', 'Competitions · AfroBot', 'AfroBot aims to prepare students for established competitions such as FIRST Tech Challenge. AfroBot is not affiliated with FIRST.', '/competitions', ''],

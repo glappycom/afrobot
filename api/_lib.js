@@ -1,7 +1,7 @@
 // Shared helpers for the AfroBot interest form API (files starting with _ are not deployed as routes).
 import crypto from 'node:crypto';
 
-export const ROLES = ['Parent/guardian', 'Student', 'School/educator', 'Volunteer/mentor', 'Sponsor/partner', 'Other'];
+export const ROLES = ['Parent/guardian', 'School/educator', 'Volunteer/mentor', 'Sponsor/partner', 'Other'];
 export const KIDS_ROLES = ['Parent/guardian', 'School/educator'];
 export const HEADERS = ['Submitted (UTC)', 'Name', 'Email', 'Role', 'City / state', 'Organization', 'Kids / age range', 'Message', 'Consent to contact', 'Submission ID', 'Source page'];
 
