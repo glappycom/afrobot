@@ -7,6 +7,9 @@ const header = read('src/partials/header.html').trim();
 const footer = read('src/partials/footer.html').trim();
 const roles = read('src/partials/roles.html').trim();
 const register = read('src/partials/register.html').trim();
+const videoItems = read('src/partials/videos.html').trim().split(/(?=<article\b)/).map((item) => item.trim()).filter(Boolean);
+const videosHome = videoItems.slice(0, 3).join('\n');
+const videosAll = videoItems.join('\n');
 const layout = read('src/layout.html');
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
@@ -44,6 +47,8 @@ const pages = [
 for (const [out, src, title, description, urlPath, headExtra] of pages) {
   let content = read(path.join('src/pages', src)).trim();
   content = content.replaceAll('{{roles}}', roles);
+  content = content.replaceAll('{{videos-home}}', videosHome);
+  content = content.replaceAll('{{videos}}', videosAll);
   content = content.replace(/\{\{register(?::([a-z]+))?\}\}/g, (_, intent) => register.replaceAll('{{default-intent}}', intent || ''));
   if (content.includes('{{')) throw new Error('Unresolved placeholder in ' + src);
   const html = layout

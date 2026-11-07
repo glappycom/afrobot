@@ -181,6 +181,20 @@ document.querySelectorAll('.founder__photo').forEach(btn => {
   });
 })();
 
+document.querySelectorAll('.video-play').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const id = btn.dataset.video;
+    if (!/^[A-Za-z0-9_-]{11}$/.test(id)) return;
+    const frame = document.createElement('iframe');
+    frame.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1';
+    frame.title = btn.getAttribute('aria-label').replace(/^Play video:\s*/, '');
+    frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+    frame.allowFullscreen = true;
+    frame.referrerPolicy = 'strict-origin-when-cross-origin';
+    btn.parentElement.replaceChildren(frame);
+  });
+});
+
 if (Q.get('hero') === 'photo') {
   const fig = document.querySelector('.photo--hero');
   if (fig) {
