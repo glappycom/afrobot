@@ -1,26 +1,26 @@
-/* AfroBot tokens. One sans: Public Sans. Ivory page, forest actions, gold only as a highlight behind dark text. */
+/* AfroBot tokens. White page, navy text, deep orange actions, blue only for small labels. */
 :root {
-  --ink: #17241F;
-  --ink-80: #24312C;
-  --ink-60: #3D5249;
-  --ink-40: #4A5E56; /* 6.5:1 on ivory; still not for text on the dark footer */
-  --line: #E4D9C8;
-  --line-dk: #2A3A34;
-  --clay: #245442;
-  --clay-dk: #1B3F32;
-  --clay-strong: #245442;
-  --clay-strong-dk: #1B3F32;
-  --clay-text: #245442;
-  --clay-deep: #1B3F32;
-  --gold: #F3C95B;
-  --danger: #8C3414;
-  --bone: #FFFDF8;
-  --paper: #FAF7F0;
+  --ink: #142033;
+  --ink-80: #2C3A4F;
+  --ink-60: #3E4C5E;
+  --ink-40: #4A5568;
+  --line: #E2E6EE;
+  --line-dk: #243044;
+  --clay: #B9380F;
+  --clay-dk: #8C2A0A;
+  --clay-strong: #B9380F;
+  --clay-strong-dk: #8C2A0A;
+  --clay-text: #B9380F;
+  --clay-deep: #8C2A0A;
+  --gold: #1F4E89;
+  --danger: #9A3412;
+  --bone: #FFFFFF;
+  --paper: #FFFFFF;
   --white: #fff;
-  --steel: #FAF7F0;
-  --steel-card: #FFFDF8;
-  --on-ink: #FAF7F0;
-  --on-ink-soft: #E4DDD0;
+  --steel: #FFFFFF;
+  --steel-card: #F4F6F8;
+  --on-ink: #FFFFFF;
+  --on-ink-soft: #D6DEEA;
   --display: "Public Sans", ui-sans-serif, system-ui, sans-serif;
   --text: "Public Sans", ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--text);
@@ -34,14 +34,14 @@
   --t-18: 1.25rem;
   --t-22: 1.5rem;
   --t-28: 1.85rem;
-  --t-h2: clamp(1.85rem, 2.6vw, 2.4rem);
-  --t-h1: clamp(2.15rem, 3.4vw, 3.15rem);
-  --t-display: clamp(2.6rem, 4.6vw, 4.15rem);
-  --gutter: 24px;
-  --margin: clamp(20px, 4vw, 56px);
-  --max: 1180px;
-  --s-section: clamp(4.5rem, 8vw, 7.25rem);
+  --t-h2: clamp(1.85rem, 2.6vw, 2.5rem);
+  --t-h1: clamp(2.2rem, 3.6vw, 3.35rem);
+  --t-display: clamp(2.7rem, 4.8vw, 4.35rem);
+  --gutter: 28px;
+  --margin: clamp(20px, 4vw, 64px);
+  --max: 1160px;
+  --s-section: clamp(4.75rem, 8vw, 7.5rem);
   --ease: cubic-bezier(.2, .7, .2, 1);
-  --header-offset: 5.75rem;
-  --focus: #17241F;
+  --header-offset: 5.5rem;
+  --focus: #142033;
 }

@@ -4,17 +4,16 @@
 
 | Token | Value | Use |
 | --- | --- | --- |
-| Type | Public Sans, self-hosted WOFF2 | One sans. Weight and size carry the hierarchy. Body is at least 18px |
-| Ink | `#17241F` | Text. About 15:1 on ivory |
-| Forest | `#245442` | Links, labels, and button fill with white text. About 8:1 on ivory, 8.7:1 white on forest |
-| Gold | `#F3C95B` | Highlight behind dark text only, including the $10 goal. Not text on ivory |
-| Ivory | `#FAF7F0` | Page background |
-| Card | `#FFFDF8` | The parents card |
-| Danger | `#8C3414` | Form errors. About 7.5:1 on ivory |
+| Type | Public Sans, self-hosted WOFF2 | One sans. Headlines are heavy. Body is at least 18px |
+| Ink | `#142033` | Text on white. About 16:1 |
+| Orange | `#B9380F` | The one action color. White text on it is about 5.8:1. Also used for links on white |
+| Blue | `#1F4E89` | Small labels only, such as ages. About 8.4:1 on white |
+| White | `#FFFFFF` | Page background |
+| Danger | `#9A3412` | Form errors |
 
-Wordmark: keep `assets/logo-afrobot.svg` on ivory and `assets/logo-afrobot-reversed.svg` on the dark footer. Do not recolor the wordmark, and do not introduce a second lockup.
+Wordmark: keep `assets/logo-afrobot.svg` on white and `assets/logo-afrobot-reversed.svg` on the navy footer. Do not recolor the wordmark, and do not introduce a second lockup.
 
-Gold is a small highlight behind dark text. It is not a page fill and not text on ivory. Forest green fills buttons. Headlines stay left-aligned. Focus is a 2px near-black outline. There is no sticky mobile bar.
+Deep orange fills buttons and the main call-to-action band. Blue is only for small labels. Headlines stay left-aligned and heavy. Focus is a 2px near-black outline. There is no sticky mobile bar.
 
 The header is one row: For Parents, For Community Leaders, For Partners, About, and a Get updates button. The mobile menu repeats those links.
 
