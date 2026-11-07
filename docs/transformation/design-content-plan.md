@@ -6,14 +6,14 @@
 | --- | --- | --- |
 | Type | Public Sans, self-hosted WOFF2 | One sans. Headlines are heavy. Body is at least 18px |
 | Ink | `#142033` | Text on white. About 16:1 |
-| Blue | `#0A66E8` | Buttons, links, and the call-to-action band. White text on it is about 5.2:1. Hover is `#0047CC` |
-| Yellow | `#F5C542` | Small label chips and rules, with navy text. About 10:1 |
+| Orange | `#B9380F` | Buttons, links, and the call-to-action band. White text on it is about 5.8:1. Hover is `#8C2A0A` |
+| Blue | `#1F4E89` | Small labels only, such as ages. About 8.4:1 on white |
 | White | `#FFFFFF` | Page background |
 | Danger | `#9A3412` | Form errors |
 
 Wordmark: keep `assets/logo-afrobot.svg` on white and `assets/logo-afrobot-reversed.svg` on the navy footer. Do not recolor the wordmark, and do not introduce a second lockup.
 
-Bright blue fills buttons, links, and the main call-to-action band. Warm yellow is only a small label accent, with navy text on it. Headlines stay left-aligned and heavy. Focus is a 2px near-black outline. There is no sticky mobile bar.
+Deep orange fills buttons, links, and the main call-to-action band. Blue is only for small labels. Headlines stay left-aligned and heavy. Focus is a 2px near-black outline. There is no sticky mobile bar.
 
 The header is one row: For Parents, For Community Leaders, For Partners, About, and a Get updates button. The mobile menu repeats those links.
 

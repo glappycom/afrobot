@@ -155,7 +155,7 @@ function contrast(a, b) {
   const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x);
   return (hi + 0.05) / (lo + 0.05);
 }
-for (const [fg, bg, min] of [['#142033', '#FFFFFF', 4.5], ['#3E4C5E', '#FFFFFF', 4.5], ['#0A66E8', '#FFFFFF', 4.5], ['#FFFFFF', '#0A66E8', 4.5], ['#FFFFFF', '#0047CC', 4.5], ['#142033', '#F5C542', 4.5], ['#FFFFFF', '#142033', 4.5], ['#D6DEEA', '#142033', 4.5], ['#9A3412', '#FFFFFF', 4.5]]) {
+for (const [fg, bg, min] of [['#142033', '#FFFFFF', 4.5], ['#3E4C5E', '#FFFFFF', 4.5], ['#B9380F', '#FFFFFF', 4.5], ['#FFFFFF', '#B9380F', 4.5], ['#FFFFFF', '#8C2A0A', 4.5], ['#1F4E89', '#FFFFFF', 4.5], ['#142033', '#D6E8FF', 4.5], ['#FFFFFF', '#142033', 4.5], ['#D6DEEA', '#142033', 4.5], ['#9A3412', '#FFFFFF', 4.5]]) {
   const ratio = contrast(fg, bg);
   if (ratio < min) fail('contrast ' + fg + ' on ' + bg + ' is ' + ratio.toFixed(2));
 }
