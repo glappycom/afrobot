@@ -641,6 +641,8 @@ h3, .audience-card h3, .info-card h2, .info-card h3 {
   overflow: hidden;
 }
 .video-facade { position: relative; aspect-ratio: 16 / 9; background: var(--ink); }
+.video-card--portrait { width: min(100%, 17.5rem); height: auto; align-self: start; justify-self: start; }
+.video-card--portrait .video-facade { aspect-ratio: 9 / 16; }
 .video-play {
   position: absolute;
   inset: 0;
@@ -767,6 +769,7 @@ h3, .audience-card h3, .info-card h2, .info-card h3 {
 }
 @media (max-width: 560px) {
   .section { padding-block: 3rem; }
+  .video-card--portrait { justify-self: center; }
   .audiences, .place-grid, .card-grid--page, .card-grid--photos, .card-grid--stories { grid-template-columns: 1fr; }
   .hero__actions { flex-direction: column; align-items: stretch; }
   .hero__actions .btn { width: 100%; }
