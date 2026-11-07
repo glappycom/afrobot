@@ -524,7 +524,7 @@ h1, h2, h3, .h1, .h2, .display {
 }
 .audience-card .link { display: inline-flex; align-items: center; min-height: 48px; margin-top: auto; font-size: 1.125rem; font-weight: 700; }
 .photo-note { margin-top: 16px; color: var(--ink-60); font-size: 1.125rem; max-width: 46rem; }
-.places__lead { max-width: 46rem; color: var(--ink-80); font-size: 1.25rem; margin: 12px 0 28px; }
+.places__lead { max-width: 40rem; color: var(--ink-60); font-size: 1.125rem; margin: 8px 0 28px; }
 .place-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
