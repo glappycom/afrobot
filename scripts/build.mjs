@@ -25,20 +25,20 @@ const orgJson = `<script type="application/ld+json">
 const pages = [
   ['index.html', 'home.html', 'AfroBot · A place for kids to build robots and keep asking questions', 'AfroBot is hands-on robotics and AI for kids. It is community-run. Future sessions are being prepared.', '/', orgJson],
   ['about.html', 'about.html', 'About · AfroBot', 'AfroBot is a kids-only youth robotics and AI program, founded by Dr. Unoma Okorafor and Dr. Russell Avre.', '/about', ''],
-  ['programs.html', 'programs.html', 'Programs · AfroBot', 'Discover, Build, Innovate, Compete, and Advance. Age bands are guidance. Registration is not open yet.', '/programs', ''],
+  ['programs.html', 'programs.html', 'Programs · AfroBot', 'Discover, Build, Innovate, Compete, and Advance. Ages are guidance. Sessions are not open yet.', '/programs', ''],
   ['competitions.html', 'competitions.html', 'Competitions · AfroBot', 'AfroBot aims to prepare students for established competitions such as FIRST Tech Challenge. AfroBot is not affiliated with FIRST.', '/competitions', ''],
-  ['university-pathways.html', 'university-pathways.html', 'University Pathways · AfroBot', 'Further learning for older students. AfroBot does not guarantee admission or scholarships, and no universities are listed.', '/university-pathways', ''],
+  ['university-pathways.html', 'university-pathways.html', 'University Pathways · AfroBot', 'Further learning for older students. AfroBot does not guarantee admission or scholarships.', '/university-pathways', ''],
   ['community.html', 'community.html', 'Community · AfroBot', 'Parents, students through a parent, mentors, sponsors, schools, and manufacturers can register interest.', '/community', ''],
-  ['partners.html', 'partners.html', 'Partners · AfroBot', 'AfroBot does not publish a partner list. No logos are shown until an organization has agreed to be named.', '/partners', ''],
-  ['events.html', 'events.html', 'Events · AfroBot', 'No upcoming AfroBot events are scheduled. The McKinney build day in 2024 is a past community day.', '/events', ''],
+  ['partners.html', 'partners.html', 'Partners · AfroBot', 'No partner list is published. A name appears only after that organization has agreed.', '/partners', ''],
+  ['events.html', 'events.html', 'Events · AfroBot', 'No upcoming event is on the calendar. McKinney, Texas, 2024 was an AfroBot program.', '/events', ''],
   ['contact.html', 'contact.html', 'Contact · AfroBot', 'Write to AfroBot at info@afrobot.org or send the interest form.', '/contact', ''],
-  ['privacy.html', 'privacy.html', 'Privacy · AfroBot', 'What the AfroBot interest form collects, and what it does not. Full policy pending legal review.', '/privacy', ''],
-  ['terms.html', 'terms.html', 'Terms · AfroBot', 'Using this site is not enrollment or team placement. Full terms pending legal review.', '/terms', ''],
+  ['privacy.html', 'privacy.html', 'Privacy · AfroBot', 'What the AfroBot interest form collects. A full privacy policy is still in review.', '/privacy', ''],
+  ['terms.html', 'terms.html', 'Terms · AfroBot', 'Using this site is not enrollment. AfroBot is not affiliated with FIRST.', '/terms', ''],
   ['child-safety.html', 'child-safety.html', 'Child safety · AfroBot', 'AfroBot is a kids-only program. Students are parent-managed, mentors are screened, and child profiles are not public.', '/child-safety', ''],
   ['accessibility.html', 'accessibility.html', 'Accessibility · AfroBot', 'AfroBot aims for WCAG 2.2 AA. Report a barrier to info@afrobot.org.', '/accessibility', ''],
   ['volunteer.html', 'volunteer.html', 'Volunteer · AfroBot', 'Mentor and volunteer inquiries. Screening is required before working with students.', '/volunteer', ''],
   ['partnership.html', 'partnership.html', 'Partnership inquiries · AfroBot', 'Sponsorship and partnership inquiries.', '/partnership', ''],
-  ['social.html', 'social.html', 'Social · AfroBot', 'AfroBot does not publish social media accounts on this site yet.', '/social', ''],
+  ['social.html', 'social.html', 'Social · AfroBot', 'No social accounts are listed. Reach AfroBot at info@afrobot.org.', '/social', ''],
 ];
 
 for (const [out, src, title, description, urlPath, headExtra] of pages) {

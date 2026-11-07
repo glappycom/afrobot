@@ -1,4 +1,4 @@
-// ---- Logo: official lockup = H3 "Cutout" icon + "afrobot" wordmark (one solid colour: ink on light, bone on ink).
+// ---- Logo: official lockup = icon in #B9380F and "afrobot" wordmark in #142033.
 // Archived directions for comparison: ?logo=e1 (Space Grotesk lockup) | d2 | a | b | c
 const Q = new URLSearchParams(location.search);
 const LOGO = Q.get('logo') || 'afrobot';
@@ -55,24 +55,24 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
   role.addEventListener('change', syncKids); syncKids();
   document.querySelectorAll('[data-sponsor]').forEach(a => a.addEventListener('click', () => { role.value = 'Sponsor/partner'; syncKids(); }));
   const INTENTS = {
-    join: { note: 'Joining the interest list is not enrollment and not team placement.' },
-    updates: { role: 'Parent/guardian', message: 'Please send me updates when a session is being planned.', note: 'This asks for session updates. It is not enrollment, and it does not hold a seat.' },
-    host: { role: 'Other', message: 'I would like to ask about hosting a session in our community.', note: 'This is a hosting question. It does not put a date on the calendar.' },
-    support: { role: 'Sponsor/partner', message: 'I would like to talk about supporting AfroBot.', note: 'This is a conversation about support. This form does not confirm tax deductibility.' },
-    parent: { role: 'Parent/guardian', message: 'Parent or guardian inquiry.', note: 'You are writing as a parent or guardian. Ages are enough. Please do not add a full date of birth or a school ID.' },
-    student: { role: 'Parent/guardian', message: 'Parent or guardian submitting interest for a student. Participation is parent-managed.', note: 'Students take part through a parent or guardian. We do not create public profiles for children. If you are under 18, please ask a parent or guardian to send this.' },
-    mentor: { role: 'Volunteer/mentor', message: 'Mentor or volunteer inquiry. I understand screening is required before working with students.', note: 'Mentors and volunteers are screened before they work with students. Sending this form starts a conversation. It is not an approval.' },
-    volunteer: { role: 'Volunteer/mentor', message: 'Mentor or volunteer inquiry. I understand screening is required before working with students.', note: 'Mentors and volunteers are screened before they work with students. Sending this form starts a conversation. It is not an approval.' },
-    sponsor: { role: 'Sponsor/partner', message: 'Sponsorship inquiry. I would like to ask about sponsoring a student or a program.', note: 'This is a sponsorship inquiry. This form does not confirm tax deductibility.' },
-    partner: { role: 'Sponsor/partner', message: 'Partnership inquiry.', note: 'This is a partnership inquiry.' },
-    school: { role: 'School/educator', message: 'School or university inquiry.', note: 'Schools and universities can ask about a workshop or a pathway conversation.' },
-    manufacturer: { role: 'Sponsor/partner', message: 'Manufacturer or equipment inquiry.', note: 'This is an equipment or materials inquiry.' },
-    assistance: { role: 'Parent/guardian', message: 'Financial assistance inquiry. I will not send financial documents.', note: 'Financial assistance inquiries do not ask for pay stubs, tax returns, benefit letters, or account numbers. Please do not send them.' },
-    discover: { role: 'Parent/guardian', message: 'Interest in Discover (suggested ages 5–8). I understand registration is not open yet.', note: 'Discover is not open for registration. Ages 5–8 are guidance. This list is not a place on a team.' },
-    build: { role: 'Parent/guardian', message: 'Interest in Build (suggested ages 9–12). I understand registration is not open yet.', note: 'Build is not open for registration. Ages 9–12 are guidance. This list is not a place on a team.' },
-    innovate: { role: 'Parent/guardian', message: 'Interest in Innovate (suggested ages 12–15). I understand registration is not open yet.', note: 'Innovate is not open for registration. Ages 12–15 are guidance. This list is not a place on a team.' },
-    compete: { role: 'Parent/guardian', message: 'Interest in competition preparation. I understand this is not team placement.', note: 'AfroBot is not affiliated with FIRST. The interest list is not team placement. Eligibility is set by the competition, not by this form.' },
-    advance: { role: 'Parent/guardian', message: 'Interest in Advance (suggested ages 15–18). I understand this is not an application for admission or a scholarship.', note: 'Advance does not guarantee admission, credit, or scholarships. Ages 15–18 are guidance.' }
+    join: { note: '' },
+    updates: { role: 'Parent/guardian', message: 'Please send me updates when a session is being planned.', note: '' },
+    host: { role: 'Other', message: 'I would like to ask about hosting a session in our community.', note: '' },
+    support: { role: 'Sponsor/partner', message: 'I would like to talk about supporting AfroBot.', note: 'Tax treatment of a gift is not stated on this form.' },
+    parent: { role: 'Parent/guardian', message: 'Parent or guardian inquiry.', note: '' },
+    student: { role: 'Parent/guardian', message: 'Parent or guardian submitting interest for a student.', note: 'If you are under 18, ask a parent or guardian to send this.' },
+    mentor: { role: 'Volunteer/mentor', message: 'Mentor or volunteer inquiry.', note: 'Mentors are screened before they work with students.' },
+    volunteer: { role: 'Volunteer/mentor', message: 'Mentor or volunteer inquiry.', note: 'Mentors are screened before they work with students.' },
+    sponsor: { role: 'Sponsor/partner', message: 'I would like to ask about sponsoring a student or a program.', note: 'Tax treatment of a gift is not stated on this form.' },
+    partner: { role: 'Sponsor/partner', message: 'Partnership inquiry.', note: '' },
+    school: { role: 'School/educator', message: 'School or university inquiry.', note: '' },
+    manufacturer: { role: 'Sponsor/partner', message: 'Manufacturer or equipment inquiry.', note: '' },
+    assistance: { role: 'Parent/guardian', message: 'Financial assistance inquiry.', note: 'Do not send financial documents, tax forms, or account numbers.' },
+    discover: { role: 'Parent/guardian', message: 'Interest in Discover (suggested ages 5–8).', note: '' },
+    build: { role: 'Parent/guardian', message: 'Interest in Build (suggested ages 9–12).', note: '' },
+    innovate: { role: 'Parent/guardian', message: 'Interest in Innovate (suggested ages 12–15).', note: '' },
+    compete: { role: 'Parent/guardian', message: 'Interest in competition preparation.', note: 'AfroBot is not affiliated with FIRST.' },
+    advance: { role: 'Parent/guardian', message: 'Interest in Advance (suggested ages 15–18).', note: '' }
   };
   const note = document.getElementById('form-context');
   const msg = f.elements.message;
