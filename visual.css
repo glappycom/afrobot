@@ -250,8 +250,8 @@ main * {
 .footer h2 { margin-bottom: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.8rem; }
 .footer nav a { display: block; padding: 6px 0; }
 
-.js .will-reveal { opacity: 0; transform: translateY(16px); }
-.js .will-reveal.is-revealed { opacity: 1; transform: none; transition: opacity .6s ease, transform .6s ease; }
+.js .will-reveal { opacity: 0; }
+.js .will-reveal.is-revealed { opacity: 1; transition: opacity .6s ease; }
 
 @media (prefers-reduced-motion: reduce) {
   .nav__inner, .nav__brand img, .journey-dot { transition: none; }
@@ -454,7 +454,9 @@ main * {
 }
 .season .h1, .season__main .h1 { color: #142033; max-width: 16ch; }
 .season__side .h1, .season__side p { color: #fff; }
+.season__main .kicker { color: #142033; }
 .season__side .kicker { color: #F6C445; }
+.involve__intro > .kicker { color: #F6C445; }
 .involve { background: #142033; color: #fff; padding: 0 0 var(--section-y); }
 .involve__hero { display: grid; grid-template-columns: 1.15fr 0.85fr; min-height: 520px; }
 .involve__photo { margin: 0; min-height: 520px; container-type: size; overflow: hidden; }
@@ -879,8 +881,26 @@ main * {
   line-height: 0.95;
 }
 .prefoot__cta p { margin: 0; max-width: 36rem; font-weight: 650; color: #fff; }
-.prefoot__cta .btn { margin-top: 20px; }
+.prefoot__cta .btn,
+.prefoot__cta .btn:visited,
+.prefoot__cta .btn:hover,
+.prefoot__cta .btn:focus-visible {
+  margin-top: 20px;
+  background: #142033;
+  color: #fff;
+  border-color: #142033;
+}
 .prefoot__cta .btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.season {
+  position: relative;
+  z-index: 2;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), 0 100%);
+  margin-bottom: calc(var(--cut) * -1 - 2px);
+}
+.season__main,
+.season__side { padding-bottom: calc(var(--section-y) + var(--cut)); }
+.involve { position: relative; z-index: 1; }
+.involve__hero { clip-path: polygon(0 var(--cut), 100% 0, 100% 100%, 0 100%); }
 .footer__grid {
   display: grid;
   grid-template-columns: minmax(180px, 1.15fr) repeat(4, minmax(0, 1fr));
