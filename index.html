@@ -30,7 +30,7 @@
 <link rel="preload" href="fonts/Outfit-Latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css?v=38">
 <link rel="stylesheet" href="components.css?v=44">
-<link rel="stylesheet" href="visual.css?v=3">
+<link rel="stylesheet" href="visual.css?v=8">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -71,25 +71,23 @@
   </nav>
 </header>
 <main id="main" tabindex="-1">
-<section class="hero" id="top">
-  <div class="hero__frame">
-    <div class="hero__photo">
-      <picture>
-        <source srcset="assets/photos/mckinney-build-day-2024-960.avif 960w, assets/photos/mckinney-build-day-2024.avif 1800w" sizes="100vw" type="image/avif">
-        <source srcset="assets/photos/mckinney-build-day-2024.webp" type="image/webp">
-        <img src="assets/photos/mckinney-build-day-2024.jpg" alt="A big group of kids and mentors pose with the robots they built, three robots on the floor in front" width="1800" height="1350" fetchpriority="high" decoding="async">
-      </picture>
+<section class="season-hero" id="top">
+  <div class="season-hero__copy">
+    <p class="kicker">AfroBot</p>
+    <h1 class="display">Every Child Deserves a Chance to Build the Future.</h1>
+    <p class="hero__tag">From Curiosity to Creation. From Community to the World.</p>
+    <div class="hero__actions">
+      <a class="btn btn--clay" href="programs.html">Explore Programs</a>
+      <a class="btn btn--inverse" href="community.html">Join the AfroBot Community</a>
     </div>
-    <div class="hero__shade" aria-hidden="true"></div>
-    <div class="hero__panel">
-      <h1 class="display">Every Child Deserves a Chance to Build the Future.</h1>
-      <p class="hero__tag">From Curiosity to Creation. From Community to the World.</p>
-      <div class="hero__actions">
-        <a class="btn btn--clay" href="programs.html">Explore Programs</a>
-        <a class="btn btn--inverse" href="community.html">Join the AfroBot Community</a>
-      </div>
-      <p class="hero__status">Dates coming soon</p>
-    </div>
+    <p class="hero__status">Dates coming soon</p>
+  </div>
+  <div class="season-hero__photo">
+    <picture>
+      <source srcset="assets/photos/mckinney-build-day-2024-960.avif 960w, assets/photos/mckinney-build-day-2024.avif 1800w" sizes="(min-width: 900px) 58vw, 100vw" type="image/avif">
+      <source srcset="assets/photos/mckinney-build-day-2024.webp" type="image/webp">
+      <img src="assets/photos/mckinney-build-day-2024.jpg" alt="A big group of kids and mentors pose with the robots they built, three robots on the floor in front" width="1800" height="1350" fetchpriority="high" decoding="async">
+    </picture>
   </div>
 </section>
 
@@ -102,93 +100,133 @@
   <p class="container impact__note">1,500 of the 5,000 are in ongoing programs.</p>
 </section>
 
+<div class="filmstrip" aria-hidden="true">
+  <img src="assets/photos/bamenda-circuits.avif" alt="" width="980" height="735" loading="lazy" decoding="async">
+  <img src="assets/photos/bamenda-robotics-kit.avif" alt="" width="980" height="735" loading="lazy" decoding="async">
+  <img src="assets/photos/bamenda-class-celebration.avif" alt="" width="980" height="735" loading="lazy" decoding="async">
+  <img src="assets/photos/bamenda-desktop-focus.avif" alt="" width="980" height="735" loading="lazy" decoding="async">
+</div>
+
 <section class="section story-block" id="span" aria-labelledby="span-title" data-reveal>
   <div class="container">
-    <h2 id="span-title" class="h1">From Cameroon to Dallas. From Curiosity to Opportunity.</h2>
-    <p class="lead">About 4 years of programs in Africa and the US.</p>
-    <p>Affordable workshops lead to robotics, AI, mentorship, and pathways.</p>
-    <div class="story-grid">
-      <figure class="frame">
-        <picture>
-          <source srcset="assets/photos/bamenda-robotics-build.avif" type="image/avif">
-          <source srcset="assets/photos/bamenda-robotics-build.webp" type="image/webp">
-          <img src="assets/photos/bamenda-robotics-build.jpg" alt="Overhead view of a team assembling robotics components" width="980" height="735" loading="lazy" decoding="async">
-        </picture>
-        <figcaption>AfroBot program, Cameroon.</figcaption>
-      </figure>
-      <figure class="frame">
-        <picture>
-          <source srcset="assets/photos/mckinney-ai-track-2024.webp" type="image/webp">
-          <img src="assets/photos/mckinney-ai-track-2024.jpg" alt="Kids at tables with their robots while a presenter teaches at a screen" width="1200" height="900" loading="lazy" decoding="async">
-        </picture>
-        <figcaption>AfroBot program, Dallas area, 2024.</figcaption>
-      </figure>
-    </div>
-    <div class="story-meta">
-      <svg class="span-map" viewBox="0 0 640 160" role="img" aria-label="A line from Cameroon to Dallas">
-        <path d="M80 110 C 200 20, 420 20, 560 70" fill="none" stroke="#B9380F" stroke-width="2" stroke-linecap="round"/>
-        <circle cx="80" cy="110" r="6" fill="#142033"/>
-        <circle cx="560" cy="70" r="6" fill="#B9380F"/>
-        <text x="24" y="142" fill="#142033" font-size="14" font-family="Public Sans, sans-serif">Cameroon</text>
-        <text x="516" y="52" fill="#142033" font-size="14" font-family="Public Sans, sans-serif">Dallas</text>
-      </svg>
-      <ol class="timeline">
-        <li><b>Africa and the US</b><span>About 4 years of programs.</span></li>
-        <li><b>Cameroon</b><span>5,000 children trained. 1,500 are in ongoing programs.</span></li>
-        <li><b>Dallas area, 2024</b><span>An introductory program with about 30 children.</span></li>
-        <li><b>DFW, 2027</b><span>An expansion is planned. Dates coming soon.</span></li>
-      </ol>
+    <div class="story-layout">
+      <div class="story-copy">
+        <p class="kicker">The span</p>
+        <h2 id="span-title" class="h1">From Cameroon to Dallas. From Curiosity to Opportunity.</h2>
+        <p class="lead">About 4 years of programs in Africa and the US.</p>
+        <p class="pull">Affordable workshops lead to robotics, AI, mentorship, and pathways.</p>
+        <ol class="timeline">
+          <li><b>Africa and the US</b><span>About 4 years of programs.</span></li>
+          <li><b>Cameroon</b><span>5,000 children trained. 1,500 are in ongoing programs.</span></li>
+          <li><b>Dallas area, 2024</b><span>An introductory program with about 30 children.</span></li>
+          <li><b>DFW, 2027</b><span>An expansion is planned. Dates coming soon.</span></li>
+        </ol>
+      </div>
+      <div class="mosaic">
+        <figure class="mosaic__big">
+          <picture>
+            <source srcset="assets/photos/bamenda-robotics-build.avif" type="image/avif">
+            <source srcset="assets/photos/bamenda-robotics-build.webp" type="image/webp">
+            <img src="assets/photos/bamenda-robotics-build.jpg" alt="Overhead view of a team assembling robotics components" width="980" height="735" loading="lazy" decoding="async">
+          </picture>
+          <figcaption>AfroBot program, Cameroon.</figcaption>
+        </figure>
+        <figure>
+          <picture>
+            <source srcset="assets/photos/mckinney-ai-track-2024.webp" type="image/webp">
+            <img src="assets/photos/mckinney-ai-track-2024.jpg" alt="Kids at tables with their robots while a presenter teaches at a screen" width="1200" height="900" loading="lazy" decoding="async">
+          </picture>
+          <figcaption>AfroBot program, Dallas area, 2024.</figcaption>
+        </figure>
+        <figure>
+          <svg class="span-map" viewBox="0 0 640 220" role="img" aria-label="A line from Cameroon to Dallas">
+            <path d="M70 150 C 200 30, 420 40, 560 90" fill="none" stroke="#B9380F" stroke-width="6" stroke-linecap="round"/>
+            <circle cx="70" cy="150" r="10" fill="#142033"/>
+            <circle cx="560" cy="90" r="10" fill="#B9380F"/>
+            <text x="18" y="190" fill="#142033" font-size="22" font-family="Outfit, Public Sans, sans-serif" font-weight="700">Cameroon</text>
+            <text x="470" y="70" fill="#142033" font-size="22" font-family="Outfit, Public Sans, sans-serif" font-weight="700">Dallas</text>
+          </svg>
+        </figure>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="section band-quiet" id="journey" aria-labelledby="journey-title" data-stage-mode="current" data-reveal>
+<section class="section stages" id="journey" aria-labelledby="journey-title" data-stage-mode="current" data-reveal>
   <div class="container">
+    <p class="kicker">The path</p>
     <h2 id="journey-title" class="h1">The stages</h2>
     <p class="lead">Affordable and sponsored entry removes the cost barrier.</p>
     <ol class="stage-line">
-      <li class="journey-step" data-stage-index="0"><span class="journey-dot" aria-hidden="true"></span><h3>Discover</h3><p>Ages 6–9. Teams build a life-size vehicle by hand.</p></li>
-      <li class="journey-step" data-stage-index="1"><span class="journey-dot" aria-hidden="true"></span><h3>Build</h3><p>Ages 9–12. Teams carry a life-size vehicle through a longer build.</p></li>
-      <li class="journey-step" data-stage-index="2"><span class="journey-dot" aria-hidden="true"></span><h3>Innovate</h3><p>Ages 13–17. An AI agent is the brain of a humanoid robot.</p></li>
-      <li class="journey-step" data-stage-index="3"><span class="journey-dot" aria-hidden="true"></span><h3>Compete</h3><p>Ages 13–17. Teams prepare humanoid robots for recognized robotics competitions.</p></li>
-      <li class="journey-step" data-stage-index="4"><span class="journey-dot" aria-hidden="true"></span><h3>Advance</h3><p>Ages 13–17. Older students mentor younger teams with an adult coach.</p></li>
+      <li class="journey-step stage-discover" data-stage-index="0"><h3>Discover</h3><p>Ages 6–9. Teams build a life-size vehicle by hand.</p></li>
+      <li class="journey-step stage-build" data-stage-index="1"><h3>Build</h3><p>Ages 9–12. Teams carry a life-size vehicle through a longer build.</p></li>
+      <li class="journey-step stage-innovate" data-stage-index="2"><h3>Innovate</h3><p>Ages 13–17. An AI agent is the brain of a humanoid robot.</p></li>
+      <li class="journey-step stage-compete" data-stage-index="3"><h3>Compete</h3><p>Ages 13–17. Teams prepare humanoid robots for recognized robotics competitions.</p></li>
+      <li class="journey-step stage-advance" data-stage-index="4"><h3>Advance</h3><p>Ages 13–17. Older students mentor younger teams with an adult coach.</p></li>
     </ol>
   </div>
 </section>
 
-<section class="section band-navy" id="dallas-2027" aria-labelledby="dallas-title" data-reveal>
-  <div class="container">
+<section class="season" id="dallas-2027" aria-labelledby="dallas-title" data-reveal>
+  <article class="season__main">
+    <p class="kicker">Proposed targets</p>
+    <p class="season__year">2027</p>
     <h2 id="dallas-title" class="h1">AfroBot Dallas 2027: 90 Students. 15 Teams. Unlimited Possibilities.</h2>
     <p>These are proposed expansion targets. Interest registration is open. Dates coming soon.</p>
-    <div class="hero__actions">
-      <a class="btn btn--clay" href="community.html?intent=parent#register">Register Your Interest</a>
-      <a class="btn btn--line-light" href="mentorship.html">Become a Mentor</a>
-      <a class="btn btn--line-light" href="partners.html">Become a Founding Partner</a>
+    <div class="season__figs">
+      <p><strong>90</strong><span>Students</span></p>
+      <p><strong>15</strong><span>Teams</span></p>
     </div>
-  </div>
+    <div class="hero__actions">
+      <a class="btn btn--ink" href="community.html?intent=parent#register">Register Your Interest</a>
+      <a class="btn btn--line" href="mentorship.html">Become a Mentor</a>
+      <a class="btn btn--line" href="partners.html">Become a Founding Partner</a>
+    </div>
+  </article>
+  <article class="season__side">
+    <p class="kicker">Planned hubs</p>
+    <h2 class="h1">Yaoundé 2027</h2>
+    <p>A planned competition hub. Dates coming soon.</p>
+    <p>Tanzania is a planned hub on its own dates.</p>
+    <p><a class="btn btn--clay" href="competitions.html">See the hubs</a></p>
+  </article>
 </section>
 
-<section class="section involve" id="involve" aria-label="Who can write to us" data-reveal>
-  <div class="container">
+<section class="involve" id="involve" aria-label="Who can write to us" data-reveal>
+  <figure class="involve__photo">
+    <picture>
+      <source srcset="assets/photos/bamenda-lab-coats.avif" type="image/avif">
+      <source srcset="assets/photos/bamenda-lab-coats.webp" type="image/webp">
+      <img src="assets/photos/bamenda-lab-coats.jpg" alt="An outdoor group in white lab coats" width="980" height="735" loading="lazy" decoding="async">
+    </picture>
+  </figure>
+  <div class="involve__panel">
+    <p class="kicker">Get involved</p>
     <h2 class="h1">Who this is for</h2>
-    <div class="involve__grid">
+    <div class="involve__list">
       <article id="parents">
         <h3>For Parents</h3>
-        <a class="btn btn--line" href="community.html?intent=updates#register">Get session updates</a>
+        <a class="btn btn--clay" href="community.html?intent=updates#register">Get session updates</a>
       </article>
       <article id="leaders">
         <h3>For Community Leaders</h3>
-        <a class="btn btn--line" href="community.html?intent=host#register">Ask about hosting</a>
+        <a class="btn btn--line-light" href="community.html?intent=host#register">Ask about hosting</a>
       </article>
       <article id="partners">
         <h3>For Partners</h3>
-        <a class="btn btn--line" href="community.html?intent=support#register">Discuss sponsorship</a>
+        <a class="btn btn--line-light" href="community.html?intent=support#register">Discuss sponsorship</a>
       </article>
     </div>
   </div>
 </section>
 </main>
 <footer class="footer">
+  <div class="footer__photos" aria-hidden="true">
+    <img src="assets/photos/bamenda-circuits.avif" alt="" width="980" height="735" loading="lazy" decoding="async">
+    <img src="assets/photos/mckinney-ai-track-2024.webp" alt="" width="1200" height="900" loading="lazy" decoding="async">
+    <img src="assets/photos/bamenda-coding-desktop.avif" alt="" width="980" height="735" loading="lazy" decoding="async">
+    <img src="assets/photos/bamenda-class-celebration.avif" alt="" width="980" height="735" loading="lazy" decoding="async">
+  </div>
   <div class="container grid">
     <div class="col-12 footer__brand">
       <img data-logo="reversed" src="assets/logo-afrobot-reversed.svg" alt="AfroBot" width="180" height="40">

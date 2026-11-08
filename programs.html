@@ -30,7 +30,7 @@
 <link rel="preload" href="fonts/Outfit-Latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css?v=38">
 <link rel="stylesheet" href="components.css?v=44">
-<link rel="stylesheet" href="visual.css?v=3">
+<link rel="stylesheet" href="visual.css?v=8">
 
 </head>
 <body data-header="bone">
@@ -61,13 +61,20 @@
   </nav>
 </header>
 <main id="main" tabindex="-1">
-<section class="page-hero">
-  <div class="container">
+<section class="split-hero">
+  <div class="split-hero__copy">
     <p class="kicker">Programs</p>
     <h1 class="h1">Discover through Advance.</h1>
     <p class="lead">Access is a place, shared equipment, and a coach.</p>
     <p class="status-note" id="program-status"><strong>Dates coming soon.</strong> <a class="tlink" href="#register" data-intent="updates">Get session updates</a></p>
   </div>
+  <figure class="split-hero__photo">
+    <picture>
+      <source srcset="assets/photos/bamenda-classroom-laptops.avif" type="image/avif">
+      <source srcset="assets/photos/bamenda-classroom-laptops.webp" type="image/webp">
+      <img src="assets/photos/bamenda-classroom-laptops.jpg" alt="Children working at laptops in a classroom with a projected lesson" width="980" height="735" loading="lazy" decoding="async">
+    </picture>
+  </figure>
 </section>
 <section class="section band-quiet" id="access">
   <div class="container prose">
@@ -80,28 +87,33 @@
   <div class="container">
     <h2 class="h1">Planned sessions</h2>
     <p>Ages 13–17 come through older partner schools.</p>
-    <div class="card-grid card-grid--page gap-top">
-    <article class="info-card" id="discover">
-      <header class="stage-head"><h2>Discover</h2><p class="info-card__meta">Ages 6–9</p></header>
+    <div class="stage-stack">
+    <article class="stage-row stage-discover" id="discover">
+      <p class="kicker">Ages 6–9</p>
+      <h2>Discover</h2>
       <p>Teams build a life-size vehicle by hand.</p>
     </article>
-    <article class="info-card" id="build">
-      <header class="stage-head"><h2>Build</h2><p class="info-card__meta">Ages 9–12</p></header>
+    <article class="stage-row stage-build" id="build">
+      <p class="kicker">Ages 9–12</p>
+      <h2>Build</h2>
       <p>Teams carry a life-size vehicle through a longer build.</p>
     </article>
-    <article class="info-card" id="innovate">
-      <header class="stage-head"><h2>Innovate</h2><p class="info-card__meta">Ages 13–17</p></header>
+    <article class="stage-row stage-innovate" id="innovate">
+      <p class="kicker">Ages 13–17</p>
+      <h2>Innovate</h2>
       <p>An AI agent is the brain of a humanoid robot.</p>
     </article>
-    <article class="info-card" id="compete">
-      <header class="stage-head"><h2>Compete</h2><p class="info-card__meta">Ages 13–17</p></header>
+    <article class="stage-row stage-compete" id="compete">
+      <p class="kicker">Ages 13–17</p>
+      <h2>Compete</h2>
       <p>Teams prepare humanoid robots for recognized robotics competitions.</p>
-      <p class="info-card__more"><a class="tlink" href="competitions.html">See competitions</a></p>
+      <p><a class="tlink" href="competitions.html">See competitions</a></p>
     </article>
-    <article class="info-card" id="advance">
-      <header class="stage-head"><h2>Advance</h2><p class="info-card__meta">Ages 13–17</p></header>
+    <article class="stage-row stage-advance" id="advance">
+      <p class="kicker">Ages 13–17</p>
+      <h2>Advance</h2>
       <p>Older students mentor younger teams with an adult coach.</p>
-      <p class="info-card__more"><a class="tlink" href="university-pathways.html">University pathways</a></p>
+      <p><a class="tlink" href="university-pathways.html">University pathways</a></p>
     </article>
     </div>
   </div>
@@ -189,6 +201,12 @@
 </section>
 </main>
 <footer class="footer">
+  <div class="footer__photos" aria-hidden="true">
+    <img src="assets/photos/bamenda-circuits.avif" alt="" width="980" height="735" loading="lazy" decoding="async">
+    <img src="assets/photos/mckinney-ai-track-2024.webp" alt="" width="1200" height="900" loading="lazy" decoding="async">
+    <img src="assets/photos/bamenda-coding-desktop.avif" alt="" width="980" height="735" loading="lazy" decoding="async">
+    <img src="assets/photos/bamenda-class-celebration.avif" alt="" width="980" height="735" loading="lazy" decoding="async">
+  </div>
   <div class="container grid">
     <div class="col-12 footer__brand">
       <img data-logo="reversed" src="assets/logo-afrobot-reversed.svg" alt="AfroBot" width="180" height="40">
