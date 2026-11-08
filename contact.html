@@ -30,7 +30,7 @@
 <link rel="preload" href="fonts/Outfit-Latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css?v=38">
 <link rel="stylesheet" href="components.css?v=45">
-<link rel="stylesheet" href="visual.css?v=21">
+<link rel="stylesheet" href="visual.css?v=22">
 
 </head>
 <body data-header="bone">
@@ -79,53 +79,77 @@
 </section>
 </main>
 <footer class="footer">
-  <div class="footer__photos" aria-hidden="true">
-    <img src="assets/photos/bamenda-circuits.avif" alt="" width="980" height="735" loading="lazy" decoding="async">
-    <img src="assets/photos/mckinney-ai-track-2024.webp" alt="" width="1200" height="900" loading="lazy" decoding="async">
-    <img src="assets/photos/bamenda-coding-desktop.avif" alt="" width="980" height="735" loading="lazy" decoding="async">
-    <img src="assets/photos/bamenda-class-celebration.avif" alt="" width="980" height="735" loading="lazy" decoding="async">
+  <div class="prefoot">
+    <div class="prefoot__photos" aria-hidden="true">
+      <picture>
+        <source srcset="assets/photos/bamenda-circuits.avif" type="image/avif">
+        <source srcset="assets/photos/bamenda-circuits.webp" type="image/webp">
+        <img src="assets/photos/bamenda-circuits.jpg" alt="" width="980" height="735" loading="lazy" decoding="async">
+      </picture>
+      <picture>
+        <source srcset="assets/photos/mckinney-ai-track-2024.webp" type="image/webp">
+        <img src="assets/photos/mckinney-ai-track-2024.jpg" alt="" width="1200" height="900" loading="lazy" decoding="async">
+      </picture>
+      <picture>
+        <source srcset="assets/photos/bamenda-coding-desktop.avif" type="image/avif">
+        <source srcset="assets/photos/bamenda-coding-desktop.webp" type="image/webp">
+        <img src="assets/photos/bamenda-coding-desktop.jpg" alt="" width="980" height="735" loading="lazy" decoding="async">
+      </picture>
+      <picture>
+        <source srcset="assets/photos/bamenda-class-celebration.avif" type="image/avif">
+        <source srcset="assets/photos/bamenda-class-celebration.webp" type="image/webp">
+        <img src="assets/photos/bamenda-class-celebration.jpg" alt="" width="980" height="735" loading="lazy" decoding="async">
+      </picture>
+    </div>
+    <div class="prefoot__cta">
+      <div class="container">
+        <p class="kicker">Partners</p>
+        <h2>Sponsor a Student</h2>
+        <p>Funds and sponsored places. Tax treatment of a gift is not stated on this website.</p>
+        <a class="btn btn--inverse" href="partners.html">Sponsor a Student</a>
+      </div>
+    </div>
   </div>
-  <div class="container grid">
-    <div class="col-12 footer__brand">
-      <img data-logo="reversed" src="assets/logo-afrobot-reversed.svg" alt="AfroBot" width="180" height="40">
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <a href="index.html"><img data-logo="reversed" src="assets/logo-afrobot-reversed.svg" alt="AfroBot" width="180" height="40"></a>
       <p>Hands-on robotics and AI for kids.</p>
     </div>
-    <nav class="col-3 col-md-6" aria-label="Explore">
-      <h2>Explore</h2>
-      <a data-nav href="index.html">Home</a>
-      <a data-nav href="about.html">About</a>
+    <nav aria-label="Programs">
+      <h2>Programs</h2>
       <a data-nav href="programs.html">Programs</a>
       <a data-nav href="competitions.html">Competitions</a>
       <a data-nav href="university-pathways.html">University Pathways</a>
-      <a data-nav href="community.html">Community</a>
       <a data-nav href="events.html">Events</a>
-      <a data-nav href="partners.html">Partner list</a>
     </nav>
-    <nav class="col-3 col-md-6" aria-label="Take part">
-      <h2>Take part</h2>
+    <nav aria-label="Get involved">
+      <h2>Get involved</h2>
       <a href="community.html?intent=updates#register">Get updates</a>
-      <a href="community.html?intent=sponsor#register">Discuss sponsorship</a>
-      <a href="community.html?intent=host#register">Ask about hosting</a>
-      <a href="community.html?intent=support#register">Support</a>
       <a href="volunteer.html">Volunteer</a>
       <a href="mentorship.html">Mentorship</a>
+      <a href="community.html?intent=sponsor#register">Discuss sponsorship</a>
+      <a href="community.html?intent=host#register">Ask about hosting</a>
+      <a href="partners.html">Partner list</a>
       <a href="partnership.html">Partnership Inquiries</a>
+      <a href="community.html?intent=support#register">Support</a>
     </nav>
-    <nav class="col-3 col-md-6" aria-label="Reach us">
-      <h2>Reach us</h2>
+    <nav aria-label="About">
+      <h2>About</h2>
+      <a data-nav href="index.html">Home</a>
+      <a data-nav href="about.html">About</a>
+      <a data-nav href="community.html">Community</a>
+      <a href="child-safety.html">Child Safety</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="accessibility.html">Accessibility</a>
+    </nav>
+    <nav aria-label="Contact">
+      <h2>Contact</h2>
       <a href="contact.html">Contact</a>
       <a href="mailto:info@afrobot.org">info@afrobot.org</a>
       <a href="social.html">Social</a>
     </nav>
-    <nav class="col-3 col-md-6" aria-label="Policies">
-      <h2>Policies</h2>
-      <a href="privacy.html">Privacy</a>
-      <a href="terms.html">Terms</a>
-      <a href="child-safety.html">Child Safety</a>
-      <a href="accessibility.html">Accessibility</a>
-      <a href="social.html">Social</a>
-    </nav>
-    <div class="col-12 footer__base">
+    <div class="footer__base">
       <span>© 2026 AfroBot. A program of Glappy Foundation.</span>
     </div>
   </div>

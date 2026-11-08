@@ -849,6 +849,77 @@ main * {
   .role-bands article { clip-path: polygon(0 16px, 100% 0, 100% 100%, 0 100%); }
 }
 
+.prefoot { container-type: inline-size; background: #B9380F; }
+.prefoot__photos,
+.prefoot__cta { --cut: calc(100cqi * tan(var(--slant))); }
+.prefoot__photos {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), 0 100%);
+  margin-bottom: calc(var(--cut) * -1 - 1px);
+}
+.prefoot__photos picture { display: block; min-width: 0; height: 220px; }
+.prefoot__photos img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  object-position: center 40%;
+  display: block;
+}
+.prefoot__cta { color: #fff; padding: calc(56px + var(--cut, 28px)) 0 56px; }
+.prefoot__cta .kicker { color: #fff; }
+.prefoot__cta h2 {
+  margin: 0 0 12px;
+  max-width: 14ch;
+  color: #fff;
+  font-family: "Outfit", "Public Sans", sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.2rem, 4vw, 3.6rem);
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+}
+.prefoot__cta p { margin: 0; max-width: 36rem; font-weight: 650; color: #fff; }
+.prefoot__cta .btn { margin-top: 20px; }
+.prefoot__cta .btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.footer__grid {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.15fr) repeat(4, minmax(0, 1fr));
+  gap: 28px 32px;
+  padding-top: 72px;
+  padding-bottom: 8px;
+}
+.footer__brand { margin: 0; }
+.footer__brand p { margin-top: 16px; }
+.footer__grid nav h2 {
+  margin: 0 0 8px;
+  color: #fff;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.footer__grid nav a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0;
+  color: #D6DEEA;
+}
+.footer__base {
+  grid-column: 1 / -1;
+  margin-top: 12px;
+}
+@media (max-width: 900px) {
+  .footer__grid { grid-template-columns: 1fr 1fr; }
+  .footer__brand { grid-column: 1 / -1; }
+  .prefoot__photos picture, .prefoot__photos img { height: 160px; }
+}
+@media (max-width: 560px) {
+  .prefoot__photos { grid-template-columns: 1fr 1fr; }
+  .prefoot__photos picture, .prefoot__photos img { height: 120px; }
+  .footer__grid { grid-template-columns: 1fr; gap: 8px 0; }
+  .prefoot__cta { padding-top: calc(40px + var(--cut, 20px)); }
+}
+
 @media (max-width: 768px) {
   .milestones { grid-template-columns: 1fr; gap: 10px; }
   .milestones__item { display: grid; grid-template-columns: auto 1fr; column-gap: 16px; align-items: start; clip-path: polygon(0 16px, 100% 0, 100% 100%, 0 100%); }
