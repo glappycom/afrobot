@@ -11,6 +11,8 @@ const videoItems = read('src/partials/videos.html').trim().split(/(?=<article\b)
 const videosHome = videoItems.slice(0, 3).join('\n');
 const videosAll = videoItems.join('\n');
 const layout = read('src/layout.html');
+const impact = JSON.parse(read('content/impact.json'));
+const site = JSON.parse(read('content/site.json'));
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 
@@ -26,7 +28,8 @@ const orgJson = `<script type="application/ld+json">
 </script>`;
 
 const pages = [
-  ['index.html', 'home.html', 'AfroBot · Build robots. Ask questions.', 'Hands-on robotics and AI for kids.', '/', orgJson + '\n<link rel="preload" as="image" href="assets/photos/mckinney-build-day-2024-960.avif" imagesrcset="assets/photos/mckinney-build-day-2024-960.avif 960w, assets/photos/mckinney-build-day-2024.avif 1800w" imagesizes="100vw" type="image/avif" fetchpriority="high">'],
+  ['index.html', 'home.html', 'AfroBot · Every Child Deserves a Chance to Build the Future.', 'Affordable workshops lead to robotics, AI, mentorship, and pathways.', '/', orgJson + '\n<link rel="preload" as="image" href="assets/photos/mckinney-build-day-2024-960.avif" imagesrcset="assets/photos/mckinney-build-day-2024-960.avif 960w, assets/photos/mckinney-build-day-2024.avif 1800w" imagesizes="100vw" type="image/avif" fetchpriority="high">'],
+  ['mentorship.html', 'mentorship.html', 'Mentorship · AfroBot', 'Mentor with AfroBot. Screening is required before working with students.', '/mentorship', ''],
   ['about.html', 'about.html', 'About · AfroBot', 'AfroBot is a kids-only youth robotics and AI program, founded by Dr. Unoma Okorafor and Dr. Russell Avre.', '/about', ''],
   ['programs.html', 'programs.html', 'Programs · AfroBot', 'Discover through Advance. $100 per child for a camp week is the participation goal.', '/programs', ''],
   ['competitions.html', 'competitions.html', 'Competitions · AfroBot', 'One yearly competition, with 2027 hubs in Texas (DFW), Cameroon (Yaoundé), and Tanzania. Dates coming soon.', '/competitions', ''],
@@ -50,6 +53,8 @@ for (const [out, src, title, description, urlPath, headExtra] of pages) {
   content = content.replaceAll('{{videos-home}}', videosHome);
   content = content.replaceAll('{{videos}}', videosAll);
   content = content.replace(/\{\{register(?::([a-z]+))?\}\}/g, (_, intent) => register.replaceAll('{{default-intent}}', intent || ''));
+  for (const [key, value] of Object.entries(impact)) content = content.replaceAll('{{impact.' + key + '}}', esc(String(value)));
+  content = content.replaceAll('{{stage-mode}}', site.stageNames === 'access' ? 'access' : 'current');
   if (out === 'volunteer.html') content = content.replace('action="/api/interest"', 'action="/api/volunteer"');
   if (content.includes('{{')) throw new Error('Unresolved placeholder in ' + src);
   const html = layout

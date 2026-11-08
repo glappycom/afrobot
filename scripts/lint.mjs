@@ -22,10 +22,13 @@ if (serverRoles.length !== 5) fail('Could not read server roles');
 if (serverRoles.includes('Student')) fail('Student is still a server role');
 
 const requiredHome = [
-  'Build robots. Ask questions.',
-  'Hands-on robotics and AI for kids.',
+  'Every Child Deserves a Chance to Build the Future.',
+  'From Curiosity to Creation. From Community to the World.',
+  'Affordable workshops lead to robotics, AI, mentorship, and pathways.',
   'Dates coming soon',
-  'Get updates',
+  'Explore Programs',
+  'Join the AfroBot Community',
+  'Sponsor a Student',
   'For Parents',
   'For Community Leaders',
   'Ask about hosting',
@@ -47,7 +50,6 @@ const retiredCopy = [
   'This section has no counts and no percentages',
   'Success Is Measured in Opportunity',
   'World-Class Opportunities',
-  'Sponsor a Student',
 ];
 
 const banned = [
@@ -90,10 +92,12 @@ for (const name of files) {
     seen.add(id);
   }
   for (const [re, label] of banned) if (re.test(html)) fail(name + ' contains banned pattern ' + label);
-  const allowedAmounts = new Set(['$100', '$1,000', '$5,000', '$10,000', '$25,000']);
+  const allowedAmounts = new Set(['$10', '$100', '$1,000', '$5,000', '$10,000', '$25,000']);
   const money = html.match(/\$\d[\d,]*/g) || [];
   for (const amount of money) if (!allowedAmounts.has(amount)) fail(name + ' unexpected amount ' + amount);
-  if (money.length && !/goal/i.test(html)) fail(name + ' shows a dollar amount without calling it a goal');
+  if (money.includes('$10') && !/illustrative aspiration/i.test(html)) fail(name + ' uses $10 without calling it an illustrative aspiration');
+  const priced = money.filter((amount) => amount !== '$10');
+  if (priced.length && !/goal/i.test(html)) fail(name + ' shows a dollar amount without calling it a goal');
   if (/\bFIRST\b/.test(html)) fail(name + ' names FIRST');
   if (/scholarship/i.test(html) && !/does not guarantee|do not guarantee|no guarantee|not a scholarship|nothing here promises/i.test(html)) {
     fail(name + ' mentions scholarships without a non-guarantee');

@@ -195,6 +195,59 @@ document.querySelectorAll('.video-play').forEach((btn) => {
   });
 });
 
+(() => {
+  const access = [
+    ['Access', 'A family starts with an affordable or sponsored place.'],
+    ['Discover', 'Ages 6–9. Teams build a life-size vehicle by hand.'],
+    ['Build', 'Ages 9–12. Teams carry a life-size vehicle through a longer build.'],
+    ['Compete', 'Ages 13–17. Teams prepare humanoid robots for recognized robotics competitions.'],
+    ['Advance', 'Ages 13–17. Older students mentor younger teams with an adult coach.'],
+  ];
+  const mode = Q.get('stages') || document.querySelector('[data-stage-mode]')?.dataset.stageMode || 'current';
+  if (mode !== 'access') return;
+  document.querySelectorAll('[data-stage-index]').forEach((item) => {
+    const spec = access[Number(item.dataset.stageIndex)];
+    if (!spec) return;
+    item.querySelector('h3').textContent = spec[0];
+    item.querySelector('p').textContent = spec[1];
+  });
+})();
+
+(() => {
+  const steps = document.querySelectorAll('.journey-step');
+  if (!steps.length) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+    steps.forEach((step) => step.classList.add('is-on'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => { if (entry.isIntersecting) entry.target.classList.add('is-on'); });
+  }, { threshold: 0.6 });
+  steps.forEach((step) => io.observe(step));
+})();
+
+(() => {
+  const form = document.getElementById('journey-finder');
+  const out = document.getElementById('finder-result');
+  if (!form || !out) return;
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const data = new FormData(form);
+    const age = data.get('age');
+    const interest = data.get('interest');
+    const experience = data.get('experience');
+    const format = data.get('format');
+    const stage = age === '6-9' ? 'Discover' : 'Build';
+    const ages = age === '6-9' ? '6–9' : '9–12';
+    const practice = experience === 'new' ? 'new to this' : 'some practice';
+    const shape = format === 'workshop' ? 'a workshop' : 'an ongoing program';
+    let extra = '';
+    if (interest === 'mentorship') extra = ' Mentorship is for adults.';
+    if (interest === 'compete') extra = ' Compete is for ages 13–17.';
+    out.textContent = stage + ' fits ages ' + ages + ', ' + practice + ', in ' + shape + '.' + extra;
+  });
+})();
+
 if (Q.get('hero') === 'photo') {
   const fig = document.querySelector('.photo--hero');
   if (fig) {
