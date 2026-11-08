@@ -156,10 +156,11 @@ const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
 if (!robots.includes('Sitemap: https://afrobot.org/sitemap.xml')) fail('robots.txt missing canonical sitemap');
 if (!sitemap.includes('https://afrobot.org/') || !sitemap.includes('https://afrobot.org/programs')) fail('sitemap missing canonical urls');
 
-const css = fs.readFileSync(path.join(root, 'components.css'), 'utf8') + fs.readFileSync(path.join(root, 'styles.css'), 'utf8') + fs.readFileSync(path.join(root, 'tokens.css'), 'utf8');
+const css = ['components.css', 'styles.css', 'tokens.css', 'visual.css'].map((name) => fs.readFileSync(path.join(root, name), 'utf8')).join('\n');
 if (/color:\s*var\(--ink-40\)/.test(fs.readFileSync(path.join(root, 'components.css'), 'utf8'))) fail('components.css uses ink-40 as text');
 if (!css.includes('Public Sans') || !css.includes('PublicSans-VF.woff2')) fail('Public Sans WOFF2 is not served');
-if (/url\(fonts\/Inter/.test(css) || /url\(fonts\/Outfit/.test(css)) fail('old body or display font is still requested');
+if (/url\(fonts\/Inter/.test(css)) fail('old body font is still requested');
+if (!css.includes('fonts/Outfit-Latin.woff2')) fail('Outfit wordmark font is not served');
 
 function lum(hex) {
   const c = hex.slice(1).match(/../g).map((x) => parseInt(x, 16) / 255).map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));

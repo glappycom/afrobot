@@ -1,8 +1,8 @@
-/* Visual system. Loads last. Newsreader is SIL OFL, Latin, weight 600. */
+/* Visual system. Loads last. Outfit is the logo wordmark face, SIL OFL, Latin subset. */
 @font-face {
-  font-family: "Newsreader";
-  src: url("fonts/Newsreader-Latin-600.woff2") format("woff2");
-  font-weight: 600;
+  font-family: "Outfit";
+  src: url("fonts/Outfit-Latin.woff2") format("woff2");
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
@@ -11,21 +11,24 @@
 :root {
   --max: 1200px;
   --gutter: 24px;
-  --display: "Newsreader", "Public Sans", Georgia, serif;
+  --display: "Outfit", "Public Sans", sans-serif;
   --t-display: clamp(48px, 6vw, 88px);
   --shadow: 0 12px 40px rgba(20, 32, 51, 0.06);
   --radius: 20px;
 }
 
-.display, .h1, .page-hero .h1, .hero .display, .hero h1 {
-  font-family: "Newsreader", "Public Sans", Georgia, serif;
-  font-weight: 600;
+.display, .h1, .page-hero .h1, .hero .display, .hero h1, .journey-step h3, .involve__grid h3, .kicker, .nav__links a, .nav__updates, .btn, .mnav a, .footer h2 {
+  font-family: "Outfit", "Public Sans", sans-serif;
   font-synthesis: none;
+}
+.display, .h1, .page-hero .h1, .hero .display, .hero h1 {
+  font-weight: 700;
+  letter-spacing: -0.03em;
 }
 
 .h1, h2.h1 {
   font-size: clamp(36px, 4.4vw, 64px);
-  line-height: 1.02;
+  line-height: 1.05;
   letter-spacing: -0.03em;
   max-width: 18ch;
   text-wrap: balance;
@@ -41,8 +44,8 @@
   border-radius: 12px;
   height: 52px;
   padding: 0 22px;
-  font-weight: 650;
-  letter-spacing: 0;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   box-shadow: none;
 }
 .btn--clay, .btn--clay:visited { background: #B9380F; color: #fff; border-color: #B9380F; }
@@ -61,7 +64,7 @@
 .nav.is-compact .nav__inner { height: 64px; }
 .nav__brand img { height: 36px; transition: height .2s ease; }
 .nav.is-compact .nav__brand img { height: 30px; }
-.nav__links a { font-weight: 600; color: #142033; }
+.nav__links a { font-weight: 600; letter-spacing: -0.01em; color: #142033; }
 .nav__updates { margin-left: 8px; }
 
 .hero { padding: 0; background: #142033; }
@@ -82,13 +85,19 @@
 }
 .hero .display, .hero h1 {
   font-size: clamp(48px, 6vw, 88px);
-  line-height: 0.96;
-  letter-spacing: -0.035em;
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: -0.04em;
   max-width: 11em;
   margin: 0 0 20px;
   color: #fff;
 }
-.hero__tag { margin: 0; max-width: 28rem; font-size: 1.25rem; line-height: 1.4; font-weight: 600; color: #fff; }
+.hero__tag, .hero__status {
+  font-family: "Outfit", "Public Sans", sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+}
+.hero__tag { margin: 0; max-width: 28rem; font-size: 1.35rem; line-height: 1.35; color: #fff; }
 .hero__actions { margin-top: 28px; }
 .hero__status { margin: 16px 0 0; color: #fff; font-size: 0.95rem; font-weight: 700; }
 
@@ -98,8 +107,8 @@
 .impact__row strong {
   display: block;
   color: #142033;
-  font-family: "Newsreader", "Public Sans", Georgia, serif;
-  font-weight: 600;
+  font-family: "Outfit", "Public Sans", sans-serif;
+  font-weight: 700;
   font-size: clamp(40px, 4vw, 56px);
   line-height: 0.95;
   letter-spacing: -0.04em;
@@ -107,8 +116,10 @@
 }
 .impact .impact__row strong {
   color: #fff;
+  font-weight: 700;
   font-size: clamp(64px, 8vw, 112px);
   line-height: 0.9;
+  letter-spacing: -0.045em;
 }
 .impact__row span, .impact__note { color: #D6DEEA; }
 .impact__row span { display: block; margin-top: 12px; font-size: 1.05rem; max-width: 16rem; }
@@ -145,9 +156,9 @@
   padding: 28px 8px 0;
 }
 .journey-step h3 {
-  font-family: "Newsreader", "Public Sans", Georgia, serif;
-  font-weight: 600;
+  font-weight: 650;
   font-size: 1.75rem;
+  letter-spacing: -0.03em;
   margin: 12px 0 8px;
 }
 .journey-step p { font-size: 1rem; line-height: 1.45; }
@@ -169,8 +180,7 @@
   gap: 32px;
 }
 .involve__grid h3 {
-  font-family: "Newsreader", "Public Sans", Georgia, serif;
-  font-weight: 600;
+  font-weight: 650;
   font-size: clamp(32px, 3vw, 44px);
   line-height: 1.05;
   letter-spacing: -0.03em;

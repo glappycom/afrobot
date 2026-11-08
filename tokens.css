@@ -22,7 +22,7 @@
   --steel-card: #F5F6F8;
   --on-ink: #FFFFFF;
   --on-ink-soft: #D6DEEA;
-  --display: "Newsreader", "Public Sans", Georgia, serif;
+  --display: "Outfit", "Public Sans", sans-serif;
   --text: "Public Sans", ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--text);
   --font-body: var(--text);
