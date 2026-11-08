@@ -394,10 +394,55 @@ main * {
   line-height: 0.85;
 }
 .season__year { font-size: clamp(72px, 10vw, 140px); margin: 0 0 8px; }
-.season__figs { display: flex; gap: 32px; margin: 24px 0; }
-.season__figs p { margin: 0; }
-.season__figs strong { display: block; font-size: clamp(48px, 6vw, 84px); color: #142033; }
-.season__figs span, .season__side p { font-weight: 650; }
+.season__figs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 24px 0 28px;
+  container-type: inline-size;
+}
+.season__figs p {
+  margin: 0;
+  min-height: 168px;
+  padding: 28px 20px 18px;
+  background: #142033;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.season__figs p:first-child {
+  clip-path: polygon(0 calc(100cqi * tan(var(--slant))), 100% calc(100cqi * tan(var(--slant)) / 2), 100% 100%, 0 100%);
+}
+.season__figs p:last-child {
+  clip-path: polygon(0 calc(100cqi * tan(var(--slant)) / 2), 100% 0, 100% 100%, 0 100%);
+}
+.season__figs strong { display: block; font-size: clamp(56px, 5vw, 80px); color: #fff; line-height: 0.85; }
+.season__figs span {
+  display: block;
+  margin-top: 12px;
+  color: #fff;
+  font-family: "Outfit", "Public Sans", sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+.season__side p { font-weight: 650; }
+.season__main .hero__actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 0;
+}
+.season__main .hero__actions .btn {
+  width: 100%;
+  height: 100%;
+  min-height: 52px;
+  white-space: normal;
+  text-align: center;
+}
 .season .h1, .season__main .h1 { color: #142033; max-width: 16ch; }
 .season__side .h1, .season__side p { color: #fff; }
 .season__side .kicker { color: #F6C445; }
@@ -443,6 +488,7 @@ main * {
   .season-hero__photo picture, .split-hero__photo picture,
   .season-hero__photo img, .split-hero__photo img, .involve__photo img { min-height: 280px; max-height: 420px; }
   .season-hero__copy, .split-hero__copy, .season__main, .season__side, .involve__panel { padding: var(--section-y) var(--inset); }
+  .season__main .hero__actions { grid-template-columns: 1fr; }
   .mosaic { height: auto; grid-template-columns: 1fr; grid-template-rows: 240px 180px; }
   .mosaic__big, .mosaic figure:nth-child(2) { grid-column: 1; grid-row: auto; }
   .stages .stage-line, .footer__photos { grid-template-columns: 1fr 1fr; }
