@@ -30,7 +30,7 @@
 <link rel="preload" href="fonts/Outfit-Latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css?v=38">
 <link rel="stylesheet" href="components.css?v=45">
-<link rel="stylesheet" href="visual.css?v=20">
+<link rel="stylesheet" href="visual.css?v=21">
 
 </head>
 <body data-header="bone">
@@ -61,33 +61,24 @@
   </nav>
 </header>
 <main id="main" tabindex="-1">
-<section class="page-hero">
-  <div class="container">
+<section class="split-hero">
+  <div class="split-hero__copy">
     <p class="kicker">Community</p>
     <h1 class="h1">Every adult around a child needs a clear way in.</h1>
     <p class="lead">Mentors are screened before they work with students.</p>
+    <p>Children take part through a parent or guardian.</p>
+    <a class="btn btn--clay" href="#register">Register interest</a>
   </div>
+  <figure class="split-hero__photo">
+    <picture>
+      <source srcset="assets/photos/bamenda-classroom-laptops.avif" type="image/avif">
+      <source srcset="assets/photos/bamenda-classroom-laptops.webp" type="image/webp">
+      <img src="assets/photos/bamenda-classroom-laptops.jpg" alt="Children working at laptops in a classroom with a projected lesson" width="980" height="735" fetchpriority="high" decoding="async">
+    </picture>
+  </figure>
 </section>
-<section class="section band-quiet">
+<section class="section band-quiet" data-reveal>
   <div class="container">
-    <div class="place-grid">
-      <figure>
-        <picture>
-          <source srcset="assets/photos/bamenda-classroom-laptops.avif" type="image/avif">
-          <source srcset="assets/photos/bamenda-classroom-laptops.webp" type="image/webp">
-          <img src="assets/photos/bamenda-classroom-laptops.jpg" alt="Children working at laptops in a classroom with a projected lesson" width="980" height="735" loading="lazy" decoding="async">
-        </picture>
-        <figcaption>A classroom session.</figcaption>
-      </figure>
-      <figure>
-        <picture>
-          <source srcset="assets/photos/bamenda-circuits.avif" type="image/avif">
-          <source srcset="assets/photos/bamenda-circuits.webp" type="image/webp">
-          <img src="assets/photos/bamenda-circuits.jpg" alt="Children gathered around a hands-on electronics activity" width="980" height="735" loading="lazy" decoding="async">
-        </picture>
-        <figcaption>A hands-on session.</figcaption>
-      </figure>
-    </div>
     <ul class="roles">
   <li><a class="role" href="#register" data-intent="parent"><span class="role__k">Parents</span><span class="role__a">Register interest</span></a></li>
   <li><a class="role" href="#register" data-intent="student"><span class="role__flag">Parent-managed</span><span class="role__k">Students</span><span class="role__a">Register interest</span></a></li>

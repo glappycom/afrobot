@@ -30,7 +30,7 @@
 <link rel="preload" href="fonts/Outfit-Latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css?v=38">
 <link rel="stylesheet" href="components.css?v=45">
-<link rel="stylesheet" href="visual.css?v=20">
+<link rel="stylesheet" href="visual.css?v=21">
 
 </head>
 <body data-header="bone">
@@ -65,74 +65,64 @@
   <div class="split-hero__copy">
     <p class="kicker">Programs</p>
     <h1 class="h1">Discover through Advance.</h1>
-    <p class="lead">Access is a place, shared equipment, and a coach.</p>
-    <p class="status-note" id="program-status"><strong>Dates coming soon.</strong> <a class="tlink" href="#register" data-intent="updates">Get session updates</a></p>
+    <p class="lead">Access is a place, shared equipment, and a coach. Planned sessions. Ages 13–17 come through older partner schools.</p>
+    <p>$100 per child for a camp week is the participation goal.</p>
+    <p class="hero__status" id="program-status">Dates coming soon.</p>
+    <a class="btn btn--clay" href="community.html?intent=updates#register">Get session updates</a>
+    <p class="hero__next"><a href="partners.html">See sponsor goals</a></p>
   </div>
   <figure class="split-hero__photo">
     <picture>
       <source srcset="assets/photos/bamenda-classroom-laptops.avif" type="image/avif">
       <source srcset="assets/photos/bamenda-classroom-laptops.webp" type="image/webp">
-      <img src="assets/photos/bamenda-classroom-laptops.jpg" alt="Children working at laptops in a classroom with a projected lesson" width="980" height="735" loading="lazy" decoding="async">
+      <img src="assets/photos/bamenda-classroom-laptops.jpg" alt="Children working at laptops in a classroom with a projected lesson" width="980" height="735" fetchpriority="high" decoding="async">
     </picture>
   </figure>
 </section>
-<section class="section band-quiet" id="access">
-  <div class="container prose">
-    <h2>Access</h2>
-    <p>$100 per child for a camp week is the participation goal.</p>
-    <p><a class="tlink" href="partners.html">See sponsor goals</a></p>
-  </div>
+<section class="stage-stack" aria-label="Planned sessions" data-reveal>
+  <article class="stage-row stage-discover" id="discover">
+    <p class="kicker">Ages 6–9</p>
+    <h2>Discover</h2>
+    <p>Teams build a life-size vehicle by hand.</p>
+  </article>
+  <article class="stage-row stage-build" id="build">
+    <p class="kicker">Ages 9–12</p>
+    <h2>Build</h2>
+    <p>Teams carry a life-size vehicle through a longer build.</p>
+  </article>
+  <article class="stage-row stage-innovate" id="innovate">
+    <p class="kicker">Ages 13–17</p>
+    <h2>Innovate</h2>
+    <p>An AI agent is the brain of a humanoid robot.</p>
+  </article>
+  <article class="stage-row stage-compete" id="compete">
+    <p class="kicker">Ages 13–17</p>
+    <h2>Compete</h2>
+    <p>Teams prepare humanoid robots for recognized robotics competitions.</p>
+    <p><a class="tlink" href="competitions.html">See competitions</a></p>
+  </article>
+  <article class="stage-row stage-advance" id="advance">
+    <p class="kicker">Ages 13–17</p>
+    <h2>Advance</h2>
+    <p>Older students mentor younger teams with an adult coach.</p>
+    <p><a class="tlink" href="university-pathways.html">University pathways</a></p>
+  </article>
 </section>
-<section class="section band-card">
-  <div class="container">
-    <h2 class="h1">Planned sessions</h2>
-    <p>Ages 13–17 come through older partner schools.</p>
-    <div class="stage-stack">
-    <article class="stage-row stage-discover" id="discover">
-      <p class="kicker">Ages 6–9</p>
-      <h2>Discover</h2>
-      <p>Teams build a life-size vehicle by hand.</p>
-    </article>
-    <article class="stage-row stage-build" id="build">
-      <p class="kicker">Ages 9–12</p>
-      <h2>Build</h2>
-      <p>Teams carry a life-size vehicle through a longer build.</p>
-    </article>
-    <article class="stage-row stage-innovate" id="innovate">
-      <p class="kicker">Ages 13–17</p>
-      <h2>Innovate</h2>
-      <p>An AI agent is the brain of a humanoid robot.</p>
-    </article>
-    <article class="stage-row stage-compete" id="compete">
-      <p class="kicker">Ages 13–17</p>
-      <h2>Compete</h2>
-      <p>Teams prepare humanoid robots for recognized robotics competitions.</p>
-      <p><a class="tlink" href="competitions.html">See competitions</a></p>
-    </article>
-    <article class="stage-row stage-advance" id="advance">
-      <p class="kicker">Ages 13–17</p>
-      <h2>Advance</h2>
-      <p>Older students mentor younger teams with an adult coach.</p>
-      <p><a class="tlink" href="university-pathways.html">University pathways</a></p>
-    </article>
-    </div>
-  </div>
-</section>
-<section class="section band-quiet" id="budgets" aria-labelledby="budget-title">
+<section class="section band-quiet" id="budgets" aria-labelledby="budget-title" data-reveal>
   <div class="container prose">
     <h2 id="budget-title" class="h1">Big Dreams Shouldn't Require Big Budgets.</h2>
     <h2 id="cost-title">Affordable sessions</h2>
-    <p class="cost-block__action"><a class="btn btn--line" href="#register" data-intent="assistance">Ask about financial assistance</a></p>
+    <p class="cost-block__action"><a class="text-link" href="community.html?intent=assistance#register">Ask about financial assistance</a></p>
   </div>
 </section>
-<section class="section" id="ten" aria-labelledby="ten-title">
+<section class="section" id="ten" aria-labelledby="ten-title" data-reveal>
   <div class="container prose">
     <h2 id="ten-title" class="h1">A workshop a family can start</h2>
     <p>A child starts at a workshop, builds with a mentor, and can move toward a team. A $10 workshop is an illustrative aspiration.</p>
     <p>Nothing here promises wins, admission, or scholarships.</p>
   </div>
 </section>
-<section class="section band-quiet" id="finder" aria-labelledby="finder-title">
+<section class="section band-quiet" id="finder" aria-labelledby="finder-title" data-reveal>
   <div class="container">
     <h2 id="finder-title" class="h1">Find Your AfroBot Journey</h2>
     <form class="finder" id="journey-finder">
@@ -165,38 +155,6 @@
       <button class="btn btn--clay" type="submit">Find your stage</button>
       <p id="finder-result" role="status"></p>
     </form>
-  </div>
-</section>
-<section class="section register" id="register" data-default-intent="">
-  <div class="container">
-    <div class="two two--reg">
-      <div class="reg__text">
-        <h2 class="h1">Tell us how you want to take part.</h2>
-        <p class="muted">This form is for adults.</p>
-        <p class="form-context" id="form-context" role="status"></p>
-        <p class="sr">Fields marked with an asterisk are required.</p>
-        <ul class="form-guard">
-          <li>If you are under 18, ask a parent or guardian to submit this form.</li>
-          <li>Do not include a child’s full date of birth, school ID, or anything meant for a public profile.</li>
-          <li>Do not send financial documents, tax forms, or account numbers.</li>
-        </ul>
-      </div>
-      <form class="form" id="interest" action="/api/interest" method="post" novalidate>
-        <div class="form__fields">
-          <label class="f f--half" for="if-name"><span>Your name (adult) <i aria-hidden="true">*</i></span><input id="if-name" name="name" autocomplete="name" required maxlength="120" aria-describedby="if-name-err"><em class="f__err" id="if-name-err"></em></label>
-          <label class="f f--half" for="if-email"><span>Email <i aria-hidden="true">*</i></span><input id="if-email" name="email" type="email" inputmode="email" autocomplete="email" required maxlength="200" aria-describedby="if-email-err"><em class="f__err" id="if-email-err"></em></label>
-          <label class="f f--half" for="role"><span>I am a <i aria-hidden="true">*</i></span><select id="role" name="role" required aria-describedby="role-err"><option value="" selected disabled>Choose one</option><option>Parent/guardian</option><option>School/educator</option><option>Volunteer/mentor</option><option>Sponsor/partner</option><option>Other</option></select><em class="f__err" id="role-err"></em></label>
-          <label class="f f--half" for="if-city"><span>City and state <i aria-hidden="true">*</i></span><input id="if-city" name="city" autocomplete="address-level2" required maxlength="120" aria-describedby="if-city-err"><em class="f__err" id="if-city-err"></em></label>
-          <label class="f f--half" for="if-org"><span>Organization <b>(optional)</b></span><input id="if-org" name="organization" autocomplete="organization" maxlength="160"></label>
-          <label class="f f--half" for="if-kids" id="if-kids-wrap" hidden><span>Number of kids and ages <b>(optional)</b></span><input id="if-kids" name="kids" maxlength="120"></label>
-          <label class="f" for="if-msg"><span>Message <b>(optional)</b></span><textarea id="if-msg" name="message" rows="3" maxlength="2000"></textarea></label>
-          <div class="f f--consent"><label class="consent" for="if-consent"><input id="if-consent" name="consent" type="checkbox" value="yes" required aria-describedby="if-consent-err"><span>You may contact me by email about AfroBot. <i aria-hidden="true">*</i></span></label><em class="f__err" id="if-consent-err"></em></div>
-          <div class="hp" aria-hidden="true"><label for="if-website">Website</label><input id="if-website" name="website" tabindex="-1" autocomplete="off"></div>
-        </div>
-        <button class="btn btn--clay" type="submit">Send interest</button>
-        <p class="form__msg" id="if-status" role="status" aria-live="polite" hidden></p>
-      </form>
-    </div>
   </div>
 </section>
 </main>

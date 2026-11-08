@@ -30,7 +30,7 @@
 <link rel="preload" href="fonts/Outfit-Latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css?v=38">
 <link rel="stylesheet" href="components.css?v=45">
-<link rel="stylesheet" href="visual.css?v=20">
+<link rel="stylesheet" href="visual.css?v=21">
 
 </head>
 <body data-header="bone">
@@ -61,51 +61,29 @@
   </nav>
 </header>
 <main id="main" tabindex="-1">
-<section class="page-hero">
-  <div class="container">
+<section class="split-hero">
+  <div class="split-hero__copy">
     <p class="kicker">Competitions</p>
     <h1 class="h1">One yearly competition.</h1>
     <p class="lead">Smaller mentor-led events sit beside it.</p>
+    <p class="hero__status">Dates coming soon.</p>
+    <a class="btn btn--clay" href="community.html?intent=updates#register">Get updates</a>
   </div>
+  <figure class="split-hero__photo">
+    <picture>
+      <source srcset="assets/photos/mckinney-ai-track-2024.webp" type="image/webp">
+      <img src="assets/photos/mckinney-ai-track-2024.jpg" alt="Kids at tables with their robots while a presenter teaches at a screen" width="1200" height="900" fetchpriority="high" decoding="async">
+    </picture>
+    <figcaption>An AI session in McKinney, Texas, in 2024.</figcaption>
+  </figure>
 </section>
-<section class="section band-quiet">
+<section class="section" data-reveal>
   <div class="container prose">
     <h2>2027 hubs</h2>
     <p>Texas (DFW), Cameroon (Yaoundé), and Tanzania meet on separate dates and share a two-way livestream.</p>
-    <p class="status-note">Dates coming soon.</p>
-    <p><a class="tlink" href="programs.html#compete">Back to Compete</a></p>
-  </div>
-</section>
-<section class="section register" id="register" data-default-intent="compete">
-  <div class="container">
-    <div class="two two--reg">
-      <div class="reg__text">
-        <h2 class="h1">Tell us how you want to take part.</h2>
-        <p class="muted">This form is for adults.</p>
-        <p class="form-context" id="form-context" role="status"></p>
-        <p class="sr">Fields marked with an asterisk are required.</p>
-        <ul class="form-guard">
-          <li>If you are under 18, ask a parent or guardian to submit this form.</li>
-          <li>Do not include a child’s full date of birth, school ID, or anything meant for a public profile.</li>
-          <li>Do not send financial documents, tax forms, or account numbers.</li>
-        </ul>
-      </div>
-      <form class="form" id="interest" action="/api/interest" method="post" novalidate>
-        <div class="form__fields">
-          <label class="f f--half" for="if-name"><span>Your name (adult) <i aria-hidden="true">*</i></span><input id="if-name" name="name" autocomplete="name" required maxlength="120" aria-describedby="if-name-err"><em class="f__err" id="if-name-err"></em></label>
-          <label class="f f--half" for="if-email"><span>Email <i aria-hidden="true">*</i></span><input id="if-email" name="email" type="email" inputmode="email" autocomplete="email" required maxlength="200" aria-describedby="if-email-err"><em class="f__err" id="if-email-err"></em></label>
-          <label class="f f--half" for="role"><span>I am a <i aria-hidden="true">*</i></span><select id="role" name="role" required aria-describedby="role-err"><option value="" selected disabled>Choose one</option><option>Parent/guardian</option><option>School/educator</option><option>Volunteer/mentor</option><option>Sponsor/partner</option><option>Other</option></select><em class="f__err" id="role-err"></em></label>
-          <label class="f f--half" for="if-city"><span>City and state <i aria-hidden="true">*</i></span><input id="if-city" name="city" autocomplete="address-level2" required maxlength="120" aria-describedby="if-city-err"><em class="f__err" id="if-city-err"></em></label>
-          <label class="f f--half" for="if-org"><span>Organization <b>(optional)</b></span><input id="if-org" name="organization" autocomplete="organization" maxlength="160"></label>
-          <label class="f f--half" for="if-kids" id="if-kids-wrap" hidden><span>Number of kids and ages <b>(optional)</b></span><input id="if-kids" name="kids" maxlength="120"></label>
-          <label class="f" for="if-msg"><span>Message <b>(optional)</b></span><textarea id="if-msg" name="message" rows="3" maxlength="2000"></textarea></label>
-          <div class="f f--consent"><label class="consent" for="if-consent"><input id="if-consent" name="consent" type="checkbox" value="yes" required aria-describedby="if-consent-err"><span>You may contact me by email about AfroBot. <i aria-hidden="true">*</i></span></label><em class="f__err" id="if-consent-err"></em></div>
-          <div class="hp" aria-hidden="true"><label for="if-website">Website</label><input id="if-website" name="website" tabindex="-1" autocomplete="off"></div>
-        </div>
-        <button class="btn btn--clay" type="submit">Send interest</button>
-        <p class="form__msg" id="if-status" role="status" aria-live="polite" hidden></p>
-      </form>
-    </div>
+    <p>Tanzania is a planned hub on its own dates.</p>
+    <p class="hero__status">Dates coming soon.</p>
+    <p><a class="text-link" href="programs.html#compete">Back to Compete</a></p>
   </div>
 </section>
 </main>

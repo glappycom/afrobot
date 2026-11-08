@@ -30,7 +30,7 @@
 <link rel="preload" href="fonts/Outfit-Latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css?v=38">
 <link rel="stylesheet" href="components.css?v=45">
-<link rel="stylesheet" href="visual.css?v=20">
+<link rel="stylesheet" href="visual.css?v=21">
 
 </head>
 <body data-header="bone">
@@ -61,14 +61,24 @@
   </nav>
 </header>
 <main id="main" tabindex="-1">
-<section class="page-hero">
-  <div class="container">
+<section class="split-hero">
+  <div class="split-hero__copy">
     <p class="kicker">About</p>
     <h1 class="h1">A kids-only program for the chance to build.</h1>
     <p class="lead">AfroBot is a kids-only youth robotics and AI program.</p>
+    <p>Children take part through a parent or guardian.</p>
+    <a class="btn btn--clay" href="community.html">Join the community</a>
+    <p class="hero__next"><a href="child-safety.html">Child safety</a></p>
   </div>
+  <figure class="split-hero__photo">
+    <picture>
+      <source srcset="assets/photos/bamenda-class-celebration.avif" type="image/avif">
+      <source srcset="assets/photos/bamenda-class-celebration.webp" type="image/webp">
+      <img src="assets/photos/bamenda-class-celebration.jpg" alt="A classroom group in white lab coats" width="980" height="735" fetchpriority="high" decoding="async">
+    </picture>
+  </figure>
 </section>
-<section class="section">
+<section class="section" data-reveal>
   <div class="container">
     <div class="prose">
       <p>Sessions are not open yet.</p>
@@ -88,10 +98,6 @@
             <p>Founder.</p>
           </article>
         </div>
-      </div>
-      <div class="prose">
-        <p>Children take part through a parent or guardian.</p>
-        <p><a class="tlink" href="child-safety.html">Child safety</a></p>
       </div>
     </div>
     <div class="measure-block gap-top" id="measure" aria-labelledby="measure-title">
@@ -134,12 +140,11 @@
     </div>
   </div>
 </section>
-<section class="section band-quiet" id="values">
-  <div class="container">
-    <header class="sh">
-      <h2 class="h1">Values</h2>
-    </header>
-    <ol class="val-list">
+<section class="about-values" id="values" data-reveal>
+  <div class="about-values__head">
+    <h2 class="h1">Values</h2>
+  </div>
+  <ol class="val-list">
       <li><b>Ubuntu</b><span>We rise together. “I am because we are.”</span></li>
       <li><b>Ask</b><span>Curiosity before answers.</span></li>
       <li><b>Build</b><span>Make it real, then test it.</span></li>
@@ -147,8 +152,7 @@
       <li><b>Welcome</b><span>Everyone has a seat.</span></li>
       <li><b>Celebrate</b><span>Joy is part of the work.</span></li>
     </ol>
-    <p class="sh-foot"><a class="btn btn--clay" href="community.html">Join the community</a> <a class="btn btn--line" href="contact.html">Contact</a></p>
-  </div>
+    <p class="about-values__next"><a href="contact.html">Contact</a></p>
 </section>
 </main>
 <footer class="footer">

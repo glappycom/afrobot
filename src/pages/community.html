@@ -1,30 +1,21 @@
-<section class="page-hero">
-  <div class="container">
+<section class="split-hero">
+  <div class="split-hero__copy">
     <p class="kicker">Community</p>
     <h1 class="h1">Every adult around a child needs a clear way in.</h1>
     <p class="lead">Mentors are screened before they work with students.</p>
+    <p>Children take part through a parent or guardian.</p>
+    <a class="btn btn--clay" href="#register">Register interest</a>
   </div>
+  <figure class="split-hero__photo">
+    <picture>
+      <source srcset="assets/photos/bamenda-classroom-laptops.avif" type="image/avif">
+      <source srcset="assets/photos/bamenda-classroom-laptops.webp" type="image/webp">
+      <img src="assets/photos/bamenda-classroom-laptops.jpg" alt="Children working at laptops in a classroom with a projected lesson" width="980" height="735" fetchpriority="high" decoding="async">
+    </picture>
+  </figure>
 </section>
-<section class="section band-quiet">
+<section class="section band-quiet" data-reveal>
   <div class="container">
-    <div class="place-grid">
-      <figure>
-        <picture>
-          <source srcset="assets/photos/bamenda-classroom-laptops.avif" type="image/avif">
-          <source srcset="assets/photos/bamenda-classroom-laptops.webp" type="image/webp">
-          <img src="assets/photos/bamenda-classroom-laptops.jpg" alt="Children working at laptops in a classroom with a projected lesson" width="980" height="735" loading="lazy" decoding="async">
-        </picture>
-        <figcaption>A classroom session.</figcaption>
-      </figure>
-      <figure>
-        <picture>
-          <source srcset="assets/photos/bamenda-circuits.avif" type="image/avif">
-          <source srcset="assets/photos/bamenda-circuits.webp" type="image/webp">
-          <img src="assets/photos/bamenda-circuits.jpg" alt="Children gathered around a hands-on electronics activity" width="980" height="735" loading="lazy" decoding="async">
-        </picture>
-        <figcaption>A hands-on session.</figcaption>
-      </figure>
-    </div>
     {{roles}}
   </div>
 </section>
