@@ -58,7 +58,7 @@ Stage links:
 | Partnership Inquiries | `/partnership` |
 | Social | `/social` |
 
-The footer also repeats the main destinations, `info@afrobot.org`, and the tagline “From Curiosity to Creation. From Community to the World.” No street address is published. No social network URLs are published, because none are confirmed.
+The footer also repeats the main destinations and `info@afrobot.org`. Its line is “Hands-on robotics and AI for kids.” No street address is published. No social network URLs are published, because none are confirmed.
 
 ## Page status
 

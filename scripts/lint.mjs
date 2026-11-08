@@ -23,7 +23,7 @@ if (serverRoles.includes('Student')) fail('Student is still a server role');
 
 const requiredHome = [
   'Every Child Deserves a Chance to Build the Future.',
-  'From Curiosity to Creation. From Community to the World.',
+  'From Africa to the World',
   'From Curiosity to Creativity. From Africa to the World.',
   'Affordable workshops lead to robotics, AI, mentorship, and pathways.',
   'Dates coming soon',
@@ -120,6 +120,8 @@ for (const name of files) {
 const home = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const programs = fs.readFileSync(path.join(root, 'programs.html'), 'utf8');
 for (const line of requiredHome) if (!home.includes(line)) fail('homepage missing: ' + line);
+if (home.includes('From Curiosity to Creation. From Community to the World.')) fail('old hero tagline still present');
+if (!home.includes('class="hero__tag"><span>From Africa to the World</span>')) fail('hero tagline is not the angled tag');
 const about = fs.readFileSync(path.join(root, 'about.html'), 'utf8');
 const events = fs.readFileSync(path.join(root, 'events.html'), 'utf8');
 for (const line of ['Planned sessions', 'Affordable sessions', "Big Dreams Shouldn't Require Big Budgets.", '$100 per child for a camp week is the participation goal.', 'illustrative aspiration', 'Find Your AfroBot Journey', 'Ask about financial assistance']) {
