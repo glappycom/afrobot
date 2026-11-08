@@ -30,7 +30,7 @@
 <link rel="preload" href="fonts/Outfit-Latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css?v=38">
 <link rel="stylesheet" href="components.css?v=45">
-<link rel="stylesheet" href="visual.css?v=12">
+<link rel="stylesheet" href="visual.css?v=14">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -107,40 +107,61 @@
   <img src="assets/photos/bamenda-desktop-focus.avif" alt="" width="980" height="735" loading="lazy" decoding="async">
 </div>
 
-<section class="section story-block" id="span" aria-labelledby="span-title" data-reveal>
-  <div class="container">
-    <div class="story-layout">
+<section class="story-block" id="span" aria-labelledby="span-title" data-reveal>
+  <div class="story-block__top">
+    <p class="kicker">The span</p>
+    <h2 id="span-title" class="story-title">
+      <span class="story-title__lead">From Curiosity</span>
+      <span class="story-title__next">to <span class="story-mark"><span>Creativity</span></span></span>
+    </h2>
+    <div class="story-block__row">
       <div class="story-copy">
-        <p class="kicker">The span</p>
-        <h2 id="span-title" class="h1">From Curiosity to Creativity</h2>
         <p class="lead">About 4 years of programs in Africa and the US.</p>
         <p class="pull">Affordable workshops lead to robotics, AI, mentorship, and pathways.</p>
-        <ol class="timeline">
-          <li><b>Africa and the US</b><span>About 4 years of programs.</span></li>
-          <li><b>Cameroon</b><span>5,000 children trained. 1,500 are in ongoing programs.</span></li>
-          <li><b>Dallas area, 2024</b><span>An introductory program with about 30 children.</span></li>
-          <li><b>DFW, 2027</b><span>An expansion is planned. Dates coming soon.</span></li>
-        </ol>
       </div>
-      <div class="mosaic">
-        <figure class="mosaic__big">
-          <picture>
-            <source srcset="assets/photos/bamenda-robotics-build.avif" type="image/avif">
-            <source srcset="assets/photos/bamenda-robotics-build.webp" type="image/webp">
-            <img src="assets/photos/bamenda-robotics-build.jpg" alt="Overhead view of a team assembling robotics components" width="980" height="735" loading="lazy" decoding="async">
-          </picture>
-          <figcaption>AfroBot program, Cameroon.</figcaption>
-        </figure>
-        <figure>
-          <picture>
-            <source srcset="assets/photos/mckinney-ai-track-2024.webp" type="image/webp">
-            <img src="assets/photos/mckinney-ai-track-2024.jpg" alt="Kids at tables with their robots while a presenter teaches at a screen" width="1200" height="900" loading="lazy" decoding="async">
-          </picture>
-          <figcaption>AfroBot program, Dallas area, 2024.</figcaption>
-        </figure>
-      </div>
+      <div class="story-collage">
+      <figure class="story-collage__back">
+        <picture>
+          <source srcset="assets/photos/bamenda-robotics-build.avif" type="image/avif">
+          <source srcset="assets/photos/bamenda-robotics-build.webp" type="image/webp">
+          <img src="assets/photos/bamenda-robotics-build.jpg" alt="Overhead view of a team assembling robotics components" width="980" height="735" loading="lazy" decoding="async">
+        </picture>
+        <figcaption>AfroBot program, Cameroon.</figcaption>
+      </figure>
+      <figure class="story-collage__front">
+        <picture>
+          <source srcset="assets/photos/mckinney-ai-track-2024.webp" type="image/webp">
+          <img src="assets/photos/mckinney-ai-track-2024.jpg" alt="Kids at tables with their robots while a presenter teaches at a screen" width="1200" height="900" loading="lazy" decoding="async">
+        </picture>
+        <figcaption>AfroBot program, Dallas area, 2024.</figcaption>
+      </figure>
+    </div>
     </div>
   </div>
+  <ol class="milestones">
+    <li class="milestones__item milestones__item--a">
+      <span class="milestones__dot" aria-hidden="true"></span>
+      <p class="milestones__num">4</p>
+      <p class="milestones__body"><b>Africa and the US</b><span>About 4 years of programs.</span></p>
+    </li>
+    <li class="milestones__item milestones__item--b">
+      <span class="milestones__dot" aria-hidden="true"></span>
+      <p class="milestones__num">5,000</p>
+      <p class="story-chip">1,500 are in ongoing programs</p>
+      <p class="milestones__body"><b>Cameroon</b><span>5,000 children trained. 1,500 are in ongoing programs.</span></p>
+    </li>
+    <li class="milestones__item milestones__item--c">
+      <span class="milestones__dot" aria-hidden="true"></span>
+      <p class="milestones__num">2024</p>
+      <p class="story-chip">about 30 children</p>
+      <p class="milestones__body"><b>Dallas area, 2024</b><span>An introductory program with about 30 children.</span></p>
+    </li>
+    <li class="milestones__item milestones__item--d">
+      <span class="milestones__dot" aria-hidden="true"></span>
+      <p class="milestones__num">2027</p>
+      <p class="milestones__body"><b>DFW, 2027</b><span>An expansion is planned. Dates coming soon.</span></p>
+    </li>
+  </ol>
 </section>
 
 <section class="section stages" id="journey" aria-labelledby="journey-title" data-stage-mode="current" data-reveal>
