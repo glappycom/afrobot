@@ -22,7 +22,7 @@
   --steel-card: #F5F6F8;
   --on-ink: #FFFFFF;
   --on-ink-soft: #D6DEEA;
-  --display: "Public Sans", ui-sans-serif, system-ui, sans-serif;
+  --display: "Newsreader", "Public Sans", Georgia, serif;
   --text: "Public Sans", ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--text);
   --font-body: var(--text);
@@ -37,10 +37,10 @@
   --t-28: 1.85rem;
   --t-h2: clamp(1.85rem, 2.6vw, 2.5rem);
   --t-h1: clamp(2.2rem, 3.6vw, 3.35rem);
-  --t-display: clamp(2.7rem, 4.8vw, 4.35rem);
-  --gutter: 28px;
-  --margin: clamp(20px, 4vw, 64px);
-  --max: 1160px;
+  --t-display: clamp(48px, 6vw, 88px);
+  --gutter: 24px;
+  --margin: clamp(20px, 3vw, 32px);
+  --max: 1200px;
   --s-section: clamp(4.75rem, 8vw, 7.5rem);
   --ease: cubic-bezier(.2, .7, .2, 1);
   --header-offset: 5.5rem;

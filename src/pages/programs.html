@@ -15,6 +15,7 @@
 </section>
 <section class="section band-card">
   <div class="container">
+    <h2 class="h1">Planned sessions</h2>
     <p>Ages 13–17 come through older partner schools.</p>
     <div class="card-grid card-grid--page gap-top">
     <article class="info-card" id="discover">
@@ -40,6 +41,55 @@
       <p class="info-card__more"><a class="tlink" href="university-pathways.html">University pathways</a></p>
     </article>
     </div>
+  </div>
+</section>
+<section class="section band-quiet" id="budgets" aria-labelledby="budget-title">
+  <div class="container prose">
+    <h2 id="budget-title" class="h1">Big Dreams Shouldn't Require Big Budgets.</h2>
+    <h2 id="cost-title">Affordable sessions</h2>
+    <p class="cost-block__action"><a class="btn btn--line" href="#register" data-intent="assistance">Ask about financial assistance</a></p>
+  </div>
+</section>
+<section class="section" id="ten" aria-labelledby="ten-title">
+  <div class="container prose">
+    <h2 id="ten-title" class="h1">A workshop a family can start</h2>
+    <p>A child starts at a workshop, builds with a mentor, and can move toward a team. A $10 workshop is an illustrative aspiration.</p>
+    <p>Nothing here promises wins, admission, or scholarships.</p>
+  </div>
+</section>
+<section class="section band-quiet" id="finder" aria-labelledby="finder-title">
+  <div class="container">
+    <h2 id="finder-title" class="h1">Find Your AfroBot Journey</h2>
+    <form class="finder" id="journey-finder">
+      <label>Age band
+        <select name="age">
+          <option value="6-9">6–9</option>
+          <option value="9-12">9–12</option>
+        </select>
+      </label>
+      <label>Interest
+        <select name="interest">
+          <option value="vehicles">Vehicles</option>
+          <option value="robots">Robots</option>
+          <option value="compete">Competition</option>
+          <option value="mentorship">Mentorship</option>
+        </select>
+      </label>
+      <label>Experience
+        <select name="experience">
+          <option value="new">New to this</option>
+          <option value="some">Some practice</option>
+        </select>
+      </label>
+      <label>Format
+        <select name="format">
+          <option value="workshop">Workshop</option>
+          <option value="ongoing">Ongoing program</option>
+        </select>
+      </label>
+      <button class="btn btn--clay" type="submit">Find your stage</button>
+      <p id="finder-result" role="status"></p>
+    </form>
   </div>
 </section>
 {{register}}

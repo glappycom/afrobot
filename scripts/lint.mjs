@@ -34,14 +34,7 @@ const requiredHome = [
   'Ask about hosting',
   'For Partners',
   'Discuss sponsorship',
-  'Planned sessions',
-  'McKinney Build Day',
-  'Kids and mentors worked with robots in McKinney, Texas, in 2024.',
-  'Affordable sessions',
-  '$100 per child for a camp week is the participation goal.',
   'Get session updates',
-  'Your name (adult)',
-  'This form is for adults.',
 ];
 
 const retiredCopy = [
@@ -126,6 +119,18 @@ for (const name of files) {
 const home = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const programs = fs.readFileSync(path.join(root, 'programs.html'), 'utf8');
 for (const line of requiredHome) if (!home.includes(line)) fail('homepage missing: ' + line);
+const about = fs.readFileSync(path.join(root, 'about.html'), 'utf8');
+const events = fs.readFileSync(path.join(root, 'events.html'), 'utf8');
+for (const line of ['Planned sessions', 'Affordable sessions', "Big Dreams Shouldn't Require Big Budgets.", '$100 per child for a camp week is the participation goal.', 'illustrative aspiration', 'Find Your AfroBot Journey', 'Ask about financial assistance']) {
+  if (!programs.includes(line)) fail('programs missing: ' + line);
+}
+for (const line of ['We Measure Success in Opportunities Created', 'We intend to measure these.']) {
+  if (!about.includes(line)) fail('about missing: ' + line);
+}
+for (const line of ['McKinney Build Day', 'Kids and mentors worked with robots in McKinney, Texas, in 2024.', 'From the program']) {
+  if (!events.includes(line)) fail('events missing: ' + line);
+}
+if (!home.includes('class="btn btn--clay nav__updates" href="partners.html">Sponsor a Student')) fail('nav button is not Sponsor a Student');
 for (const line of retiredCopy) if (home.includes(line) || programs.includes(line)) fail('retired copy still present: ' + line);
 const homeStatus = home.replaceAll('Dates coming soon', '');
 const programsStatus = programs.replaceAll('Dates coming soon', '');

@@ -27,20 +27,15 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://afrobot.org/assets/og-image.png">
 <link rel="preload" href="fonts/PublicSans-VF.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=37">
-<link rel="stylesheet" href="components.css?v=43">
+<link rel="preload" href="fonts/Newsreader-Latin-600.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css?v=38">
+<link rel="stylesheet" href="components.css?v=44">
+<link rel="stylesheet" href="visual.css?v=1">
 
 </head>
 <body data-header="bone">
 <a class="skip" href="#main">Skip to content</a>
 <header class="nav">
-  <div class="utilbar">
-    <div class="container utilbar__inner">
-      <a href="contact.html">Contact</a>
-      <a href="index.html?intent=support#register">Support</a>
-      <a href="volunteer.html">Volunteer</a>
-    </div>
-  </div>
   <div class="container nav__inner">
     <a class="nav__brand" href="index.html" aria-label="AfroBot home"><img data-logo="primary" src="assets/logo-afrobot.svg" alt="AfroBot" width="170" height="38"></a>
     <nav class="nav__links" aria-label="Main">
@@ -50,7 +45,7 @@
       <a data-nav href="volunteer.html">Volunteer</a>
       <a data-nav href="partners.html">Partners</a>
     </nav>
-    <a class="btn btn--clay nav__updates" href="index.html?intent=updates#register">Get updates</a>
+    <a class="btn btn--clay nav__updates" href="partners.html">Sponsor a Student</a>
     <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="mnav"><span class="sr">Menu</span><i></i><i></i></button>
   </div>
   <nav class="mnav" id="mnav" aria-label="Mobile">
@@ -59,10 +54,10 @@
     <a data-nav href="about.html">About</a>
     <a data-nav href="volunteer.html">Volunteer</a>
     <a data-nav href="partners.html">Partners</a>
-    <a href="index.html?intent=updates#register">Get updates</a>
+    <a href="partners.html">Sponsor a Student</a>
+    <a href="community.html?intent=updates#register">Get updates</a>
     <a href="contact.html">Contact</a>
-    <a href="index.html?intent=support#register">Support</a>
-    <a href="volunteer.html">Volunteer</a>
+    <a href="community.html?intent=support#register">Support</a>
   </nav>
 </header>
 <main id="main" tabindex="-1">
@@ -83,6 +78,7 @@
 </section>
 <section class="section band-card">
   <div class="container">
+    <h2 class="h1">Planned sessions</h2>
     <p>Ages 13–17 come through older partner schools.</p>
     <div class="card-grid card-grid--page gap-top">
     <article class="info-card" id="discover">
@@ -108,6 +104,55 @@
       <p class="info-card__more"><a class="tlink" href="university-pathways.html">University pathways</a></p>
     </article>
     </div>
+  </div>
+</section>
+<section class="section band-quiet" id="budgets" aria-labelledby="budget-title">
+  <div class="container prose">
+    <h2 id="budget-title" class="h1">Big Dreams Shouldn't Require Big Budgets.</h2>
+    <h2 id="cost-title">Affordable sessions</h2>
+    <p class="cost-block__action"><a class="btn btn--line" href="#register" data-intent="assistance">Ask about financial assistance</a></p>
+  </div>
+</section>
+<section class="section" id="ten" aria-labelledby="ten-title">
+  <div class="container prose">
+    <h2 id="ten-title" class="h1">A workshop a family can start</h2>
+    <p>A child starts at a workshop, builds with a mentor, and can move toward a team. A $10 workshop is an illustrative aspiration.</p>
+    <p>Nothing here promises wins, admission, or scholarships.</p>
+  </div>
+</section>
+<section class="section band-quiet" id="finder" aria-labelledby="finder-title">
+  <div class="container">
+    <h2 id="finder-title" class="h1">Find Your AfroBot Journey</h2>
+    <form class="finder" id="journey-finder">
+      <label>Age band
+        <select name="age">
+          <option value="6-9">6–9</option>
+          <option value="9-12">9–12</option>
+        </select>
+      </label>
+      <label>Interest
+        <select name="interest">
+          <option value="vehicles">Vehicles</option>
+          <option value="robots">Robots</option>
+          <option value="compete">Competition</option>
+          <option value="mentorship">Mentorship</option>
+        </select>
+      </label>
+      <label>Experience
+        <select name="experience">
+          <option value="new">New to this</option>
+          <option value="some">Some practice</option>
+        </select>
+      </label>
+      <label>Format
+        <select name="format">
+          <option value="workshop">Workshop</option>
+          <option value="ongoing">Ongoing program</option>
+        </select>
+      </label>
+      <button class="btn btn--clay" type="submit">Find your stage</button>
+      <p id="finder-result" role="status"></p>
+    </form>
   </div>
 </section>
 <section class="section register" id="register" data-default-intent="">
@@ -162,9 +207,10 @@
     </nav>
     <nav class="col-3 col-md-6" aria-label="Take part">
       <h2>Take part</h2>
-      <a href="index.html?intent=updates#register">Get updates</a>
-      <a href="index.html?intent=sponsor#register">Discuss sponsorship</a>
-      <a href="index.html?intent=host#register">Ask about hosting</a>
+      <a href="community.html?intent=updates#register">Get updates</a>
+      <a href="community.html?intent=sponsor#register">Discuss sponsorship</a>
+      <a href="community.html?intent=host#register">Ask about hosting</a>
+      <a href="community.html?intent=support#register">Support</a>
       <a href="volunteer.html">Volunteer</a>
       <a href="mentorship.html">Mentorship</a>
       <a href="partnership.html">Partnership Inquiries</a>
@@ -188,6 +234,6 @@
     </div>
   </div>
 </footer>
-<script src="script.js?v=38"></script>
+<script src="script.js?v=39"></script>
 </body>
 </html>

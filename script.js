@@ -145,7 +145,7 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
 })();
 
 // ---- Nav hairline on scroll
-(() => { const n = document.querySelector('.nav'); const f = () => n.classList.toggle('is-scrolled', scrollY > 8); f(); addEventListener('scroll', f, { passive: true }); })();
+(() => { const n = document.querySelector('.nav'); const f = () => n.classList.toggle('is-compact', scrollY > 8); f(); addEventListener('scroll', f, { passive: true }); })();
 
 // v5 font preview: ?font=poppins swaps headline face; default unchanged
 const FONT = new URLSearchParams(location.search).get('font');
@@ -246,6 +246,46 @@ document.querySelectorAll('.video-play').forEach((btn) => {
     if (interest === 'compete') extra = ' Compete is for ages 13–17.';
     out.textContent = stage + ' fits ages ' + ages + ', ' + practice + ', in ' + shape + '.' + extra;
   });
+})();
+
+(() => {
+  document.documentElement.classList.add('js');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reveal = document.querySelectorAll('[data-reveal]');
+  if (!reduce && reveal.length && 'IntersectionObserver' in window) {
+    reveal.forEach((el) => el.classList.add('will-reveal'));
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-revealed');
+        io.unobserve(entry.target);
+      });
+    }, { threshold: 0.18 });
+    reveal.forEach((el) => io.observe(el));
+  }
+  const nums = document.querySelectorAll('[data-count]');
+  if (!nums.length || reduce || !('IntersectionObserver' in window)) return;
+  const format = (n) => n.toLocaleString('en-US');
+  const run = (el) => {
+    const target = Number(el.dataset.count);
+    if (!Number.isFinite(target)) return;
+    const start = performance.now();
+    const tick = (now) => {
+      const t = Math.min(1, (now - start) / 900);
+      const eased = 1 - (1 - t) ** 3;
+      el.textContent = format(Math.round(target * eased));
+      if (t < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+  const counts = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      run(entry.target);
+      counts.unobserve(entry.target);
+    });
+  }, { threshold: 0.5 });
+  nums.forEach((el) => counts.observe(el));
 })();
 
 if (Q.get('hero') === 'photo') {
