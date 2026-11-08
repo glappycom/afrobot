@@ -21,10 +21,8 @@
 <section class="impact" aria-label="Program reach" data-reveal>
   <div class="container impact__row">
     <p><strong data-count="{{impact.cameroonTrainedCount}}">{{impact.cameroonTrained}}</strong><span>Children Trained in Cameroon</span></p>
-    <p><strong data-count="{{impact.cameroonOngoingCount}}">{{impact.cameroonOngoing}}</strong><span>Students in Ongoing Programs</span></p>
     <p><strong data-count="{{impact.yearsCount}}">{{impact.years}}</strong><span>Years Educational Experience</span></p>
   </div>
-  <p class="container impact__note">{{impact.cameroonOngoing}} of the {{impact.cameroonTrained}} are in ongoing programs.</p>
 </section>
 
 <div class="filmstrip" aria-hidden="true">
@@ -70,8 +68,7 @@
     <li class="milestones__item milestones__item--b">
       <span class="milestones__dot" aria-hidden="true"></span>
       <p class="milestones__num">{{impact.cameroonTrained}}</p>
-      <p class="story-chip">{{impact.cameroonOngoing}} are in ongoing programs</p>
-      <p class="milestones__body"><b>Cameroon</b><span>{{impact.cameroonTrained}} children trained. {{impact.cameroonOngoing}} are in ongoing programs.</span></p>
+      <p class="milestones__body"><b>Cameroon</b><span>{{impact.cameroonTrained}} children trained.</span></p>
     </li>
     <li class="milestones__item milestones__item--c">
       <span class="milestones__dot" aria-hidden="true"></span>
@@ -89,8 +86,7 @@
 
 <section class="section stages" id="journey" aria-labelledby="journey-title" data-stage-mode="{{stage-mode}}" data-reveal>
   <div class="container">
-    <p class="kicker">The path</p>
-    <h2 id="journey-title" class="h1">The stages</h2>
+    <h2 id="journey-title" class="h1">The Journey</h2>
     <p class="lead">Affordable and sponsored entry removes the cost barrier.</p>
     <ol class="stage-line">
       <li class="journey-step stage-discover" data-stage-index="0"><h3>Discover</h3><p>Ages 6–9. Teams build a life-size vehicle by hand.</p></li>
@@ -127,30 +123,42 @@
   </article>
 </section>
 
-<section class="involve" id="involve" aria-label="Who can write to us" data-reveal>
-  <figure class="involve__photo">
-    <picture>
-      <source srcset="assets/photos/bamenda-lab-coats.avif" type="image/avif">
-      <source srcset="assets/photos/bamenda-lab-coats.webp" type="image/webp">
-      <img src="assets/photos/bamenda-lab-coats.jpg" alt="An outdoor group in white lab coats" width="980" height="735" loading="lazy" decoding="async">
-    </picture>
-  </figure>
-  <div class="involve__panel">
-    <p class="kicker">Get involved</p>
-    <h2 class="h1">Who this is for</h2>
-    <div class="involve__list">
-      <article id="parents">
-        <h3>For Parents</h3>
-        <a class="btn btn--clay" href="community.html?intent=updates#register">Get session updates</a>
-      </article>
-      <article id="leaders">
-        <h3>For Community Leaders</h3>
-        <a class="btn btn--line-light" href="community.html?intent=host#register">Ask about hosting</a>
-      </article>
-      <article id="partners">
-        <h3>For Partners</h3>
-        <a class="btn btn--line-light" href="community.html?intent=support#register">Discuss sponsorship</a>
+<section class="involve" id="involve" aria-labelledby="involve-title" data-reveal>
+  <div class="involve__hero">
+    <figure class="involve__photo">
+      <picture>
+        <source srcset="assets/photos/bamenda-lab-coats.avif" type="image/avif">
+        <source srcset="assets/photos/bamenda-lab-coats.webp" type="image/webp">
+        <img src="assets/photos/bamenda-lab-coats.jpg" alt="An outdoor group in white lab coats" width="980" height="735" loading="lazy" decoding="async">
+      </picture>
+    </figure>
+    <div class="involve__intro">
+      <p class="kicker">Get involved</p>
+      <h2 id="involve-title" class="h1">Who this is for</h2>
+      <article class="path path--sponsor" id="partners">
+        <p class="kicker">For Partners</p>
+        <h3>Sponsor a Student</h3>
+        <p>Funds and sponsored places.</p>
+        <a class="btn btn--inverse" href="partners.html">Sponsor a Student</a>
+        <a class="tlink" href="community.html?intent=support#register">Discuss sponsorship</a>
       </article>
     </div>
+  </div>
+  <div class="involve__paths">
+    <article class="path path--parents" id="parents">
+      <h3>For Parents</h3>
+      <p>Children take part through a parent or guardian.</p>
+      <a class="btn btn--ink" href="community.html?intent=updates#register">Get session updates</a>
+    </article>
+    <article class="path path--mentors" id="mentors">
+      <h3>Mentors</h3>
+      <p>Mentors are screened before they meet students.</p>
+      <a class="btn btn--inverse" href="mentorship.html">Become a Mentor</a>
+    </article>
+    <article class="path path--leaders" id="leaders">
+      <h3>For Community Leaders</h3>
+      <p>Space, families, and local support.</p>
+      <a class="btn btn--inverse" href="community.html?intent=host#register">Ask about hosting</a>
+    </article>
   </div>
 </section>

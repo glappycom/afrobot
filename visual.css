@@ -138,7 +138,7 @@ main * {
 .hero__status { margin: 16px 0 0; color: #fff; font-size: 0.95rem; font-weight: 700; }
 
 .impact { background: #142033; color: #fff; padding: 96px 0 88px; }
-.impact__row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+.impact__row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
 .impact__row p { margin: 0; }
 .impact__row strong {
   display: block;
@@ -446,14 +446,26 @@ main * {
 .season .h1, .season__main .h1 { color: #142033; max-width: 16ch; }
 .season__side .h1, .season__side p { color: #fff; }
 .season__side .kicker { color: #F6C445; }
-.involve { display: grid; grid-template-columns: 1.2fr 0.92fr; padding: 0; background: #142033; color: #fff; }
-.involve__photo { margin: 0; min-height: 460px; }
-.involve__photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; min-height: 460px; }
-.involve__panel { padding: var(--section-y) var(--inset) var(--section-y) 32px; display: flex; flex-direction: column; justify-content: center; }
-.involve__panel .h1, .involve__panel h3 { color: #fff; }
-.involve__list { display: grid; gap: 0; margin-top: 12px; }
-.involve__list article { padding: 22px 0; border-top: 2px solid rgba(255, 255, 255, 0.35); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
-.involve__list h3 { margin: 0; font-size: 1.7rem; text-transform: uppercase; }
+.involve { background: #142033; color: #fff; padding: 0 0 var(--section-y); }
+.involve__hero { display: grid; grid-template-columns: 1.15fr 0.85fr; min-height: 520px; }
+.involve__photo { margin: 0; min-height: 520px; container-type: size; overflow: hidden; }
+.involve__photo picture { display: block; height: 100%; min-height: 520px; clip-path: polygon(0 0, 100% 0, calc(100% - 100cqh * tan(var(--slant))) 100%, 0 100%); }
+.involve__photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; min-height: 520px; }
+.involve__intro { padding: var(--section-y) var(--inset) var(--section-y) 36px; display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; container-type: inline-size; }
+.involve__intro .h1, .involve h3 { color: #fff; }
+.involve__paths { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; padding: 12px var(--inset) 0; container-type: inline-size; }
+.path { min-height: 240px; padding: calc(22px + 100cqi / 3 * tan(var(--slant))) 22px 22px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; clip-path: polygon(0 calc(100cqi / 3 * tan(var(--slant))), 100% 0, 100% 100%, 0 100%); }
+.path h3 { margin: 0; font-family: "Outfit", "Public Sans", sans-serif; font-weight: 800; font-size: clamp(1.6rem, 2vw, 2.2rem); letter-spacing: -0.03em; text-transform: uppercase; line-height: 0.95; }
+.path p { margin: 0; font-weight: 650; max-width: 28rem; }
+.path .btn { margin-top: auto; }
+.path--sponsor { background: #B9380F; color: #fff; min-height: 0; clip-path: polygon(0 calc(100cqi * tan(var(--slant))), 100% 0, 100% 100%, 0 100%); padding-top: calc(18px + 100cqi * tan(var(--slant))); }
+.path--sponsor .kicker, .path--sponsor h3, .path--sponsor p, .path--sponsor .tlink { color: #fff; }
+.path--sponsor .tlink { text-decoration: underline; }
+.path--parents .btn:focus-visible { outline-color: #142033; }
+.path--parents { background: #F6C445; color: #142033; }
+.path--parents h3, .path--parents p { color: #142033; }
+.path--mentors { background: #0B6B5C; color: #fff; }
+.path--leaders { background: #163FA8; color: #fff; }
 .split-hero { min-height: 460px; }
 .split-hero__copy .h1, .split-hero__copy .lead, .split-hero__copy p { color: #fff; }
 .split-hero__copy .kicker { color: #F6C445; }
@@ -483,7 +495,12 @@ main * {
 .register .h1, .register p, .register li { color: #142033; }
 .season-hero .btn:focus-visible, .stage-build .btn:focus-visible, .stage-innovate .btn:focus-visible, .stage-compete .btn:focus-visible, .stage-advance .btn:focus-visible, .season__side .btn:focus-visible, .involve .btn:focus-visible, .split-hero .btn:focus-visible { outline-color: #fff; }
 @media (max-width: 900px) {
-  .season-hero, .story-layout, .season, .involve, .split-hero { grid-template-columns: 1fr; }
+  .season-hero, .story-layout, .season, .involve__hero, .split-hero { grid-template-columns: 1fr; }
+  .involve__photo, .involve__photo picture { min-height: 280px; max-height: 360px; }
+  .involve__photo picture { clip-path: none; }
+  .involve__intro { padding: 32px var(--inset); }
+  .involve__paths { grid-template-columns: 1fr; }
+  .path { clip-path: polygon(0 16px, 100% 0, 100% 100%, 0 100%); padding-top: 32px; }
   .season-hero__photo, .split-hero__photo { min-height: 280px; order: -1; }
   .season-hero__photo picture, .split-hero__photo picture,
   .season-hero__photo img, .split-hero__photo img, .involve__photo img { min-height: 280px; max-height: 420px; }
