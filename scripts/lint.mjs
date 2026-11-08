@@ -24,6 +24,7 @@ if (serverRoles.includes('Student')) fail('Student is still a server role');
 const requiredHome = [
   'Every Child Deserves a Chance to Build the Future.',
   'From Curiosity to Creation. From Community to the World.',
+  'From Curiosity to Creativity. From Africa to the World.',
   'Affordable workshops lead to robotics, AI, mentorship, and pathways.',
   'Dates coming soon',
   'Explore Programs',

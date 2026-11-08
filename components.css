@@ -507,7 +507,6 @@ h3, .audience-card h3, .info-card h2, .info-card h3 {
 .impact strong { color: #fff; }
 .impact__note { margin: 12px auto 0; color: #D6DEEA; max-width: var(--max); }
 .span-layout { display: grid; grid-template-columns: minmax(240px, 1fr) minmax(260px, 1fr); gap: 28px; align-items: center; margin-top: 24px; }
-.span-map { width: 100%; height: auto; }
 .timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
 .timeline li { display: grid; gap: 4px; padding-left: 16px; border-left: 3px solid var(--clay); }
 .timeline b { font-size: 1.15rem; }
