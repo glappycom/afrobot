@@ -145,7 +145,7 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
 })();
 
 // ---- Nav hairline on scroll
-(() => { const n = document.querySelector('.nav'); const f = () => n.classList.toggle('is-scrolled', scrollY > 8); f(); addEventListener('scroll', f, { passive: true }); })();
+(() => { const n = document.querySelector('.nav'); const f = () => n.classList.toggle('is-compact', scrollY > 8); f(); addEventListener('scroll', f, { passive: true }); })();
 
 // v5 font preview: ?font=poppins swaps headline face; default unchanged
 const FONT = new URLSearchParams(location.search).get('font');
@@ -195,12 +195,105 @@ document.querySelectorAll('.video-play').forEach((btn) => {
   });
 });
 
+(() => {
+  const access = [
+    ['Access', 'A family starts with an affordable or sponsored place.'],
+    ['Discover', 'Ages 6–9. Teams build a life-size vehicle by hand.'],
+    ['Build', 'Ages 9–12. Teams carry a life-size vehicle through a longer build.'],
+    ['Compete', 'Ages 13–17. Teams prepare humanoid robots for recognized robotics competitions.'],
+    ['Advance', 'Ages 13–17. Older students mentor younger teams with an adult coach.'],
+  ];
+  const mode = Q.get('stages') || document.querySelector('[data-stage-mode]')?.dataset.stageMode || 'current';
+  if (mode !== 'access') return;
+  document.querySelectorAll('[data-stage-index]').forEach((item) => {
+    const spec = access[Number(item.dataset.stageIndex)];
+    if (!spec) return;
+    item.querySelector('h3').textContent = spec[0];
+    item.querySelector('p').textContent = spec[1];
+  });
+})();
+
+(() => {
+  const steps = document.querySelectorAll('.journey-step');
+  if (!steps.length) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+    steps.forEach((step) => step.classList.add('is-on'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => { if (entry.isIntersecting) entry.target.classList.add('is-on'); });
+  }, { threshold: 0.6 });
+  steps.forEach((step) => io.observe(step));
+})();
+
+(() => {
+  const form = document.getElementById('journey-finder');
+  const out = document.getElementById('finder-result');
+  if (!form || !out) return;
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const data = new FormData(form);
+    const age = data.get('age');
+    const interest = data.get('interest');
+    const experience = data.get('experience');
+    const format = data.get('format');
+    const stage = age === '6-9' ? 'Discover' : 'Build';
+    const ages = age === '6-9' ? '6–9' : '9–12';
+    const practice = experience === 'new' ? 'new to this' : 'some practice';
+    const shape = format === 'workshop' ? 'a workshop' : 'an ongoing program';
+    let extra = '';
+    if (interest === 'mentorship') extra = ' Mentorship is for adults.';
+    if (interest === 'compete') extra = ' Compete is for ages 13–17.';
+    out.textContent = stage + ' fits ages ' + ages + ', ' + practice + ', in ' + shape + '.' + extra;
+  });
+})();
+
+(() => {
+  document.documentElement.classList.add('js');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reveal = document.querySelectorAll('[data-reveal]');
+  if (!reduce && reveal.length && 'IntersectionObserver' in window) {
+    reveal.forEach((el) => el.classList.add('will-reveal'));
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-revealed');
+        io.unobserve(entry.target);
+      });
+    }, { threshold: 0.18 });
+    reveal.forEach((el) => io.observe(el));
+  }
+  const nums = document.querySelectorAll('[data-count]');
+  if (!nums.length || reduce || !('IntersectionObserver' in window)) return;
+  const format = (n) => n.toLocaleString('en-US');
+  const run = (el) => {
+    const target = Number(el.dataset.count);
+    if (!Number.isFinite(target)) return;
+    const start = performance.now();
+    const tick = (now) => {
+      const t = Math.min(1, (now - start) / 900);
+      const eased = 1 - (1 - t) ** 3;
+      el.textContent = format(Math.round(target * eased));
+      if (t < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+  const counts = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      run(entry.target);
+      counts.unobserve(entry.target);
+    });
+  }, { threshold: 0.5 });
+  nums.forEach((el) => counts.observe(el));
+})();
+
 if (Q.get('hero') === 'photo') {
   const fig = document.querySelector('.photo--hero');
   if (fig) {
     fig.classList.remove('photo--cutout');
     const src = fig.querySelector('source'), img = fig.querySelector('img');
     if (src) src.srcset = 'assets/photos/mckinney-build-day-2024.webp?v=5';
-    if (img) { img.src = 'assets/photos/mckinney-build-day-2024.jpg?v=5'; img.width = 1800; img.height = 1350; }
+    if (img) { img.src = 'assets/photos/mckinney-build-day-2024.jpg?v=5'; img.width = 1000; img.height = 920; }
   }
 }

@@ -22,23 +22,19 @@ if (serverRoles.length !== 5) fail('Could not read server roles');
 if (serverRoles.includes('Student')) fail('Student is still a server role');
 
 const requiredHome = [
-  'Build robots. Ask questions.',
-  'Hands-on robotics and AI for kids.',
+  'Every Child Deserves a Chance to Build the Future.',
+  'From Africa to the World',
+  'Affordable workshops lead to robotics, AI, mentorship, and pathways.',
   'Dates coming soon',
-  'Get updates',
+  'Explore Programs',
+  'Join the AfroBot Community',
+  'Sponsor a Student',
   'For Parents',
   'For Community Leaders',
   'Ask about hosting',
   'For Partners',
   'Discuss sponsorship',
-  'Planned sessions',
-  'McKinney Build Day',
-  'Kids and mentors worked with robots in McKinney, Texas, in 2024.',
-  'Affordable sessions',
-  '$100 per child for a camp week is the participation goal.',
   'Get session updates',
-  'Your name (adult)',
-  'This form is for adults.',
 ];
 
 const retiredCopy = [
@@ -47,7 +43,6 @@ const retiredCopy = [
   'This section has no counts and no percentages',
   'Success Is Measured in Opportunity',
   'World-Class Opportunities',
-  'Sponsor a Student',
 ];
 
 const banned = [
@@ -90,10 +85,12 @@ for (const name of files) {
     seen.add(id);
   }
   for (const [re, label] of banned) if (re.test(html)) fail(name + ' contains banned pattern ' + label);
-  const allowedAmounts = new Set(['$100', '$1,000', '$5,000', '$10,000', '$25,000']);
+  const allowedAmounts = new Set(['$10', '$100', '$1,000', '$5,000', '$10,000', '$25,000']);
   const money = html.match(/\$\d[\d,]*/g) || [];
   for (const amount of money) if (!allowedAmounts.has(amount)) fail(name + ' unexpected amount ' + amount);
-  if (money.length && !/goal/i.test(html)) fail(name + ' shows a dollar amount without calling it a goal');
+  if (money.includes('$10') && !/illustrative aspiration/i.test(html)) fail(name + ' uses $10 without calling it an illustrative aspiration');
+  const priced = money.filter((amount) => amount !== '$10');
+  if (priced.length && !/goal/i.test(html)) fail(name + ' shows a dollar amount without calling it a goal');
   if (/\bFIRST\b/.test(html)) fail(name + ' names FIRST');
   if (/scholarship/i.test(html) && !/does not guarantee|do not guarantee|no guarantee|not a scholarship|nothing here promises/i.test(html)) {
     fail(name + ' mentions scholarships without a non-guarantee');
@@ -122,6 +119,27 @@ for (const name of files) {
 const home = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const programs = fs.readFileSync(path.join(root, 'programs.html'), 'utf8');
 for (const line of requiredHome) if (!home.includes(line)) fail('homepage missing: ' + line);
+if (home.includes('From Curiosity to Creation. From Community to the World.')) fail('old hero tagline still present');
+if (home.includes('From Curiosity to Creativity. From Africa to the World.')) fail('story heading is still the long line');
+const storyHeading = home.match(/<h2 id="span-title"[\s\S]*?<\/h2>/);
+if (!storyHeading) fail('story heading missing');
+else {
+  const storyText = storyHeading[0].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+  if (storyText !== 'From Curiosity to Creativity') fail('story heading mismatch: ' + storyText);
+}
+if (!home.includes('class="hero__tag"><span>From Africa to the World</span>')) fail('hero tagline is not the angled tag');
+const about = fs.readFileSync(path.join(root, 'about.html'), 'utf8');
+const events = fs.readFileSync(path.join(root, 'events.html'), 'utf8');
+for (const line of ['Planned sessions', 'Affordable sessions', 'The camp-week cost has a $100 goal.', '$100 per child for a camp week is the participation goal.', 'illustrative aspiration', 'Find Your AfroBot Journey', 'Ask about financial assistance']) {
+  if (!programs.includes(line)) fail('programs missing: ' + line);
+}
+for (const line of ['We Measure Success in Opportunities Created', 'We intend to measure these.']) {
+  if (!about.includes(line)) fail('about missing: ' + line);
+}
+for (const line of ['McKinney Build Day', 'Kids and mentors worked with robots in McKinney, Texas, in 2024.', 'From the program']) {
+  if (!events.includes(line)) fail('events missing: ' + line);
+}
+if (!home.includes('class="btn btn--clay nav__updates" href="partners.html">Sponsor a Student')) fail('nav button is not Sponsor a Student');
 for (const line of retiredCopy) if (home.includes(line) || programs.includes(line)) fail('retired copy still present: ' + line);
 const homeStatus = home.replaceAll('Dates coming soon', '');
 const programsStatus = programs.replaceAll('Dates coming soon', '');
@@ -141,16 +159,17 @@ for (const label of ['Contact', 'Privacy', 'Terms', 'Child Safety', 'Accessibili
 if (home.includes('stickycta') || programs.includes('stickycta')) fail('sticky mobile bar is still in the page');
 if (home.includes('<option>Student</option>')) fail('Student role option is still on the form');
 if (home.includes('mckinney-build-day-2024-cutout')) fail('homepage still uses the group cutout');
-if (!home.includes('mckinney-build-day-2024.avif') || !home.includes('width="1800"') || !home.includes('height="1350"')) fail('homepage photo is missing avif or dimensions');
+if (!home.includes('mckinney-build-day-2024.avif') || !home.includes('width="1000"') || !home.includes('height="920"')) fail('homepage photo is missing avif or dimensions');
 const robots = fs.readFileSync(path.join(root, 'robots.txt'), 'utf8');
 const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
 if (!robots.includes('Sitemap: https://afrobot.org/sitemap.xml')) fail('robots.txt missing canonical sitemap');
 if (!sitemap.includes('https://afrobot.org/') || !sitemap.includes('https://afrobot.org/programs')) fail('sitemap missing canonical urls');
 
-const css = fs.readFileSync(path.join(root, 'components.css'), 'utf8') + fs.readFileSync(path.join(root, 'styles.css'), 'utf8') + fs.readFileSync(path.join(root, 'tokens.css'), 'utf8');
+const css = ['components.css', 'styles.css', 'tokens.css', 'visual.css'].map((name) => fs.readFileSync(path.join(root, name), 'utf8')).join('\n');
 if (/color:\s*var\(--ink-40\)/.test(fs.readFileSync(path.join(root, 'components.css'), 'utf8'))) fail('components.css uses ink-40 as text');
 if (!css.includes('Public Sans') || !css.includes('PublicSans-VF.woff2')) fail('Public Sans WOFF2 is not served');
-if (/url\(fonts\/Inter/.test(css) || /url\(fonts\/Outfit/.test(css)) fail('old body or display font is still requested');
+if (/url\(fonts\/Inter/.test(css)) fail('old body font is still requested');
+if (!css.includes('fonts/Outfit-Latin.woff2')) fail('Outfit wordmark font is not served');
 
 function lum(hex) {
   const c = hex.slice(1).match(/../g).map((x) => parseInt(x, 16) / 255).map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));

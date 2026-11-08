@@ -27,20 +27,15 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://afrobot.org/assets/og-image.png">
 <link rel="preload" href="fonts/PublicSans-VF.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=37">
-<link rel="stylesheet" href="components.css?v=41">
+<link rel="preload" href="fonts/Outfit-Latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css?v=38">
+<link rel="stylesheet" href="components.css?v=45">
+<link rel="stylesheet" href="visual.css?v=23">
 
 </head>
 <body data-header="bone">
 <a class="skip" href="#main">Skip to content</a>
 <header class="nav">
-  <div class="utilbar">
-    <div class="container utilbar__inner">
-      <a href="contact.html">Contact</a>
-      <a href="index.html?intent=support#register">Support</a>
-      <a href="volunteer.html">Volunteer</a>
-    </div>
-  </div>
   <div class="container nav__inner">
     <a class="nav__brand" href="index.html" aria-label="AfroBot home"><img data-logo="primary" src="assets/logo-afrobot.svg" alt="AfroBot" width="170" height="38"></a>
     <nav class="nav__links" aria-label="Main">
@@ -50,7 +45,7 @@
       <a data-nav href="volunteer.html">Volunteer</a>
       <a data-nav href="partners.html">Partners</a>
     </nav>
-    <a class="btn btn--clay nav__updates" href="index.html?intent=updates#register">Get updates</a>
+    <a class="btn btn--clay nav__updates" href="partners.html">Sponsor a Student</a>
     <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="mnav"><span class="sr">Menu</span><i></i><i></i></button>
   </div>
   <nav class="mnav" id="mnav" aria-label="Mobile">
@@ -59,105 +54,125 @@
     <a data-nav href="about.html">About</a>
     <a data-nav href="volunteer.html">Volunteer</a>
     <a data-nav href="partners.html">Partners</a>
-    <a href="index.html?intent=updates#register">Get updates</a>
+    <a href="partners.html">Sponsor a Student</a>
+    <a href="community.html?intent=updates#register">Get updates</a>
     <a href="contact.html">Contact</a>
-    <a href="index.html?intent=support#register">Support</a>
-    <a href="volunteer.html">Volunteer</a>
+    <a href="community.html?intent=support#register">Support</a>
   </nav>
 </header>
 <main id="main" tabindex="-1">
-<section class="page-hero">
-  <div class="container">
+<section class="split-hero">
+  <div class="split-hero__copy">
     <p class="kicker">University Pathways</p>
-    <h1 class="h1">Advance.</h1>
-    <p class="lead">Older students mentor younger teams with an adult coach.</p>
+    <h1 class="h1">Older students mentor younger teams.</h1>
+    <p class="lead">An adult coach is with them for ages 13–17.</p>
+    <p>AfroBot does not guarantee admission or scholarships.</p>
+    <a class="btn btn--clay" href="mentorship.html">Become a Mentor</a>
+    <p class="hero__next"><a href="programs.html#advance">Back to Advance</a></p>
   </div>
+  <figure class="split-hero__photo">
+    <picture>
+      <source srcset="assets/photos/bamenda-coding-desktop.avif" type="image/avif">
+      <source srcset="assets/photos/bamenda-coding-desktop.webp" type="image/webp">
+      <img src="assets/photos/bamenda-coding-desktop.jpg" alt="Two children at a desktop with a block-coding screen" width="980" height="735" fetchpriority="high" decoding="async">
+    </picture>
+  </figure>
 </section>
-<section class="section band-quiet">
-  <div class="container prose">
+<section class="stage-stack" aria-label="Advance" data-reveal>
+  <article class="stage-row stage-advance" id="advance-path">
+    <p class="kicker">Advance</p>
+    <h2>Mentor younger teams</h2>
+    <p>Older students mentor younger teams with an adult coach.</p>
+  </article>
+  <article class="stage-row stage-build">
+    <p class="kicker">Dallas</p>
+    <h2>Mentors</h2>
+    <p>University students in Dallas have expressed interest in mentoring.</p>
+    <p>Mentors who will be with students are screened first.</p>
+  </article>
+  <article class="stage-row stage-discover">
+    <p class="kicker">Planned</p>
     <h2>Badges</h2>
     <p>Badges are planned for Discover, Build, Innovate, Compete, Advance, Mentor, and Certified Coach.</p>
-    <p>AfroBot does not guarantee admission or scholarships.</p>
-    <p><a class="tlink" href="programs.html#advance">Back to Advance</a></p>
-  </div>
-</section>
-<section class="section register" id="register" data-default-intent="advance">
-  <div class="container">
-    <div class="two two--reg">
-      <div class="reg__text">
-        <h2 class="h1">Tell us how you want to take part.</h2>
-        <p class="muted">This form is for adults.</p>
-        <p class="form-context" id="form-context" role="status"></p>
-        <p class="sr">Fields marked with an asterisk are required.</p>
-        <ul class="form-guard">
-          <li>If you are under 18, ask a parent or guardian to submit this form.</li>
-          <li>Do not include a child’s full date of birth, school ID, or anything meant for a public profile.</li>
-          <li>Do not send financial documents, tax forms, or account numbers.</li>
-        </ul>
-      </div>
-      <form class="form" id="interest" action="/api/interest" method="post" novalidate>
-        <div class="form__fields">
-          <label class="f f--half" for="if-name"><span>Your name (adult) <i aria-hidden="true">*</i></span><input id="if-name" name="name" autocomplete="name" required maxlength="120" aria-describedby="if-name-err"><em class="f__err" id="if-name-err"></em></label>
-          <label class="f f--half" for="if-email"><span>Email <i aria-hidden="true">*</i></span><input id="if-email" name="email" type="email" inputmode="email" autocomplete="email" required maxlength="200" aria-describedby="if-email-err"><em class="f__err" id="if-email-err"></em></label>
-          <label class="f f--half" for="role"><span>I am a <i aria-hidden="true">*</i></span><select id="role" name="role" required aria-describedby="role-err"><option value="" selected disabled>Choose one</option><option>Parent/guardian</option><option>School/educator</option><option>Volunteer/mentor</option><option>Sponsor/partner</option><option>Other</option></select><em class="f__err" id="role-err"></em></label>
-          <label class="f f--half" for="if-city"><span>City and state <i aria-hidden="true">*</i></span><input id="if-city" name="city" autocomplete="address-level2" required maxlength="120" aria-describedby="if-city-err"><em class="f__err" id="if-city-err"></em></label>
-          <label class="f f--half" for="if-org"><span>Organization <b>(optional)</b></span><input id="if-org" name="organization" autocomplete="organization" maxlength="160"></label>
-          <label class="f f--half" for="if-kids" id="if-kids-wrap" hidden><span>Number of kids and ages <b>(optional)</b></span><input id="if-kids" name="kids" maxlength="120"></label>
-          <label class="f" for="if-msg"><span>Message <b>(optional)</b></span><textarea id="if-msg" name="message" rows="3" maxlength="2000"></textarea></label>
-          <div class="f f--consent"><label class="consent" for="if-consent"><input id="if-consent" name="consent" type="checkbox" value="yes" required aria-describedby="if-consent-err"><span>You may contact me by email about AfroBot. <i aria-hidden="true">*</i></span></label><em class="f__err" id="if-consent-err"></em></div>
-          <div class="hp" aria-hidden="true"><label for="if-website">Website</label><input id="if-website" name="website" tabindex="-1" autocomplete="off"></div>
-        </div>
-        <button class="btn btn--clay" type="submit">Send interest</button>
-        <p class="form__msg" id="if-status" role="status" aria-live="polite" hidden></p>
-      </form>
-    </div>
-  </div>
+  </article>
 </section>
 </main>
 <footer class="footer">
-  <div class="container grid">
-    <div class="col-12 footer__brand">
-      <img data-logo="reversed" src="assets/logo-afrobot-reversed.svg" alt="AfroBot" width="180" height="40">
+  <div class="prefoot">
+    <div class="prefoot__photos" aria-hidden="true">
+      <picture>
+        <source srcset="assets/photos/bamenda-circuits.avif" type="image/avif">
+        <source srcset="assets/photos/bamenda-circuits.webp" type="image/webp">
+        <img src="assets/photos/bamenda-circuits.jpg" alt="" width="980" height="735" loading="lazy" decoding="async">
+      </picture>
+      <picture>
+        <source srcset="assets/photos/mckinney-ai-track-2024.webp" type="image/webp">
+        <img src="assets/photos/mckinney-ai-track-2024.jpg" alt="" width="1200" height="900" loading="lazy" decoding="async">
+      </picture>
+      <picture>
+        <source srcset="assets/photos/bamenda-coding-desktop.avif" type="image/avif">
+        <source srcset="assets/photos/bamenda-coding-desktop.webp" type="image/webp">
+        <img src="assets/photos/bamenda-coding-desktop.jpg" alt="" width="980" height="735" loading="lazy" decoding="async">
+      </picture>
+      <picture>
+        <source srcset="assets/photos/bamenda-class-celebration.avif" type="image/avif">
+        <source srcset="assets/photos/bamenda-class-celebration.webp" type="image/webp">
+        <img src="assets/photos/bamenda-class-celebration.jpg" alt="" width="980" height="735" loading="lazy" decoding="async">
+      </picture>
+    </div>
+    <div class="prefoot__cta">
+      <div class="container">
+        <p class="kicker">Partners</p>
+        <h2>Sponsor a Student</h2>
+        <p>Funds and sponsored places.</p>
+        <a class="btn btn--ink" href="partners.html">Sponsor a Student</a>
+      </div>
+    </div>
+  </div>
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <a href="index.html"><img data-logo="reversed" src="assets/logo-afrobot-reversed.svg" alt="AfroBot" width="180" height="40"></a>
       <p>Hands-on robotics and AI for kids.</p>
     </div>
-    <nav class="col-3 col-md-6" aria-label="Explore">
-      <h2>Explore</h2>
-      <a data-nav href="index.html">Home</a>
-      <a data-nav href="about.html">About</a>
+    <nav aria-label="Programs">
+      <h2>Programs</h2>
       <a data-nav href="programs.html">Programs</a>
       <a data-nav href="competitions.html">Competitions</a>
       <a data-nav href="university-pathways.html">University Pathways</a>
-      <a data-nav href="community.html">Community</a>
       <a data-nav href="events.html">Events</a>
-      <a data-nav href="partners.html">Partner list</a>
     </nav>
-    <nav class="col-3 col-md-6" aria-label="Take part">
-      <h2>Take part</h2>
-      <a href="index.html?intent=updates#register">Get updates</a>
-      <a href="index.html?intent=sponsor#register">Discuss sponsorship</a>
-      <a href="index.html?intent=host#register">Ask about hosting</a>
+    <nav aria-label="Get involved">
+      <h2>Get involved</h2>
+      <a href="community.html?intent=updates#register">Get updates</a>
       <a href="volunteer.html">Volunteer</a>
+      <a href="mentorship.html">Mentorship</a>
+      <a href="community.html?intent=sponsor#register">Discuss sponsorship</a>
+      <a href="community.html?intent=host#register">Ask about hosting</a>
+      <a href="partners.html">Partner list</a>
       <a href="partnership.html">Partnership Inquiries</a>
+      <a href="community.html?intent=support#register">Support</a>
     </nav>
-    <nav class="col-3 col-md-6" aria-label="Reach us">
-      <h2>Reach us</h2>
+    <nav aria-label="About">
+      <h2>About</h2>
+      <a data-nav href="index.html">Home</a>
+      <a data-nav href="about.html">About</a>
+      <a data-nav href="community.html">Community</a>
+      <a href="child-safety.html">Child Safety</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="accessibility.html">Accessibility</a>
+    </nav>
+    <nav aria-label="Contact">
+      <h2>Contact</h2>
       <a href="contact.html">Contact</a>
       <a href="mailto:info@afrobot.org">info@afrobot.org</a>
       <a href="social.html">Social</a>
     </nav>
-    <nav class="col-3 col-md-6" aria-label="Policies">
-      <h2>Policies</h2>
-      <a href="privacy.html">Privacy</a>
-      <a href="terms.html">Terms</a>
-      <a href="child-safety.html">Child Safety</a>
-      <a href="accessibility.html">Accessibility</a>
-      <a href="social.html">Social</a>
-    </nav>
-    <div class="col-12 footer__base">
+    <div class="footer__base">
       <span>© 2026 AfroBot. A program of Glappy Foundation.</span>
     </div>
   </div>
 </footer>
-<script src="script.js?v=36"></script>
+<script src="script.js?v=39"></script>
 </body>
 </html>
