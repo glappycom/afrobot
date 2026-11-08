@@ -130,7 +130,7 @@ else {
 if (!home.includes('class="hero__tag"><span>From Africa to the World</span>')) fail('hero tagline is not the angled tag');
 const about = fs.readFileSync(path.join(root, 'about.html'), 'utf8');
 const events = fs.readFileSync(path.join(root, 'events.html'), 'utf8');
-for (const line of ['Planned sessions', 'Affordable sessions', "Big Dreams Shouldn't Require Big Budgets.", '$100 per child for a camp week is the participation goal.', 'illustrative aspiration', 'Find Your AfroBot Journey', 'Ask about financial assistance']) {
+for (const line of ['Planned sessions', 'Affordable sessions', 'The camp-week cost has a $100 goal.', '$100 per child for a camp week is the participation goal.', 'illustrative aspiration', 'Find Your AfroBot Journey', 'Ask about financial assistance']) {
   if (!programs.includes(line)) fail('programs missing: ' + line);
 }
 for (const line of ['We Measure Success in Opportunities Created', 'We intend to measure these.']) {
@@ -159,7 +159,7 @@ for (const label of ['Contact', 'Privacy', 'Terms', 'Child Safety', 'Accessibili
 if (home.includes('stickycta') || programs.includes('stickycta')) fail('sticky mobile bar is still in the page');
 if (home.includes('<option>Student</option>')) fail('Student role option is still on the form');
 if (home.includes('mckinney-build-day-2024-cutout')) fail('homepage still uses the group cutout');
-if (!home.includes('mckinney-build-day-2024.avif') || !home.includes('width="1800"') || !home.includes('height="1350"')) fail('homepage photo is missing avif or dimensions');
+if (!home.includes('mckinney-build-day-2024.avif') || !home.includes('width="1000"') || !home.includes('height="920"')) fail('homepage photo is missing avif or dimensions');
 const robots = fs.readFileSync(path.join(root, 'robots.txt'), 'utf8');
 const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
 if (!robots.includes('Sitemap: https://afrobot.org/sitemap.xml')) fail('robots.txt missing canonical sitemap');

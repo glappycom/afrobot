@@ -294,6 +294,6 @@ if (Q.get('hero') === 'photo') {
     fig.classList.remove('photo--cutout');
     const src = fig.querySelector('source'), img = fig.querySelector('img');
     if (src) src.srcset = 'assets/photos/mckinney-build-day-2024.webp?v=5';
-    if (img) { img.src = 'assets/photos/mckinney-build-day-2024.jpg?v=5'; img.width = 1800; img.height = 1350; }
+    if (img) { img.src = 'assets/photos/mckinney-build-day-2024.jpg?v=5'; img.width = 1000; img.height = 920; }
   }
 }
