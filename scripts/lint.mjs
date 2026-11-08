@@ -24,7 +24,7 @@ if (serverRoles.includes('Student')) fail('Student is still a server role');
 const requiredHome = [
   'Every Child Deserves a Chance to Build the Future.',
   'From Africa to the World',
-  'From Curiosity to Creativity. From Africa to the World.',
+  'From Curiosity to Creativity',
   'Affordable workshops lead to robotics, AI, mentorship, and pathways.',
   'Dates coming soon',
   'Explore Programs',
@@ -121,6 +121,8 @@ const home = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const programs = fs.readFileSync(path.join(root, 'programs.html'), 'utf8');
 for (const line of requiredHome) if (!home.includes(line)) fail('homepage missing: ' + line);
 if (home.includes('From Curiosity to Creation. From Community to the World.')) fail('old hero tagline still present');
+if (home.includes('From Curiosity to Creativity. From Africa to the World.')) fail('story heading is still the long line');
+if (!home.includes('id="span-title" class="h1">From Curiosity to Creativity</h2>')) fail('story heading mismatch');
 if (!home.includes('class="hero__tag"><span>From Africa to the World</span>')) fail('hero tagline is not the angled tag');
 const about = fs.readFileSync(path.join(root, 'about.html'), 'utf8');
 const events = fs.readFileSync(path.join(root, 'events.html'), 'utf8');
