@@ -473,7 +473,7 @@ main * {
 .story-block .lead { max-width: 36rem; margin: 0; }
 .story-block .pull { max-width: 22rem; margin: 0; color: #fff; }
 .story-block__top { padding: 0 var(--inset); }
-.story-block__row { margin-top: 8px; }
+.story-block__row { margin-top: 0; }
 .story-copy {
   display: grid;
   grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
@@ -488,7 +488,7 @@ main * {
   line-height: 0.9;
   letter-spacing: -0.045em;
   color: #fff;
-  margin: 0 0 20px;
+  margin: 0 0 16px;
   max-width: none;
 }
 .story-block { container-type: inline-size; }
