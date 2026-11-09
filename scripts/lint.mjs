@@ -158,7 +158,13 @@ for (const label of ['Programs', 'Events', 'About', 'Mentorship', 'Contact', 'Pr
   if (!footer.includes('>' + label + '<')) fail('footer missing ' + label);
 }
 if (!footer.includes('href="mailto:info@afrobot.org"')) fail('footer missing email');
-if (!footer.includes('A program of Glappy Foundation.')) fail('footer missing foundation line');
+const legal = footer.match(/<nav class="footer__legal"[\s\S]*?<\/nav>/);
+if (!legal) fail('footer policy row missing');
+else {
+  if (!legal[0].includes('© 2026 AfroBot<')) fail('copyright is not on the policy row');
+  if (legal[0].includes('Glappy Foundation')) fail('policy row still names Glappy Foundation');
+}
+if (footer.includes('Glappy Foundation')) fail('footer still names Glappy Foundation');
 if (!footer.includes('assets/logo-afrobot-footer.svg')) fail('footer logo missing');
 if (!footer.includes('Sponsor a Student') || !footer.includes('bamenda-coats-outside')) fail('footer sponsor band missing');
 if (home.includes('stickycta') || programs.includes('stickycta')) fail('sticky mobile bar is still in the page');
