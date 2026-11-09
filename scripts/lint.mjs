@@ -153,9 +153,20 @@ else {
   if (mainNav[0].includes('social.html')) fail('empty directory is in the primary nav');
 }
 if (!home.includes('>Get updates<')) fail('header CTA missing');
-for (const label of ['Contact', 'Privacy', 'Terms', 'Child Safety', 'Accessibility', 'Volunteer', 'Partnership Inquiries', 'Social', 'Discuss sponsorship', 'Partner list']) {
-  if (!home.includes('>' + label + '<')) fail('footer missing ' + label);
+const footer = home.slice(home.lastIndexOf('<footer'));
+for (const label of ['Programs', 'Events', 'About', 'Mentorship', 'Contact', 'Privacy', 'Terms', 'Child Safety', 'Accessibility']) {
+  if (!footer.includes('>' + label + '<')) fail('footer missing ' + label);
 }
+if (!footer.includes('href="mailto:info@afrobot.org"')) fail('footer missing email');
+const legal = footer.match(/<nav class="footer__legal"[\s\S]*?<\/nav>/);
+if (!legal) fail('footer policy row missing');
+else {
+  if (!legal[0].includes('© 2026 AfroBot<')) fail('copyright is not on the policy row');
+  if (legal[0].includes('Glappy Foundation')) fail('policy row still names Glappy Foundation');
+}
+if (footer.includes('Glappy Foundation')) fail('footer still names Glappy Foundation');
+if (!footer.includes('assets/logo-afrobot-footer.svg')) fail('footer logo missing');
+if (!footer.includes('Sponsor a Student') || !footer.includes('bamenda-coats-outside')) fail('footer sponsor band missing');
 if (home.includes('stickycta') || programs.includes('stickycta')) fail('sticky mobile bar is still in the page');
 if (home.includes('<option>Student</option>')) fail('Student role option is still on the form');
 if (home.includes('mckinney-build-day-2024-cutout')) fail('homepage still uses the group cutout');
