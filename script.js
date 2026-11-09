@@ -1,4 +1,4 @@
-// ---- Logo: header lockup = icon in #B9380F and wordmark in #142033. Footer lockup is white on navy.
+// ---- Logo: header lockup = navy icon, white face, navy eyes, navy wordmark. Footer lockup = white icon, navy face, white eyes, white wordmark.
 // Archived directions for comparison: ?logo=e1 (Space Grotesk lockup) | d2 | a | b | c
 const Q = new URLSearchParams(location.search);
 const LOGO = Q.get('logo') || 'afrobot';
