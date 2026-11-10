@@ -1711,3 +1711,182 @@ body[data-header="bone"] .nav.is-compact {
     transform: none;
   }
 }
+
+/* Heather gray trial. Dark surfaces use --surface-dark. Text on them is graphite. */
+.page-hero,
+.hero,
+.band-navy,
+.band-block--navy,
+.stage-build,
+.stage-innovate,
+.stage-compete,
+.stage-advance,
+.season__side,
+.season__figs p,
+.involve,
+.path--sponsor,
+.path--mentors,
+.path--leaders,
+.story-block,
+.prefoot,
+.footer,
+.event-proof,
+.utilbar,
+.duo,
+.sponsor,
+.mosaic figcaption,
+.story-collage figcaption,
+.slant-figure figcaption,
+.split-hero__photo figcaption {
+  background-color: var(--surface-dark);
+}
+.season-hero,
+.split-hero {
+  --hero: var(--surface-dark-rgb);
+  background-color: var(--surface-dark);
+  color: var(--on-surface-dark);
+}
+.season-hero::after,
+.split-hero::after {
+  background: linear-gradient(90deg, rgba(var(--surface-dark-rgb), 0.94) 0%, rgba(var(--surface-dark-rgb), 0.88) 36%, rgba(var(--surface-dark-rgb), 0.3) 68%, rgba(var(--surface-dark-rgb), 0.12) 100%);
+}
+@media (max-width: 900px) {
+  .season-hero::after,
+  .split-hero::after {
+    background: linear-gradient(to bottom, rgba(var(--surface-dark-rgb), 0.94) 0%, rgba(var(--surface-dark-rgb), 0.88) 42%, rgba(var(--surface-dark-rgb), 0.32) 70%, rgba(var(--surface-dark-rgb), 0.12) 100%);
+  }
+}
+.page-hero,
+.page-hero .h1,
+.page-hero .lead,
+.page-hero p,
+.page-hero a,
+.hero,
+.hero .display,
+.hero h1,
+.hero__status,
+.season-hero .display,
+.season-hero h1,
+.season-hero .hero__next a,
+.split-hero__copy .h1,
+.split-hero__copy .lead,
+.split-hero__copy p,
+.split-hero__copy .tlink,
+.split-hero__copy a,
+.split-hero .hero__next a,
+.band-navy,
+.band-navy .h1,
+.band-navy p,
+.band-block--navy,
+.band-block--navy .text-link,
+.stage-build,
+.stage-innovate,
+.stage-compete,
+.stage-advance,
+.stage-build a,
+.stage-innovate a,
+.stage-compete a,
+.stage-advance a,
+.stage-advance h2,
+.stage-advance h3,
+.season__side,
+.season__side .h1,
+.season__side p,
+.season__figs p,
+.season__figs strong,
+.season__figs span,
+.involve,
+.involve__intro .h1,
+.involve h3,
+.path--sponsor,
+.path--sponsor .kicker,
+.path--sponsor h3,
+.path--sponsor p,
+.path--sponsor .tlink,
+.path--mentors,
+.path--leaders,
+.story-block,
+.story-block .lead,
+.story-block .pull,
+.story-title,
+.story-mark,
+.story-mark span,
+.prefoot__cta,
+.prefoot__cta .kicker,
+.prefoot__cta h2,
+.prefoot__cta p,
+.footer,
+.footer h2,
+.footer p,
+.footer nav a,
+.footer div > span,
+.footer__base,
+.footer__base span,
+.footer__grid nav a,
+.footer__grid nav a:hover,
+.footer__nav a:hover,
+.footer__legal,
+.footer__legal a:hover,
+.footer a[aria-current="page"],
+.footer__nav a[href^="mailto:"],
+.footer__grid .footer__legal a,
+.footer__legal .footer__copy,
+.mosaic figcaption,
+.story-collage figcaption,
+.slant-figure figcaption,
+.split-hero__photo figcaption,
+.season-hero :is(h1, h2, .h1, .display),
+.split-hero :is(h1, h2, .h1, .display),
+.page-hero :is(h1, h2, .h1, .display),
+.band-block--navy :is(h1, h2, h3, .h1),
+.footer :is(h2, h3),
+.story-block :is(h1, h2, .h1, .display),
+.prefoot :is(h2, h3),
+.stage-build :is(h2, h3),
+.stage-innovate :is(h2, h3),
+.stage-compete :is(h2, h3),
+.stage-advance :is(h2, h3),
+.path--sponsor :is(h2, h3),
+.path--mentors :is(h2, h3),
+.path--leaders :is(h2, h3) {
+  color: var(--on-surface-dark);
+}
+.story-mark { background: transparent; }
+.footer__legal,
+.footer__base { border-top-color: rgba(30, 35, 38, 0.22); }
+.btn--line-light,
+.btn--line-light:visited {
+  color: var(--on-surface-dark);
+  border-color: var(--on-surface-dark);
+}
+.btn--line-light:hover {
+  background: var(--on-surface-dark);
+  color: #fff;
+  border-color: var(--on-surface-dark);
+}
+.footer a:focus-visible,
+.utilbar a:focus-visible,
+.season-hero .btn:focus-visible,
+.split-hero .btn:focus-visible,
+.season__side .btn:focus-visible,
+.involve .btn:focus-visible,
+.prefoot .btn:focus-visible {
+  outline-color: var(--on-surface-dark);
+}
+.stage-build .btn,
+.stage-innovate .btn,
+.stage-compete .btn,
+.stage-advance .btn,
+.prefoot__cta .btn,
+.prefoot__cta .btn:visited,
+.prefoot__cta .btn:hover,
+.prefoot__cta .btn:focus-visible,
+.season-hero .btn,
+.split-hero .btn,
+.page-hero .btn,
+.band-navy .btn,
+.band-block--navy .btn,
+.involve .btn--ink,
+.path--parents .btn {
+  color: #fff;
+}
