@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>AfroBot · Every Child Deserves a Chance to Build the Future.</title>
 <meta name="description" content="Affordable workshops lead to robotics, AI, mentorship, and pathways.">
 <link rel="icon" href="favicon.ico" sizes="any">
@@ -32,9 +32,9 @@
 <meta name="twitter:image:alt" content="AfroBot. From Africa to the World. Kids build together in a workshop.">
 <link rel="preload" href="fonts/PublicSans-VF.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/Outfit-Latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=39">
+<link rel="stylesheet" href="styles.css?v=40">
 <link rel="stylesheet" href="components.css?v=46">
-<link rel="stylesheet" href="visual.css?v=28">
+<link rel="stylesheet" href="visual.css?v=46">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -55,7 +55,6 @@
     <nav class="nav__links" aria-label="Main">
       <a data-nav href="programs.html">Programs</a>
       <a data-nav href="events.html">Events</a>
-      <a data-nav href="about.html">About</a>
       <a data-nav href="volunteer.html">Volunteer</a>
       <a data-nav href="partners.html">Partners</a>
     </nav>
@@ -65,13 +64,15 @@
   <nav class="mnav" id="mnav" aria-label="Mobile">
     <a data-nav href="programs.html">Programs</a>
     <a data-nav href="events.html">Events</a>
-    <a data-nav href="about.html">About</a>
     <a data-nav href="volunteer.html">Volunteer</a>
     <a data-nav href="partners.html">Partners</a>
-    <a href="partners.html">Sponsor a Student</a>
-    <a href="community.html?intent=updates#register">Get updates</a>
-    <a href="contact.html">Contact</a>
-    <a href="community.html?intent=support#register">Support</a>
+    <a class="mnav__quiet" href="community.html?intent=updates#register">Get updates</a>
+    <a class="mnav__quiet" href="community.html?intent=support#register">Support</a>
+    <a class="btn btn--clay" href="partners.html">Sponsor a Student</a>
+    <div class="mnav__foot">
+      <a data-nav href="about.html">About</a>
+      <a data-nav href="contact.html">Contact</a>
+    </div>
   </nav>
 </header>
 <main id="main" tabindex="-1">
@@ -96,15 +97,22 @@
 
 <section class="impact" aria-label="Program reach" data-reveal>
   <div class="container impact__row">
-    <p><strong data-count="5000">5,000</strong><span>Children trained through holiday programs in Cameroon</span></p>
-    <p><strong data-count="1500">1,500</strong><span>Children learning with us through partner schools</span></p>
+    <p>
+      <span class="impact__about">About</span>
+      <strong data-count="5000">5,000</strong>
+      <span class="impact__label">children trained through holiday programs in Cameroon</span>
+    </p>
+    <p>
+      <span class="impact__about">About</span>
+      <strong data-count="1500">1,500</strong>
+      <span class="impact__label">children learning with us year-round through partner schools</span>
+    </p>
   </div>
-  <p class="impact__note container">About 5,000 children have been trained through our holiday programs in Cameroon. About 1,500 children learn with us on an ongoing basis through our partner schools.</p>
 </section>
 
 <div class="filmstrip" aria-hidden="true">
-  <img src="assets/photos/bamenda-circuits.avif" alt="" width="980" height="735" loading="lazy" decoding="async">
-  <img src="assets/photos/bamenda-robotics-kit.avif" alt="" width="980" height="735" loading="lazy" decoding="async">
+  <img srcset="assets/photos/cameroon-table-coding-800.webp 800w, assets/photos/cameroon-table-coding.webp 1280w" sizes="(max-width: 700px) 50vw, 25vw" src="assets/photos/cameroon-table-coding.webp" alt="" width="1280" height="960" loading="lazy" decoding="async">
+  <img srcset="assets/photos/cameroon-long-table-800.webp 800w, assets/photos/cameroon-long-table.webp 1280w" sizes="(max-width: 700px) 50vw, 25vw" src="assets/photos/cameroon-long-table.webp" alt="" width="1280" height="960" loading="lazy" decoding="async">
   <img src="assets/photos/bamenda-class-celebration.avif" alt="" width="980" height="735" loading="lazy" decoding="async">
   <img src="assets/photos/bamenda-desktop-focus.avif" alt="" width="980" height="735" loading="lazy" decoding="async">
 </div>
@@ -120,15 +128,14 @@
       <div class="story-collage">
       <figure class="story-collage__back">
         <picture>
-          <source srcset="assets/photos/bamenda-robotics-build.avif" type="image/avif">
-          <source srcset="assets/photos/bamenda-robotics-build.webp" type="image/webp">
-          <img src="assets/photos/bamenda-robotics-build.jpg" alt="Overhead view of a team assembling robotics components" width="980" height="735" loading="lazy" decoding="async">
+          <source sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw" srcset="assets/photos/cameroon-classroom-wide-800.webp 800w, assets/photos/cameroon-classroom-wide.webp 1280w" type="image/webp">
+          <img src="assets/photos/cameroon-classroom-wide.jpg" alt="Students in lab coats working at laptops in a classroom in Cameroon" width="1280" height="960" loading="lazy" decoding="async">
         </picture>
         <figcaption>AfroBot program, Cameroon.</figcaption>
       </figure>
       <figure class="story-collage__front">
         <picture>
-          <source srcset="assets/photos/mckinney-ai-track-2024.webp" type="image/webp">
+          <source sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw" srcset="assets/photos/mckinney-ai-track-2024-800.webp 800w, assets/photos/mckinney-ai-track-2024.webp 1200w" type="image/webp">
           <img src="assets/photos/mckinney-ai-track-2024.jpg" alt="Kids at tables with their robots while a presenter teaches at a screen" width="1200" height="900" loading="lazy" decoding="async">
         </picture>
         <figcaption>AfroBot program, Dallas area, 2024.</figcaption>
@@ -136,29 +143,6 @@
     </div>
     </div>
   </div>
-  <ol class="milestones">
-    <li class="milestones__item milestones__item--a">
-      <span class="milestones__dot" aria-hidden="true"></span>
-      <p class="milestones__num">4</p>
-      <p class="milestones__body"><b>Africa and the US</b><span>About 4 years of programs.</span></p>
-    </li>
-    <li class="milestones__item milestones__item--b">
-      <span class="milestones__dot" aria-hidden="true"></span>
-      <p class="milestones__num">5,000</p>
-      <p class="milestones__body"><b>Cameroon</b><span>About 5,000 children trained through holiday programs.</span></p>
-    </li>
-    <li class="milestones__item milestones__item--c">
-      <span class="milestones__dot" aria-hidden="true"></span>
-      <p class="milestones__num">2024</p>
-      <p class="story-chip">about 30 children</p>
-      <p class="milestones__body"><b>Dallas area, 2024</b><span>An introductory program with about 30 children.</span></p>
-    </li>
-    <li class="milestones__item milestones__item--d">
-      <span class="milestones__dot" aria-hidden="true"></span>
-      <p class="milestones__num">2027</p>
-      <p class="milestones__body"><b>DFW, 2027</b><span>Dallas–Fort Worth is part of the 2027 footprint.</span></p>
-    </li>
-  </ol>
 </section>
 
 <section class="section stages" id="journey" aria-labelledby="journey-title" data-stage-mode="current">
@@ -180,7 +164,7 @@
     <p class="kicker">Proposed targets</p>
     <p class="season__year">2027</p>
     <h2 id="dallas-title" class="h1">AfroBot Dallas 2027: 90 Students. 15 Teams.</h2>
-    <p>These are proposed expansion targets. Interest registration is open. <a href="competitions.html">See the 2027 season</a>.</p>
+    <p>Registration is open. <a href="competitions.html">See the 2027 season</a>.</p>
     <div class="season__figs">
       <p><strong>90</strong><span>Students</span></p>
       <p><strong>15</strong><span>Teams</span></p>
@@ -188,7 +172,6 @@
     <div class="hero__actions">
       <a class="btn btn--ink" href="community.html?intent=parent#register">Register Your Interest</a>
     </div>
-    <p>Sending the interest form does not reserve a seat or a place on a team.</p>
     <p class="season__next"><a href="mentorship.html">Become a Mentor</a> <a href="partners.html">Become a Founding Partner</a></p>
   </article>
   <article class="season__side">
@@ -196,7 +179,7 @@
     <h2 class="h1">Yaoundé 2027</h2>
     <p>AfroBot is hosting the Yaoundé event.</p>
     <p>Tanzania is a planned hub on its own dates.</p>
-    <p><a class="btn btn--clay" href="competitions.html">See the hubs</a></p>
+    <p><a class="btn btn--line-light" href="competitions.html">See the hubs</a></p>
   </article>
 </section>
 
@@ -216,7 +199,6 @@
         <p class="kicker">For Partners</p>
         <h3>Sponsor a Student</h3>
         <p>Funds and sponsored places.</p>
-        <p>Tax treatment of a gift is not stated on this website.</p>
         <a class="btn btn--inverse" href="partners.html">Sponsor a Student</a>
         <a class="tlink" href="community.html?intent=support#register">Discuss sponsorship</a>
       </article>
@@ -245,23 +227,23 @@
   <div class="prefoot">
     <div class="prefoot__photos" aria-hidden="true">
       <picture>
-        <source srcset="assets/photos/bamenda-coats-outside.avif" type="image/avif">
-        <source srcset="assets/photos/bamenda-coats-outside.webp" type="image/webp">
+        <source sizes="(max-width: 700px) 50vw, 25vw" srcset="assets/photos/bamenda-coats-outside-800.avif 800w, assets/photos/bamenda-coats-outside.avif 2000w" type="image/avif">
+        <source sizes="(max-width: 700px) 50vw, 25vw" srcset="assets/photos/bamenda-coats-outside-800.webp 800w, assets/photos/bamenda-coats-outside.webp 2000w" type="image/webp">
         <img src="assets/photos/bamenda-coats-outside.jpg" alt="" width="2000" height="1500" loading="lazy" decoding="async">
       </picture>
       <picture>
-        <source srcset="assets/photos/bamenda-lab-towers.avif" type="image/avif">
-        <source srcset="assets/photos/bamenda-lab-towers.webp" type="image/webp">
+        <source sizes="(max-width: 700px) 50vw, 25vw" srcset="assets/photos/bamenda-lab-towers-800.avif 800w, assets/photos/bamenda-lab-towers.avif 2000w" type="image/avif">
+        <source sizes="(max-width: 700px) 50vw, 25vw" srcset="assets/photos/bamenda-lab-towers-800.webp 800w, assets/photos/bamenda-lab-towers.webp 2000w" type="image/webp">
         <img src="assets/photos/bamenda-lab-towers.jpg" alt="" width="2000" height="1500" loading="lazy" decoding="async">
       </picture>
       <picture>
-        <source srcset="assets/photos/bamenda-mentors-lab.avif" type="image/avif">
-        <source srcset="assets/photos/bamenda-mentors-lab.webp" type="image/webp">
+        <source sizes="(max-width: 700px) 50vw, 25vw" srcset="assets/photos/bamenda-mentors-lab-800.avif 800w, assets/photos/bamenda-mentors-lab.avif 2000w" type="image/avif">
+        <source sizes="(max-width: 700px) 50vw, 25vw" srcset="assets/photos/bamenda-mentors-lab-800.webp 800w, assets/photos/bamenda-mentors-lab.webp 2000w" type="image/webp">
         <img src="assets/photos/bamenda-mentors-lab.jpg" alt="" width="2000" height="1500" loading="lazy" decoding="async">
       </picture>
       <picture>
-        <source srcset="assets/photos/bamenda-side-by-side.avif" type="image/avif">
-        <source srcset="assets/photos/bamenda-side-by-side.webp" type="image/webp">
+        <source sizes="(max-width: 700px) 50vw, 25vw" srcset="assets/photos/bamenda-side-by-side-800.avif 800w, assets/photos/bamenda-side-by-side.avif 2000w" type="image/avif">
+        <source sizes="(max-width: 700px) 50vw, 25vw" srcset="assets/photos/bamenda-side-by-side-800.webp 800w, assets/photos/bamenda-side-by-side.webp 2000w" type="image/webp">
         <img src="assets/photos/bamenda-side-by-side.jpg" alt="" width="2000" height="1500" loading="lazy" decoding="async">
       </picture>
     </div>
@@ -297,6 +279,6 @@
     </nav>
   </div>
 </footer>
-<script src="script.js?v=39"></script>
+<script src="script.js?v=40"></script>
 </body>
 </html>

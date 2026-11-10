@@ -1,5 +1,5 @@
 /* Tokens live in tokens.css. Later :root blocks in this file still override spacing and theme. */
-@import url("tokens.css?v=32");
+@import url("tokens.css?v=34");
 /* Public Sans, SIL OFL, self-hosted variable WOFF2. Weight comes from font-weight. */
 @font-face{font-family:"Public Sans";src:url("fonts/PublicSans-VF.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:optional}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -323,7 +323,7 @@ h3,.aud-k,.countdown__event,.awards dt,.tiers li span:first-child,.val-list b,.m
 
 /* Header (v15): bone is the default. No full clay backgrounds anywhere: clay is accent only (buttons, rules, highlights, tags). */
 :root{--clay-deep:#B4472B}
-body[data-header="bone"]{--nav-bg:#FFFFFF;--nav-fg:#142033;--nav-cta-bg:var(--clay-strong);--nav-cta-fg:#fff}
+body[data-header="bone"]{--nav-bg:#FFFFFF;--nav-fg:#1E2326;--nav-cta-bg:var(--clay-strong);--nav-cta-fg:#fff}
 body[data-header="bone"] .nav{border-bottom:3px solid var(--clay)}
 body[data-header="bone"] .nav .btn--ink:hover{background:var(--clay-strong-dk)}
 body[data-header="bone"] .sponsor{background:var(--ink)}

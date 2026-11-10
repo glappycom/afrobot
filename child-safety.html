@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Child safety · AfroBot</title>
 <meta name="description" content="AfroBot commitments on screening, supervision, photo consent, reporting, and event safety.">
 <link rel="icon" href="favicon.ico" sizes="any">
@@ -32,9 +32,9 @@
 <meta name="twitter:image:alt" content="AfroBot. From Africa to the World. Kids build together in a workshop.">
 <link rel="preload" href="fonts/PublicSans-VF.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/Outfit-Latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=39">
+<link rel="stylesheet" href="styles.css?v=40">
 <link rel="stylesheet" href="components.css?v=46">
-<link rel="stylesheet" href="visual.css?v=28">
+<link rel="stylesheet" href="visual.css?v=46">
 
 </head>
 <body data-header="bone">
@@ -45,7 +45,6 @@
     <nav class="nav__links" aria-label="Main">
       <a data-nav href="programs.html">Programs</a>
       <a data-nav href="events.html">Events</a>
-      <a data-nav href="about.html">About</a>
       <a data-nav href="volunteer.html">Volunteer</a>
       <a data-nav href="partners.html">Partners</a>
     </nav>
@@ -55,13 +54,15 @@
   <nav class="mnav" id="mnav" aria-label="Mobile">
     <a data-nav href="programs.html">Programs</a>
     <a data-nav href="events.html">Events</a>
-    <a data-nav href="about.html">About</a>
     <a data-nav href="volunteer.html">Volunteer</a>
     <a data-nav href="partners.html">Partners</a>
-    <a href="partners.html">Sponsor a Student</a>
-    <a href="community.html?intent=updates#register">Get updates</a>
-    <a href="contact.html">Contact</a>
-    <a href="community.html?intent=support#register">Support</a>
+    <a class="mnav__quiet" href="community.html?intent=updates#register">Get updates</a>
+    <a class="mnav__quiet" href="community.html?intent=support#register">Support</a>
+    <a class="btn btn--clay" href="partners.html">Sponsor a Student</a>
+    <div class="mnav__foot">
+      <a data-nav href="about.html">About</a>
+      <a data-nav href="contact.html">Contact</a>
+    </div>
   </nav>
 </header>
 <main id="main" tabindex="-1">
@@ -75,17 +76,17 @@
 <section class="band-block band-block--paper">
   <div class="container sheet prose">
     <h2>Taking part</h2>
-    <p>A parent or guardian submits interest for a student. If you are under 18, ask an adult to use the form. Do not send a full date of birth, a school ID, or a photo of a child through the form. AfroBot does not publish a page for a child.</p>
+    <p>A parent or guardian signs a child up. If you’re under 18, ask an adult to use the form. Please don’t send a birth date, a school ID, or a photo of a child. We don’t put a child on a public page.</p>
     <h2>Screening</h2>
-    <p>Adults who work with children complete an application, provide references, and pass a background check where the law or the host site requires one. They finish safety training before they work with youth. This is AfroBot’s own commitment. It is not a certification.</p>
+    <p>Adults who work with children apply, share references, and pass a background check when the law or the host site asks for one. They finish safety training before they work with youth.</p>
     <h2>Supervision</h2>
-    <p>AfroBot follows a two-adult rule. No adult is alone one-on-one with a child. Each event keeps an adult-to-child ratio set for the ages and the activity, and families are told that ratio before the day. Children are signed in and signed out. Only an authorized adult may pick a child up. Messages with a child include a parent or guardian on the thread.</p>
+    <p>We follow a two-adult rule. No adult is alone with a child. Each event has an adult-to-child ratio for the ages and the activity, and families hear that ratio before the day. Children are signed in and signed out. Only an authorized adult may pick a child up. A parent or guardian is included on any message with a child.</p>
     <h2>Photo and media consent</h2>
-    <p>AfroBot asks for written consent from a parent or guardian before photos or video of a child. Children’s names are not published. A family may opt out, and that choice is honored. Photos are stored securely. A parent or guardian may ask for a photo to be removed, and AfroBot will remove it.</p>
+    <p>We ask a parent or guardian for written consent before we photograph or film a child. We don’t publish children’s names. A family can opt out, and we honor that. Photos are stored securely. Ask us to take a photo down, and we will.</p>
     <h2>Reporting concerns</h2>
-    <p>To raise a concern, email <a class="tlink" href="mailto:info@afrobot.org">info@afrobot.org</a> with the subject “Child safety”. Write what happened, when, and how to reach you. Leave out personal details that are not needed. Adults who work with AfroBot follow mandatory reporting under the law where the program takes place.</p>
+    <p>Email <a class="tlink" href="mailto:info@afrobot.org">info@afrobot.org</a> with the subject “Child safety”. Tell us what happened, when, and how to reach you. Leave out details we don’t need. Adults who work with AfroBot follow the reporting laws where the program takes place.</p>
     <h2>Health and safety at events</h2>
-    <p>Before an event, AfroBot asks the parent or guardian for emergency contacts and for health notes the day requires, such as an allergy. A first-aid kit is on site. The team follows the venue’s emergency plan. AfroBot does not provide medical care beyond first aid.</p>
+    <p>Before an event, we ask a parent or guardian for emergency contacts and for health notes the day needs, such as an allergy. A first-aid kit is on site, and we follow the venue’s emergency plan. We can give first aid. We don’t provide other medical care.</p>
   </div>
 </section>
 </main>
@@ -93,23 +94,23 @@
   <div class="prefoot">
     <div class="prefoot__photos" aria-hidden="true">
       <picture>
-        <source srcset="assets/photos/bamenda-coats-outside.avif" type="image/avif">
-        <source srcset="assets/photos/bamenda-coats-outside.webp" type="image/webp">
+        <source sizes="(max-width: 700px) 50vw, 25vw" srcset="assets/photos/bamenda-coats-outside-800.avif 800w, assets/photos/bamenda-coats-outside.avif 2000w" type="image/avif">
+        <source sizes="(max-width: 700px) 50vw, 25vw" srcset="assets/photos/bamenda-coats-outside-800.webp 800w, assets/photos/bamenda-coats-outside.webp 2000w" type="image/webp">
         <img src="assets/photos/bamenda-coats-outside.jpg" alt="" width="2000" height="1500" loading="lazy" decoding="async">
       </picture>
       <picture>
-        <source srcset="assets/photos/bamenda-lab-towers.avif" type="image/avif">
-        <source srcset="assets/photos/bamenda-lab-towers.webp" type="image/webp">
+        <source sizes="(max-width: 700px) 50vw, 25vw" srcset="assets/photos/bamenda-lab-towers-800.avif 800w, assets/photos/bamenda-lab-towers.avif 2000w" type="image/avif">
+        <source sizes="(max-width: 700px) 50vw, 25vw" srcset="assets/photos/bamenda-lab-towers-800.webp 800w, assets/photos/bamenda-lab-towers.webp 2000w" type="image/webp">
         <img src="assets/photos/bamenda-lab-towers.jpg" alt="" width="2000" height="1500" loading="lazy" decoding="async">
       </picture>
       <picture>
-        <source srcset="assets/photos/bamenda-mentors-lab.avif" type="image/avif">
-        <source srcset="assets/photos/bamenda-mentors-lab.webp" type="image/webp">
+        <source sizes="(max-width: 700px) 50vw, 25vw" srcset="assets/photos/bamenda-mentors-lab-800.avif 800w, assets/photos/bamenda-mentors-lab.avif 2000w" type="image/avif">
+        <source sizes="(max-width: 700px) 50vw, 25vw" srcset="assets/photos/bamenda-mentors-lab-800.webp 800w, assets/photos/bamenda-mentors-lab.webp 2000w" type="image/webp">
         <img src="assets/photos/bamenda-mentors-lab.jpg" alt="" width="2000" height="1500" loading="lazy" decoding="async">
       </picture>
       <picture>
-        <source srcset="assets/photos/bamenda-side-by-side.avif" type="image/avif">
-        <source srcset="assets/photos/bamenda-side-by-side.webp" type="image/webp">
+        <source sizes="(max-width: 700px) 50vw, 25vw" srcset="assets/photos/bamenda-side-by-side-800.avif 800w, assets/photos/bamenda-side-by-side.avif 2000w" type="image/avif">
+        <source sizes="(max-width: 700px) 50vw, 25vw" srcset="assets/photos/bamenda-side-by-side-800.webp 800w, assets/photos/bamenda-side-by-side.webp 2000w" type="image/webp">
         <img src="assets/photos/bamenda-side-by-side.jpg" alt="" width="2000" height="1500" loading="lazy" decoding="async">
       </picture>
     </div>
@@ -145,6 +146,6 @@
     </nav>
   </div>
 </footer>
-<script src="script.js?v=39"></script>
+<script src="script.js?v=40"></script>
 </body>
 </html>

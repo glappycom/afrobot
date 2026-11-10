@@ -87,7 +87,7 @@ for (const name of files) {
   const allowedAmounts = new Set(['$10', '$100', '$1,000', '$5,000', '$10,000', '$25,000']);
   const money = html.match(/\$\d[\d,]*/g) || [];
   for (const amount of money) if (!allowedAmounts.has(amount)) fail(name + ' unexpected amount ' + amount);
-  if (money.includes('$10') && !/illustrative aspiration/i.test(html)) fail(name + ' uses $10 without calling it an illustrative aspiration');
+  if (money.includes('$10') && !/not today’s price/i.test(html)) fail(name + ' uses $10 without saying it is not today’s price');
   const priced = money.filter((amount) => amount !== '$10');
   if (priced.length && !/goal/i.test(html)) fail(name + ' shows a dollar amount without calling it a goal');
   if (/\bFIRST\b/.test(html)) fail(name + ' names FIRST');
@@ -131,7 +131,7 @@ else {
 if (!home.includes('class="hero__tag"><span>From Africa to the World</span>')) fail('hero tagline is not the angled tag');
 const about = fs.readFileSync(path.join(root, 'about.html'), 'utf8');
 const events = fs.readFileSync(path.join(root, 'events.html'), 'utf8');
-for (const line of ['Planned sessions', 'Affordable sessions', 'The camp-week cost has a $100 goal.', '$100 per child for a camp week is the participation goal.', 'illustrative aspiration', 'Find Your AfroBot Journey', 'Ask about financial assistance']) {
+for (const line of ['Planned sessions', 'Affordable sessions', 'The camp-week cost has a $100 goal.', '$100 per child for a camp week is the participation goal.', 'A $10 workshop is a hope, not today’s price.', 'Find Your AfroBot Journey', 'Ask about financial assistance']) {
   if (!programs.includes(line)) fail('programs missing: ' + line);
 }
 const legalHome = 'AfroBot is a program of Glappy Foundation, a 501(c)(3) nonprofit organization.';
@@ -141,7 +141,7 @@ for (const line of [legalHome, 'About 5,000 children have been trained through o
 if (/>([^<]*\b[Dd]raft\b[^<]*)</.test(about)) fail('about shows the word Draft');
 if (about.includes('We intend to measure these')) fail('about still uses measure scaffolding');
 const partners = fs.readFileSync(path.join(root, 'partners.html'), 'utf8');
-for (const line of [legalHome, 'Partner schools', 'EduCare Schools', 'Gateway Schools', 'Bonabéri, Douala, Cameroon', 'Sure Starts', 'https://sscc-tz.com/', 'Tax treatment of a gift is not stated on this website.']) {
+for (const line of [legalHome, 'Partner schools', 'EduCare Schools', 'Gateway Schools', 'Bonabéri, Douala, Cameroon', 'Sure Starts', 'https://sscc-tz.com/']) {
   if (!partners.includes(line)) fail('partners missing: ' + line);
 }
 if (partners.includes('No partners are named')) fail('partners still says no partners are named');
@@ -163,9 +163,10 @@ if (/coming soon/i.test(home) || /coming soon/i.test(programs)) fail('Home or Pr
 const mainNav = home.match(/<nav class="nav__links"[\s\S]*?<\/nav>/);
 if (!mainNav) fail('main nav missing');
 else {
-  for (const label of ['Programs', 'Events', 'About', 'Volunteer', 'Partners']) {
+  for (const label of ['Programs', 'Events', 'Volunteer', 'Partners']) {
     if (!mainNav[0].includes(label)) fail('nav missing ' + label);
   }
+  if (mainNav[0].includes('>About<') || mainNav[0].includes('>More<')) fail('header nav still has About or More');
   if (mainNav[0].includes('social.html')) fail('empty directory is in the primary nav');
 }
 if (!home.includes('>Get updates<')) fail('header CTA missing');
@@ -206,7 +207,7 @@ function contrast(a, b) {
   const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x);
   return (hi + 0.05) / (lo + 0.05);
 }
-for (const [fg, bg, min] of [['#142033', '#FFFFFF', 4.5], ['#142033', '#F5F6F8', 4.5], ['#142033', '#F6C445', 4.5], ['#3E4C5E', '#FFFFFF', 4.5], ['#FFFFFF', '#1F4E9A', 4.5], ['#FFFFFF', '#163FA8', 4.5], ['#FFFFFF', '#142033', 4.5], ['#D6DEEA', '#142033', 4.5]]) {
+for (const [fg, bg, min] of [['#142033', '#FFFFFF', 4.5], ['#142033', '#F5F6F8', 4.5], ['#142033', '#F6C445', 4.5], ['#3E4C5E', '#FFFFFF', 4.5], ['#FFFFFF', '#1F4E9A', 4.5], ['#FFFFFF', '#173B75', 4.5], ['#FFFFFF', '#163FA8', 4.5], ['#FFFFFF', '#B9380F', 4.5], ['#FFFFFF', '#8C2A0A', 4.5], ['#B9380F', '#FFFFFF', 4.5], ['#FFFFFF', '#142033', 4.5], ['#D6DEEA', '#142033', 4.5]]) {
   const ratio = contrast(fg, bg);
   if (ratio < min) fail('contrast ' + fg + ' on ' + bg + ' is ' + ratio.toFixed(2));
 }

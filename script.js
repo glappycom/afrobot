@@ -33,10 +33,11 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
 // ---- Mobile nav
 (() => {
   const b = document.querySelector('.nav__toggle'), n = document.querySelector('.nav');
-  const close = () => { n.classList.remove('is-open'); b.setAttribute('aria-expanded', 'false'); };
+  const close = () => { n.classList.remove('is-open'); b.setAttribute('aria-expanded', 'false'); document.documentElement.classList.remove('nav-lock'); };
   b.addEventListener('click', () => {
     const open = n.classList.toggle('is-open');
     b.setAttribute('aria-expanded', String(open));
+    document.documentElement.classList.toggle('nav-lock', open);
     if (open) n.querySelector('.mnav a')?.focus();
   });
   document.querySelectorAll('.mnav a').forEach(a => a.addEventListener('click', close));
@@ -56,16 +57,16 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
     join: { note: '' },
     updates: { role: 'Parent/guardian', message: 'Please send me updates when a session is being planned.', note: '' },
     host: { role: 'Other', message: 'I would like to ask about hosting a session in our community.', note: '' },
-    support: { role: 'Sponsor/partner', message: 'I would like to talk about supporting AfroBot.', note: 'Tax treatment of a gift is not stated on this form.' },
+    support: { role: 'Sponsor/partner', message: 'I would like to talk about supporting AfroBot.', note: '' },
     parent: { role: 'Parent/guardian', message: 'Parent or guardian inquiry.', note: '' },
-    student: { role: 'Parent/guardian', message: 'Parent or guardian submitting interest for a student.', note: 'If you are under 18, ask a parent or guardian to send this.' },
+    student: { role: 'Parent/guardian', message: 'Parent or guardian submitting interest for a student.', note: '' },
     mentor: { role: 'Volunteer/mentor', message: 'Mentor or volunteer inquiry.', note: '' },
     volunteer: { role: 'Volunteer/mentor', message: 'Mentor or volunteer inquiry.', note: '' },
-    sponsor: { role: 'Sponsor/partner', message: 'I would like to ask about sponsoring a student or a program.', note: 'Tax treatment of a gift is not stated on this form.' },
+    sponsor: { role: 'Sponsor/partner', message: 'I would like to ask about sponsoring a student or a program.', note: '' },
     partner: { role: 'Sponsor/partner', message: 'Partnership inquiry.', note: '' },
     school: { role: 'School/educator', message: 'School or university inquiry.', note: '' },
     manufacturer: { role: 'Sponsor/partner', message: 'Manufacturer or equipment inquiry.', note: '' },
-    assistance: { role: 'Parent/guardian', message: 'Financial assistance inquiry.', note: 'Do not send financial documents, tax forms, or account numbers.' },
+    assistance: { role: 'Parent/guardian', message: 'Financial assistance inquiry.', note: '' },
     discover: { role: 'Parent/guardian', message: 'Interest in Discover (ages 6–9).', note: '' },
     build: { role: 'Parent/guardian', message: 'Interest in Build (ages 9–12).', note: '' },
     innovate: { role: 'Parent/guardian', message: 'Interest in Innovate (ages 13–17).', note: '' },
@@ -251,7 +252,7 @@ document.querySelectorAll('.video-play').forEach((btn) => {
 (() => {
   document.documentElement.classList.add('js');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const reveal = document.querySelectorAll('[data-reveal]');
+  const reveal = document.querySelectorAll('[data-reveal], main > section:not(.season-hero):not(.split-hero):not(.page-hero):not(.events-hero), main > .filmstrip');
   if (!reduce && reveal.length && 'IntersectionObserver' in window) {
     reveal.forEach((el) => el.classList.add('will-reveal'));
     const io = new IntersectionObserver((entries) => {

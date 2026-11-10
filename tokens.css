@@ -1,19 +1,27 @@
-/* AfroBot tokens. White page, navy text. Navy is the accent; buttons use a brighter blue. */
+/* AfroBot tokens. White page, graphite text. Orange is for buttons. */
 :root {
-  --ink: #142033;
-  --ink-80: #2C3A4F;
+  /* Primary buttons. To switch back to orange, set these to #B9380F and #8C2A0A. */
+  --cta: #1F4E9A;
+  --cta-hover: #173B75;
+  --ink: #1E2326;
+  --ink-80: #3A4248;
+  /* Dark surfaces. Heather gray trial (#9C9899) was reverted. */
+  --surface-dark: #1E2326;
+  --surface-dark-rgb: 30, 35, 38;
+  /* Text on those surfaces. White on graphite. */
+  --on-surface-dark: #fff;
   --ink-60: #3E4C5E;
   --ink-40: #4A5568;
   --line: #E2E6EE;
   --line-dk: #243044;
-  --clay: #142033;
+  --clay: #1E2326;
   --clay-dk: #0E1A2B;
-  --clay-strong: #1F4E9A;
-  --clay-strong-dk: #163FA8;
-  --clay-text: #142033;
-  --clay-deep: #163FA8;
-  --gold: #1F4E9A;
-  --danger: #1F4E9A;
+  --clay-strong: #1E2326;
+  --clay-strong-dk: #1E2326;
+  --clay-text: #1E2326;
+  --clay-deep: #1E2326;
+  --gold: #1E2326;
+  --danger: #1E2326;
   --bone: #FFFFFF;
   --paper: #FFFFFF;
   --white: #FFFFFF;
@@ -37,12 +45,12 @@
   --t-28: 1.85rem;
   --t-h2: clamp(1.85rem, 2.6vw, 2.5rem);
   --t-h1: clamp(2.2rem, 3.6vw, 3.35rem);
-  --t-display: clamp(48px, 6vw, 88px);
+  --t-display: clamp(44px, 4.6vw, 96px);
   --gutter: 24px;
-  --margin: clamp(20px, 3vw, 32px);
-  --max: 1200px;
-  --s-section: clamp(4.75rem, 8vw, 7.5rem);
+  --margin: clamp(20px, 3vw, 40px);
+  --max: 1360px;
+  --s-section: clamp(4.75rem, 7vw, 8.5rem);
   --ease: cubic-bezier(.2, .7, .2, 1);
   --header-offset: 5.5rem;
-  --focus: #142033;
+  --focus: #1E2326;
 }

@@ -353,21 +353,21 @@ html[data-bg="steel"] {
   --paper: #FFFFFF;
   --bone: #FFFFFF;
   --line: #E2E6EE;
-  --clay: #142033;
-  --clay-strong: #1F4E9A;
-  --clay-text: #142033;
+  --clay: #1E2326;
+  --clay-strong: #1E2326;
+  --clay-text: #1E2326;
 }
 html[data-accent="blue"] {
-  --clay: #142033;
+  --clay: #1E2326;
   --clay-dk: #0E1A2B;
-  --clay-strong: #1F4E9A;
-  --clay-strong-dk: #163FA8;
-  --clay-text: #142033;
+  --clay-strong: #1E2326;
+  --clay-strong-dk: #1E2326;
+  --clay-text: #1E2326;
 }
 body[data-header="bone"] {
   --nav-bg: #fff;
-  --nav-fg: #142033;
-  --nav-cta-bg: #1F4E9A;
+  --nav-fg: #1E2326;
+  --nav-cta-bg: #1E2326;
   --nav-cta-fg: #fff;
 }
 .nav, html[data-bg="steel"] .nav, body[data-header="bone"] .nav {
@@ -377,7 +377,7 @@ body[data-header="bone"] {
   position: sticky;
   top: 0;
 }
-.utilbar { background: #142033; color: #fff; }
+.utilbar { background: #1E2326; color: #fff; }
 .utilbar__inner { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 4px 22px; }
 .utilbar a {
   color: #fff;
@@ -485,7 +485,7 @@ h3, .audience-card h3, .info-card h2, .info-card h3 {
   min-height: clamp(560px, 82vh, 820px);
   display: flex;
   align-items: flex-end;
-  background: #142033;
+  background: #1E2326;
 }
 .hero__photo { position: absolute; inset: 0; }
 .hero__photo img {
@@ -500,7 +500,7 @@ h3, .audience-card h3, .info-card h2, .info-card h3 {
   background: linear-gradient(90deg, rgba(8, 14, 22, 0.78) 0%, rgba(8, 14, 22, 0.62) 38%, rgba(8, 14, 22, 0.22) 68%, rgba(8, 14, 22, 0.08) 100%);
 }
 .hero__tag { margin: 0 0 12px; font-size: 1.25rem; font-weight: 700; color: #fff; max-width: 36rem; }
-.impact { background: #142033; color: #fff; padding: 28px 0; }
+.impact { background: #1E2326; color: #fff; padding: 28px 0; }
 .impact__row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 28px; }
 .impact__row p { margin: 0; font-size: 1.05rem; }
 .impact__row strong { display: block; font-size: clamp(2rem, 4vw, 3rem); line-height: 1; color: inherit; }
@@ -512,7 +512,7 @@ h3, .audience-card h3, .info-card h2, .info-card h3 {
 .timeline b { font-size: 1.15rem; }
 .timeline span { color: var(--ink-80); }
 .stage-line { list-style: none; margin: 28px 0 0; padding: 18px 0 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; position: relative; }
-.stage-line::before { content: ""; position: absolute; left: 6%; right: 6%; top: 16px; height: 3px; background: #1F4E9A; z-index: 0; }
+.stage-line::before { content: ""; position: absolute; left: 6%; right: 6%; top: 16px; height: 3px; background: #1E2326; z-index: 0; }
 .journey-step { position: relative; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 22px 16px 16px; }
 .journey-dot { position: absolute; left: 50%; top: 0; width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 2px solid var(--line); transform: translate(-50%, -50%); z-index: 1; transition: background-color .35s ease, border-color .35s ease; }
 .journey-step.is-on .journey-dot { background: var(--clay); border-color: var(--clay); }
@@ -817,9 +817,9 @@ h3, .audience-card h3, .info-card h2, .info-card h3 {
 .page-hero { border-bottom: 1px solid var(--line); }
 .section + .section.register { border-top: 1px solid var(--line); }
 .band-ink p, .band-ink .h1, .finale, .finale .display { color: var(--ink); }
-.footer { background: #142033; color: #fff; padding-top: clamp(3rem, 5vw, 4.5rem); }
+.footer { background: #1E2326; color: #fff; padding-top: clamp(3rem, 5vw, 4.5rem); }
 .footer a:focus-visible, .utilbar a:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
-.btn:focus-visible, .link:focus-visible, .tlink:focus-visible { outline: 2px solid #142033; outline-offset: 3px; }
+.btn:focus-visible, .link:focus-visible, .tlink:focus-visible { outline: 2px solid #1E2326; outline-offset: 3px; }
 .footer p, .footer nav a, .footer div > span, .footer__base, .footer__base span { color: #D6DEEA; }
 .footer h2 { color: #fff; font-size: 1.05rem; letter-spacing: 0; text-transform: none; font-weight: 800; }
 .footer p { max-width: 36rem; }
