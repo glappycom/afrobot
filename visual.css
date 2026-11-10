@@ -554,8 +554,8 @@ main * {
 .story-block .lead,
 .story-block .pull,
 .story-block .milestones__body,
-.story-block .milestones__body b,
-.story-block .milestones__body span { color: #fff; }
+.story-block .milestones__body b { color: #fff; }
+.story-block .milestones__body span { color: #D6DEEA; }
 .story-block .lead { max-width: 36rem; margin: 0; }
 .story-block .pull { max-width: 22rem; margin: 0; color: #fff; }
 .story-block__top { padding: 0 var(--inset); }
@@ -616,7 +616,7 @@ main * {
   z-index: 1;
   display: block;
   overflow: hidden;
-  background: #0c1624;
+  background: #1E2326;
   box-shadow: none;
   container-type: size;
 }
@@ -640,58 +640,44 @@ main * {
   list-style: none;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-  margin: 48px var(--inset) 0;
-  padding: 0;
+  gap: 0;
+  margin: 56px var(--inset) 0;
+  padding: 8px 0 0;
   position: relative;
-  container-type: inline-size;
 }
 .milestones__item {
   position: relative;
-  z-index: 1;
-  background: #1b2b42;
-  padding: 28px 18px 22px;
   min-width: 0;
-  clip-path: polygon(0 calc(100cqi / 4 * tan(var(--slant)) + 10px), 100% 0, 100% 100%, 0 100%);
+  background: transparent;
+  padding: 0 28px 4px;
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  clip-path: none;
 }
-.milestones__dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  display: inline-block;
-  margin: 0 0 10px;
-  box-shadow: 0 0 0 4px #1E2326;
-}
-.milestones__item--a .milestones__dot { background: #F6C445; }
-.milestones__item--b .milestones__dot { background: #1FA58A; }
-.milestones__item--c .milestones__dot { background: #4C74E6; }
-.milestones__item--d .milestones__dot { background: #1E2326; }
+.milestones__item:first-child { border-left: 0; padding-left: 0; }
 .milestones__num {
-  margin: 8px 0 8px;
+  position: relative;
+  margin: 0 0 16px;
+  padding-top: 18px;
   font-family: "Outfit", "Public Sans", sans-serif;
   font-weight: 800;
-  font-size: clamp(40px, 4vw, 64px);
+  font-size: clamp(44px, 4.2vw, 68px);
   line-height: 0.9;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.045em;
   color: #fff;
+  font-variant-numeric: tabular-nums;
 }
-.story-chip {
-  display: inline-block;
-  margin: 0 0 10px;
-  padding: 6px 10px 7px;
-  background: #F6C445;
-  color: #1E2326;
-  font-family: "Outfit", "Public Sans", sans-serif;
-  font-weight: 800;
-  font-size: 0.95rem;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-  transform: skewX(calc(var(--slant) * -1));
-  transform-origin: left center;
+.milestones__num::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 32px;
+  height: 3px;
+  background: #B9380F;
 }
-.milestones__body { margin: 0; display: grid; gap: 4px; }
-.milestones__body b { font-size: 1.05rem; }
-.milestones__body span { color: #D6DEEA; font-weight: 550; }
+.milestones__body { margin: 0; display: grid; gap: 6px; }
+.milestones__body b { color: #fff; font-size: 1.05rem; font-weight: 750; letter-spacing: -0.015em; }
+.milestones__body span { color: #D6DEEA; font-weight: 550; font-size: 0.98rem; line-height: 1.45; max-width: 24ch; }
 .story-block + .stages {
   position: relative;
   z-index: 1;
@@ -1074,15 +1060,28 @@ main * {
   .founder-row, .fact-row, .community-roles .roles { grid-template-columns: 1fr; }
 }
 
+@media (max-width: 980px) {
+  .milestones { grid-template-columns: 1fr 1fr; row-gap: 32px; }
+  .milestones__item { border-left: 1px solid rgba(255, 255, 255, 0.12); padding: 0 24px 4px; }
+  .milestones__item:nth-child(odd) { border-left: 0; padding-left: 0; }
+  .milestones__item:nth-child(n + 3) { border-top: 1px solid rgba(255, 255, 255, 0.12); padding-top: 28px; }
+}
 @media (max-width: 768px) {
-  .milestones { grid-template-columns: 1fr; gap: 10px; }
-  .milestones__item { display: grid; grid-template-columns: auto 1fr; column-gap: 16px; align-items: start; clip-path: polygon(0 16px, 100% 0, 100% 100%, 0 100%); }
-  .milestones::before { content: ""; position: absolute; left: 24px; top: 20px; bottom: 20px; width: 4px; background: #F6C445; }
-  .milestones__dot { grid-column: 1; grid-row: 1 / span 3; margin-top: 10px; }
-  .milestones__num, .story-chip, .milestones__body { grid-column: 2; }
   .story-copy { grid-template-columns: 1fr; }
   .story-collage { grid-template-columns: 1fr; }
   .story-collage figure, .story-collage__back, .story-collage__front { height: 240px; width: auto; }
+}
+@media (max-width: 560px) {
+  .milestones { grid-template-columns: 1fr; row-gap: 0; margin-top: 40px; }
+  .milestones__item,
+  .milestones__item:nth-child(odd),
+  .milestones__item:nth-child(n + 3) {
+    border-left: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 22px 0 18px;
+  }
+  .milestones__item:first-child { border-top: 0; padding-top: 0; }
+  .milestones__num { font-size: clamp(52px, 16vw, 76px); }
 }
 
 /* Floating pill header. Orange is reserved for buttons. */
