@@ -10,6 +10,10 @@
 
 :root {
   --max: 1360px;
+  --split-gap: clamp(24px, 3vw, 48px);
+  --split-cols: minmax(0, 1.4fr) minmax(220px, 0.6fr);
+  --band-y: clamp(56px, 6vw, 88px);
+  --band-title: clamp(2.75rem, 4.6vw, 4.5rem);
   --gutter: 24px;
   --display: "Outfit", "Public Sans", sans-serif;
   --t-display: clamp(44px, 4.6vw, 96px);
@@ -22,8 +26,8 @@
   --btn-h: 52px;
   --card-pad: 24px;
 }
-main { container-type: inline-size; }
-main * {
+body { container-type: inline-size; }
+body * {
   --cut: calc(100cqi * tan(var(--slant)));
   --inset: max(var(--margin), calc((100cqi - var(--max)) / 2 + var(--margin)));
 }
@@ -875,18 +879,19 @@ main * {
   object-position: center 40%;
   display: block;
 }
-.prefoot__cta { color: #fff; padding: 56px 0; }
+.prefoot__cta { color: #fff; padding: 0; }
 .prefoot__cta .kicker { color: #fff; }
 .footer nav a:hover, .footer__nav a:hover, .footer__legal a:hover { color: #fff; }
 .prefoot__cta h2 {
-  margin: 0 0 12px;
-  max-width: 14ch;
+  margin: 0;
+  max-width: 12ch;
   color: #fff;
   font-family: "Outfit", "Public Sans", sans-serif;
   font-weight: 800;
-  font-size: clamp(2.2rem, 4vw, 3.6rem);
-  letter-spacing: -0.04em;
-  line-height: 0.95;
+  font-size: var(--band-title);
+  letter-spacing: -0.045em;
+  line-height: 0.92;
+  text-transform: uppercase;
 }
 .prefoot__cta p { margin: 0; max-width: 36rem; font-weight: 650; color: #fff; }
 .prefoot__cta .btn,
@@ -949,7 +954,7 @@ main * {
   flex-wrap: wrap;
   align-items: center;
   gap: 0 2px;
-  margin: 8px -10px 0;
+  margin: 8px 0 0;
   padding: 6px 0 18px;
   border-top: 1px solid rgba(255, 255, 255, .2);
   color: #D6DEEA;
@@ -1847,51 +1852,97 @@ body[data-header="bone"] .nav.is-compact {
   color: #fff;
 }
 
-/* Home audience rows. Full-width bands, not cards. */
+/* One content grid from the audience rows through the sponsor band and footer. */
 .involve:has(.audience-rows) { padding-bottom: 0; }
+.split,
 .audience-rows .row {
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(220px, 0.6fr);
-  gap: clamp(20px, 3vw, 48px);
+  grid-template-columns: var(--split-cols);
+  column-gap: var(--split-gap);
   align-items: end;
-  padding: clamp(48px, 7vw, 104px) var(--inset);
-  border-top: 1px solid rgba(30, 35, 38, 0.16);
+  padding-inline: var(--inset);
 }
-.audience-rows .row h3 {
+.audience-rows .row { padding-block: var(--band-y); border-top: 1px solid rgba(30, 35, 38, 0.16); }
+.audience-rows .row h3,
+.prefoot__cta h2 {
   margin: 0;
-  max-width: 100%;
+  max-width: 12ch;
   color: inherit;
   font-family: "Outfit", "Public Sans", sans-serif;
   font-weight: 800;
-  font-size: clamp(3rem, 6.4vw, 6.6rem);
-  letter-spacing: -0.05em;
-  line-height: 0.86;
+  font-size: var(--band-title);
+  letter-spacing: -0.045em;
+  line-height: 0.92;
   text-transform: uppercase;
 }
-.audience-rows .row__aside { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; padding-bottom: 8px; }
-.audience-rows .row p { margin: 0; max-width: 28rem; font-size: 1.2rem; font-weight: 650; color: inherit; }
+.audience-rows .row__aside,
+.split__aside { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+.audience-rows .row p,
+.split__aside p { margin: 0; max-width: 28rem; font-size: 1.15rem; font-weight: 650; color: inherit; }
 .audience-rows .row--parents { background: #F6C445; color: #1E2326; border-top-color: transparent; }
 .audience-rows .row--parents h3,
 .audience-rows .row--parents p { color: #1E2326; }
 .audience-rows .row--mentors { background: #1E2326; color: #fff; border-top-color: rgba(255, 255, 255, 0.22); }
 .audience-rows .row--mentors h3,
 .audience-rows .row--mentors p { color: #fff; }
-.audience-rows .row--community { background: #fff; color: #1E2326; }
+.audience-rows .row--community { background: #fff; color: #1E2326; border-top-color: rgba(30, 35, 38, 0.12); }
 .audience-rows .row--community h3,
 .audience-rows .row--community p { color: #1E2326; }
 .audience-rows .row--parents .btn:focus-visible,
 .audience-rows .row--community .btn:focus-visible { outline-color: #1E2326; }
 .audience-rows .row--mentors .btn:focus-visible { outline-color: #fff; }
+.prefoot__cta .split { padding-block: var(--band-y); }
+.prefoot__cta .split__lead { display: flex; flex-direction: column; gap: 10px; }
+.footer__grid.split {
+  max-width: none;
+  margin: 0;
+  padding-block: 36px 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  align-items: center;
+}
+.footer__grid.split .footer__top { display: contents; }
+.footer__grid.split .footer__brand { grid-column: 1; }
+.footer__grid.split .footer__nav { grid-column: 2; justify-content: flex-start; margin: 0; }
+.footer__grid.split .footer__nav a:first-child,
+.footer__grid.split .footer__legal a:first-child { padding-left: 0; }
+.footer__grid.split .footer__legal { grid-column: 1 / -1; }
+@media (min-width: 901px) {
+  .season {
+    grid-template-columns: var(--split-cols);
+    column-gap: var(--split-gap);
+    padding-inline: var(--inset);
+  }
+  .season__main {
+    margin-left: calc(-1 * var(--inset));
+    padding-left: var(--inset);
+    padding-right: 0;
+  }
+  .season__side {
+    margin-right: calc(-1 * var(--inset));
+    margin-left: calc(-1 * var(--split-gap));
+    padding-left: var(--split-gap);
+    padding-right: var(--inset);
+  }
+  .involve__hero {
+    grid-template-columns: var(--split-cols);
+    column-gap: var(--split-gap);
+    padding-inline: var(--inset);
+  }
+  .involve__photo { margin-left: calc(-1 * var(--inset)); }
+  .involve__intro { padding-left: 0; padding-right: 0; }
+}
 @media (hover: hover) and (pointer: fine) {
   .audience-rows .row h3 { transition: transform .45s ease; }
   .audience-rows .row:hover h3 { transform: translateX(10px); }
 }
-@media (max-width: 800px) {
-  .audience-rows .row { grid-template-columns: 1fr; gap: 18px; align-items: start; padding: 36px var(--inset); }
-  .audience-rows .row h3 { font-size: clamp(2.8rem, 16vw, 4.4rem); }
-}
-@media (min-width: 1600px) {
-  .audience-rows .row { padding-block: 112px; }
+@media (max-width: 900px) {
+  .split,
+  .audience-rows .row,
+  .footer__grid.split { grid-template-columns: 1fr; row-gap: 16px; }
+  .footer__grid.split .footer__top { display: flex; }
+  .footer__grid.split .footer__nav { grid-column: auto; }
+  .audience-rows .row h3,
+  .prefoot__cta h2 { font-size: clamp(2.6rem, 12vw, 3.4rem); }
 }
 @media (prefers-reduced-motion: reduce) {
   .audience-rows .row h3 { transition: none; transform: none; }
