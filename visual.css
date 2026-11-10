@@ -763,6 +763,8 @@ main * {
 .hub-plan__intro { padding: var(--section-y) 32px var(--section-y) var(--inset); display: flex; flex-direction: column; justify-content: flex-end; }
 .hub-plan__intro .h1, .hub-plan__intro p { color: #fff; }
 .hub-plan__intro .kicker { color: #F6C445; }
+.hub-plan__grid .kicker { color: #fff; }
+.hub-plan__grid .stage-discover .kicker { color: #142033; }
 .hub-plan__grid { container-type: inline-size; display: grid; }
 .hub-plan__grid article {
   min-height: 180px;
@@ -1080,4 +1082,156 @@ main * {
   .story-copy { grid-template-columns: 1fr; }
   .story-collage { grid-template-columns: 1fr; }
   .story-collage figure, .story-collage__back, .story-collage__front { height: 240px; width: auto; }
+}
+
+/* Calm header and one primary button. */
+.nav { background: #fff; border-bottom: 1px solid #E2E6EE; overflow: visible; }
+.nav__inner {
+  display: flex;
+  align-items: center;
+  height: 76px;
+  gap: 20px;
+  padding-block: 0;
+  grid-template-columns: none;
+  grid-template-areas: none;
+}
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 12px;
+  padding: 0;
+  font-size: 0.98rem;
+}
+.nav__links a, .nav__more summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: #142033;
+  text-decoration: none;
+}
+.nav__links a::after { display: none; }
+.nav__links a[aria-current="page"],
+.nav__more:has(a[aria-current="page"]) > summary {
+  font-weight: 650;
+  background: #F5F6F8;
+  border-radius: 999px;
+}
+.nav__more { position: relative; }
+.nav__more summary {
+  list-style: none;
+  cursor: pointer;
+}
+.nav__more summary::-webkit-details-marker { display: none; }
+.nav__more summary::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  margin-left: 8px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+}
+.nav__more-panel {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 200px;
+  display: grid;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid #E2E6EE;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(20, 32, 51, 0.08);
+}
+.nav__more-panel a { border-radius: 8px; }
+.nav__more-panel a:hover { background: #F5F6F8; }
+.nav__updates {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  min-height: 44px;
+  padding: 0 16px;
+}
+.btn, a.btn, button.btn {
+  border-radius: 12px;
+  height: 48px;
+  min-height: 48px;
+  padding: 0 20px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn:focus-visible, .nav a:focus-visible, .nav summary:focus-visible {
+  outline: 2px solid #142033;
+  outline-offset: 3px;
+}
+.season-hero .btn:focus-visible,
+.season__side .btn:focus-visible,
+.split-hero .btn:focus-visible,
+.prefoot .btn:focus-visible,
+.path--sponsor .btn:focus-visible,
+.path--mentors .btn:focus-visible,
+.path--leaders .btn:focus-visible {
+  outline-color: #fff;
+}
+.btn--ink, .btn--ink:visited { background: #142033; color: #fff; border-color: #142033; }
+.btn--ink:hover { background: #0E1A2B; border-color: #0E1A2B; color: #fff; }
+.mnav a.btn { width: 100%; }
+.mnav a.mnav__quiet {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #3E4C5E;
+}
+@media (max-width: 1080px) {
+  .nav .nav__updates { display: inline-flex; }
+  .nav__toggle { display: none; }
+  .nav__links { display: flex; }
+}
+@media (max-width: 860px) {
+  .nav__links { display: none; }
+  .nav .nav__updates { display: none; }
+  .nav__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-left: auto;
+  }
+  .nav.is-open .mnav {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 4px 20px 20px;
+    background: #fff;
+    border-top: 1px solid #E2E6EE;
+  }
+  .mnav a {
+    font-family: "Public Sans", sans-serif;
+    font-weight: 550;
+    font-size: 1.125rem;
+    letter-spacing: 0;
+    line-height: 1.2;
+    min-height: 48px;
+    padding: 0;
+    border-bottom: 1px solid #E2E6EE;
+    text-decoration: none;
+  }
+  .mnav a[aria-current="page"] { font-weight: 700; text-decoration: none; box-shadow: inset 3px 0 0 #142033; padding-left: 12px; }
+  .mnav a.btn {
+    margin-top: 16px;
+    border-bottom: 0;
+    height: 48px;
+    box-shadow: none;
+    padding-left: 0;
+  }
+  .mnav a.mnav__quiet { border-bottom: 0; min-height: 44px; }
 }
