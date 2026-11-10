@@ -182,7 +182,7 @@ else {
   if (legal[0].includes('Glappy Foundation')) fail('policy row still names Glappy Foundation');
 }
 if (footer.includes('Glappy Foundation')) fail('footer still names Glappy Foundation');
-if (!footer.includes('assets/logo-afrobot-navy.svg')) fail('footer logo missing');
+if (!footer.includes('assets/logo-afrobot-footer.svg')) fail('footer logo missing');
 if (!footer.includes('Sponsor a Student') || !footer.includes('bamenda-coats-outside')) fail('footer sponsor band missing');
 if (home.includes('stickycta') || programs.includes('stickycta')) fail('sticky mobile bar is still in the page');
 if (home.includes('<option>Student</option>')) fail('Student role option is still on the form');

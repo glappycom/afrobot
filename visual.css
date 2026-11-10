@@ -1712,7 +1712,7 @@ body[data-header="bone"] .nav.is-compact {
   }
 }
 
-/* Heather gray trial. Dark surfaces use --surface-dark. Text on them is graphite. */
+/* Dark surfaces follow --surface-dark. Text on them follows --on-surface-dark. */
 .page-hero,
 .hero,
 .band-navy,
@@ -1742,19 +1742,8 @@ body[data-header="bone"] .nav.is-compact {
 }
 .season-hero,
 .split-hero {
-  --hero: var(--surface-dark-rgb);
   background-color: var(--surface-dark);
   color: var(--on-surface-dark);
-}
-.season-hero::after,
-.split-hero::after {
-  background: linear-gradient(90deg, rgba(var(--surface-dark-rgb), 0.94) 0%, rgba(var(--surface-dark-rgb), 0.88) 36%, rgba(var(--surface-dark-rgb), 0.3) 68%, rgba(var(--surface-dark-rgb), 0.12) 100%);
-}
-@media (max-width: 900px) {
-  .season-hero::after,
-  .split-hero::after {
-    background: linear-gradient(to bottom, rgba(var(--surface-dark-rgb), 0.94) 0%, rgba(var(--surface-dark-rgb), 0.88) 42%, rgba(var(--surface-dark-rgb), 0.32) 70%, rgba(var(--surface-dark-rgb), 0.12) 100%);
-  }
 }
 .page-hero,
 .page-hero .h1,
@@ -1850,19 +1839,6 @@ body[data-header="bone"] .nav.is-compact {
 .path--mentors :is(h2, h3),
 .path--leaders :is(h2, h3) {
   color: var(--on-surface-dark);
-}
-.story-mark { background: transparent; }
-.footer__legal,
-.footer__base { border-top-color: rgba(30, 35, 38, 0.22); }
-.btn--line-light,
-.btn--line-light:visited {
-  color: var(--on-surface-dark);
-  border-color: var(--on-surface-dark);
-}
-.btn--line-light:hover {
-  background: var(--on-surface-dark);
-  color: #fff;
-  border-color: var(--on-surface-dark);
 }
 .footer a:focus-visible,
 .utilbar a:focus-visible,

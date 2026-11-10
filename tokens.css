@@ -5,11 +5,11 @@
   --cta-hover: #173B75;
   --ink: #1E2326;
   --ink-80: #3A4248;
-  /* Heather gray surfaces. Was graphite #1E2326. To revert, set this back to #1E2326 and --on-surface-dark back to #fff. */
-  --surface-dark: #9C9899;
-  --surface-dark-rgb: 156, 152, 153;
-  /* Text on those surfaces. White on #9C9899 is 2.85:1 and fails AA. Graphite is 5.56:1. */
-  --on-surface-dark: #1E2326;
+  /* Dark surfaces. Heather gray trial (#9C9899) was reverted. */
+  --surface-dark: #1E2326;
+  --surface-dark-rgb: 30, 35, 38;
+  /* Text on those surfaces. White on graphite. */
+  --on-surface-dark: #fff;
   --ink-60: #3E4C5E;
   --ink-40: #4A5568;
   --line: #E2E6EE;
