@@ -34,7 +34,7 @@
 <link rel="preload" href="fonts/Outfit-Latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css?v=40">
 <link rel="stylesheet" href="components.css?v=46">
-<link rel="stylesheet" href="visual.css?v=42">
+<link rel="stylesheet" href="visual.css?v=43">
 
 </head>
 <body data-header="bone">
@@ -66,130 +66,135 @@
   </nav>
 </header>
 <main id="main" tabindex="-1">
-<section class="split-hero">
-  <div class="split-hero__copy">
+<section class="events-hero">
+  <div class="events-hero__copy">
     <p class="kicker">Events</p>
-    <h1 class="h1">McKinney Build Day</h1>
-    <p class="lead">Kids and mentors worked with robots in McKinney, Texas, in 2024.</p>
-    <a class="btn btn--clay" href="community.html?intent=updates#register">Get updates</a>
+    <h1 class="h1">The 2027 season.</h1>
+    <p class="lead">Texas (DFW), Cameroon (Yaoundé), and Tanzania meet on separate dates and share a two-way livestream.</p>
+    <a class="btn btn--clay" href="community.html?intent=parent#register">Register your interest</a>
   </div>
-  <figure class="split-hero__photo">
+  <figure class="events-hero__media">
     <picture>
-      <source srcset="assets/photos/mckinney-build-day-2024-960.avif 960w, assets/photos/mckinney-build-day-2024.avif 1000w" sizes="(min-width: 900px) 58vw, 100vw" type="image/avif">
+      <source srcset="assets/photos/mckinney-build-day-2024-960.avif 960w, assets/photos/mckinney-build-day-2024.avif 1000w" sizes="(min-width: 900px) 54vw, 100vw" type="image/avif">
       <source srcset="assets/photos/mckinney-build-day-2024.webp" type="image/webp">
       <img src="assets/photos/mckinney-build-day-2024.jpg" alt="A big group of kids and mentors pose with the robots they built, three robots on the floor in front" width="1000" height="920" fetchpriority="high" decoding="async">
     </picture>
+    <figcaption>McKinney Build Day. Kids and mentors worked with robots in McKinney, Texas, in 2024.</figcaption>
   </figure>
 </section>
-<section class="event-proof">
-  <div class="proof-grid">
-    <figure class="slant-figure">
-      <div class="slant-figure__media photo__img--real">
-        <video class="photo__video" controls playsinline preload="metadata" poster="assets/video/mckinney-build-day-2024-poster.jpg">
-          <source src="assets/video/mckinney-build-day-2024.mp4" type="video/mp4">
-        </video>
-      </div>
-      <figcaption>Kids and mentors worked with robots in McKinney, Texas, in 2024.</figcaption>
-    </figure>
-    <figure class="slant-figure">
-      <div class="slant-figure__media">
-        <picture>
-          <source srcset="assets/photos/mckinney-ai-track-2024.webp" type="image/webp">
-          <img src="assets/photos/mckinney-ai-track-2024.jpg" alt="Kids at tables with their robots while a presenter teaches at a screen" width="1200" height="900" loading="lazy" decoding="async">
-        </picture>
-      </div>
-      <figcaption>An AI session in McKinney, Texas, in 2024.</figcaption>
-    </figure>
-  </div>
-</section>
-<section class="hub-plan" id="plan" aria-labelledby="plan-title">
-  <div class="hub-plan__intro">
+
+<section class="events-hubs" id="plan" aria-labelledby="plan-title">
+  <div class="events-wrap">
     <p class="kicker">The plan</p>
     <h2 id="plan-title" class="h1">2027 hubs</h2>
-    <p>Texas (DFW), Cameroon (Yaoundé), and Tanzania meet on separate dates and share a two-way livestream.</p>
+    <div class="events-hubs__grid">
+      <article class="events-hub">
+        <p class="events-hub__tag">2027</p>
+        <h3>DFW</h3>
+        <p class="events-hub__place">Texas</p>
+        <p>Dallas–Fort Worth is part of the 2027 footprint.</p>
+      </article>
+      <article class="events-hub">
+        <p class="events-hub__tag">2027</p>
+        <h3>Yaoundé</h3>
+        <p class="events-hub__place">Cameroon</p>
+        <p>AfroBot is hosting the Yaoundé event.</p>
+      </article>
+      <article class="events-hub">
+        <p class="events-hub__tag">Planned hub</p>
+        <h3>Tanzania</h3>
+        <p>Tanzania is a planned hub on its own dates.</p>
+      </article>
+    </div>
     <p class="hero__next"><a href="competitions.html">See the hubs</a></p>
   </div>
-  <div class="hub-plan__grid">
-    <article>
-      <p class="kicker">2027</p>
-      <h3>DFW</h3>
-      <p>Dallas–Fort Worth is part of the 2027 footprint.</p>
-    </article>
-    <article>
-      <p class="kicker">2027</p>
-      <h3>Yaoundé</h3>
-      <p>AfroBot is hosting the Yaoundé event.</p>
-    </article>
-    <article>
-      <p class="kicker">Planned hub</p>
-      <h3>Tanzania</h3>
-      <p>Tanzania is a planned hub on its own dates.</p>
-    </article>
-  </div>
 </section>
-<section class="section event-more" id="from-the-program" aria-labelledby="program-photos">
-  <div class="event-more__head">
-    <h2 id="program-photos" class="h1">From the program</h2>
-  </div>
-  <div class="proof-grid proof-grid--three">
-    <figure class="slant-figure">
-      <div class="slant-figure__media">
-        <picture>
-          <source srcset="assets/photos/bamenda-desktop-focus.avif" type="image/avif">
-          <source srcset="assets/photos/bamenda-desktop-focus.webp" type="image/webp">
-          <img src="assets/photos/bamenda-desktop-focus.jpg" alt="Children focused on a desktop screen" width="980" height="735" loading="lazy" decoding="async">
-        </picture>
+
+<section class="events-past" id="from-the-program" aria-labelledby="program-photos">
+  <div class="events-wrap">
+    <p class="kicker">From the program</p>
+    <h2 id="program-photos" class="h1">Where we've been</h2>
+    <article class="events-place">
+      <h3>McKinney Build Day</h3>
+      <div class="events-place__media">
+        <figure>
+          <div class="events-frame">
+            <video class="photo__video" controls playsinline preload="metadata" poster="assets/video/mckinney-build-day-2024-poster.jpg">
+              <source src="assets/video/mckinney-build-day-2024.mp4" type="video/mp4">
+            </video>
+          </div>
+          <figcaption>Kids and mentors worked with robots in McKinney, Texas, in 2024.</figcaption>
+        </figure>
+        <figure>
+          <div class="events-frame">
+            <picture>
+              <source srcset="assets/photos/mckinney-ai-track-2024.webp" type="image/webp">
+              <img src="assets/photos/mckinney-ai-track-2024.jpg" alt="Kids at tables with their robots while a presenter teaches at a screen" width="1200" height="900" loading="lazy" decoding="async">
+            </picture>
+          </div>
+          <figcaption>An AI session in McKinney, Texas, in 2024.</figcaption>
+        </figure>
       </div>
-      <figcaption>Students work at a desktop.</figcaption>
-    </figure>
-    <figure class="slant-figure">
-      <div class="slant-figure__media">
-        <picture>
-          <source srcset="assets/photos/bamenda-class-celebration.avif" type="image/avif">
-          <source srcset="assets/photos/bamenda-class-celebration.webp" type="image/webp">
-          <img src="assets/photos/bamenda-class-celebration.jpg" alt="A classroom group in white lab coats" width="980" height="735" loading="lazy" decoding="async">
-        </picture>
+    </article>
+    <article class="events-place">
+      <h3>Cameroon</h3>
+      <div class="events-gallery">
+        <figure>
+          <div class="events-frame">
+            <picture>
+              <source srcset="assets/photos/bamenda-desktop-focus.avif" type="image/avif">
+              <source srcset="assets/photos/bamenda-desktop-focus.webp" type="image/webp">
+              <img src="assets/photos/bamenda-desktop-focus.jpg" alt="Children focused on a desktop screen" width="980" height="735" loading="lazy" decoding="async">
+            </picture>
+          </div>
+          <figcaption>Students work at a desktop.</figcaption>
+        </figure>
+        <figure>
+          <div class="events-frame">
+            <picture>
+              <source srcset="assets/photos/bamenda-class-celebration.avif" type="image/avif">
+              <source srcset="assets/photos/bamenda-class-celebration.webp" type="image/webp">
+              <img src="assets/photos/bamenda-class-celebration.jpg" alt="A classroom group in white lab coats" width="980" height="735" loading="lazy" decoding="async">
+            </picture>
+          </div>
+          <figcaption>A class gathers indoors.</figcaption>
+        </figure>
+        <figure>
+          <div class="events-frame">
+            <picture>
+              <source srcset="assets/photos/bamenda-robotics-kit.avif" type="image/avif">
+              <source srcset="assets/photos/bamenda-robotics-kit.webp" type="image/webp">
+              <img src="assets/photos/bamenda-robotics-kit.jpg" alt="A small group studying instructions beside a robotics kit" width="980" height="735" loading="lazy" decoding="async">
+            </picture>
+          </div>
+          <figcaption>Students study a robotics kit.</figcaption>
+        </figure>
+        <figure>
+          <div class="events-frame">
+            <picture>
+              <source srcset="assets/photos/bamenda-coding-desktop.avif" type="image/avif">
+              <source srcset="assets/photos/bamenda-coding-desktop.webp" type="image/webp">
+              <img src="assets/photos/bamenda-coding-desktop.jpg" alt="Two children at a desktop with a block-coding screen" width="980" height="735" loading="lazy" decoding="async">
+            </picture>
+          </div>
+          <figcaption>Students code at a desktop.</figcaption>
+        </figure>
+        <figure>
+          <div class="events-frame">
+            <picture>
+              <source srcset="assets/photos/bamenda-lab-coats.avif" type="image/avif">
+              <source srcset="assets/photos/bamenda-lab-coats.webp" type="image/webp">
+              <img src="assets/photos/bamenda-lab-coats.jpg" alt="An outdoor group in white lab coats" width="980" height="735" loading="lazy" decoding="async">
+            </picture>
+          </div>
+          <figcaption>Students meet outdoors.</figcaption>
+        </figure>
       </div>
-      <figcaption>A class gathers indoors.</figcaption>
-    </figure>
-    <figure class="slant-figure">
-      <div class="slant-figure__media">
-        <picture>
-          <source srcset="assets/photos/bamenda-robotics-kit.avif" type="image/avif">
-          <source srcset="assets/photos/bamenda-robotics-kit.webp" type="image/webp">
-          <img src="assets/photos/bamenda-robotics-kit.jpg" alt="A small group studying instructions beside a robotics kit" width="980" height="735" loading="lazy" decoding="async">
-        </picture>
-      </div>
-      <figcaption>Students study a robotics kit.</figcaption>
-    </figure>
-    <figure class="slant-figure">
-      <div class="slant-figure__media">
-        <picture>
-          <source srcset="assets/photos/bamenda-coding-desktop.avif" type="image/avif">
-          <source srcset="assets/photos/bamenda-coding-desktop.webp" type="image/webp">
-          <img src="assets/photos/bamenda-coding-desktop.jpg" alt="Two children at a desktop with a block-coding screen" width="980" height="735" loading="lazy" decoding="async">
-        </picture>
-      </div>
-      <figcaption>Students code at a desktop.</figcaption>
-    </figure>
-    <figure class="slant-figure">
-      <div class="slant-figure__media">
-        <picture>
-          <source srcset="assets/photos/bamenda-lab-coats.avif" type="image/avif">
-          <source srcset="assets/photos/bamenda-lab-coats.webp" type="image/webp">
-          <img src="assets/photos/bamenda-lab-coats.jpg" alt="An outdoor group in white lab coats" width="980" height="735" loading="lazy" decoding="async">
-        </picture>
-      </div>
-      <figcaption>Students meet outdoors.</figcaption>
-    </figure>
-  </div>
-</section>
-<section class="band-block band-block--paper" id="stories" aria-labelledby="stories-title">
-  <div class="container">
-    <p class="kicker">Stories</p>
-    <h2 id="stories-title" class="h1">Stories from the program</h2>
-    <div class="card-grid card-grid--stories">
-      <article class="video-card">
+    </article>
+    <div class="events-stories" id="stories" aria-labelledby="stories-title">
+      <h2 id="stories-title" class="h1">Stories from the program</h2>
+      <div class="card-grid card-grid--stories">
+        <article class="video-card">
   <div class="video-facade">
     <button type="button" class="video-play" data-video="iJk-olGvFns" aria-label="Play video: Launch Day, Nigeria">
       <img src="https://i.ytimg.com/vi/iJk-olGvFns/hqdefault.jpg" alt="Preview image: Launch Day, Nigeria" width="480" height="360" loading="lazy" decoding="async">
@@ -252,6 +257,19 @@
   </div>
   <h3>Classroom Circuits Workshop</h3>
 </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="events-close">
+  <div class="events-wrap events-close__inner">
+    <h2 class="h1">Take part</h2>
+    <p>Host a session, sponsor a student, or volunteer.</p>
+    <div class="events-close__actions">
+      <a class="btn btn--clay" href="community.html?intent=host#register">Ask about hosting</a>
+      <a class="btn btn--clay" href="partners.html">Sponsor a Student</a>
+      <a class="btn btn--clay" href="volunteer.html">Volunteer</a>
     </div>
   </div>
 </section>

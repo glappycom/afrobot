@@ -1077,6 +1077,101 @@ main * {
   .story-collage { grid-template-columns: 1fr; }
   .story-collage figure, .story-collage__back, .story-collage__front { height: 240px; width: auto; }
 }
+.events-wrap { width: min(1120px, calc(100% - 48px)); margin: 0 auto; }
+.events-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: center;
+  width: min(1120px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: clamp(36px, 5vw, 72px) 0 clamp(28px, 4vw, 48px);
+}
+.events-hero__copy .kicker { color: #1E2326; }
+.events-hero .h1 { max-width: 10ch; margin: 0 0 16px; }
+.events-hero .lead { margin: 0 0 28px; color: #3A4248; }
+.events-hero__media { margin: 0; }
+.events-hero__media img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 24px;
+  display: block;
+}
+.events-hero__media figcaption,
+.events-place figcaption {
+  margin: 10px 0 0;
+  color: #3A4248;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+.events-hubs { background: #F5F6F8; padding: clamp(64px, 8vw, 104px) 0; }
+.events-hubs .kicker, .events-past .kicker { color: #1E2326; }
+.events-hubs .h1, .events-past .h1 { margin: 0 0 28px; }
+.events-hubs__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.events-hub {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  min-height: 240px;
+  margin: 0;
+  padding: 24px 24px 28px;
+  background: #fff;
+  border-radius: 20px;
+  border-top: 4px solid #F6C445;
+}
+.events-hub__tag {
+  margin: 0;
+  padding: 4px 10px;
+  background: #F6C445;
+  color: #1E2326;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.events-hub h3 {
+  margin: 8px 0 0;
+  color: #1E2326;
+  font-family: "Outfit", "Public Sans", sans-serif;
+  font-weight: 800;
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+}
+.events-hub__place { margin: 0; color: #1E2326; font-weight: 700; }
+.events-hub p:last-child { margin: 0; color: #3A4248; line-height: 1.45; }
+.events-hubs .hero__next a { color: #1E2326; }
+.events-past { padding: clamp(64px, 8vw, 104px) 0; background: #fff; }
+.events-place { margin-top: 12px; }
+.events-place h3 {
+  margin: 28px 0 16px;
+  color: #1E2326;
+  font-family: "Outfit", "Public Sans", sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.6rem, 2vw, 2rem);
+  letter-spacing: -0.03em;
+}
+.events-place__media, .events-gallery { display: grid; gap: 16px; }
+.events-place__media { grid-template-columns: 1.2fr 0.8fr; }
+.events-gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.events-place figure { margin: 0; }
+.events-frame { border-radius: 20px; overflow: hidden; background: #1E2326; }
+.events-frame img, .events-frame video { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; }
+.events-stories { margin-top: 56px; }
+.events-stories .video-card { border-radius: 20px; }
+.events-close { background: #F5F6F8; padding: clamp(56px, 7vw, 88px) 0; }
+.events-close__inner { max-width: 40rem; margin: 0 auto; text-align: center; }
+.events-close .h1 { margin: 0 0 12px; }
+.events-close p { margin: 0; color: #3A4248; font-size: 1.15rem; }
+.events-close__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 24px; }
+@media (max-width: 900px) {
+  .events-hero, .events-hubs__grid, .events-place__media, .events-gallery { grid-template-columns: 1fr; }
+  .events-hero { padding-top: 28px; }
+  .events-close__actions .btn { width: 100%; }
+}
 /* Floating pill header. Orange is reserved for buttons. */
 body[data-header="bone"] .nav {
   position: sticky;
