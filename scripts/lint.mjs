@@ -135,9 +135,10 @@ for (const line of ['Planned sessions', 'Affordable sessions', 'The camp-week co
   if (!programs.includes(line)) fail('programs missing: ' + line);
 }
 const legalHome = 'AfroBot is a program of Glappy Foundation, a 501(c)(3) nonprofit organization.';
-for (const line of [legalHome, 'About 5,000 children have been trained through our holiday programs in Cameroon.', 'About 1,500 children learn with us on an ongoing basis through our partner schools.', 'Access for every child', 'This statement is a draft and is not a final AfroBot policy.']) {
+for (const line of [legalHome, 'About 5,000 children have been trained through our holiday programs in Cameroon.', 'About 1,500 children learn with us on an ongoing basis through our partner schools.', 'Access for every child', 'Robotics and AI should not depend on a family’s income or zip code.']) {
   if (!about.includes(line)) fail('about missing: ' + line);
 }
+if (/>([^<]*\b[Dd]raft\b[^<]*)</.test(about)) fail('about shows the word Draft');
 if (about.includes('We intend to measure these')) fail('about still uses measure scaffolding');
 const partners = fs.readFileSync(path.join(root, 'partners.html'), 'utf8');
 for (const line of [legalHome, 'Partner schools', 'EduCare Schools', 'Gateway Schools', 'Bonabéri, Douala, Cameroon', 'Sure Starts', 'https://sscc-tz.com/', 'Tax treatment of a gift is not stated on this website.']) {
