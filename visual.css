@@ -145,29 +145,40 @@ main * {
 .hero__actions { margin-top: 22px; }
 .hero__status { margin: 16px 0 0; color: #fff; font-size: 0.95rem; font-weight: 700; }
 
-.impact { background: #1E2326; color: #fff; padding: 96px 0 88px; }
-.impact__row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
-.impact__row p { margin: 0; }
+.impact { background: #fff; color: #1E2326; padding: clamp(80px, 10vw, 128px) 0; }
+.impact__row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(40px, 8vw, 120px); }
+.impact__row p { margin: 0; max-width: 22rem; }
+.impact__about {
+  display: block;
+  margin: 0 0 6px;
+  color: #3A4248;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
 .impact__row strong {
   display: block;
   color: #1E2326;
   font-family: "Outfit", "Public Sans", sans-serif;
-  font-weight: 700;
-  font-size: clamp(40px, 4vw, 56px);
-  line-height: 0.95;
-  letter-spacing: -0.04em;
+  font-weight: 800;
+  font-size: clamp(72px, 8vw, 120px);
+  line-height: 0.86;
+  letter-spacing: -0.055em;
   font-variant-numeric: tabular-nums;
 }
-.impact .impact__row strong {
-  color: #fff;
-  font-weight: 700;
-  font-size: clamp(64px, 8vw, 112px);
-  line-height: 0.9;
-  letter-spacing: -0.045em;
+.impact__label {
+  display: block;
+  margin-top: 18px;
+  max-width: 16rem;
+  color: #3A4248;
+  font-family: "Public Sans", sans-serif;
+  font-size: 1.125rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.45;
+  text-transform: none;
 }
-.impact__row span, .impact__note { color: #D6DEEA; }
-.impact__row span { display: block; margin-top: 12px; font-size: 1.05rem; max-width: 16rem; }
-.impact__note { margin: 28px auto 0; max-width: var(--max); }
 
 .story-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; margin-top: 48px; }
 .frame { margin: 0; }
@@ -281,7 +292,8 @@ main * {
   .stage-line::before { display: none; }
   .hero__actions .btn { width: 100%; }
   .nav__inner { height: 72px; }
-  .impact strong, .impact__row strong { font-size: 64px; }
+  .impact strong, .impact__row strong { font-size: 80px; }
+  .impact__row { gap: 56px; }
 }
 
 /* Season energy: one slant, shared inset, photo bleed. */
@@ -327,20 +339,11 @@ main * {
 .impact {
   position: relative;
   z-index: 0;
-  background: #1E2326;
-  color: #fff;
-  padding: var(--section-y) 0;
+  background: #fff;
+  color: #1E2326;
   clip-path: none;
 }
-.impact__row span, .impact__note, .impact strong, .impact .impact__row strong { color: #fff; }
-.impact__row span {
-  font-family: "Outfit", "Public Sans", sans-serif;
-  font-weight: 700;
-  font-size: 0.8rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  line-height: 1.3;
-}
+.impact strong, .impact .impact__row strong { color: #1E2326; }
 .filmstrip {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
