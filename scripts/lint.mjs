@@ -163,9 +163,10 @@ if (/coming soon/i.test(home) || /coming soon/i.test(programs)) fail('Home or Pr
 const mainNav = home.match(/<nav class="nav__links"[\s\S]*?<\/nav>/);
 if (!mainNav) fail('main nav missing');
 else {
-  for (const label of ['Programs', 'Events', 'About', 'Volunteer', 'Partners']) {
+  for (const label of ['Programs', 'Events', 'Volunteer', 'Partners']) {
     if (!mainNav[0].includes(label)) fail('nav missing ' + label);
   }
+  if (mainNav[0].includes('>About<') || mainNav[0].includes('>More<')) fail('header nav still has About or More');
   if (mainNav[0].includes('social.html')) fail('empty directory is in the primary nav');
 }
 if (!home.includes('>Get updates<')) fail('header CTA missing');
