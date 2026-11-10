@@ -45,9 +45,6 @@ const pages = [
   ['volunteer.html', 'volunteer.html', 'Volunteer · AfroBot', 'Mentor and volunteer inquiries. Screening is required before working with students.', '/volunteer', ''],
   ['partnership.html', 'partnership.html', 'Partnership inquiries · AfroBot', 'Sponsorship and partnership inquiries.', '/partnership', ''],
   ['social.html', 'social.html', 'Social · AfroBot', 'Reach AfroBot at info@afrobot.org for session updates.', '/social', ''],
-  ['concepts/audience-a.html', 'audience-a.html', 'Concept A · Editorial rows · AfroBot', 'Preview of three full-width audience bands. Not the home page.', '/concepts/audience-a', '<base href="/"><meta name="robots" content="noindex">'],
-  ['concepts/audience-b.html', 'audience-b.html', 'Concept B · Audience selector · AfroBot', 'Preview of an accessible audience selector. Not the home page.', '/concepts/audience-b', '<base href="/"><meta name="robots" content="noindex">'],
-  ['concepts/audience-c.html', 'audience-c.html', 'Concept C · Sticky audience list · AfroBot', 'Preview of a sticky heading with scrolling audience entries. Not the home page.', '/concepts/audience-c', '<base href="/"><meta name="robots" content="noindex">'],
 ];
 
 for (const [out, src, title, description, urlPath, headExtra] of pages) {
