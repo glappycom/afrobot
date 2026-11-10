@@ -181,7 +181,8 @@ else {
 }
 if (footer.includes('Glappy Foundation')) fail('footer still names Glappy Foundation');
 if (!footer.includes('assets/logo-afrobot-footer.svg')) fail('footer logo missing');
-if (!footer.includes('Sponsor a Student') || !footer.includes('bamenda-coats-outside')) fail('footer sponsor band missing');
+if (!footer.includes('class="close__sponsor"') || !footer.includes('Sponsor a Student') || !footer.includes('Funds and sponsored places.')) fail('footer sponsor band missing');
+if (footer.includes('Our classrooms in Cameroon') || footer.includes('close__photos')) fail('footer still has the classroom photo strip');
 if (home.includes('stickycta') || programs.includes('stickycta')) fail('sticky mobile bar is still in the page');
 if (home.includes('<option>Student</option>')) fail('Student role option is still on the form');
 if (home.includes('mckinney-build-day-2024-cutout')) fail('homepage still uses the group cutout');
