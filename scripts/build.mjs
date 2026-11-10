@@ -30,21 +30,21 @@ const orgJson = `<script type="application/ld+json">
 const pages = [
   ['index.html', 'home.html', 'AfroBot · Every Child Deserves a Chance to Build the Future.', 'Affordable workshops lead to robotics, AI, mentorship, and pathways.', '/', orgJson + '\n<link rel="preload" as="image" href="assets/photos/mckinney-build-day-2024-960.avif" imagesrcset="assets/photos/mckinney-build-day-2024-960.avif 960w, assets/photos/mckinney-build-day-2024.avif 1000w" imagesizes="100vw" type="image/avif" fetchpriority="high">'],
   ['mentorship.html', 'mentorship.html', 'Mentorship · AfroBot', 'Mentor with AfroBot. Screening is required before working with students.', '/mentorship', ''],
-  ['about.html', 'about.html', 'About · AfroBot', 'AfroBot is a kids-only youth robotics and AI program, founded by Dr. Unoma Okorafor and Dr. Russell Avre.', '/about', ''],
+  ['about.html', 'about.html', 'About · AfroBot', 'AfroBot is a program of Glappy Foundation, a 501(c)(3) nonprofit organization.', '/about', ''],
   ['programs.html', 'programs.html', 'Programs · AfroBot', 'Discover through Advance. $100 per child for a camp week is the participation goal.', '/programs', ''],
-  ['competitions.html', 'competitions.html', 'Competitions · AfroBot', 'One yearly competition, with 2027 hubs in Texas (DFW), Cameroon (Yaoundé), and Tanzania. Dates coming soon.', '/competitions', ''],
+  ['competitions.html', 'competitions.html', 'Competitions · AfroBot', 'The 2027 footprint is Texas (Dallas–Fort Worth), Cameroon (a Yaoundé event that AfroBot is hosting), and Tanzania. The first season is an 8-team pilot.', '/competitions', ''],
   ['university-pathways.html', 'university-pathways.html', 'University Pathways · AfroBot', 'Older students mentor younger teams with an adult coach. AfroBot does not guarantee admission or scholarships.', '/university-pathways', ''],
   ['community.html', 'community.html', 'Community · AfroBot', 'Parents, students through a parent, mentors, sponsors, schools, and manufacturers can register interest.', '/community', ''],
-  ['partners.html', 'partners.html', 'Partners · AfroBot', 'Sponsor goals for Discover, Build, Innovate, Compete, and Advance. No partners are named.', '/partners', ''],
-  ['events.html', 'events.html', 'Events · AfroBot', 'McKinney Build Day, 2024. No upcoming event is on the calendar. Dates coming soon.', '/events', ''],
+  ['partners.html', 'partners.html', 'Partners · AfroBot', 'Partner schools in Cameroon and Tanzania, and sponsor goals for Discover, Build, Innovate, Compete, and Advance.', '/partners', ''],
+  ['events.html', 'events.html', 'Events · AfroBot', 'McKinney Build Day, 2024. No upcoming event is on the calendar. The 2027 footprint is Texas, Cameroon, and Tanzania.', '/events', ''],
   ['contact.html', 'contact.html', 'Contact · AfroBot', 'Write to AfroBot at info@afrobot.org.', '/contact', ''],
   ['privacy.html', 'privacy.html', 'Privacy · AfroBot', 'What the AfroBot interest form collects.', '/privacy', ''],
   ['terms.html', 'terms.html', 'Terms · AfroBot', 'No session is open for registration from this site.', '/terms', ''],
-  ['child-safety.html', 'child-safety.html', 'Child safety · AfroBot', 'Children take part through a parent or guardian.', '/child-safety', ''],
+  ['child-safety.html', 'child-safety.html', 'Child safety · AfroBot', 'AfroBot commitments on screening, supervision, photo consent, reporting, and event safety.', '/child-safety', ''],
   ['accessibility.html', 'accessibility.html', 'Accessibility · AfroBot', 'AfroBot aims for WCAG 2.2 AA. Report a barrier to info@afrobot.org.', '/accessibility', ''],
   ['volunteer.html', 'volunteer.html', 'Volunteer · AfroBot', 'Mentor and volunteer inquiries. Screening is required before working with students.', '/volunteer', ''],
   ['partnership.html', 'partnership.html', 'Partnership inquiries · AfroBot', 'Sponsorship and partnership inquiries.', '/partnership', ''],
-  ['social.html', 'social.html', 'Social · AfroBot', 'No social accounts are listed. Reach AfroBot at info@afrobot.org.', '/social', ''],
+  ['social.html', 'social.html', 'Social · AfroBot', 'Reach AfroBot at info@afrobot.org for session updates.', '/social', ''],
 ];
 
 for (const [out, src, title, description, urlPath, headExtra] of pages) {
