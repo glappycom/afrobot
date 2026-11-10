@@ -33,10 +33,11 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
 // ---- Mobile nav
 (() => {
   const b = document.querySelector('.nav__toggle'), n = document.querySelector('.nav');
-  const close = () => { n.classList.remove('is-open'); b.setAttribute('aria-expanded', 'false'); };
+  const close = () => { n.classList.remove('is-open'); b.setAttribute('aria-expanded', 'false'); document.documentElement.classList.remove('nav-lock'); };
   b.addEventListener('click', () => {
     const open = n.classList.toggle('is-open');
     b.setAttribute('aria-expanded', String(open));
+    document.documentElement.classList.toggle('nav-lock', open);
     if (open) n.querySelector('.mnav a')?.focus();
   });
   document.querySelectorAll('.mnav a').forEach(a => a.addEventListener('click', close));
