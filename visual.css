@@ -1867,49 +1867,126 @@ body[data-header="bone"] .nav.is-compact {
   color: #fff;
 }
 
-/* Home audience cards: three equal panels on the graphite band. */
-.involve__paths { align-items: stretch; }
-.involve__paths .path {
-  height: 100%;
-  min-height: 260px;
-  padding: 28px 22px 24px;
-  border: 1px solid transparent;
+/* Who this is for: Parents leads, Mentors is a photo, Community is type on white. */
+.audience {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 12px;
+  padding: 12px var(--inset) 0;
+  align-items: stretch;
 }
-.path--parents {
+.audience__lead,
+.audience__paper,
+.audience__shade {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+.audience h3 {
+  margin: 0;
+  font-family: "Outfit", "Public Sans", sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+.audience p { margin: 0; font-weight: 650; max-width: 28rem; }
+.audience .btn { margin-top: auto; }
+.audience__lead {
+  min-height: 560px;
+  padding: clamp(28px, 4vw, 48px);
   background: #F6C445;
   color: #1E2326;
+  justify-content: flex-end;
 }
-.path--parents h3,
-.path--parents p { color: #1E2326; }
-.involve__paths .path--mentors {
+.audience__lead h3 {
+  max-width: 8ch;
+  color: #1E2326;
+  font-size: clamp(3.4rem, 6vw, 6.4rem);
+}
+.audience__lead p { color: #1E2326; font-size: 1.2rem; }
+.audience__rest {
+  display: grid;
+  grid-template-rows: minmax(280px, 1.35fr) minmax(180px, 0.8fr);
+  gap: 12px;
+  min-height: 560px;
+}
+.audience__photo {
   position: relative;
-  background: #2A3035;
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  overflow: hidden;
+  background: #1E2326;
+  min-height: 280px;
 }
-.path--mentors::before {
+.audience__photo picture {
+  position: absolute;
+  inset: 0;
+}
+.audience__photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 22%;
+}
+.audience__shade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  gap: 8px;
+  padding: 16px 22px 22px;
+  color: #fff;
+  background: #1E2326;
+}
+.audience__shade::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 22px;
-  width: 40px;
-  height: 4px;
-  background: #F6C445;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: 88px;
+  background: linear-gradient(to top, #1E2326, rgba(30, 35, 38, 0));
+  pointer-events: none;
 }
-.path--mentors h3,
-.path--mentors p,
-.path--leaders h3,
-.path--leaders p { color: #fff; }
-.involve__paths .path--leaders {
-  background: transparent;
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+.audience__shade h3 { color: #fff; font-size: clamp(2rem, 3vw, 2.8rem); }
+.audience__shade p { color: #fff; }
+.audience__paper {
+  padding: 22px 24px 20px;
+  background: #fff;
+  color: #1E2326;
+  justify-content: flex-end;
 }
-@media (min-width: 700px) and (max-width: 1024px) {
-  .involve__paths { grid-template-columns: 1fr 1fr; }
-  .involve__paths .path--leaders { grid-column: 1 / -1; }
+.audience__paper h3 { color: #1E2326; font-size: clamp(2rem, 3vw, 2.8rem); }
+.audience__paper p { color: #1E2326; }
+.audience__lead .btn:focus-visible,
+.audience__paper .btn:focus-visible { outline-color: #1E2326; }
+.audience__shade .btn:focus-visible { outline-color: #fff; }
+@media (hover: hover) and (pointer: fine) {
+  .audience__photo img { transition: transform .6s ease; }
+  .audience__photo:hover img { transform: scale(1.045); }
 }
-@media (max-width: 699px) {
-  .involve__paths { grid-template-columns: 1fr; }
-  .involve__paths .path--leaders { grid-column: auto; }
+@media (prefers-reduced-motion: reduce) {
+  .audience__photo img { transition: none; transform: none; }
+}
+@media (min-width: 1600px) {
+  .audience__lead { min-height: 640px; }
+  .audience__rest { min-height: 640px; }
+}
+@media (max-width: 1024px) {
+  .audience { grid-template-columns: 1fr; }
+  .audience__lead { min-height: 340px; }
+  .audience__rest {
+    min-height: 0;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: minmax(300px, auto);
+  }
+  .audience__paper { min-height: 300px; }
+}
+@media (max-width: 700px) {
+  .audience__rest { grid-template-columns: 1fr; grid-template-rows: auto; }
+  .audience__photo { min-height: 340px; }
+  .audience__paper { min-height: 0; }
+  .audience__lead { min-height: 300px; padding: 28px 22px; }
+  .audience__lead h3 { font-size: 3.4rem; }
 }

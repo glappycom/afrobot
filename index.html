@@ -34,7 +34,7 @@
 <link rel="preload" href="fonts/Outfit-Latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css?v=40">
 <link rel="stylesheet" href="components.css?v=46">
-<link rel="stylesheet" href="visual.css?v=47">
+<link rel="stylesheet" href="visual.css?v=48">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -204,22 +204,30 @@
       </article>
     </div>
   </div>
-  <div class="involve__paths">
-    <article class="path path--parents" id="parents">
+  <div class="audience">
+    <article class="audience__lead" id="parents">
       <h3>Parents</h3>
       <p>Children take part through a parent or guardian.</p>
       <a class="btn btn--ink" href="community.html?intent=updates#register">Get session updates</a>
     </article>
-    <article class="path path--mentors" id="mentors">
-      <h3>Mentors</h3>
-      <p>Mentors are screened before they meet students.</p>
-      <a class="btn btn--inverse" href="mentorship.html">Become a Mentor</a>
-    </article>
-    <article class="path path--leaders" id="leaders">
-      <h3>Community</h3>
-      <p>Space, families, and local support.</p>
-      <a class="btn btn--inverse" href="community.html?intent=host#register">Ask about hosting</a>
-    </article>
+    <div class="audience__rest">
+      <article class="audience__photo" id="mentors">
+        <picture>
+          <source sizes="(max-width: 700px) 100vw, 42vw" srcset="assets/photos/cameroon-mentor-two-800.webp 800w, assets/photos/cameroon-mentor-two.webp 1280w" type="image/webp">
+          <img src="assets/photos/cameroon-mentor-two.jpg" alt="An adult helping two students at a laptop during a program in Cameroon" width="1280" height="960" loading="lazy" decoding="async">
+        </picture>
+        <div class="audience__shade">
+          <h3>Mentors</h3>
+          <p>Mentors are screened before they meet students.</p>
+          <a class="btn btn--inverse" href="mentorship.html">Become a Mentor</a>
+        </div>
+      </article>
+      <article class="audience__paper" id="leaders">
+        <h3>Community</h3>
+        <p>Space, families, and local support.</p>
+        <a class="btn btn--ink" href="community.html?intent=host#register">Ask about hosting</a>
+      </article>
+    </div>
   </div>
 </section>
 </main>
