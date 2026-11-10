@@ -1968,3 +1968,50 @@ body[data-header="bone"] .nav.is-compact {
   .close .footer__legal a,
   .close__sponsor .btn { transition: none; }
 }
+
+/* Home audience rows. Full-width bands above the closing photo strip. */
+.involve:has(.audience-rows) { padding-bottom: 0; }
+.audience-rows .row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(220px, 0.6fr);
+  gap: clamp(20px, 3vw, 48px);
+  align-items: end;
+  padding: clamp(48px, 7vw, 104px) var(--inset);
+  border-top: 1px solid rgba(30, 35, 38, 0.16);
+}
+.audience-rows .row h3 {
+  margin: 0;
+  max-width: 100%;
+  color: inherit;
+  font-family: "Outfit", "Public Sans", sans-serif;
+  font-weight: 800;
+  font-size: clamp(3rem, 6.4vw, 6.6rem);
+  letter-spacing: -0.05em;
+  line-height: 0.86;
+  text-transform: uppercase;
+}
+.audience-rows .row__aside { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; padding-bottom: 8px; }
+.audience-rows .row p { margin: 0; max-width: 28rem; font-size: 1.2rem; font-weight: 650; color: inherit; }
+.audience-rows .row--parents { background: #F6C445; color: #1E2326; border-top-color: transparent; }
+.audience-rows .row--parents h3,
+.audience-rows .row--parents p { color: #1E2326; }
+.audience-rows .row--mentors { background: #1E2326; color: #fff; border-top-color: rgba(255, 255, 255, 0.22); }
+.audience-rows .row--mentors h3,
+.audience-rows .row--mentors p { color: #fff; }
+.audience-rows .row--community { background: #fff; color: #1E2326; border-top-color: rgba(30, 35, 38, 0.12); }
+.audience-rows .row--community h3,
+.audience-rows .row--community p { color: #1E2326; }
+.audience-rows .row--parents .btn:focus-visible,
+.audience-rows .row--community .btn:focus-visible { outline-color: #1E2326; }
+.audience-rows .row--mentors .btn:focus-visible { outline-color: #fff; }
+@media (hover: hover) and (pointer: fine) {
+  .audience-rows .row h3 { transition: transform .45s ease; }
+  .audience-rows .row:hover h3 { transform: translateX(10px); }
+}
+@media (max-width: 800px) {
+  .audience-rows .row { grid-template-columns: 1fr; gap: 18px; align-items: start; padding: 36px var(--inset); }
+  .audience-rows .row h3 { font-size: clamp(2.8rem, 16vw, 4.4rem); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .audience-rows .row h3 { transition: none; transform: none; }
+}
