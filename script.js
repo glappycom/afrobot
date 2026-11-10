@@ -9,7 +9,7 @@ const logoSrc = kind => LOGO === 'afrobot'
   ? `assets/logo-afrobot${kind === 'reversed' ? '-reversed' : ''}${BLUE ? '-blue' : ''}.svg`
   : `assets/logo-${LOGO}${kind === 'reversed' ? '-reversed' : ''}.svg`;
 if (LOGO !== 'afrobot' || BLUE) document.querySelectorAll('img[data-logo]').forEach(img => { img.src = logoSrc(img.dataset.logo); });
-// Header: bone with a thin clay rule (no full clay backgrounds; clay is accent only). ?header=none = plain paper header.
+// Header: bone on white. ?header=none = plain paper header.
 const HEADER = Q.get('header') === 'none' ? 'none' : 'bone';
 const topLogo = document.querySelector('.nav img[data-logo]');
 if (HEADER === 'none' || !['afrobot', 'e1', 'd2'].includes(LOGO)) { delete document.body.dataset.header; }

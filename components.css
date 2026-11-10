@@ -341,7 +341,7 @@ html:not([data-bg="steel"]) .band-card { background: var(--bone); }
   .photo--controlled .photo__video { display: block; }
 }
 
-/* White page, navy type, deep orange actions. Blue is only a small label color. */
+/* White page, navy type. Buttons and fills use the brighter blue. */
 html, body, html[data-bg="steel"] body {
   background: #fff;
   background-image: none;
@@ -353,21 +353,21 @@ html[data-bg="steel"] {
   --paper: #FFFFFF;
   --bone: #FFFFFF;
   --line: #E2E6EE;
-  --clay: #B9380F;
-  --clay-strong: #B9380F;
-  --clay-text: #B9380F;
+  --clay: #142033;
+  --clay-strong: #1F4E9A;
+  --clay-text: #142033;
 }
 html[data-accent="blue"] {
-  --clay: #B9380F;
-  --clay-dk: #8C2A0A;
-  --clay-strong: #B9380F;
-  --clay-strong-dk: #8C2A0A;
-  --clay-text: #B9380F;
+  --clay: #142033;
+  --clay-dk: #0E1A2B;
+  --clay-strong: #1F4E9A;
+  --clay-strong-dk: #163FA8;
+  --clay-text: #142033;
 }
 body[data-header="bone"] {
   --nav-bg: #fff;
   --nav-fg: #142033;
-  --nav-cta-bg: #B9380F;
+  --nav-cta-bg: #1F4E9A;
   --nav-cta-fg: #fff;
 }
 .nav, html[data-bg="steel"] .nav, body[data-header="bone"] .nav {
@@ -512,7 +512,7 @@ h3, .audience-card h3, .info-card h2, .info-card h3 {
 .timeline b { font-size: 1.15rem; }
 .timeline span { color: var(--ink-80); }
 .stage-line { list-style: none; margin: 28px 0 0; padding: 18px 0 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; position: relative; }
-.stage-line::before { content: ""; position: absolute; left: 6%; right: 6%; top: 16px; height: 3px; background: #B9380F; z-index: 0; }
+.stage-line::before { content: ""; position: absolute; left: 6%; right: 6%; top: 16px; height: 3px; background: #1F4E9A; z-index: 0; }
 .journey-step { position: relative; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 22px 16px 16px; }
 .journey-dot { position: absolute; left: 50%; top: 0; width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 2px solid var(--line); transform: translate(-50%, -50%); z-index: 1; transition: background-color .35s ease, border-color .35s ease; }
 .journey-step.is-on .journey-dot { background: var(--clay); border-color: var(--clay); }
