@@ -1866,3 +1866,50 @@ body[data-header="bone"] .nav.is-compact {
 .path--parents .btn {
   color: #fff;
 }
+
+/* Home audience cards: three equal panels on the graphite band. */
+.involve__paths { align-items: stretch; }
+.involve__paths .path {
+  height: 100%;
+  min-height: 260px;
+  padding: 28px 22px 24px;
+  border: 1px solid transparent;
+}
+.path--parents {
+  background: #F6C445;
+  color: #1E2326;
+}
+.path--parents h3,
+.path--parents p { color: #1E2326; }
+.involve__paths .path--mentors {
+  position: relative;
+  background: #2A3035;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+.path--mentors::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 22px;
+  width: 40px;
+  height: 4px;
+  background: #F6C445;
+}
+.path--mentors h3,
+.path--mentors p,
+.path--leaders h3,
+.path--leaders p { color: #fff; }
+.involve__paths .path--leaders {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+@media (min-width: 700px) and (max-width: 1024px) {
+  .involve__paths { grid-template-columns: 1fr 1fr; }
+  .involve__paths .path--leaders { grid-column: 1 / -1; }
+}
+@media (max-width: 699px) {
+  .involve__paths { grid-template-columns: 1fr; }
+  .involve__paths .path--leaders { grid-column: auto; }
+}
