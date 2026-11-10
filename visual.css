@@ -70,10 +70,10 @@ main * {
   box-sizing: border-box;
   max-width: 100%;
 }
-.btn--clay, .btn--clay:visited, .btn--ink, .btn--ink:visited { background: #B9380F; color: #fff; border-color: #B9380F; }
-.btn--clay:hover, .btn--ink:hover { background: #8C2A0A; border-color: #8C2A0A; color: #fff; }
-.btn--line, .btn--line:visited { background: transparent; color: #B9380F; border: 1.5px solid #B9380F; }
-.btn--line:hover { background: #B9380F; color: #fff; }
+.btn--clay, .btn--clay:visited, .btn--ink, .btn--ink:visited { background: var(--cta); color: #fff; border-color: var(--cta); }
+.btn--clay:hover, .btn--ink:hover { background: var(--cta-hover); border-color: var(--cta-hover); color: #fff; }
+.btn--line, .btn--line:visited { background: transparent; color: var(--cta); border: 1.5px solid var(--cta); }
+.btn--line:hover { background: var(--cta); color: #fff; }
 .btn--inverse, .btn--inverse:visited { background: #fff; color: #1E2326; border-color: #fff; }
 .btn--inverse:hover { background: #F5F6F8; color: #1E2326; }
 .btn--line-light, .btn--line-light:visited { background: transparent; color: #fff; border: 1.5px solid #fff; }
@@ -901,11 +901,11 @@ main * {
 .prefoot__cta .btn:hover,
 .prefoot__cta .btn:focus-visible {
   margin-top: 20px;
-  background: #B9380F;
+  background: var(--cta);
   color: #fff;
-  border-color: #B9380F;
+  border-color: var(--cta);
 }
-.prefoot__cta .btn:hover { background: #8C2A0A; border-color: #8C2A0A; }
+.prefoot__cta .btn:hover { background: var(--cta-hover); border-color: var(--cta-hover); }
 .prefoot__cta .btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 .season {
   position: relative;
@@ -1208,8 +1208,8 @@ body[data-header="bone"] .nav.is-compact {
 .path--leaders .btn:focus-visible {
   outline-color: #fff;
 }
-.btn--ink, .btn--ink:visited { background: #B9380F; color: #fff; border-color: #B9380F; }
-.btn--ink:hover { background: #8C2A0A; border-color: #8C2A0A; color: #fff; }
+.btn--ink, .btn--ink:visited { background: var(--cta); color: #fff; border-color: var(--cta); }
+.btn--ink:hover { background: var(--cta-hover); border-color: var(--cta-hover); color: #fff; }
 .mnav a.btn { width: 100%; }
 .mnav a.mnav__quiet {
   font-size: 1rem;
@@ -1289,6 +1289,7 @@ html.nav-lock { overflow: hidden; }
     font-size: 1.05rem;
     letter-spacing: 0;
     box-shadow: none;
+    color: #fff;
   }
   .mnav__foot {
     display: flex;

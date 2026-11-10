@@ -1,5 +1,8 @@
 /* AfroBot tokens. White page, graphite text. Orange is for buttons. */
 :root {
+  /* Primary buttons. To switch back to orange, set these to #B9380F and #8C2A0A. */
+  --cta: #1F4E9A;
+  --cta-hover: #173B75;
   --ink: #1E2326;
   --ink-80: #3A4248;
   --ink-60: #3E4C5E;
