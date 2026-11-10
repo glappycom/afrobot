@@ -1970,7 +1970,10 @@ body[data-header="bone"] .nav.is-compact {
 }
 
 /* Home audience rows. Full-width bands above the closing photo strip. */
-.involve:has(.audience-rows) { padding: 0; background: transparent; }
+.involve:has(.audience-rows) {
+  padding: clamp(88px, 10vw, 140px) 0 0;
+  background: #fff;
+}
 .involve__label {
   position: absolute;
   width: 1px;
@@ -2003,7 +2006,7 @@ body[data-header="bone"] .nav.is-compact {
 }
 .audience-rows .row__aside { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; padding-bottom: 8px; }
 .audience-rows .row p { margin: 0; max-width: 28rem; font-size: 1.2rem; font-weight: 650; color: inherit; }
-.audience-rows .row--parents { background: #F6C445; color: #1E2326; border-top: 2px solid #1E2326; }
+.audience-rows .row--parents { background: #F6C445; color: #1E2326; border-top: 0; }
 .audience-rows .row--parents h3,
 .audience-rows .row--parents p { color: #1E2326; }
 .audience-rows .row--mentors { background: #1E2326; color: #fff; border-top-color: rgba(255, 255, 255, 0.22); }
