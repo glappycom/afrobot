@@ -59,20 +59,31 @@
     </div>
     </div>
   </div>
+</section>
+<section class="milestones-band" aria-label="Program reach">
   <ol class="milestones">
-    <li class="milestones__item">
+    <li class="milestones__item milestones__item--hero">
+      <figure class="milestones__photo">
+        <picture>
+          <source srcset="assets/photos/bamenda-robotics-build.avif" type="image/avif">
+          <source srcset="assets/photos/bamenda-robotics-build.webp" type="image/webp">
+          <img src="assets/photos/bamenda-robotics-build.jpg" alt="" width="980" height="735" loading="lazy" decoding="async">
+        </picture>
+      </figure>
+      <div class="milestones__copy">
+        <p class="milestones__num" data-count="{{impact.cameroonTrainedCount}}">{{impact.cameroonTrained}}</p>
+        <p class="milestones__body"><b>Cameroon</b><span>About {{impact.cameroonTrained}} children trained through holiday programs.</span></p>
+      </div>
+    </li>
+    <li class="milestones__item milestones__item--years">
       <p class="milestones__num" data-count="{{impact.yearsCount}}">{{impact.years}}</p>
       <p class="milestones__body"><b>Africa and the US</b><span>About {{impact.years}} years of programs.</span></p>
     </li>
-    <li class="milestones__item">
-      <p class="milestones__num" data-count="{{impact.cameroonTrainedCount}}">{{impact.cameroonTrained}}</p>
-      <p class="milestones__body"><b>Cameroon</b><span>About {{impact.cameroonTrained}} children trained through holiday programs.</span></p>
-    </li>
-    <li class="milestones__item">
+    <li class="milestones__item milestones__item--dallas">
       <p class="milestones__num">2024</p>
       <p class="milestones__body"><b>Dallas area</b><span>An introductory program with about {{impact.dallasIntroChildren}} children.</span></p>
     </li>
-    <li class="milestones__item">
+    <li class="milestones__item milestones__item--place">
       <p class="milestones__num">2027</p>
       <p class="milestones__body"><b>Dallas–Fort Worth</b><span>Dallas–Fort Worth is part of the 2027 footprint.</span></p>
     </li>
