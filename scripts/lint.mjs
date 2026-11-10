@@ -31,8 +31,6 @@ const requiredHome = [
   'Parents',
   'Community',
   'Ask about hosting',
-  'For Partners',
-  'Discuss sponsorship',
   'Get session updates',
 ];
 
