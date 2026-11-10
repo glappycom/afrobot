@@ -25,7 +25,6 @@ const requiredHome = [
   'Every Child Deserves a Chance to Build the Future.',
   'From Africa to the World',
   'Affordable workshops lead to robotics, AI, mentorship, and pathways.',
-  'Dates coming soon',
   'Explore Programs',
   'Join the AfroBot Community',
   'Sponsor a Student',
@@ -54,7 +53,7 @@ const banned = [
   [/disney/i, 'Disney'],
   [/ut dallas|university of texas/i, 'UT Dallas'],
   [/\blego\b/i, 'LEGO'],
-  [/tax-deductible|tax deductible|501\s*\(c\)\s*\(3\)|501c3/i, 'tax status'],
+  [/tax-deductible|tax deductible|501c3/i, 'tax status'],
   [/renner|75082/i, 'street address'],
   [/\bsuite\b|\bunit\s+\d|\bapt\b/i, 'unit number'],
   [/2025|2028|2029|2030/, 'unconfirmed year'],
@@ -92,6 +91,8 @@ for (const name of files) {
   const priced = money.filter((amount) => amount !== '$10');
   if (priced.length && !/goal/i.test(html)) fail(name + ' shows a dollar amount without calling it a goal');
   if (/\bFIRST\b/.test(html)) fail(name + ' names FIRST');
+  const legalHome = 'AfroBot is a program of Glappy Foundation, a 501(c)(3) nonprofit organization.';
+  if (/501\s*\(c\)\s*\(3\)/i.test(html.split(legalHome).join(''))) fail(name + ' states 501(c)(3) outside the legal-home sentence');
   if (/scholarship/i.test(html) && !/does not guarantee|do not guarantee|no guarantee|not a scholarship|nothing here promises/i.test(html)) {
     fail(name + ' mentions scholarships without a non-guarantee');
   }
@@ -133,17 +134,32 @@ const events = fs.readFileSync(path.join(root, 'events.html'), 'utf8');
 for (const line of ['Planned sessions', 'Affordable sessions', 'The camp-week cost has a $100 goal.', '$100 per child for a camp week is the participation goal.', 'illustrative aspiration', 'Find Your AfroBot Journey', 'Ask about financial assistance']) {
   if (!programs.includes(line)) fail('programs missing: ' + line);
 }
-for (const line of ['We Measure Success in Opportunities Created', 'We intend to measure these.']) {
+const legalHome = 'AfroBot is a program of Glappy Foundation, a 501(c)(3) nonprofit organization.';
+for (const line of [legalHome, 'About 5,000 children have been trained through our holiday programs in Cameroon.', 'About 1,500 children learn with us on an ongoing basis through our partner schools.', 'Access for every child', 'Robotics and AI should not depend on a family’s income or zip code.']) {
   if (!about.includes(line)) fail('about missing: ' + line);
 }
+if (/>([^<]*\b[Dd]raft\b[^<]*)</.test(about)) fail('about shows the word Draft');
+if (about.includes('We intend to measure these')) fail('about still uses measure scaffolding');
+const partners = fs.readFileSync(path.join(root, 'partners.html'), 'utf8');
+for (const line of [legalHome, 'Partner schools', 'EduCare Schools', 'Gateway Schools', 'Bonabéri, Douala, Cameroon', 'Sure Starts', 'https://sscc-tz.com/', 'Tax treatment of a gift is not stated on this website.']) {
+  if (!partners.includes(line)) fail('partners missing: ' + line);
+}
+if (partners.includes('No partners are named')) fail('partners still says no partners are named');
+const safety = fs.readFileSync(path.join(root, 'child-safety.html'), 'utf8');
+for (const line of ['Screening', 'Supervision', 'two-adult rule', 'Photo and media consent', 'Reporting concerns', 'Health and safety at events', 'mailto:info@afrobot.org']) {
+  if (!safety.includes(line)) fail('child safety missing: ' + line);
+}
+const competitions = fs.readFileSync(path.join(root, 'competitions.html'), 'utf8');
+if (!competitions.includes('The first season is an 8-team pilot. Teams are about 8 students plus coaches.')) fail('competitions missing the 2027 season story');
+if (!competitions.includes('complementary to other youth robotics programs')) fail('competitions missing the season model');
+if (home.includes('Dates coming soon') || programs.includes('Dates coming soon') || competitions.includes('Dates coming soon')) fail('Dates coming soon is still on a primary page');
+if (home.includes('No social accounts') || fs.readFileSync(path.join(root, 'contact.html'), 'utf8').includes('No social accounts') || fs.readFileSync(path.join(root, 'social.html'), 'utf8').includes('No social accounts')) fail('social placeholder is still present');
 for (const line of ['McKinney Build Day', 'Kids and mentors worked with robots in McKinney, Texas, in 2024.', 'From the program']) {
   if (!events.includes(line)) fail('events missing: ' + line);
 }
 if (!home.includes('class="btn btn--clay nav__updates" href="partners.html">Sponsor a Student')) fail('nav button is not Sponsor a Student');
 for (const line of retiredCopy) if (home.includes(line) || programs.includes(line)) fail('retired copy still present: ' + line);
-const homeStatus = home.replaceAll('Dates coming soon', '');
-const programsStatus = programs.replaceAll('Dates coming soon', '');
-if (/coming soon/i.test(homeStatus) || /coming soon/i.test(programsStatus)) fail('Home or Programs still says coming soon');
+if (/coming soon/i.test(home) || /coming soon/i.test(programs)) fail('Home or Programs still says coming soon');
 const mainNav = home.match(/<nav class="nav__links"[\s\S]*?<\/nav>/);
 if (!mainNav) fail('main nav missing');
 else {

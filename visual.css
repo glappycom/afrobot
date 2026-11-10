@@ -775,6 +775,12 @@ main * {
 }
 .hub-plan__grid p { margin: 0; font-weight: 650; }
 .role-bands { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.school-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 28px; }
+.school-grid article { background: #fff; border-top: 4px solid #B9380F; padding: 22px 20px 26px; min-height: 148px; }
+.school-grid h3 { margin: 0 0 8px; font-family: "Outfit", "Public Sans", sans-serif; font-weight: 800; font-size: 1.35rem; letter-spacing: -0.03em; color: #142033; }
+.school-grid p { margin: 0; font-weight: 650; color: #142033; }
+.school-grid p + p { margin-top: 8px; }
+.school-grid a { color: #142033; text-decoration: underline; }
 .role-bands article {
   min-width: 0;
   min-height: 220px;
@@ -841,7 +847,7 @@ main * {
 .about-values__next { margin: 0; padding: 8px var(--inset) 28px; background: #F5F6F8; }
 .section .founder img { border-radius: 0; clip-path: polygon(18px 0, 100% 0, 100% 100%, 0 100%); }
 @media (max-width: 900px) {
-  .hub-plan, .proof-grid { grid-template-columns: 1fr; }
+  .school-grid, .hub-plan, .proof-grid { grid-template-columns: 1fr; }
   .proof-grid--three, .role-bands { grid-template-columns: 1fr 1fr; }
   .hub-plan__intro { padding: var(--section-y) var(--inset); }
 }
