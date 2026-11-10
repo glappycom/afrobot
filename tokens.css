@@ -40,11 +40,11 @@
   --t-28: 1.85rem;
   --t-h2: clamp(1.85rem, 2.6vw, 2.5rem);
   --t-h1: clamp(2.2rem, 3.6vw, 3.35rem);
-  --t-display: clamp(48px, 6vw, 88px);
+  --t-display: clamp(44px, 4.6vw, 96px);
   --gutter: 24px;
-  --margin: clamp(20px, 3vw, 32px);
-  --max: 1200px;
-  --s-section: clamp(4.75rem, 8vw, 7.5rem);
+  --margin: clamp(20px, 3vw, 40px);
+  --max: 1360px;
+  --s-section: clamp(4.75rem, 7vw, 8.5rem);
   --ease: cubic-bezier(.2, .7, .2, 1);
   --header-offset: 5.5rem;
   --focus: #1E2326;

@@ -252,7 +252,7 @@ document.querySelectorAll('.video-play').forEach((btn) => {
 (() => {
   document.documentElement.classList.add('js');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const reveal = document.querySelectorAll('[data-reveal]');
+  const reveal = document.querySelectorAll('[data-reveal], main > section:not(.season-hero):not(.split-hero):not(.page-hero):not(.events-hero), main > .filmstrip');
   if (!reduce && reveal.length && 'IntersectionObserver' in window) {
     reveal.forEach((el) => el.classList.add('will-reveal'));
     const io = new IntersectionObserver((entries) => {

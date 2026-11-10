@@ -9,14 +9,14 @@
 }
 
 :root {
-  --max: 1200px;
+  --max: 1360px;
   --gutter: 24px;
   --display: "Outfit", "Public Sans", sans-serif;
-  --t-display: clamp(48px, 6vw, 88px);
+  --t-display: clamp(44px, 4.6vw, 96px);
   --shadow: 0 12px 40px rgba(20, 32, 51, 0.06);
   --radius: 20px;
   --slant: 4deg;
-  --section-y: clamp(64px, 7vw, 88px);
+  --section-y: clamp(64px, 6vw, 128px);
   --kicker-gap: 12px;
   --title-gap: 16px;
   --btn-h: 52px;
@@ -38,7 +38,7 @@ main * {
 }
 
 .h1, h2.h1 {
-  font-size: clamp(36px, 4.4vw, 64px);
+  font-size: clamp(36px, 3.1vw + 0.6rem, 76px);
   line-height: 1.05;
   letter-spacing: -0.03em;
   max-width: 18ch;
@@ -106,7 +106,7 @@ main * {
   padding: 0;
 }
 .hero .display, .hero h1 {
-  font-size: clamp(48px, 6vw, 88px);
+  font-size: clamp(44px, 4.8vw, 96px);
   font-weight: 800;
   line-height: 0.98;
   letter-spacing: -0.04em;
@@ -261,12 +261,12 @@ main * {
 .footer h2 { margin-bottom: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.8rem; }
 .footer nav a { display: block; padding: 6px 0; }
 
-.js .will-reveal { opacity: 0; }
-.js .will-reveal.is-revealed { opacity: 1; transition: opacity .6s ease; }
+.js .will-reveal { opacity: 0; transform: translateY(14px); }
+.js .will-reveal.is-revealed { opacity: 1; transform: none; transition: opacity .65s ease, transform .65s ease; }
 
 @media (prefers-reduced-motion: reduce) {
   .nav__inner, .nav__brand img, .journey-dot { transition: none; }
-  .js .will-reveal { opacity: 1; transform: none; }
+  .js .will-reveal { opacity: 1; transform: none; transition: none; }
 }
 
 @media (max-width: 1080px) {
@@ -315,11 +315,11 @@ main * {
 .season-hero .kicker { color: #F6C445; }
 .season-hero .display, .season-hero h1 {
   color: #fff;
-  font-size: clamp(48px, 5.2vw, 84px);
+  font-size: clamp(44px, 4.4vw, 72px);
   font-weight: 800;
   line-height: 0.95;
   letter-spacing: -0.045em;
-  max-width: 11ch;
+  max-width: 16ch;
   margin: 0 0 var(--title-gap);
 }
 .season-hero__photo, .split-hero__photo {
@@ -567,7 +567,7 @@ main * {
 .story-title {
   font-family: "Outfit", "Public Sans", sans-serif;
   font-weight: 800;
-  font-size: clamp(44px, 7.2cqi, 108px);
+  font-size: clamp(40px, 5.6cqi, 100px);
   line-height: 0.9;
   letter-spacing: -0.045em;
   color: #fff;
@@ -1077,15 +1077,15 @@ main * {
   .story-collage { grid-template-columns: 1fr; }
   .story-collage figure, .story-collage__back, .story-collage__front { height: 240px; width: auto; }
 }
-.events-wrap { width: min(1120px, calc(100% - 48px)); margin: 0 auto; }
+.events-wrap { width: min(var(--max), calc(100% - clamp(32px, 4vw, 80px))); margin: 0 auto; }
 .events-hero {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   gap: clamp(28px, 4vw, 64px);
   align-items: center;
-  width: min(1120px, calc(100% - 48px));
+  width: min(var(--max), calc(100% - clamp(32px, 4vw, 80px)));
   margin: 0 auto;
-  padding: clamp(36px, 5vw, 72px) 0 clamp(28px, 4vw, 48px);
+  padding: clamp(108px, 10vw, 140px) 0 clamp(28px, 4vw, 56px);
 }
 .events-hero__copy .kicker { color: #1E2326; }
 .events-hero .h1 { max-width: 10ch; margin: 0 0 16px; }
@@ -1159,7 +1159,7 @@ main * {
 .events-gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .events-place figure { margin: 0; }
 .events-frame { border-radius: 20px; overflow: hidden; background: #1E2326; }
-.events-frame img, .events-frame video { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; }
+.events-frame img, .events-frame video { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: center 32%; display: block; }
 .events-stories { margin-top: 56px; }
 .events-stories .video-card { border-radius: 20px; }
 .events-close { background: #F5F6F8; padding: clamp(56px, 7vw, 88px) 0; }
@@ -1534,3 +1534,180 @@ h1, h2, h3, .h1, .display { color: #1E2326; }
 }
 .fact-row article :is(h2, p),
 .role-bands article :is(h2, p) { color: #1E2326; }
+
+/* Responsive pass: one content measure, full-bleed media, device-sized grids. */
+body {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+img, video { max-width: 100%; }
+.filmstrip, .footer__photos { overflow: hidden; }
+.page-hero { padding-top: clamp(112px, 10vw, 148px); }
+body[data-header="bone"] .nav {
+  top: max(14px, env(safe-area-inset-top));
+  width: min(var(--max), calc(100% - 32px));
+}
+body[data-header="bone"] .nav.is-compact {
+  width: min(var(--max), calc(100% - 48px));
+}
+.f input, .f select, .f textarea, .finder select { max-width: 100%; }
+.sheet, form { max-width: 100%; }
+
+@media (min-width: 1280px) {
+  .season-hero {
+    grid-template-columns: calc(var(--inset) + 34rem) minmax(0, 1fr);
+  }
+  .season-hero__copy, .split-hero__copy {
+    max-width: calc(var(--inset) + 34rem);
+  }
+}
+@media (min-width: 1440px) {
+  .filmstrip img, .footer__photos img { height: clamp(200px, 12vw, 300px); }
+  .events-hub { min-height: 280px; padding: 32px 28px 36px; }
+  .events-gallery, .events-place__media { gap: 20px; }
+  .goal-card, .about-values .val-list li { padding: 32px 28px 28px; }
+  .events-hero {
+    width: auto;
+    max-width: none;
+    margin: 0;
+    padding-left: var(--inset);
+    padding-right: clamp(32px, 4vw, 80px);
+    box-sizing: border-box;
+  }
+}
+@media (max-width: 1024px) {
+  .events-hero { align-items: start; }
+}
+
+@media (min-width: 700px) and (max-width: 1024px) {
+  .events-hubs__grid,
+  .goal-bands,
+  .school-grid,
+  .about-values .val-list,
+  .hub-plan__grid,
+  .involve__paths,
+  .community-roles .roles,
+  .founder-row,
+  .fact-row,
+  .events-gallery,
+  .events-place__media,
+  .proof-grid--three {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 1100px) {
+  .stages .stage-line { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stages .journey-step:last-child { grid-column: auto; }
+}
+@media (min-width: 760px) and (max-width: 900px) {
+  .events-hero { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); }
+}
+@media (min-width: 640px) and (max-width: 800px) {
+  .impact__row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+  .impact strong, .impact__row strong { font-size: clamp(56px, 8vw, 84px); }
+}
+
+@media (max-width: 900px) {
+  .season-hero, .split-hero { min-height: 0; }
+  .season-hero__copy, .split-hero__copy {
+    min-height: 0;
+    justify-content: flex-start;
+    padding-top: calc(108px + env(safe-area-inset-top));
+  }
+  .events-hero { padding-top: calc(108px + env(safe-area-inset-top)); }
+}
+@media (max-width: 699px) {
+  .events-gallery { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 639px) {
+  .impact__row { gap: 40px; }
+  .impact strong, .impact__row strong { font-size: clamp(64px, 18vw, 88px); }
+}
+@media (max-width: 560px) {
+  .filmstrip img, .footer__photos img { height: 140px; }
+  .season-hero .display, .season-hero h1, .hero .display, .hero h1 { font-size: 42px; }
+}
+@media (max-width: 520px) {
+  .season-hero .hero__tag { max-width: 100%; }
+  .season-hero .hero__tag span {
+    white-space: normal;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+  }
+}
+@media (max-width: 360px) {
+  .events-wrap, .events-hero { width: calc(100% - 28px); }
+  .events-hub, .goal-card { padding: 20px 16px; }
+  .events-gallery { grid-template-columns: 1fr; }
+  .btn, a.btn, button.btn { padding-inline: 16px; }
+}
+@media (max-width: 860px) {
+  body[data-header="bone"] .nav {
+    top: max(10px, env(safe-area-inset-top));
+    width: calc(100% - 20px);
+    margin-top: max(10px, env(safe-area-inset-top));
+  }
+  .nav.is-open .mnav {
+    padding-left: max(28px, env(safe-area-inset-left));
+    padding-right: max(28px, env(safe-area-inset-right));
+    padding-bottom: max(28px, env(safe-area-inset-bottom));
+  }
+  .footer { padding-bottom: max(24px, env(safe-area-inset-bottom)); }
+}
+@media (max-height: 480px) and (orientation: landscape) {
+  .season-hero, .split-hero { min-height: 0; }
+  .season-hero__photo,
+  .season-hero__photo picture,
+  .season-hero__photo img,
+  .split-hero__photo,
+  .split-hero__photo picture,
+  .split-hero__photo img,
+  .involve__photo,
+  .involve__photo picture {
+    min-height: 180px;
+    max-height: 220px;
+  }
+  .nav.is-open .mnav { height: calc(100dvh - 64px); }
+  .nav.is-open .mnav a { font-size: 1.35rem; min-height: 44px; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .events-hub,
+  .goal-card,
+  .about-values .val-list li,
+  .path,
+  .school-grid article,
+  .community-roles .role {
+    transition: transform .25s ease;
+  }
+  .events-hub:hover,
+  .goal-card:hover,
+  .about-values .val-list li:hover,
+  .path:hover,
+  .school-grid article:hover,
+  .community-roles .role:hover {
+    transform: translateY(-3px);
+  }
+  .events-frame img,
+  .filmstrip img,
+  .footer__photos img,
+  .story-collage img {
+    transition: transform .55s ease;
+  }
+  .events-frame:hover img,
+  .story-collage figure:hover img {
+    transform: scale(1.035);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .events-hub:hover,
+  .goal-card:hover,
+  .about-values .val-list li:hover,
+  .path:hover,
+  .school-grid article:hover,
+  .community-roles .role:hover,
+  .events-frame:hover img,
+  .story-collage figure:hover img {
+    transform: none;
+  }
+}
