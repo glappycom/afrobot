@@ -323,7 +323,7 @@ h3,.aud-k,.countdown__event,.awards dt,.tiers li span:first-child,.val-list b,.m
 
 /* Header (v15): bone is the default. No full clay backgrounds anywhere: clay is accent only (buttons, rules, highlights, tags). */
 :root{--clay-deep:#B4472B}
-body[data-header="bone"]{--nav-bg:#FFFFFF;--nav-fg:#142033;--nav-cta-bg:var(--clay-strong);--nav-cta-fg:#fff}
+body[data-header="bone"]{--nav-bg:#FFFFFF;--nav-fg:#1E2326;--nav-cta-bg:var(--clay-strong);--nav-cta-fg:#fff}
 body[data-header="bone"] .nav{border-bottom:3px solid var(--clay)}
 body[data-header="bone"] .nav .btn--ink:hover{background:var(--clay-strong-dk)}
 body[data-header="bone"] .sponsor{background:var(--ink)}

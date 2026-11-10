@@ -1,19 +1,19 @@
-/* AfroBot tokens. White page, navy text. Navy is the accent; buttons use a brighter blue. */
+/* AfroBot tokens. White page, graphite text. Orange is for buttons. */
 :root {
-  --ink: #142033;
-  --ink-80: #2C3A4F;
+  --ink: #1E2326;
+  --ink-80: #3A4248;
   --ink-60: #3E4C5E;
   --ink-40: #4A5568;
   --line: #E2E6EE;
   --line-dk: #243044;
-  --clay: #142033;
+  --clay: #1E2326;
   --clay-dk: #0E1A2B;
-  --clay-strong: #1F4E9A;
-  --clay-strong-dk: #163FA8;
-  --clay-text: #142033;
-  --clay-deep: #163FA8;
-  --gold: #1F4E9A;
-  --danger: #1F4E9A;
+  --clay-strong: #1E2326;
+  --clay-strong-dk: #1E2326;
+  --clay-text: #1E2326;
+  --clay-deep: #1E2326;
+  --gold: #1E2326;
+  --danger: #1E2326;
   --bone: #FFFFFF;
   --paper: #FFFFFF;
   --white: #FFFFFF;
@@ -44,5 +44,5 @@
   --s-section: clamp(4.75rem, 8vw, 7.5rem);
   --ease: cubic-bezier(.2, .7, .2, 1);
   --header-offset: 5.5rem;
-  --focus: #142033;
+  --focus: #1E2326;
 }

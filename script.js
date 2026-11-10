@@ -1,8 +1,6 @@
 // ---- Logo: header lockup = navy icon, white face, navy eyes, navy wordmark. Footer lockup = white icon, navy face, white eyes, white wordmark.
 // Archived directions for comparison: ?logo=e1 (Space Grotesk lockup) | d2 | a | b | c
 const Q = new URLSearchParams(location.search);
-const heroWash = Q.get('hero');
-if (['espresso', 'forest', 'aubergine', 'indigo', 'sienna', 'graphite'].includes(heroWash)) document.documentElement.dataset.hero = heroWash;
 const LOGO = Q.get('logo') || 'afrobot';
 const BLUE = false;
 // Background: steel is the default (set on <html> in index.html). ?bg=bone previews the previous warm bone/paper theme.
