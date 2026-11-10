@@ -60,7 +60,7 @@ main * {
 .kicker { color: var(--clay); letter-spacing: 0.12em; display: block; margin: 0 0 var(--kicker-gap); }
 
 .btn, a.btn, button.btn, .hero__actions .btn {
-  border-radius: 12px;
+  border-radius: 999px;
   height: var(--btn-h);
   min-height: var(--btn-h);
   padding: 0 22px;
@@ -123,8 +123,8 @@ main * {
   align-self: flex-start;
   margin: 4px 0 0;
   max-width: none;
-  background: #1F4E9A;
-  color: #fff;
+  background: #F6C445;
+  color: #142033;
   transform: skewX(calc(var(--slant) * -1));
   transform-origin: left center;
 }
@@ -139,7 +139,7 @@ main * {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   line-height: 1.1;
-  color: #fff;
+  color: #142033;
   white-space: nowrap;
 }
 .hero__actions { margin-top: 22px; }
@@ -1322,11 +1322,12 @@ html.nav-lock { overflow: hidden; }
 }
 /* Home hero: photo behind a translucent wash. Default teal, ?hero=espresso for the warm option. */
 .season-hero {
+  --hero: 11, 79, 74;
   display: block;
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background: #0B4F4A;
+  background: rgb(var(--hero));
   min-height: calc(100svh - 96px);
 }
 .season-hero__photo {
@@ -1353,7 +1354,7 @@ html.nav-lock { overflow: hidden; }
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: linear-gradient(90deg, rgba(11, 79, 74, 0.92) 0%, rgba(11, 79, 74, 0.88) 34%, rgba(11, 79, 74, 0.28) 66%, rgba(11, 79, 74, 0.12) 100%);
+  background: linear-gradient(90deg, rgba(var(--hero), 0.92) 0%, rgba(var(--hero), 0.88) 34%, rgba(var(--hero), 0.28) 66%, rgba(var(--hero), 0.12) 100%);
 }
 .season-hero__copy {
   position: relative;
@@ -1362,18 +1363,17 @@ html.nav-lock { overflow: hidden; }
   min-height: calc(100svh - 96px);
   background: transparent;
 }
-html[data-hero="espresso"] .season-hero { background: #2B2320; }
-html[data-hero="espresso"] .season-hero::after {
-  background: linear-gradient(90deg, rgba(43, 35, 32, 0.92) 0%, rgba(43, 35, 32, 0.88) 34%, rgba(43, 35, 32, 0.28) 66%, rgba(43, 35, 32, 0.12) 100%);
-}
+html[data-hero="espresso"] .season-hero { --hero: 43, 35, 32; }
+html[data-hero="forest"] .season-hero { --hero: 31, 61, 43; }
+html[data-hero="aubergine"] .season-hero { --hero: 58, 31, 61; }
+html[data-hero="indigo"] .season-hero { --hero: 34, 33, 74; }
+html[data-hero="sienna"] .season-hero { --hero: 74, 42, 26; }
+html[data-hero="graphite"] .season-hero { --hero: 30, 35, 38; }
 @media (max-width: 900px) {
   .season-hero__photo { order: 0; }
   .season-hero__photo img { object-position: center 22%; }
   .season-hero::after {
-    background: linear-gradient(to top, rgba(11, 79, 74, 0.92) 0%, rgba(11, 79, 74, 0.86) 42%, rgba(11, 79, 74, 0.26) 74%, rgba(11, 79, 74, 0.08) 100%);
-  }
-  html[data-hero="espresso"] .season-hero::after {
-    background: linear-gradient(to top, rgba(43, 35, 32, 0.92) 0%, rgba(43, 35, 32, 0.86) 42%, rgba(43, 35, 32, 0.26) 74%, rgba(43, 35, 32, 0.08) 100%);
+    background: linear-gradient(to top, rgba(var(--hero), 0.92) 0%, rgba(var(--hero), 0.86) 42%, rgba(var(--hero), 0.26) 74%, rgba(var(--hero), 0.08) 100%);
   }
 }
 @keyframes nav-rise {
