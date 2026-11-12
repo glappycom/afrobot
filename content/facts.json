@@ -1,0 +1,16 @@
+{
+  "source": "Documented by Russell, November 2026.",
+  "verified": {
+    "cameroonTrained": true,
+    "cameroonActive": true,
+    "cameroonYears": true,
+    "mckinneyStudents": true
+  },
+  "cameroonTrained": "5,000",
+  "cameroonTrainedCount": "5000",
+  "cameroonActive": "1,500",
+  "cameroonActiveCount": "1500",
+  "cameroonYears": "4",
+  "cameroonStarted": "November 2022",
+  "mckinneyStudents": "50"
+}

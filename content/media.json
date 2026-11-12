@@ -1,0 +1,123 @@
+{
+  "photos": [
+    {
+      "src": "assets/photos/cameroon-classroom-wide.jpg",
+      "alt": "Students in lab coats working at laptops in a classroom in Cameroon",
+      "caption": "Classroom laptops, Cameroon",
+      "place": "cameroon",
+      "year": "",
+      "consent": true,
+      "width": 1280,
+      "height": 960
+    },
+    {
+      "src": "assets/photos/cameroon-classroom-rows.jpg",
+      "alt": "A classroom of students coding on laptops during a program in Cameroon",
+      "caption": "Coding class, Cameroon",
+      "place": "cameroon",
+      "year": "",
+      "consent": true,
+      "width": 1280,
+      "height": 960
+    },
+    {
+      "src": "assets/photos/cameroon-pair-laptop.jpg",
+      "alt": "Two students in lab coats sharing a laptop during a program in Cameroon",
+      "caption": "Shared laptop, Cameroon",
+      "place": "cameroon",
+      "year": "",
+      "consent": true,
+      "width": 960,
+      "height": 1280
+    },
+    {
+      "src": "assets/photos/cameroon-coding-pair.jpg",
+      "alt": "Students coding together on a laptop during a program in Cameroon",
+      "caption": "Coding together, Cameroon",
+      "place": "cameroon",
+      "year": "",
+      "consent": true,
+      "width": 1280,
+      "height": 960
+    },
+    {
+      "src": "assets/photos/cameroon-table-lids.jpg",
+      "alt": "Students working at laptops in a classroom in Cameroon",
+      "caption": "Classroom tables, Cameroon",
+      "place": "cameroon",
+      "year": "",
+      "consent": true,
+      "width": 960,
+      "height": 1280
+    },
+    {
+      "src": "assets/photos/bamenda-circuit-team.jpg",
+      "alt": "Students lean in together to wire a small circuit beside an open workbook",
+      "caption": "Circuit workshop, Cameroon",
+      "place": "cameroon",
+      "year": "",
+      "consent": true,
+      "width": 2000,
+      "height": 1500
+    },
+    {
+      "src": "assets/photos/bamenda-robotics-build.jpg",
+      "alt": "Students lean in together to wire a small robotics circuit on a table",
+      "caption": "Robotics build, Cameroon",
+      "place": "cameroon",
+      "year": "",
+      "consent": true,
+      "width": 980,
+      "height": 735
+    },
+    {
+      "src": "assets/photos/mckinney-build-day-2024.jpg",
+      "alt": "A big group of kids and mentors pose with the robots they built, three robots on the floor in front",
+      "caption": "McKinney Build Day",
+      "place": "usa",
+      "year": "2024",
+      "consent": true,
+      "width": 1000,
+      "height": 920
+    },
+    {
+      "src": "assets/photos/mckinney-ai-track-2024.jpg",
+      "alt": "Kids at tables with their robots while a presenter teaches at a screen",
+      "caption": "AI session, McKinney",
+      "place": "usa",
+      "year": "2024",
+      "consent": true,
+      "width": 1200,
+      "height": 900
+    }
+  ],
+  "videos": [
+    {
+      "kind": "youtube",
+      "id": "4F1Jm0-rMM0",
+      "poster": "https://i.ytimg.com/vi/4F1Jm0-rMM0/hqdefault.jpg",
+      "title": "Build Day presentation, Texas",
+      "place": "usa",
+      "year": "",
+      "consent": true
+    },
+    {
+      "kind": "file",
+      "src": "assets/video/mckinney-build-day-2024.mp4",
+      "poster": "assets/video/mckinney-build-day-2024-poster.jpg",
+      "title": "McKinney Build Day",
+      "place": "usa",
+      "year": "2024",
+      "consent": true
+    },
+    {
+      "kind": "youtube",
+      "id": "UabaIWvco2Y",
+      "poster": "https://i.ytimg.com/vi/UabaIWvco2Y/hqdefault.jpg",
+      "title": "Summer camp, Cameroon",
+      "place": "cameroon",
+      "year": "",
+      "consent": true
+    }
+  ]
+}

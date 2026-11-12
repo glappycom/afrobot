@@ -187,13 +187,32 @@ document.querySelectorAll('.video-play').forEach((btn) => {
     const id = btn.dataset.video;
     if (!/^[A-Za-z0-9_-]{11}$/.test(id)) return;
     const frame = document.createElement('iframe');
-    frame.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1';
+    frame.src = 'https://www.youtube-nocookie.com/embed/' + id + '?rel=0';
     frame.title = btn.getAttribute('aria-label').replace(/^Play video:\s*/, '');
     frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
     frame.allowFullscreen = true;
     frame.referrerPolicy = 'strict-origin-when-cross-origin';
     btn.parentElement.replaceChildren(frame);
   });
+});
+
+document.querySelectorAll('.work-gallery').forEach((gallery) => {
+  const dialog = gallery.querySelector('.work-lightbox');
+  const img = dialog.querySelector('img');
+  const cap = dialog.querySelector('p');
+  gallery.querySelectorAll('.work-shot').forEach((shot) => {
+    shot.addEventListener('click', () => {
+      img.src = shot.dataset.full;
+      img.alt = shot.dataset.alt || '';
+      cap.textContent = shot.dataset.caption || '';
+      dialog.showModal();
+    });
+  });
+  dialog.querySelector('.work-lightbox__close').addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+  dialog.addEventListener('close', () => { img.removeAttribute('src'); });
 });
 
 (() => {
