@@ -2059,11 +2059,50 @@ body[data-header="bone"] .nav.is-compact {
   color: #fff;
   border-top-color: #F6C445;
 }
-.path-cards article:nth-child(even) :is(h2, h3, p, a) { color: #fff; }
+.path-cards article:nth-child(even) :is(h2, h3, p, a):not(.btn) { color: #fff; }
 .stages .stage-line.stage-line--four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 @media (max-width: 900px) {
   .path-cards,
   .path-cards--three,
   .stages .stage-line.stage-line--four { grid-template-columns: 1fr; }
   .stages .stage-line.stage-line--four .journey-step:last-child { grid-column: auto; }
+}
+
+/* White and light buttons keep graphite text in every state. */
+:is(a, button).btn.btn--inverse,
+:is(a, button).btn.btn--bone,
+:is(a, button).btn.btn--inverse:is(:hover, :focus, :focus-visible, :active, :visited),
+:is(a, button).btn.btn--bone:is(:hover, :focus, :focus-visible, :active, :visited) {
+  color: #1E2326;
+}
+:is(a, button).btn.btn--inverse,
+:is(a, button).btn.btn--inverse:is(:focus, :focus-visible, :active, :visited) {
+  background-color: #fff;
+}
+:is(a, button).btn.btn--inverse:hover,
+:is(a, button).btn.btn--bone:hover {
+  background-color: #F5F6F8;
+  color: #1E2326;
+}
+:is(a, button).btn.btn--line-light:is(:hover, :focus-visible, :active) {
+  background-color: #fff;
+  color: #1E2326;
+}
+.nav a.btn.btn--clay,
+.nav a.btn.btn--ink,
+.mnav a.btn.btn--clay,
+.mnav a.btn.btn--ink,
+.nav a.btn.btn--clay:is(:hover, :focus, :focus-visible, :active, :visited),
+.nav a.btn.btn--ink:is(:hover, :focus, :focus-visible, :active, :visited),
+.mnav a.btn.btn--clay:is(:hover, :focus, :focus-visible, :active, :visited),
+.mnav a.btn.btn--ink:is(:hover, :focus, :focus-visible, :active, :visited) {
+  color: #fff;
+  background-color: var(--cta);
+}
+.nav a.btn.btn--clay:hover,
+.nav a.btn.btn--ink:hover,
+.mnav a.btn.btn--clay:hover,
+.mnav a.btn.btn--ink:hover {
+  background-color: var(--cta-hover);
+  color: #fff;
 }

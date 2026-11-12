@@ -22,13 +22,12 @@ if (serverRoles.length !== 5) fail('Could not read server roles');
 if (serverRoles.includes('Student')) fail('Student is still a server role');
 
 const requiredHome = [
-  'Building the Next Generation of Global Innovators.',
+  'Kids learn to build robots.',
   'From Africa to the World',
-  'Established programs in Cameroon. Growing initiatives in the United States.',
-  'Learn. Build. Compete. Innovate.',
-  'Explore Our Programs',
-  'Join the 2027–2028 Competition',
-  'Become a Partner',
+  'Kids in Cameroon have been building and coding robots since November 2022.',
+  'See the programs',
+  'See the 2027 season',
+  'Become a partner',
   'Sponsor a Student',
   'Parents',
   'Community',
@@ -127,12 +126,12 @@ const storyHeading = home.match(/<h2 id="span-title"[\s\S]*?<\/h2>/);
 if (!storyHeading) fail('story heading missing');
 else {
   const storyText = storyHeading[0].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
-  if (storyText !== 'Two Continents. One Innovation Future.') fail('story heading mismatch: ' + storyText);
+  if (storyText !== 'Cameroon and Texas.') fail('story heading mismatch: ' + storyText);
 }
 if (!home.includes('class="hero__tag"><span>From Africa to the World</span>')) fail('hero tagline is not the angled tag');
 const about = fs.readFileSync(path.join(root, 'about.html'), 'utf8');
 const events = fs.readFileSync(path.join(root, 'events.html'), 'utf8');
-for (const line of ['Planned sessions', 'Affordable sessions', 'The camp-week cost has a $100 goal.', '$100 per child for a camp week is the participation goal.', 'A $10 workshop is a hope, not today’s price.', 'Find Your AfroBot Journey', 'Ask about financial assistance']) {
+for (const line of ['Planned sessions', 'Affordable sessions', 'The camp-week cost has a $100 goal.', '$100 per child for a camp week is the participation goal.', 'A $10 workshop is a hope, not today’s price.', 'Which stage fits?', 'Ask about financial assistance']) {
   if (!programs.includes(line)) fail('programs missing: ' + line);
 }
 const legalHome = 'AfroBot is a program of Glappy Foundation, a 501(c)(3) nonprofit organization.';
@@ -184,7 +183,7 @@ else {
 }
 if (footer.includes('Glappy Foundation')) fail('footer still names Glappy Foundation');
 if (!footer.includes('assets/logo-afrobot-footer.svg')) fail('footer logo missing');
-if (!footer.includes('class="close__sponsor"') || !footer.includes('Sponsor a Student') || !footer.includes('Funds and sponsored places.')) fail('footer sponsor band missing');
+if (!footer.includes('class="close__sponsor"') || !footer.includes('Sponsor a Student') || !footer.includes('Help pay for a child’s place in a program.')) fail('footer sponsor band missing');
 if (footer.includes('Our classrooms in Cameroon') || footer.includes('close__photos')) fail('footer still has the classroom photo strip');
 if (home.includes('stickycta') || programs.includes('stickycta')) fail('sticky mobile bar is still in the page');
 if (home.includes('<option>Student</option>')) fail('Student role option is still on the form');
