@@ -1,12 +1,15 @@
 <section class="season-hero" id="top">
   <div class="season-hero__copy">
     <p class="kicker">AfroBot</p>
-    <h1 class="display">Every Child Deserves a Chance to Build the Future.</h1>
+    <h1 class="display">Building the Next Generation of Global Innovators.</h1>
     <p class="hero__tag"><span>From Africa to the World</span></p>
+    <p class="lead">Established programs in Cameroon. Growing initiatives in the United States.</p>
+    <p class="hero__line">Learn. Build. Compete. Innovate.</p>
     <div class="hero__actions">
-      <a class="btn btn--clay" href="programs.html">Explore Programs</a>
+      <a class="btn btn--clay" href="programs.html">Explore Our Programs</a>
+      <a class="btn btn--ink" href="usa.html">Join the 2027–2028 Competition</a>
+      <a class="btn btn--line" href="partners.html">Become a Partner</a>
     </div>
-    <p class="hero__next"><a href="community.html">Join the AfroBot Community</a></p>
   </div>
   <div class="season-hero__photo">
     <picture>
@@ -21,14 +24,49 @@
   <div class="container impact__row">
     <p>
       <span class="impact__about">About</span>
-      <strong data-count="{{impact.cameroonTrainedCount}}">{{impact.cameroonTrained}}</strong>
+      <strong data-count="{{facts.cameroonTrainedCount}}">{{facts.cameroonTrained}}</strong>
       <span class="impact__label">children trained through holiday programs in Cameroon</span>
     </p>
     <p>
       <span class="impact__about">About</span>
-      <strong data-count="{{impact.cameroonOngoingCount}}">{{impact.cameroonOngoing}}</strong>
+      <strong data-count="{{facts.cameroonActiveCount}}">{{facts.cameroonActive}}</strong>
       <span class="impact__label">children learning with us year-round through partner schools</span>
     </p>
+  </div>
+</section>
+
+<section class="section band-quiet" id="pathways" aria-labelledby="pathways-title">
+  <div class="container">
+    <p class="kicker">We are connecting</p>
+    <h2 id="pathways-title" class="h1">A path that runs both ways.</h2>
+    <div class="path-cards">
+      <article>
+        <p class="kicker">United States</p>
+        <h3>A pilot, then a proposed season</h3>
+        <p>McKinney, Texas, was a pilot of about {{facts.mckinneyStudents}} students. The 2027–2028 US season is proposed and still pending partner confirmation.</p>
+        <a class="btn btn--ink" href="usa.html">See AfroBot USA</a>
+      </article>
+      <article>
+        <p class="kicker">Africa</p>
+        <h3>Cameroon is already operating</h3>
+        <p>Nearly {{facts.cameroonTrained}} children have trained in Cameroon holiday programs. About {{facts.cameroonActive}} learn with AfroBot now.</p>
+        <a class="btn btn--inverse" href="africa.html">See AfroBot Africa</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section stages" id="route" aria-labelledby="route-title">
+  <div class="container">
+    <p class="kicker">We are scaling</p>
+    <h2 id="route-title" class="h1">How a student can move.</h2>
+    <p class="lead">Not every student has to start a company. The path is there for those who want the next step.</p>
+    <ol class="stage-line stage-line--four">
+      <li class="journey-step"><h3>Academy</h3><p>Learn the tools with a mentor.</p></li>
+      <li class="journey-step"><h3>League</h3><p>Build with a local team.</p></li>
+      <li class="journey-step"><h3>Global Innovation Challenge</h3><p>A proposed cross-border challenge.</p></li>
+      <li class="journey-step"><h3>Future Opportunities</h3><p>Study, work, or invent. The choice stays with the student.</p></li>
+    </ol>
   </div>
 </section>
 
@@ -43,8 +81,8 @@
   <div class="story-block__top">
     <p class="kicker">The span</p>
     <h2 id="span-title" class="story-title">
-      <span class="story-title__lead">From Curiosity</span>
-      <span class="story-title__next">to <span class="story-mark"><span>Creativity</span></span></span>
+      <span class="story-title__lead">Two Continents.</span>
+      <span class="story-title__next">One Innovation Future.</span>
     </h2>
     <div class="story-block__row">
       <div class="story-collage">

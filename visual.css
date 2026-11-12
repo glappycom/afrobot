@@ -142,7 +142,17 @@ main * {
   color: #1E2326;
   white-space: nowrap;
 }
-.hero__actions { margin-top: 22px; }
+.hero__actions { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 12px; }
+.season-hero .lead,
+.season-hero .hero__line { color: #fff; max-width: 36rem; }
+.hero__line {
+  margin: 14px 0 0;
+  font-family: "Outfit", "Public Sans", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
 .hero__status { margin: 16px 0 0; color: #fff; font-size: 0.95rem; font-weight: 700; }
 
 .impact { background: #fff; color: #1E2326; padding: clamp(80px, 10vw, 128px) 0; }
@@ -2017,4 +2027,43 @@ body[data-header="bone"] .nav.is-compact {
 }
 @media (prefers-reduced-motion: reduce) {
   .audience-rows .row h3 { transition: none; transform: none; }
+}
+.path-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 20px;
+}
+.path-cards--three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.path-cards article {
+  margin: 0;
+  background: #fff;
+  color: #1E2326;
+  border-top: 4px solid #1E2326;
+  padding: 22px 20px 26px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+.path-cards article :is(h2, h3) {
+  margin: 0;
+  font-family: "Outfit", "Public Sans", sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+.path-cards article p { margin: 0; font-weight: 650; }
+.path-cards article:nth-child(even) {
+  background: #1E2326;
+  color: #fff;
+  border-top-color: #F6C445;
+}
+.path-cards article:nth-child(even) :is(h2, h3, p, a) { color: #fff; }
+.stages .stage-line.stage-line--four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 900px) {
+  .path-cards,
+  .path-cards--three,
+  .stages .stage-line.stage-line--four { grid-template-columns: 1fr; }
+  .stages .stage-line.stage-line--four .journey-step:last-child { grid-column: auto; }
 }

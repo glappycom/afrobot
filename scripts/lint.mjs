@@ -22,11 +22,13 @@ if (serverRoles.length !== 5) fail('Could not read server roles');
 if (serverRoles.includes('Student')) fail('Student is still a server role');
 
 const requiredHome = [
-  'Every Child Deserves a Chance to Build the Future.',
+  'Building the Next Generation of Global Innovators.',
   'From Africa to the World',
-  'Affordable workshops lead to robotics, AI, mentorship, and pathways.',
-  'Explore Programs',
-  'Join the AfroBot Community',
+  'Established programs in Cameroon. Growing initiatives in the United States.',
+  'Learn. Build. Compete. Innovate.',
+  'Explore Our Programs',
+  'Join the 2027–2028 Competition',
+  'Become a Partner',
   'Sponsor a Student',
   'Parents',
   'Community',
@@ -54,7 +56,7 @@ const banned = [
   [/tax-deductible|tax deductible|501c3/i, 'tax status'],
   [/renner|75082/i, 'street address'],
   [/\bsuite\b|\bunit\s+\d|\bapt\b/i, 'unit number'],
-  [/2025|2028|2029|2030/, 'unconfirmed year'],
+  [/2025|2029|2030/, 'unconfirmed year'],
   [/\d+(?:\.\d+)?\s*%/, 'percentage'],
 ];
 
@@ -82,6 +84,7 @@ for (const name of files) {
     seen.add(id);
   }
   for (const [re, label] of banned) if (re.test(html)) fail(name + ' contains banned pattern ' + label);
+  if (html.includes('2028') && !html.includes('Proposed') && !html.includes('proposed')) fail(name + ' uses 2028 without marking it proposed');
   const allowedAmounts = new Set(['$10', '$100', '$1,000', '$5,000', '$10,000', '$25,000']);
   const money = html.match(/\$\d[\d,]*/g) || [];
   for (const amount of money) if (!allowedAmounts.has(amount)) fail(name + ' unexpected amount ' + amount);
@@ -124,7 +127,7 @@ const storyHeading = home.match(/<h2 id="span-title"[\s\S]*?<\/h2>/);
 if (!storyHeading) fail('story heading missing');
 else {
   const storyText = storyHeading[0].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
-  if (storyText !== 'From Curiosity to Creativity') fail('story heading mismatch: ' + storyText);
+  if (storyText !== 'Two Continents. One Innovation Future.') fail('story heading mismatch: ' + storyText);
 }
 if (!home.includes('class="hero__tag"><span>From Africa to the World</span>')) fail('hero tagline is not the angled tag');
 const about = fs.readFileSync(path.join(root, 'about.html'), 'utf8');
@@ -139,10 +142,10 @@ for (const line of [legalHome, 'About 5,000 children have been trained through o
 if (/>([^<]*\b[Dd]raft\b[^<]*)</.test(about)) fail('about shows the word Draft');
 if (about.includes('We intend to measure these')) fail('about still uses measure scaffolding');
 const partners = fs.readFileSync(path.join(root, 'partners.html'), 'utf8');
-for (const line of [legalHome, 'Partner schools', 'EduCare Schools', 'Gateway Schools', 'Bonabéri, Douala, Cameroon', 'Sure Starts', 'https://sscc-tz.com/']) {
+for (const line of [legalHome, 'Ways to take part', 'partnerships@afrobot.org', 'does not guarantee an award or a place']) {
   if (!partners.includes(line)) fail('partners missing: ' + line);
 }
-if (partners.includes('No partners are named')) fail('partners still says no partners are named');
+if (partners.includes('EduCare Schools') || partners.includes('Gateway Schools') || partners.includes('Sure Starts')) fail('partners still names a school');
 const safety = fs.readFileSync(path.join(root, 'child-safety.html'), 'utf8');
 for (const line of ['Screening', 'Supervision', 'two-adult rule', 'Photo and media consent', 'Reporting concerns', 'Health and safety at events', 'mailto:info@afrobot.org']) {
   if (!safety.includes(line)) fail('child safety missing: ' + line);
@@ -161,7 +164,7 @@ if (/coming soon/i.test(home) || /coming soon/i.test(programs)) fail('Home or Pr
 const mainNav = home.match(/<nav class="nav__links"[\s\S]*?<\/nav>/);
 if (!mainNav) fail('main nav missing');
 else {
-  for (const label of ['Programs', 'Events', 'Volunteer', 'Partners']) {
+  for (const label of ['Programs', 'USA', 'Africa', 'Impact', 'Partners']) {
     if (!mainNav[0].includes(label)) fail('nav missing ' + label);
   }
   if (mainNav[0].includes('>About<') || mainNav[0].includes('>More<')) fail('header nav still has About or More');

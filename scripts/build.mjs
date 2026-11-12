@@ -12,6 +12,7 @@ const videosHome = videoItems.slice(0, 3).join('\n');
 const videosAll = videoItems.join('\n');
 const layout = read('src/layout.html');
 const impact = JSON.parse(read('content/impact.json'));
+const facts = JSON.parse(read('content/facts.json'));
 const site = JSON.parse(read('content/site.json'));
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
@@ -28,10 +29,16 @@ const orgJson = `<script type="application/ld+json">
 </script>`;
 
 const pages = [
-  ['index.html', 'home.html', 'AfroBot · Every Child Deserves a Chance to Build the Future.', 'Affordable workshops lead to robotics, AI, mentorship, and pathways.', '/', orgJson + '\n<link rel="preload" as="image" href="assets/photos/mckinney-build-day-2024-960.avif" imagesrcset="assets/photos/mckinney-build-day-2024-960.avif 960w, assets/photos/mckinney-build-day-2024.avif 1000w" imagesizes="100vw" type="image/avif" fetchpriority="high">'],
+  ['index.html', 'home.html', 'AfroBot · Building the Next Generation of Global Innovators.', 'Established programs in Cameroon and growing initiatives in the United States.', '/', orgJson + '\n<link rel="preload" as="image" href="assets/photos/mckinney-build-day-2024-960.avif" imagesrcset="assets/photos/mckinney-build-day-2024-960.avif 960w, assets/photos/mckinney-build-day-2024.avif 1000w" imagesizes="100vw" type="image/avif" fetchpriority="high">'],
   ['mentorship.html', 'mentorship.html', 'Mentorship · AfroBot', 'Mentor with AfroBot. Screening is required before working with students.', '/mentorship', ''],
-  ['about.html', 'about.html', 'About · AfroBot', 'AfroBot is a program of Glappy Foundation, a 501(c)(3) nonprofit organization.', '/about', ''],
-  ['programs.html', 'programs.html', 'Programs · AfroBot', 'Discover through Advance. $100 per child for a camp week is the participation goal.', '/programs', ''],
+  ['about.html', 'about.html', 'About · AfroBot', 'AfroBot is a program of Glappy Foundation, a 501(c)(3) nonprofit organization. Programs in Cameroon, a US pilot, and a proposed US season.', '/about', ''],
+  ['programs.html', 'programs.html', 'Programs · AfroBot', 'Academy, League, and Innovation Lab. Discover through Advance. $100 per child for a camp week is the participation goal.', '/programs', ''],
+  ['usa.html', 'usa.html', 'AfroBot USA · AfroBot', 'Proposed US season from August 2027, with a Dallas championship in April 2028 pending partner confirmation.', '/usa', ''],
+  ['africa.html', 'africa.html', 'AfroBot Africa · AfroBot', 'Cameroon is the operating foundation of AfroBot. About 5,000 children trained and about 1,500 learning now.', '/africa', ''],
+  ['impact.html', 'impact.html', 'Our Impact · AfroBot', 'Founder-reported reach in Cameroon and the McKinney, Texas pilot.', '/impact', ''],
+  ['moonshot.html', 'moonshot.html', 'Our Moonshot · AfroBot', 'An ambition to help many more young people learn robotics and AI without a matching rise in teachers and facilities.', '/moonshot', ''],
+  ['collaboration.html', 'collaboration.html', 'Global Collaboration · AfroBot', 'A proposed program for virtual challenges, cross-border teams, mentoring, and showcases.', '/collaboration', ''],
+  ['challenge.html', 'challenge.html', 'Global Innovation Challenge · AfroBot', 'A proposed challenge. No dates, awards, funding, or participant list yet.', '/challenge', ''],
   ['competitions.html', 'competitions.html', 'Competitions · AfroBot', 'The 2027 footprint is Texas (Dallas–Fort Worth), Cameroon (a Yaoundé event that AfroBot is hosting), and Tanzania. The first season is an 8-team pilot.', '/competitions', ''],
   ['university-pathways.html', 'university-pathways.html', 'University Pathways · AfroBot', 'Older students mentor younger teams with an adult coach.', '/university-pathways', ''],
   ['community.html', 'community.html', 'Community · AfroBot', 'Parents, students through a parent, mentors, sponsors, schools, and manufacturers can register interest.', '/community', ''],
@@ -53,6 +60,10 @@ for (const [out, src, title, description, urlPath, headExtra] of pages) {
   content = content.replaceAll('{{videos-home}}', videosHome);
   content = content.replaceAll('{{videos}}', videosAll);
   content = content.replace(/\{\{register(?::([a-z]+))?\}\}/g, (_, intent) => register.replaceAll('{{default-intent}}', intent || ''));
+  for (const [key, value] of Object.entries(facts)) {
+    if (key === 'verified' || key === 'source') continue;
+    content = content.replaceAll('{{facts.' + key + '}}', esc(String(value)));
+  }
   for (const [key, value] of Object.entries(impact)) content = content.replaceAll('{{impact.' + key + '}}', esc(String(value)));
   content = content.replaceAll('{{stage-mode}}', site.stageNames === 'access' ? 'access' : 'current');
   if (out === 'volunteer.html') content = content.replace('action="/api/interest"', 'action="/api/volunteer"');
