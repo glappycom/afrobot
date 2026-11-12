@@ -8,6 +8,7 @@ const footer = read('src/partials/footer.html').trim();
 const roles = read('src/partials/roles.html').trim();
 const register = read('src/partials/register.html').trim();
 const videoItems = read('src/partials/videos.html').trim().split(/(?=<article\b)/).map((item) => item.trim()).filter(Boolean);
+const plan = read('src/partials/plan.html').trim();
 const videosHome = videoItems.slice(0, 3).join('\n');
 const videosAll = videoItems.join('\n');
 const layout = read('src/layout.html');
@@ -67,7 +68,7 @@ const pages = [
   ['mentorship.html', 'mentorship.html', 'Mentorship · AfroBot', 'Mentor with AfroBot. Screening is required before working with students.', '/mentorship', ''],
   ['about.html', 'about.html', 'About · AfroBot', 'AfroBot is a program of Glappy Foundation, a 501(c)(3) nonprofit organization. Kids in Cameroon have been building robots since November 2022.', '/about', ''],
   ['programs.html', 'programs.html', 'Programs · AfroBot', 'Academy, League, and Innovation Lab. Discover through Advance. $100 per child for a camp week is the participation goal.', '/programs', ''],
-  ['usa.html', 'usa.html', 'AfroBot USA · AfroBot', 'We plan a US season. The four regions are tentative. A Dallas championship in April 2028 is proposed.', '/usa', ''],
+  ['usa.html', 'usa.html', 'AfroBot USA · AfroBot', 'Proposed 2027 plan: the season starts in August 2027, with regional launches in Washington DC and Maryland, Atlanta, Houston, and Dallas–Fort Worth, and a Dallas championship in April 2028.', '/usa', ''],
   ['africa.html', 'africa.html', 'AfroBot Africa · AfroBot', 'Kids in Cameroon have been building and coding robots since November 2022. About 5,000 have trained and about 1,500 learn with us now.', '/africa', ''],
   ['impact.html', 'impact.html', 'Our Impact · AfroBot', 'About 5,000 kids trained in Cameroon and about 50 in the 2024 McKinney pilot.', '/impact', ''],
   ['moonshot.html', 'moonshot.html', 'Our Moonshot · AfroBot', 'A hope to teach many more kids to build robots without ten times the teachers or rooms. We have not done it.', '/moonshot', ''],
@@ -98,6 +99,7 @@ for (const [out, src, title, description, urlPath, headExtra] of pages) {
   content = content.replaceAll('{{gallery:usa}}', galleryHtml('usa'));
   content = content.replaceAll('{{videos:cameroon}}', videoHtml('cameroon'));
   content = content.replaceAll('{{videos:usa}}', videoHtml('usa'));
+  content = content.replaceAll('{{plan}}', plan);
   for (const [key, value] of Object.entries(facts)) {
     if (key === 'verified' || key === 'source') continue;
     content = content.replaceAll('{{facts.' + key + '}}', esc(String(value)));
