@@ -13,9 +13,43 @@ const videosAll = videoItems.join('\n');
 const layout = read('src/layout.html');
 const impact = JSON.parse(read('content/impact.json'));
 const facts = JSON.parse(read('content/facts.json'));
+const media = JSON.parse(read('content/media.json'));
 const site = JSON.parse(read('content/site.json'));
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+
+function mediaLabel(item) {
+  const name = item.caption || item.title || '';
+  return item.year ? name + ', ' + item.year : name;
+}
+
+function galleryHtml(place) {
+  const photos = (media.photos || []).filter((item) => item.place === place && item.consent);
+  if (!photos.length) return '<p class="media-empty">' + esc(media.empty?.[place] || 'No photos of this place are on the site yet.') + '</p>';
+  const shots = photos.map((item) => {
+    const label = mediaLabel(item);
+    return '<button type="button" class="work-shot" data-full="' + esc(item.src) + '" data-alt="' + esc(item.alt) + '" data-caption="' + esc(label) + '">'
+      + '<img src="' + esc(item.src) + '" alt="' + esc(item.alt) + '" width="' + item.width + '" height="' + item.height + '" loading="lazy" decoding="async">'
+      + '<span class="work-shot__cap">' + esc(label) + '</span></button>';
+  }).join('\n');
+  return '<div class="work-gallery">' + shots
+    + '<dialog class="work-lightbox"><button type="button" class="work-lightbox__close">Close</button><img alt=""><p></p></dialog></div>';
+}
+
+function videoHtml(place) {
+  const clips = (media.videos || []).filter((item) => item.place === place && item.consent);
+  if (!clips.length) return '';
+  return clips.map((item) => {
+    const label = mediaLabel(item);
+    if (item.kind === 'file') {
+      return '<figure class="work-video"><video controls playsinline preload="metadata" poster="' + esc(item.poster) + '">'
+        + '<source src="' + esc(item.src) + '" type="video/mp4"></video><figcaption>' + esc(label) + '</figcaption></figure>';
+    }
+    return '<figure class="work-video"><button type="button" class="video-play" data-video="' + esc(item.id) + '" aria-label="Play video: ' + esc(item.title) + '">'
+      + '<img src="' + esc(item.poster) + '" alt="Preview image: ' + esc(item.title) + '" width="480" height="360" loading="lazy" decoding="async">'
+      + '<span class="video-play__icon" aria-hidden="true"></span></button><figcaption>' + esc(label) + '</figcaption></figure>';
+  }).join('\n');
+}
 
 const orgJson = `<script type="application/ld+json">
 {
@@ -29,7 +63,7 @@ const orgJson = `<script type="application/ld+json">
 </script>`;
 
 const pages = [
-  ['index.html', 'home.html', 'AfroBot · Kids learn to build robots.', 'Kids in Cameroon have been building and coding robots since November 2022. A pilot in McKinney, Texas, followed in 2024.', '/', orgJson + '\n<link rel="preload" as="image" href="assets/photos/mckinney-build-day-2024-960.avif" imagesrcset="assets/photos/mckinney-build-day-2024-960.avif 960w, assets/photos/mckinney-build-day-2024.avif 1000w" imagesizes="100vw" type="image/avif" fetchpriority="high">'],
+  ['index.html', 'home.html', 'AfroBot · Kids in Cameroon and the US learning to build robots and AI.', 'Kids in Cameroon have been building and coding robots since November 2022. A pilot in McKinney, Texas, followed in 2024.', '/', orgJson + '\n<link rel="preload" as="image" href="assets/photos/mckinney-build-day-2024-960.avif" imagesrcset="assets/photos/mckinney-build-day-2024-960.avif 960w, assets/photos/mckinney-build-day-2024.avif 1000w" imagesizes="100vw" type="image/avif" fetchpriority="high">'],
   ['mentorship.html', 'mentorship.html', 'Mentorship · AfroBot', 'Mentor with AfroBot. Screening is required before working with students.', '/mentorship', ''],
   ['about.html', 'about.html', 'About · AfroBot', 'AfroBot is a program of Glappy Foundation, a 501(c)(3) nonprofit organization. Kids in Cameroon have been building robots since November 2022.', '/about', ''],
   ['programs.html', 'programs.html', 'Programs · AfroBot', 'Academy, League, and Innovation Lab. Discover through Advance. $100 per child for a camp week is the participation goal.', '/programs', ''],
@@ -60,6 +94,11 @@ for (const [out, src, title, description, urlPath, headExtra] of pages) {
   content = content.replaceAll('{{videos-home}}', videosHome);
   content = content.replaceAll('{{videos}}', videosAll);
   content = content.replace(/\{\{register(?::([a-z]+))?\}\}/g, (_, intent) => register.replaceAll('{{default-intent}}', intent || ''));
+  content = content.replaceAll('{{gallery:cameroon}}', galleryHtml('cameroon'));
+  content = content.replaceAll('{{gallery:usa}}', galleryHtml('usa'));
+  content = content.replaceAll('{{gallery:tanzania}}', galleryHtml('tanzania'));
+  content = content.replaceAll('{{videos:cameroon}}', videoHtml('cameroon'));
+  content = content.replaceAll('{{videos:usa}}', videoHtml('usa'));
   for (const [key, value] of Object.entries(facts)) {
     if (key === 'verified' || key === 'source') continue;
     content = content.replaceAll('{{facts.' + key + '}}', esc(String(value)));

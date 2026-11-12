@@ -22,7 +22,7 @@ if (serverRoles.length !== 5) fail('Could not read server roles');
 if (serverRoles.includes('Student')) fail('Student is still a server role');
 
 const requiredHome = [
-  'Kids learn to build robots.',
+  'Kids in Cameroon and the US learning to build robots and AI.',
   'From Africa to the World',
   'Kids in Cameroon have been building and coding robots since November 2022.',
   'See the programs',
@@ -126,7 +126,7 @@ const storyHeading = home.match(/<h2 id="span-title"[\s\S]*?<\/h2>/);
 if (!storyHeading) fail('story heading missing');
 else {
   const storyText = storyHeading[0].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
-  if (storyText !== 'Cameroon and Texas.') fail('story heading mismatch: ' + storyText);
+  if (storyText !== 'Two Continents. One Innovation Future.') fail('story heading mismatch: ' + storyText);
 }
 if (!home.includes('class="hero__tag"><span>From Africa to the World</span>')) fail('hero tagline is not the angled tag');
 const about = fs.readFileSync(path.join(root, 'about.html'), 'utf8');
