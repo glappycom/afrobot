@@ -49,10 +49,10 @@ Mobile uses the same five links, then the secondary links as quiet items. No Mor
 
 ## Facts
 
-Founder-reported counts live only in `content/facts.json` with `verified: false`. Public copy says “about” or “nearly.” Dallas 2027 targets stay in `content/impact.json` because they are already published as proposed targets, not as history.
+Founder-reported counts live only in `content/facts.json`. Russell documented them in November 2026, so each count is `verified: true`: about 5,000 trained, about 1,500 learning now, about 4 years since November 2022, and about 50 students in the 2024 McKinney pilot. Public copy still says “about” or “nearly.” Dallas 2027 targets stay in `content/impact.json` as proposed targets, not as history.
 
 ## Decisions this strategy makes
 
-- The new US city list is labeled Proposed and does not replace the published DFW / Yaoundé / Tanzania footprint.
+- The four US regions are labeled Tentative 2027 target regions. They do not replace the published DFW / Yaoundé / Tanzania footprint.
 - Named schools leave the partners page until Russell approves a public list.
 - The Glappy Foundation legal sentence stays on About. It is the existing legal identity, not a financing claim.
