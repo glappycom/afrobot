@@ -69,7 +69,7 @@ const pages = [
   ['about.html', 'about.html', 'About · AfroBot', 'AfroBot is a program of Glappy Foundation, a 501(c)(3) nonprofit organization. Kids in Cameroon have been building robots since November 2022.', '/about', ''],
   ['programs.html', 'programs.html', 'Programs · AfroBot', 'Academy, League, and Innovation Lab. Discover through Advance. $100 per child for a camp week is the participation goal.', '/programs', ''],
   ['usa.html', 'usa.html', 'AfroBot USA · AfroBot', 'A 2024 pilot in McKinney, Texas, with about 30 students and five to six teams. The 2027 season is proposed.', '/usa', ''],
-  ['africa.html', 'africa.html', 'AfroBot Africa · AfroBot', 'Classes in Cameroon began under Glappy Foundation in November 2022. Nearly 5,000 children have trained. About 1,500 learn now.', '/africa', ''],
+  ['africa.html', 'africa.html', 'AfroBot Africa · AfroBot', 'Kids in Bamenda were in school about four days a week because of the conflict. Classes began under Glappy Foundation in November 2022. Nearly 5,000 have trained in holiday programs. About 1,500 train now.', '/africa', ''],
   ['impact.html', 'impact.html', 'Our Impact · AfroBot', 'About 5,000 kids trained in Cameroon and about 30 in the 2024 McKinney pilot.', '/impact', ''],
   ['moonshot.html', 'moonshot.html', 'Our Moonshot · AfroBot', 'A hope to teach many more kids to build robots without ten times the teachers or rooms. We have not done it.', '/moonshot', ''],
   ['collaboration.html', 'collaboration.html', 'Teams in two countries · AfroBot', 'We plan for a US group and a Cameroon group to share a project. No date yet.', '/collaboration', ''],
