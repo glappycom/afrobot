@@ -1,28 +1,51 @@
-<section class="split-hero">
-  <div class="split-hero__copy">
-    <p class="kicker">Operating now</p>
-    <h1 class="h1">AfroBot Africa</h1>
-    <p class="lead">Kids in Cameroon have been building and coding robots since {{facts.cameroonStarted}}.</p>
-    <p>That is about {{facts.cameroonYears}} years. About {{facts.cameroonTrained}} children have trained in holiday programs. About {{facts.cameroonActive}} learn with us now.</p>
+<section class="story-hero" id="started" aria-labelledby="africa-title">
+  <div class="container story-hero__split">
+    <div>
+      <p class="kicker">AfroBot Africa</p>
+      <p class="story-num">01</p>
+      <h1 id="africa-title" class="h1">Where it started</h1>
+      <p class="lead">Kids in Cameroon have been building and coding robots since {{facts.cameroonStarted}}. The classes began under Glappy Foundation.</p>
+      <p>Nearly {{facts.cameroonTrained}} children have trained in holiday programs. That is about {{facts.cameroonYears}} years.</p>
+    </div>
+    <figure class="story-hero__photo">
+      <picture>
+        <source sizes="(max-width: 800px) 100vw, 46vw" srcset="assets/photos/cameroon-classroom-wide-800.webp 800w, assets/photos/cameroon-classroom-wide.webp 1280w" type="image/webp">
+        <img src="assets/photos/cameroon-classroom-wide.jpg" alt="Students in lab coats working at laptops in a classroom in Cameroon" width="1280" height="960" fetchpriority="high" decoding="async">
+      </picture>
+    </figure>
+  </div>
+</section>
+<section class="story-chapter story-chapter--quiet" id="rooms" aria-labelledby="rooms-title">
+  <div class="container">
+    <p class="story-num">02</p>
+    <h2 id="rooms-title" class="h1">Classrooms and workshops</h2>
+    <p>Some days are a classroom of laptops. Some days a smaller group wires a circuit. The workshop photos are from Bamenda.</p>
+    <h3>Classrooms</h3>
+    {{gallery:cameroon:classrooms}}
+    <h3>Workshop in Bamenda</h3>
+    {{gallery:cameroon:workshop}}
+  </div>
+</section>
+<section class="story-chapter" id="learners" aria-labelledby="learners-title">
+  <div class="container">
+    <p class="story-num">03</p>
+    <h2 id="learners-title" class="h1">Learners building</h2>
+    <p>Students share a laptop, write code, and build a robot on the table.</p>
+    {{gallery:cameroon:learners}}
+  </div>
+</section>
+<section class="story-chapter story-chapter--quiet" id="community" aria-labelledby="community-title">
+  <div class="container">
+    <p class="story-num">04</p>
+    <h2 id="community-title" class="h1">Today's community</h2>
+    <p>About {{facts.cameroonActive}} children learn with us now.</p>
+    {{videos:cameroon:community}}
     <a class="btn btn--clay" href="community.html?intent=host#register">Ask about hosting</a>
   </div>
-  <figure class="split-hero__photo">
-    <picture>
-      <source sizes="(max-width: 900px) 100vw, 58vw" srcset="assets/photos/cameroon-classroom-wide-800.webp 800w, assets/photos/cameroon-classroom-wide.webp 1280w" type="image/webp">
-      <img src="assets/photos/cameroon-classroom-wide.jpg" alt="Students in lab coats working at laptops in a classroom in Cameroon" width="1280" height="960" fetchpriority="high" decoding="async">
-    </picture>
-  </figure>
 </section>
-<section class="section" id="work" aria-labelledby="work-title">
+<section class="story-chapter" id="involve-africa" aria-labelledby="involve-africa-title">
   <div class="container">
-    <h2 id="work-title" class="h1">Our work so far</h2>
-    {{videos:cameroon}}
-    {{gallery:cameroon}}
-  </div>
-</section>
-<section class="section band-quiet" aria-labelledby="involve-africa">
-  <div class="container">
-    <h2 id="involve-africa" class="h1">How to take part</h2>
+    <h2 id="involve-africa-title" class="h1">How to take part</h2>
     <div class="path-cards path-cards--three">
       <article>
         <h3>Schools</h3>
