@@ -53,6 +53,6 @@ Founder-reported counts live only in `content/facts.json`. Russell documented th
 
 ## Decisions this strategy makes
 
-- The four US regions are labeled Tentative 2027 target regions. They do not replace the published DFW / Yaoundé / Tanzania footprint.
+- The four US regions are labeled Tentative 2027 target regions. The published footprint is Dallas–Fort Worth and Yaoundé.
 - Named schools leave the partners page until Russell approves a public list.
 - The Glappy Foundation legal sentence stays on About. It is the existing legal identity, not a financing claim.

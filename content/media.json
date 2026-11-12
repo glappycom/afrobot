@@ -1,7 +1,4 @@
 {
-  "empty": {
-    "tanzania": "No photos from Tanzania are in the site files yet."
-  },
   "photos": [
     {
       "src": "assets/photos/cameroon-classroom-wide.jpg",
@@ -95,6 +92,15 @@
     }
   ],
   "videos": [
+    {
+      "kind": "youtube",
+      "id": "4F1Jm0-rMM0",
+      "poster": "https://i.ytimg.com/vi/4F1Jm0-rMM0/hqdefault.jpg",
+      "title": "Build Day presentation, Texas",
+      "place": "usa",
+      "year": "",
+      "consent": true
+    },
     {
       "kind": "file",
       "src": "assets/video/mckinney-build-day-2024.mp4",

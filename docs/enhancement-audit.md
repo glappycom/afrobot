@@ -6,7 +6,7 @@ Base: `main` at `c22482d` (2027 program path, hubs, and sponsor goals). This pas
 
 - Home: hero, audience tiles, planned sessions (Discover, Build, Innovate, Compete, Advance), $100 camp-week goal, McKinney Build Day photo, three program photos, three story videos, adult interest form.
 - Programs: Access as a cost theme, the five stages with ages 6–9, 9–12, and 13–17, same $100 goal.
-- Competitions: one yearly competition, 2027 hubs in Texas (DFW), Cameroon (Yaoundé), and Tanzania, separate dates, two-way livestream, “Dates coming soon.”
+- Competitions: one yearly competition, 2027 hubs in Texas (DFW) and Cameroon (Yaoundé), separate dates, two-way livestream, “Dates coming soon.”
 - University Pathways: Advance, older students mentoring with an adult coach, admission and scholarships not guaranteed.
 - Partners: sponsor goals (Discover $100 through Advance $25,000, plus in-kind Venue and Host). No named partners. Tax treatment is not stated.
 - Volunteer: adults-only form posts to `/api/volunteer`, which forwards to the Google Sheet webhook.

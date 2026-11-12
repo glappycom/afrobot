@@ -14,7 +14,7 @@ The voice is a kids-only robotics and AI program preparing a 2027 season. Camero
 | --- | --- | --- |
 | index.html | / | Home |
 | programs.html | /programs | Age path Discover through Advance, camp-week cost |
-| competitions.html | /competitions | 2027 footprint: DFW, Yaoundé, Tanzania; 8-team pilot |
+| competitions.html | /competitions | 2027 footprint: DFW and Yaoundé; 8-team pilot |
 | events.html | /events | McKinney 2024 and the same 2027 hubs |
 | about.html | /about | Legal home, founders, Cameroon counts, values |
 | partners.html | /partners | Named schools and sponsor goals |
@@ -40,7 +40,7 @@ Site footer: Programs, Events, About, Mentorship, Contact, policies, info@afrobo
 - Home close: Parents, Mentors, Community rows, one white gap, yellow Sponsor a Student band, graphite footer.
 - Impact strip: two large numbers side by side.
 - Age path: Discover 6–9, Build 9–12, Innovate 13–17, Compete 13–17, Advance 13–17.
-- Season block and competitions copy: 90 students, 15 teams, 8-team pilot, Yaoundé hosted by AfroBot, Tanzania on its own dates.
+- Season block and competitions copy: 90 students, 15 teams, 8-team pilot, Yaoundé hosted by AfroBot.
 - Registration interest form and volunteer form.
 
 ## Forms and where they post
@@ -55,7 +55,7 @@ Site footer: Programs, Events, About, Mentorship, Contact, policies, info@afrobo
 
 - McKinney Build Day, 2024.
 - 2027 targets: Dallas 90 students and 15 teams, labeled proposed targets on the home page.
-- 2027 hubs: Texas (Dallas–Fort Worth), Cameroon (Yaoundé, hosted), Tanzania (its own dates).
+- 2027 hubs: Texas (Dallas–Fort Worth) and Cameroon (Yaoundé, hosted).
 - First season: an 8-team pilot, about 8 students plus coaches.
 - Camp week: a $100 participation goal. A $10 workshop is described as a hope, not today’s price.
 - Sponsor goals: $100, $1,000, $5,000, $10,000, $25,000, each labeled a goal.

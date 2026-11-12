@@ -45,9 +45,9 @@ function videoHtml(place) {
       return '<figure class="work-video"><video controls playsinline preload="metadata" poster="' + esc(item.poster) + '">'
         + '<source src="' + esc(item.src) + '" type="video/mp4"></video><figcaption>' + esc(label) + '</figcaption></figure>';
     }
-    return '<figure class="work-video"><button type="button" class="video-play" data-video="' + esc(item.id) + '" aria-label="Play video: ' + esc(item.title) + '">'
+    return '<figure class="work-video"><div class="video-facade"><button type="button" class="video-play" data-video="' + esc(item.id) + '" aria-label="Play video: ' + esc(item.title) + '">'
       + '<img src="' + esc(item.poster) + '" alt="Preview image: ' + esc(item.title) + '" width="480" height="360" loading="lazy" decoding="async">'
-      + '<span class="video-play__icon" aria-hidden="true"></span></button><figcaption>' + esc(label) + '</figcaption></figure>';
+      + '<span class="video-play__icon" aria-hidden="true"></span></button></div><figcaption>' + esc(label) + '</figcaption></figure>';
   }).join('\n');
 }
 
@@ -73,11 +73,11 @@ const pages = [
   ['moonshot.html', 'moonshot.html', 'Our Moonshot · AfroBot', 'A hope to teach many more kids to build robots without ten times the teachers or rooms. We have not done it.', '/moonshot', ''],
   ['collaboration.html', 'collaboration.html', 'Teams in two countries · AfroBot', 'We plan for a US group and a Cameroon group to share a project. No date yet.', '/collaboration', ''],
   ['challenge.html', 'challenge.html', 'Global Innovation Challenge · AfroBot', 'Project ideas for student teams. No date, prize, or list of kids yet.', '/challenge', ''],
-  ['competitions.html', 'competitions.html', 'Competitions · AfroBot', 'The 2027 footprint is Texas (Dallas–Fort Worth), Cameroon (a Yaoundé event that AfroBot is hosting), and Tanzania. The first season is an 8-team pilot.', '/competitions', ''],
+  ['competitions.html', 'competitions.html', 'Competitions · AfroBot', 'The 2027 footprint is Texas (Dallas–Fort Worth) and Cameroon (a Yaoundé event that AfroBot is hosting). The first season is an 8-team pilot.', '/competitions', ''],
   ['university-pathways.html', 'university-pathways.html', 'University Pathways · AfroBot', 'Older students mentor younger teams with an adult coach.', '/university-pathways', ''],
   ['community.html', 'community.html', 'Community · AfroBot', 'Parents, students through a parent, mentors, sponsors, schools, and manufacturers can register interest.', '/community', ''],
   ['partners.html', 'partners.html', 'Partners · AfroBot', 'Ways to help pay for a child’s place. Partner names are not listed yet.', '/partners', ''],
-  ['events.html', 'events.html', 'Events · AfroBot', 'McKinney Build Day, 2024. The 2027 footprint is Texas, Cameroon, and Tanzania.', '/events', ''],
+  ['events.html', 'events.html', 'Events · AfroBot', 'McKinney Build Day, 2024. The 2027 footprint is Texas and Cameroon.', '/events', ''],
   ['contact.html', 'contact.html', 'Contact · AfroBot', 'Write to AfroBot at info@afrobot.org.', '/contact', ''],
   ['privacy.html', 'privacy.html', 'Privacy · AfroBot', 'What the AfroBot interest form collects.', '/privacy', ''],
   ['terms.html', 'terms.html', 'Terms · AfroBot', 'Sessions aren’t open for registration on this site yet.', '/terms', ''],
@@ -96,7 +96,6 @@ for (const [out, src, title, description, urlPath, headExtra] of pages) {
   content = content.replace(/\{\{register(?::([a-z]+))?\}\}/g, (_, intent) => register.replaceAll('{{default-intent}}', intent || ''));
   content = content.replaceAll('{{gallery:cameroon}}', galleryHtml('cameroon'));
   content = content.replaceAll('{{gallery:usa}}', galleryHtml('usa'));
-  content = content.replaceAll('{{gallery:tanzania}}', galleryHtml('tanzania'));
   content = content.replaceAll('{{videos:cameroon}}', videoHtml('cameroon'));
   content = content.replaceAll('{{videos:usa}}', videoHtml('usa'));
   for (const [key, value] of Object.entries(facts)) {
