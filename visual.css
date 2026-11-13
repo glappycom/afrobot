@@ -2149,6 +2149,46 @@ body[data-header="bone"] .nav.is-compact {
   .plan-regions li { min-height: 0; }
 }
 
+.story-hero, .story-chapter { padding: clamp(56px, 7vw, 96px) 0; background: #fff; color: #1E2326; }
+.story-chapter--quiet { background: #F4F5F6; }
+.story-num {
+  margin: 0 0 8px;
+  font-family: "Outfit", "Public Sans", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #1F4E9A;
+}
+.story-hero .kicker, .story-chapter .kicker { color: #1E2326; }
+.story-hero .lead, .story-chapter p { max-width: 62ch; }
+.story-chapter h3 {
+  margin: 28px 0 0;
+  font-family: "Outfit", "Public Sans", sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #1E2326;
+}
+.story-hero__split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 36px;
+  align-items: center;
+}
+.story-hero__photo { margin: 0; }
+.story-hero__photo img { width: 100%; height: auto; display: block; }
+.story-hero__photo figcaption { margin-top: 8px; font-weight: 650; color: #1E2326; }
+.story-chapter .work-gallery:has(> .work-shot:only-of-type) { grid-template-columns: minmax(0, 720px); }
+.story-hero .work-video { margin-top: 28px; }
+.story-hero .video-facade { max-width: 960px; }
+.story-chapter .work-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.story-chapter .work-shot img { height: 320px; }
+.story-chapter .btn { margin-top: 20px; }
+@media (max-width: 800px) {
+  .story-hero__split { grid-template-columns: 1fr; }
+  .story-chapter .work-gallery { grid-template-columns: 1fr; }
+  .story-chapter .work-shot img { height: 220px; }
+}
+
 /* White and light buttons keep graphite text in every state. */
 :is(a, button).btn.btn--inverse,
 :is(a, button).btn.btn--bone,

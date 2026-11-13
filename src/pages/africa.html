@@ -1,28 +1,52 @@
-<section class="split-hero">
-  <div class="split-hero__copy">
-    <p class="kicker">Operating now</p>
-    <h1 class="h1">AfroBot Africa</h1>
-    <p class="lead">Kids in Cameroon have been building and coding robots since {{facts.cameroonStarted}}.</p>
-    <p>That is about {{facts.cameroonYears}} years. About {{facts.cameroonTrained}} children have trained in holiday programs. About {{facts.cameroonActive}} learn with us now.</p>
+<section class="story-hero" id="why" aria-labelledby="africa-title">
+  <div class="container story-hero__split">
+    <div>
+      <p class="kicker">AfroBot Africa</p>
+      <p class="story-num">01</p>
+      <h1 id="africa-title" class="h1">Why we started</h1>
+      <p class="lead">Kids in Bamenda were in school about four days a week because of the conflict there. Kids in other parts of the country were in school five days a week.</p>
+      <p>We wanted Bamenda kids on equal footing. AI and robotics classes were a way to give them that edge. The classes began in {{facts.cameroonStarted}}, under Glappy Foundation.</p>
+    </div>
+    <figure class="story-hero__photo">
+      <picture>
+        <source sizes="(max-width: 800px) 100vw, 46vw" srcset="assets/photos/bamenda-circuit-team-800.avif 800w, assets/photos/bamenda-circuit-team.avif 2000w" type="image/avif">
+        <source sizes="(max-width: 800px) 100vw, 46vw" srcset="assets/photos/bamenda-circuit-team-800.webp 800w, assets/photos/bamenda-circuit-team.webp 2000w" type="image/webp">
+        <img src="assets/photos/bamenda-circuit-team.jpg" alt="Students lean in together to wire a small circuit beside an open workbook" width="2000" height="1500" fetchpriority="high" decoding="async">
+      </picture>
+      <figcaption>Circuit workshop, Bamenda</figcaption>
+    </figure>
+  </div>
+</section>
+<section class="story-chapter story-chapter--quiet" id="holiday" aria-labelledby="holiday-title">
+  <div class="container">
+    <p class="story-num">02</p>
+    <h2 id="holiday-title" class="h1">The holiday program</h2>
+    <p>The holiday program is how the work grew. Every holiday we open the doors, bring more kids into the school, and train them in AI and robotics.</p>
+    <p>Nearly {{facts.cameroonTrained}} children have trained this way. The number grows with each holiday.</p>
+    {{gallery:cameroon:holiday}}
+  </div>
+</section>
+<section class="story-chapter" id="rooms" aria-labelledby="rooms-title">
+  <div class="container">
+    <p class="story-num">03</p>
+    <h2 id="rooms-title" class="h1">Classrooms and learners building</h2>
+    <p>In class, students work at laptops. They also share a computer, write code, and build a robot on the table.</p>
+    {{gallery:cameroon:classrooms}}
+    {{gallery:cameroon:learners}}
+  </div>
+</section>
+<section class="story-chapter story-chapter--quiet" id="community" aria-labelledby="community-title">
+  <div class="container">
+    <p class="story-num">04</p>
+    <h2 id="community-title" class="h1">Today's community</h2>
+    <p>About {{facts.cameroonActive}} children are training with us now. More join every holiday.</p>
+    {{videos:cameroon:community}}
     <a class="btn btn--clay" href="community.html?intent=host#register">Ask about hosting</a>
   </div>
-  <figure class="split-hero__photo">
-    <picture>
-      <source sizes="(max-width: 900px) 100vw, 58vw" srcset="assets/photos/cameroon-classroom-wide-800.webp 800w, assets/photos/cameroon-classroom-wide.webp 1280w" type="image/webp">
-      <img src="assets/photos/cameroon-classroom-wide.jpg" alt="Students in lab coats working at laptops in a classroom in Cameroon" width="1280" height="960" fetchpriority="high" decoding="async">
-    </picture>
-  </figure>
 </section>
-<section class="section" id="work" aria-labelledby="work-title">
+<section class="story-chapter" id="involve-africa" aria-labelledby="involve-africa-title">
   <div class="container">
-    <h2 id="work-title" class="h1">Our work so far</h2>
-    {{videos:cameroon}}
-    {{gallery:cameroon}}
-  </div>
-</section>
-<section class="section band-quiet" aria-labelledby="involve-africa">
-  <div class="container">
-    <h2 id="involve-africa" class="h1">How to take part</h2>
+    <h2 id="involve-africa-title" class="h1">How to take part</h2>
     <div class="path-cards path-cards--three">
       <article>
         <h3>Schools</h3>

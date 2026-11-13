@@ -49,7 +49,7 @@ Mobile uses the same five links, then the secondary links as quiet items. No Mor
 
 ## Facts
 
-Founder-reported counts live only in `content/facts.json`. Russell documented them in November 2026, so each count is `verified: true`: about 5,000 trained, about 1,500 learning now, about 4 years since November 2022, and about 50 students in the 2024 McKinney pilot. Public copy still says “about” or “nearly.” Dallas 2027 targets stay in `content/impact.json` as proposed targets, not as history.
+Founder-reported counts live only in `content/facts.json`. Russell documented them in November 2026, so each count is `verified: true`: about 5,000 trained, about 1,500 learning now, about 4 years since November 2022, and about 30 students in the 2024 McKinney pilot. Public copy still says “about” or “nearly.” Dallas 2027 targets stay in `content/impact.json` as proposed targets, not as history.
 
 ## Decisions this strategy makes
 

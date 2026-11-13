@@ -24,9 +24,9 @@ function mediaLabel(item) {
   return item.year ? name + ', ' + item.year : name;
 }
 
-function galleryHtml(place) {
-  const photos = (media.photos || []).filter((item) => item.place === place && item.consent);
-  if (!photos.length) return '<p class="media-empty">' + esc(media.empty?.[place] || 'No photos of this place are on the site yet.') + '</p>';
+function galleryHtml(place, chapter) {
+  const photos = (media.photos || []).filter((item) => item.place === place && item.consent && (!chapter || item.chapter === chapter));
+  if (!photos.length) return chapter ? '' : '<p class="media-empty">' + esc(media.empty?.[place] || 'No photos of this place are on the site yet.') + '</p>';
   const shots = photos.map((item) => {
     const label = mediaLabel(item);
     return '<button type="button" class="work-shot" data-full="' + esc(item.src) + '" data-alt="' + esc(item.alt) + '" data-caption="' + esc(label) + '">'
@@ -37,8 +37,8 @@ function galleryHtml(place) {
     + '<dialog class="work-lightbox"><button type="button" class="work-lightbox__close">Close</button><img alt=""><p></p></dialog></div>';
 }
 
-function videoHtml(place) {
-  const clips = (media.videos || []).filter((item) => item.place === place && item.consent);
+function videoHtml(place, chapter) {
+  const clips = (media.videos || []).filter((item) => item.place === place && item.consent && (!chapter || item.chapter === chapter));
   if (!clips.length) return '';
   return clips.map((item) => {
     const label = mediaLabel(item);
@@ -68,9 +68,9 @@ const pages = [
   ['mentorship.html', 'mentorship.html', 'Mentorship · AfroBot', 'Mentor with AfroBot. Screening is required before working with students.', '/mentorship', ''],
   ['about.html', 'about.html', 'About · AfroBot', 'AfroBot is a program of Glappy Foundation, a 501(c)(3) nonprofit organization. Kids in Cameroon have been building robots since November 2022.', '/about', ''],
   ['programs.html', 'programs.html', 'Programs · AfroBot', 'Academy, League, and Innovation Lab. Discover through Advance. $100 per child for a camp week is the participation goal.', '/programs', ''],
-  ['usa.html', 'usa.html', 'AfroBot USA · AfroBot', 'Proposed 2027 plan: the season starts in August 2027, with regional launches in Washington DC and Maryland, Atlanta, Houston, and Dallas–Fort Worth, and a Dallas championship in April 2028.', '/usa', ''],
-  ['africa.html', 'africa.html', 'AfroBot Africa · AfroBot', 'Kids in Cameroon have been building and coding robots since November 2022. About 5,000 have trained and about 1,500 learn with us now.', '/africa', ''],
-  ['impact.html', 'impact.html', 'Our Impact · AfroBot', 'About 5,000 kids trained in Cameroon and about 50 in the 2024 McKinney pilot.', '/impact', ''],
+  ['usa.html', 'usa.html', 'AfroBot USA · AfroBot', 'A 2024 pilot in McKinney, Texas, with about 30 students and five to six teams. The 2027 season is proposed.', '/usa', ''],
+  ['africa.html', 'africa.html', 'AfroBot Africa · AfroBot', 'Kids in Bamenda were in school about four days a week because of the conflict. Classes began under Glappy Foundation in November 2022. Nearly 5,000 have trained in holiday programs. About 1,500 train now.', '/africa', ''],
+  ['impact.html', 'impact.html', 'Our Impact · AfroBot', 'About 5,000 kids trained in Cameroon and about 30 in the 2024 McKinney pilot.', '/impact', ''],
   ['moonshot.html', 'moonshot.html', 'Our Moonshot · AfroBot', 'A hope to teach many more kids to build robots without ten times the teachers or rooms. We have not done it.', '/moonshot', ''],
   ['collaboration.html', 'collaboration.html', 'Teams in two countries · AfroBot', 'We plan for a US group and a Cameroon group to share a project. No date yet.', '/collaboration', ''],
   ['challenge.html', 'challenge.html', 'Global Innovation Challenge · AfroBot', 'Project ideas for student teams. No date, prize, or list of kids yet.', '/challenge', ''],
@@ -95,10 +95,8 @@ for (const [out, src, title, description, urlPath, headExtra] of pages) {
   content = content.replaceAll('{{videos-home}}', videosHome);
   content = content.replaceAll('{{videos}}', videosAll);
   content = content.replace(/\{\{register(?::([a-z]+))?\}\}/g, (_, intent) => register.replaceAll('{{default-intent}}', intent || ''));
-  content = content.replaceAll('{{gallery:cameroon}}', galleryHtml('cameroon'));
-  content = content.replaceAll('{{gallery:usa}}', galleryHtml('usa'));
-  content = content.replaceAll('{{videos:cameroon}}', videoHtml('cameroon'));
-  content = content.replaceAll('{{videos:usa}}', videoHtml('usa'));
+  content = content.replace(/\{\{gallery:([a-z]+)(?::([a-z0-9-]+))?\}\}/g, (_, place, chapter) => galleryHtml(place, chapter));
+  content = content.replace(/\{\{videos:([a-z]+)(?::([a-z0-9-]+))?\}\}/g, (_, place, chapter) => videoHtml(place, chapter));
   content = content.replaceAll('{{plan}}', plan);
   for (const [key, value] of Object.entries(facts)) {
     if (key === 'verified' || key === 'source') continue;

@@ -64,7 +64,7 @@ The assignment’s US city list (August 2027 start; DC/Maryland, Atlanta, Housto
 
 ## Counts
 
-`content/impact.json` holds 5,000 trained, 1,500 ongoing, 4 years, and the Dallas 2027 targets. About says “about 5,000” and “about 1,500.” McKinney headcount of about 50 is not in the config. None of these counts are marked verified.
+`content/impact.json` holds 5,000 trained, 1,500 ongoing, 4 years, and the Dallas 2027 targets. About says “about 5,000” and “about 1,500.” McKinney headcount of about 30 is documented in content/facts.json. None of these counts are marked verified.
 
 ## Keep
 
