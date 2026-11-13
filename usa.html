@@ -117,29 +117,63 @@
   <div class="container">
     <p class="kicker">Proposed</p>
     <h2 id="plan-title" class="h1">2027 Plan</h2>
-    <ol class="plan-steps">
-      <li>
-        <span class="plan-steps__n">01</span>
-        <h3>Season starts</h3>
-        <p class="plan-steps__when">August 2027</p>
-      </li>
-      <li>
-        <span class="plan-steps__n">02</span>
-        <h3>Regional launches</h3>
-        <p class="plan-steps__when">2027</p>
-      </li>
-      <li class="plan-steps__final">
-        <span class="plan-steps__n">03</span>
-        <h3>National championship in Dallas</h3>
-        <p class="plan-steps__when">April 2028</p>
-      </li>
-    </ol>
-    <ul class="plan-regions">
-      <li><span>Regional</span><strong>Washington DC and Maryland</strong></li>
-      <li><span>Regional</span><strong>Atlanta</strong></li>
-      <li><span>Regional</span><strong>Houston</strong></li>
-      <li><span>Regional</span><strong>Dallas–Fort Worth</strong></li>
-    </ul>
+    <div class="plan-map">
+      <svg class="plan-map__svg" viewBox="0 0 1200 540" role="img" aria-hidden="true">
+        <ellipse cx="600" cy="280" rx="500" ry="200" fill="#F4F5F6"/>
+        <path class="plan-map__road" pathLength="100" d="M90 180 C190 180 190 340 290 340 C390 340 390 180 490 180 C590 180 590 340 690 340 C790 340 790 180 890 180 C990 180 990 400 1090 400" fill="none" stroke="#1E2326" stroke-width="16" stroke-linecap="round"/>
+        <path class="plan-map__lane" pathLength="100" d="M90 180 C190 180 190 340 290 340 C390 340 390 180 490 180 C590 180 590 340 690 340 C790 340 790 180 890 180 C990 180 990 400 1090 400" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="1.4 1.8"/>
+      </svg>
+      <ol class="plan-map__stops">
+        <li class="plan-stop plan-stop--above" style="--x:7.5; --y:33.3">
+          <span class="plan-node" aria-hidden="true"><svg viewBox="0 0 48 48" width="48" height="48"><circle cx="24" cy="24" r="16" fill="#fff" stroke="#1E2326" stroke-width="3"/><circle cx="24" cy="24" r="5" fill="#1E2326"/></svg></span>
+          <div class="plan-card">
+            <h3>Season kickoff</h3>
+            <p class="plan-when">August 2027</p>
+            <p>The season begins.</p>
+          </div>
+        </li>
+        <li class="plan-stop plan-stop--below" style="--x:24.2; --y:63">
+          <span class="plan-node" aria-hidden="true"><svg viewBox="0 0 48 48" width="48" height="48"><polygon points="24,5 41,14.5 41,33.5 24,43 7,33.5 7,14.5" fill="#fff" stroke="#1E2326" stroke-width="3" stroke-linejoin="round"/></svg></span>
+          <div class="plan-card">
+            <h3>Washington DC and Maryland</h3>
+            <p class="plan-when">2027</p>
+            <p>A regional launch.</p>
+          </div>
+        </li>
+        <li class="plan-stop plan-stop--above" style="--x:40.8; --y:33.3">
+          <span class="plan-node" aria-hidden="true"><svg viewBox="0 0 48 48" width="48" height="48"><polygon points="24,5 41,14.5 41,33.5 24,43 7,33.5 7,14.5" fill="#fff" stroke="#1E2326" stroke-width="3" stroke-linejoin="round"/></svg></span>
+          <div class="plan-card">
+            <h3>Atlanta</h3>
+            <p class="plan-when">2027</p>
+            <p>A regional launch.</p>
+          </div>
+        </li>
+        <li class="plan-stop plan-stop--below" style="--x:57.5; --y:63">
+          <span class="plan-node" aria-hidden="true"><svg viewBox="0 0 48 48" width="48" height="48"><polygon points="24,5 41,14.5 41,33.5 24,43 7,33.5 7,14.5" fill="#fff" stroke="#1E2326" stroke-width="3" stroke-linejoin="round"/></svg></span>
+          <div class="plan-card">
+            <h3>Houston</h3>
+            <p class="plan-when">2027</p>
+            <p>A regional launch.</p>
+          </div>
+        </li>
+        <li class="plan-stop plan-stop--above" style="--x:74.2; --y:33.3">
+          <span class="plan-node" aria-hidden="true"><svg viewBox="0 0 48 48" width="48" height="48"><polygon points="24,5 41,14.5 41,33.5 24,43 7,33.5 7,14.5" fill="#fff" stroke="#1E2326" stroke-width="3" stroke-linejoin="round"/></svg></span>
+          <div class="plan-card">
+            <h3>Dallas–Fort Worth</h3>
+            <p class="plan-when">2027</p>
+            <p>A regional launch.</p>
+          </div>
+        </li>
+        <li class="plan-stop plan-stop--below plan-stop--finale" style="--x:90.8; --y:74">
+          <span class="plan-node" aria-hidden="true"><svg viewBox="0 0 72 72" width="72" height="72"><circle cx="36" cy="36" r="33" fill="#F6C445"/><path fill="#1E2326" d="M26 20h20v10a10 10 0 0 1-20 0V20z"/><path fill="none" stroke="#1E2326" stroke-width="3" stroke-linecap="round" d="M26 24h-8a9 9 0 0 0 9 10M46 24h8a9 9 0 0 1-9 10"/><path fill="#1E2326" d="M33 42h6v7h-6zM26 51h20v4H26z"/></svg></span>
+          <div class="plan-card">
+            <h3>National championship</h3>
+            <p class="plan-when">Dallas, April 2028</p>
+            <p>The last stop of the season.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
   </div>
 </section>
 </main>

@@ -2068,85 +2068,106 @@ body[data-header="bone"] .nav.is-compact {
   .stages .stage-line.stage-line--four .journey-step:last-child { grid-column: auto; }
 }
 
-.plan-2027 { background: #fff; }
-.plan-steps {
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0 28px;
-  margin: 28px 0 0;
-  padding: 0;
-}
-.plan-steps li {
+.plan-2027 { background: #fff; color: #1E2326; }
+.plan-map { position: relative; margin-top: 12px; }
+.plan-map__svg { display: block; width: 100%; height: auto; }
+.plan-map__road { fill: none; stroke: #1E2326; stroke-width: 16; }
+.plan-map__lane { fill: none; stroke: #fff; stroke-width: 2.5; }
+.plan-map__stops {
+  position: absolute;
+  inset: 0;
   margin: 0;
-  padding: 18px 0 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  border-top: 4px solid #1E2326;
+  padding: 0;
+  list-style: none;
 }
-.plan-steps__n {
-  font-family: "Outfit", "Public Sans", sans-serif;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.08em;
-  color: #1F4E9A;
+.plan-stop {
+  position: absolute;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: 56px;
+  height: 56px;
+  margin: 0;
+  transform: translate(-50%, -50%);
 }
-.plan-steps h3 {
+.plan-node {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  background: #fff;
+  border-radius: 50%;
+}
+.plan-node svg { display: block; }
+.plan-card {
+  position: absolute;
+  left: 50%;
+  width: 168px;
+  transform: translateX(-50%);
+  text-align: center;
+}
+.plan-stop--above .plan-card { bottom: calc(100% + 12px); }
+.plan-stop--below .plan-card { top: calc(100% + 12px); }
+.plan-card h3 {
   margin: 0;
   font-family: "Outfit", "Public Sans", sans-serif;
   font-weight: 800;
   letter-spacing: -0.03em;
-  font-size: clamp(1.5rem, 2vw, 2rem);
-  line-height: 1.1;
+  font-size: 1.15rem;
+  line-height: 1.15;
   color: #1E2326;
 }
-.plan-steps__when {
-  margin: 8px 0 0;
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #1E2326;
-}
-.plan-steps li.plan-steps__final { border-top-color: #F6C445; }
-.plan-regions {
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-  margin: 28px 0 0;
-  padding: 0;
-}
-.plan-regions li {
-  margin: 0;
-  background: #fff;
-  color: #1E2326;
-  border: 1px solid #d9dde1;
-  border-top: 4px solid #1E2326;
-  padding: 18px 16px 22px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-height: 128px;
-}
-.plan-regions span {
+.plan-when {
+  margin: 6px 0 0;
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #1F4E9A;
 }
-.plan-regions strong {
-  font-family: "Outfit", "Public Sans", sans-serif;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  font-size: clamp(1.25rem, 1.6vw, 1.7rem);
-  line-height: 1.1;
+.plan-card p:last-child { margin: 4px 0 0; font-size: 0.95rem; line-height: 1.35; color: #1E2326; }
+.plan-stop--finale { width: 76px; height: 76px; }
+.plan-stop--finale .plan-node { width: 76px; height: 76px; }
+.plan-stop--finale .plan-card h3 { font-size: 1.35rem; }
+@media (prefers-reduced-motion: no-preference) {
+  .plan-map__lane { animation: plan-lane 14s linear infinite; }
 }
-@media (max-width: 900px) {
-  .plan-steps, .plan-regions { grid-template-columns: 1fr; }
-  .plan-regions li { min-height: 0; }
+@keyframes plan-lane { to { stroke-dashoffset: -20; } }
+@media (max-width: 1079px) {
+  .plan-map__svg { display: none; }
+  .plan-map__stops {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    margin: 28px 0 0 12px;
+    padding: 4px 0 4px 48px;
+    border-left: 4px solid #1E2326;
+  }
+  .plan-stop, .plan-stop--finale {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    height: auto;
+    transform: none;
+  }
+  .plan-node, .plan-stop--finale .plan-node {
+    position: absolute;
+    left: -74px;
+    top: 0;
+    width: 48px;
+    height: 48px;
+  }
+  .plan-node svg, .plan-stop--finale .plan-node svg { width: 48px; height: 48px; }
+  .plan-card, .plan-stop--above .plan-card, .plan-stop--below .plan-card {
+    position: static;
+    width: auto;
+    transform: none;
+    text-align: left;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .plan-map__lane { animation: none; }
 }
 
 .story-hero, .story-chapter { padding: clamp(56px, 7vw, 96px) 0; background: #fff; color: #1E2326; }
