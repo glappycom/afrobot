@@ -34,21 +34,46 @@
   </div>
 </section>
 
-<section class="section band-quiet" id="pathways" aria-labelledby="pathways-title">
+<section class="section places" id="pathways" aria-labelledby="pathways-title">
   <div class="container">
-    <h2 id="pathways-title" class="h1">Cameroon and the United States</h2>
-    <div class="path-cards">
-      <article>
-        <p class="kicker">United States</p>
-        <h3>McKinney came first</h3>
-        <p>About {{facts.mckinneyStudents}} kids took part in McKinney, Texas, in 2024.</p>
-        <a class="btn btn--ink" href="#plan">See the US plan</a>
+    <h2 id="pathways-title" class="h1">Two continents, one innovation future</h2>
+    <div class="places__row">
+      <article class="places__panel">
+        <figure>
+          <picture>
+            <source srcset="assets/photos/mckinney-build-day-2024.webp" type="image/webp">
+            <img src="assets/photos/mckinney-build-day-2024.jpg" alt="A big group of kids and mentors pose with the robots they built, three robots on the floor in front" width="1000" height="920" loading="lazy" decoding="async">
+          </picture>
+        </figure>
+        <div class="places__body">
+          <p class="kicker">United States</p>
+          <p class="places__stat"><strong>{{facts.mckinneyStudents}}</strong> <span>kids</span></p>
+          <p class="places__when">2024 pilot, McKinney, Texas</p>
+          <p>Our first pilot: about {{facts.mckinneyStudents}} kids in five to six teams, with parents in the room.</p>
+          <a class="btn btn--ink" href="usa.html">See the US story</a>
+        </div>
       </article>
-      <article>
-        <p class="kicker">Cameroon</p>
-        <h3>Classes are already running</h3>
-        <p>About {{facts.cameroonTrained}} kids have trained in holiday programs since {{facts.cameroonStarted}}. About {{facts.cameroonActive}} learn with us now.</p>
-        <a class="btn btn--inverse" href="africa.html#work">See Cameroon</a>
+      <div class="places__bridge" aria-hidden="true">
+        <svg viewBox="0 0 88 180" width="88" height="180">
+          <path d="M14 22 C 44 22, 44 158, 74 158" fill="none" stroke="#1E2326" stroke-width="2" stroke-dasharray="4 5" stroke-linecap="round"/>
+          <circle cx="14" cy="22" r="7" fill="#fff" stroke="#1E2326" stroke-width="2"/>
+          <circle cx="74" cy="158" r="7" fill="#fff" stroke="#1E2326" stroke-width="2"/>
+        </svg>
+      </div>
+      <article class="places__panel">
+        <figure>
+          <picture>
+            <source sizes="(max-width: 800px) 100vw, 42vw" srcset="assets/photos/cameroon-classroom-wide-800.webp 800w, assets/photos/cameroon-classroom-wide.webp 1280w" type="image/webp">
+            <img src="assets/photos/cameroon-classroom-wide.jpg" alt="Students in lab coats working at laptops in a classroom in Cameroon" width="1280" height="960" loading="lazy" decoding="async">
+          </picture>
+        </figure>
+        <div class="places__body">
+          <p class="kicker">Cameroon</p>
+          <p class="places__stat"><strong>{{facts.cameroonTrained}}</strong> <span>trained</span></p>
+          <p class="places__when">Since {{facts.cameroonStarted}}. {{facts.cameroonActive}} learning now.</p>
+          <p>Started in Bamenda to give kids an edge. It grows with every holiday program.</p>
+          <a class="btn btn--ink" href="africa.html">See the Cameroon story</a>
+        </div>
       </article>
     </div>
   </div>
