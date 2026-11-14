@@ -1,21 +1,38 @@
-<section class="season-hero" id="top">
-  <div class="season-hero__copy">
+<section class="season-hero cine-hero" id="top">
+  <div class="cine-hero__copy">
     <p class="kicker">AfroBot</p>
-    <h1 class="display">Kids in Cameroon and the US learning to build robots and AI.</h1>
+    <h1 class="display">Two countries. Kids building robots and AI.</h1>
     <p class="hero__tag"><span>From Africa to the World</span></p>
-    <p class="lead">Kids in Cameroon have been building and coding robots since November 2022. A pilot in McKinney, Texas, followed in 2024.</p>
+    <p class="lead">Kids in Cameroon and the US learning to build robots and AI.</p>
     <div class="hero__actions">
       <a class="btn btn--clay" href="programs.html">See the programs</a>
-      <a class="btn btn--ink" href="usa.html#plan">See the 2027 season</a>
-      <a class="btn btn--line" href="partners.html">Become a partner</a>
+      <a class="btn btn--line-light" href="usa.html#plan">See the 2027 season</a>
+      <a class="btn btn--line-light" href="partners.html">Become a partner</a>
     </div>
   </div>
-  <div class="season-hero__photo">
-    <picture>
-      <source srcset="assets/photos/mckinney-build-day-2024-960.avif 960w, assets/photos/mckinney-build-day-2024.avif 1000w" sizes="(min-width: 900px) 58vw, 100vw" type="image/avif">
-      <source srcset="assets/photos/mckinney-build-day-2024.webp" type="image/webp">
-      <img src="assets/photos/mckinney-build-day-2024.jpg" alt="A big group of kids and mentors pose with the robots they built, three robots on the floor in front" width="1000" height="920" fetchpriority="high" decoding="async">
-    </picture>
+  <div class="cine-hero__stage">
+    <figure class="cine-hero__back">
+      <picture>
+        <source sizes="(max-width: 800px) 48vw, 34vw" srcset="assets/photos/cameroon-classroom-wide-800.webp 800w, assets/photos/cameroon-classroom-wide.webp 1280w" type="image/webp">
+        <img src="assets/photos/cameroon-classroom-wide.jpg" alt="Students in lab coats working at laptops in a classroom in Cameroon" width="1280" height="960" fetchpriority="high" decoding="async">
+      </picture>
+    </figure>
+    <figure class="cine-hero__front">
+      <picture>
+        <source srcset="assets/photos/mckinney-build-day-2024-960.avif 960w, assets/photos/mckinney-build-day-2024.avif 1000w" sizes="(max-width: 800px) 48vw, 32vw" type="image/avif">
+        <source srcset="assets/photos/mckinney-build-day-2024.webp" type="image/webp">
+        <img src="assets/photos/mckinney-build-day-2024.jpg" alt="A big group of kids and mentors pose with the robots they built, three robots on the floor in front" width="1000" height="920" decoding="async">
+      </picture>
+    </figure>
+    <svg class="cine-hero__hex" viewBox="0 0 48 48" aria-hidden="true"><polygon points="24,3 44,14 44,34 24,45 4,34 4,14" fill="none" stroke="#F6C445" stroke-width="2.5"/></svg>
+  </div>
+  <div class="cine-hero__proof">
+    <ul>
+      <li><strong>{{facts.mckinneyStudents}}</strong><span>kids in the McKinney pilot, 2024</span></li>
+      <li><strong>{{facts.cameroonTrained}}</strong><span>trained in Cameroon</span></li>
+      <li><strong>{{facts.cameroonActive}}</strong><span>learning now</span></li>
+    </ul>
+    <p>Kids in Cameroon have been building and coding robots since November 2022.</p>
   </div>
 </section>
 
