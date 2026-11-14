@@ -64,7 +64,7 @@ const orgJson = `<script type="application/ld+json">
 </script>`;
 
 const pages = [
-  ['index.html', 'home.html', 'AfroBot · Kids in Cameroon and the US learning to build robots and AI.', 'Kids in Cameroon have been building and coding robots since November 2022. A pilot in McKinney, Texas, followed in 2024.', '/', orgJson + '\n<link rel="preload" as="image" href="assets/photos/mckinney-build-day-2024-960.avif" imagesrcset="assets/photos/mckinney-build-day-2024-960.avif 960w, assets/photos/mckinney-build-day-2024.avif 1000w" imagesizes="100vw" type="image/avif" fetchpriority="high">'],
+  ['index.html', 'home.html', 'AfroBot · Kids in Cameroon and the US learning to build robots and AI.', 'Kids in Cameroon have been building and coding robots since November 2022. A pilot in McKinney, Texas, followed in 2024.', '/', orgJson + '\n<link rel="preload" as="image" href="assets/photos/mckinney-build-day-2024-960.avif" imagesrcset="assets/photos/mckinney-build-day-2024-960.avif 960w, assets/photos/mckinney-build-day-2024.avif 1000w" imagesizes="(max-width: 800px) 48vw, 32vw" type="image/avif" fetchpriority="high">'],
   ['mentorship.html', 'mentorship.html', 'Mentorship · AfroBot', 'Mentor with AfroBot. Screening is required before working with students.', '/mentorship', ''],
   ['about.html', 'about.html', 'About · AfroBot', 'AfroBot is a program of Glappy Foundation, a 501(c)(3) nonprofit organization. Kids in Cameroon have been building robots since November 2022.', '/about', ''],
   ['programs.html', 'programs.html', 'Programs · AfroBot', 'Academy, League, and Innovation Lab. Discover through Advance. $100 per child for a camp week is the participation goal.', '/programs', ''],
