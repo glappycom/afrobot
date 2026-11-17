@@ -1,7 +1,7 @@
 /* AfroBot tokens.
-   Paper and graphite are the surfaces. Yellow (--accent) is the signature mark, used as a rule or one closing band.
+   Paper, graphite, and one light gray-green tint. No yellow.
    --cta is the brand primary: deep green #164A38. White text on it is 10.1:1.
-   Legacy names: --clay* are graphite, not a clay color. --gold is the yellow accent. */
+   Legacy names: --clay* are graphite. --gold and --accent alias the green primary so old references cannot paint yellow. */
 :root {
   --cta: #164A38;
   --cta-hover: #0F3D32;
@@ -20,14 +20,14 @@
   --clay-strong-dk: #1E2326;
   --clay-text: #1E2326;
   --clay-deep: #1E2326;
-  --gold: #F6C445; /* legacy name for the yellow accent; prefer --accent */
+  --gold: #164A38; /* retired name; aliases the green primary */
   --danger: #8C2A0A;
   --bone: #FFFFFF;
   --paper: #FFFFFF;
   --white: #FFFFFF;
   --steel: #FFFFFF;
-  --band: #F5F6F8;
-  --steel-card: #F5F6F8;
+  --band: #F3F6F4;
+  --steel-card: #F3F6F4;
   --on-ink: #FFFFFF;
   --on-ink-soft: #D6DEEA;
   --display: "Outfit", "Public Sans", sans-serif;
@@ -53,7 +53,7 @@
   --ease: cubic-bezier(.2, .7, .2, 1);
   --header-offset: 5.5rem;
   --focus: #164A38;
-  --accent: #F6C445;
+  --accent: #164A38; /* retired yellow; aliases the green primary */
   --measure: 62ch;
   --space-1: 0.25rem;
   --space-2: 0.5rem;

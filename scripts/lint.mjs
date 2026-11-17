@@ -68,6 +68,7 @@ function localTarget(href) {
 for (const name of files) {
   const html = fs.readFileSync(path.join(root, name), 'utf8');
   if (html.includes('{{')) fail(name + ' has an unresolved placeholder');
+  if (/#F6C445|#F6E4DC/i.test(html)) fail(name + ' contains yellow');
   const h1 = html.match(/<h1\b/gi) || [];
   if (h1.length !== 1) fail(name + ' has ' + h1.length + ' h1 elements');
   if (!html.includes('lang="en"')) fail(name + ' missing lang');
@@ -199,7 +200,8 @@ const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
 if (!robots.includes('Sitemap: https://afrobot.org/sitemap.xml')) fail('robots.txt missing canonical sitemap');
 if (!sitemap.includes('https://afrobot.org/') || !sitemap.includes('https://afrobot.org/programs')) fail('sitemap missing canonical urls');
 
-const css = ['components.css', 'styles.css', 'tokens.css', 'visual.css'].map((name) => fs.readFileSync(path.join(root, name), 'utf8')).join('\n');
+const css = ['components.css', 'styles.css', 'tokens.css', 'visual.css', 'funder.css'].map((name) => fs.readFileSync(path.join(root, name), 'utf8')).join('\n');
+if (/#F6C445|#F6E4DC/i.test(css)) fail('yellow remains in css');
 if (/color:\s*var\(--ink-40\)/.test(fs.readFileSync(path.join(root, 'components.css'), 'utf8'))) fail('components.css uses ink-40 as text');
 if (!css.includes('Public Sans') || !css.includes('PublicSans-VF.woff2')) fail('Public Sans WOFF2 is not served');
 if (/url\(fonts\/Inter/.test(css)) fail('old body font is still requested');
@@ -213,7 +215,7 @@ function contrast(a, b) {
   const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x);
   return (hi + 0.05) / (lo + 0.05);
 }
-for (const [fg, bg, min] of [['#142033', '#FFFFFF', 4.5], ['#142033', '#F5F6F8', 4.5], ['#142033', '#F6C445', 4.5], ['#3E4C5E', '#FFFFFF', 4.5], ['#FFFFFF', '#164A38', 4.5], ['#FFFFFF', '#0F3D32', 4.5], ['#164A38', '#FFFFFF', 4.5], ['#164A38', '#F5F6F8', 4.5], ['#FFFFFF', '#B9380F', 4.5], ['#FFFFFF', '#8C2A0A', 4.5], ['#B9380F', '#FFFFFF', 4.5], ['#FFFFFF', '#142033', 4.5], ['#D6DEEA', '#142033', 4.5], ['#F6C445', '#1E2326', 4.5]]) {
+for (const [fg, bg, min] of [['#142033', '#FFFFFF', 4.5], ['#142033', '#F3F6F4', 4.5], ['#1E2326', '#F3F6F4', 4.5], ['#3E4C5E', '#FFFFFF', 4.5], ['#3E4C5E', '#F3F6F4', 4.5], ['#FFFFFF', '#164A38', 4.5], ['#FFFFFF', '#0F3D32', 4.5], ['#164A38', '#FFFFFF', 4.5], ['#164A38', '#F3F6F4', 4.5], ['#FFFFFF', '#B9380F', 4.5], ['#FFFFFF', '#8C2A0A', 4.5], ['#B9380F', '#FFFFFF', 4.5], ['#FFFFFF', '#142033', 4.5], ['#D6DEEA', '#142033', 4.5]]) {
   const ratio = contrast(fg, bg);
   if (ratio < min) fail('contrast ' + fg + ' on ' + bg + ' is ' + ratio.toFixed(2));
 }

@@ -807,7 +807,7 @@ h3, .audience-card h3, .info-card h2, .info-card h3 {
   color: var(--clay-text);
 }
 .f > span, .f legend { color: var(--ink); }
-::selection { background: #F6E4DC; color: var(--ink); }
+::selection { background: #E4EEE9; color: var(--ink); }
 .f > span i, .consent i, .f__err, .form__msg[data-kind="error"] { color: var(--danger); }
 .page-hero, .center-copy, .sh, .finale { text-align: left; }
 .center-copy, .sh-foot, .finale .actions { margin-inline: 0; text-align: left; justify-content: flex-start; }
