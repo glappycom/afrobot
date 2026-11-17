@@ -34,7 +34,6 @@ const requiredHome = [
   'Get session updates',
   'open-source schematics',
   'To be added',
-  'In discussion',
 ];
 
 const retiredCopy = [
@@ -86,11 +85,8 @@ for (const name of files) {
   }
   for (const [re, label] of banned) if (re.test(html)) fail(name + ' contains banned pattern ' + label);
   if (html.includes('2028') && !html.includes('Proposed') && !html.includes('proposed')) fail(name + ' uses 2028 without marking it proposed');
-  if (/ut dallas|university of texas at dallas|impactutd/i.test(html)) {
-    if (!/in discussion/i.test(html)) fail(name + ' names UT Dallas without marking it in discussion');
-    if (/confirmed partnership|confirmed funding|our partner/i.test(html) && !/not a confirmed partnership|not confirmed funding/i.test(html)) {
-      fail(name + ' states a confirmed UT Dallas partnership or funding');
-    }
+  if (/ut dallas|university of texas|\bjsom\b|impactutd|\butd\b/i.test(html)) {
+    fail(name + ' names an unconfirmed university or partner');
   }
   if (/8-team pilot/.test(html)) fail(name + ' still calls 2027 an 8-team pilot');
   if (html.includes('Registration is open')) fail(name + ' says registration is open');
