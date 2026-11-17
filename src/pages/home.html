@@ -1,186 +1,182 @@
-<section class="season-hero cine-hero" id="top">
-  <div class="cine-hero__copy">
-    <p class="kicker">AfroBot</p>
-    <h1 class="display">Two countries. Kids building robots and AI.</h1>
-    <p class="hero__tag"><span>From Africa to the World</span></p>
-    <p class="lead">Kids in Cameroon and the US learning to build robots and AI.</p>
+<section class="hero-bleed" id="top">
+  <div class="hero-bleed__copy">
+    <p class="kicker">Youth robotics and AI</p>
+    <h1 class="display">Children building robots and AI.</h1>
+    <p class="lead">African children in Cameroon and Dallas–Fort Worth. A program of Glappy Foundation.</p>
     <div class="hero__actions">
-      <a class="btn btn--clay" href="programs.html">See the programs</a>
-      <a class="btn btn--line-light" href="usa.html#plan">See the 2027 season</a>
-      <a class="btn btn--line-light" href="partners.html">Become a partner</a>
+      <a class="btn btn--clay" href="partners.html">Partner with us</a>
+      <a class="btn btn--line" href="#scale">See the 2027 plan</a>
     </div>
   </div>
-  <div class="cine-hero__stage">
-    <figure class="cine-hero__back">
-      <picture>
-        <source sizes="(max-width: 800px) 48vw, 34vw" srcset="assets/photos/cameroon-classroom-wide-800.webp 800w, assets/photos/cameroon-classroom-wide.webp 1280w" type="image/webp">
-        <img src="assets/photos/cameroon-classroom-wide.jpg" alt="Students in lab coats working at laptops in a classroom in Cameroon" width="1280" height="960" fetchpriority="high" decoding="async">
-      </picture>
-    </figure>
-    <figure class="cine-hero__front">
-      <picture>
-        <source srcset="assets/photos/mckinney-build-day-2024-960.avif 960w, assets/photos/mckinney-build-day-2024.avif 1000w" sizes="(max-width: 800px) 48vw, 32vw" type="image/avif">
-        <source srcset="assets/photos/mckinney-build-day-2024.webp" type="image/webp">
-        <img src="assets/photos/mckinney-build-day-2024.jpg" alt="A big group of kids and mentors pose with the robots they built, three robots on the floor in front" width="1000" height="920" decoding="async">
-      </picture>
-    </figure>
-    <svg class="cine-hero__hex" viewBox="0 0 48 48" aria-hidden="true"><polygon points="24,3 44,14 44,34 24,45 4,34 4,14" fill="none" stroke="#F6C445" stroke-width="2.5"/></svg>
-  </div>
-  <div class="cine-hero__proof">
+  <figure class="hero-bleed__media">
+    <picture>
+      <source srcset="assets/photos/bamenda-laptop-row.avif" type="image/avif">
+      <source srcset="assets/photos/bamenda-laptop-row.webp" type="image/webp">
+      <img src="assets/photos/bamenda-laptop-row.jpg" alt="Children working at laptops during a program in Bamenda" width="2000" height="1500" fetchpriority="high" decoding="async">
+    </picture>
+  </figure>
+</section>
+
+<section class="fx-meter" aria-label="Program reach">
+  <div class="fx-wrap">
     <ul>
-      <li><strong>{{facts.mckinneyStudents}}</strong><span>kids in the McKinney pilot, 2024</span></li>
-      <li><strong>{{facts.cameroonTrained}}</strong><span>trained in Cameroon</span></li>
-      <li><strong>{{facts.cameroonActive}}</strong><span>learning now</span></li>
+      <li><strong data-count="{{facts.mckinneyStudents}}">{{facts.mckinneyStudents}}</strong><span>Children in the McKinney pilot, 2024</span></li>
+      <li><strong data-count="{{facts.cameroonTrainedCount}}">{{facts.cameroonTrained}}</strong><span>Children trained in Cameroon</span></li>
+      <li><strong data-count="{{facts.cameroonActiveCount}}">{{facts.cameroonActive}}</strong><span>Children learning now</span></li>
     </ul>
-    <p>Kids in Cameroon have been building and coding robots since November 2022.</p>
+    <p class="fx-source">Kids in Cameroon have been building and coding robots since November 2022. Source: AfroBot records, November 2026. <a href="https://www.glappy.com/foundation">Glappy Foundation’s Cameroon record</a> reports the children learning now.</p>
   </div>
 </section>
 
-<section class="impact" aria-label="Program reach" data-reveal>
-  <div class="container impact__row">
-    <p>
-      <span class="impact__about">About</span>
-      <strong data-count="{{facts.cameroonTrainedCount}}">{{facts.cameroonTrained}}</strong>
-      <span class="impact__label">children trained through holiday programs in Cameroon</span>
-    </p>
-    <p>
-      <span class="impact__about">About</span>
-      <strong data-count="{{facts.cameroonActiveCount}}">{{facts.cameroonActive}}</strong>
-      <span class="impact__label">children learning with us year-round through partner schools</span>
-    </p>
-  </div>
-</section>
-
-<section class="section places" id="pathways" aria-labelledby="pathways-title">
-  <div class="container">
-    <h2 id="pathways-title" class="h1">Two continents, one innovation future</h2>
-    <div class="places__row">
-      <article class="places__panel">
-        <figure>
-          <picture>
-            <source srcset="assets/photos/mckinney-build-day-2024.webp" type="image/webp">
-            <img src="assets/photos/mckinney-build-day-2024.jpg" alt="A big group of kids and mentors pose with the robots they built, three robots on the floor in front" width="1000" height="920" loading="lazy" decoding="async">
-          </picture>
-        </figure>
-        <div class="places__body">
-          <p class="kicker">United States</p>
-          <p class="places__stat"><strong>{{facts.mckinneyStudents}}</strong> <span>kids</span></p>
-          <p class="places__when">2024 pilot, McKinney, Texas</p>
-          <p>Our first pilot: about {{facts.mckinneyStudents}} kids in five to six teams, with parents in the room.</p>
-          <a class="btn btn--ink" href="usa.html">See the US story</a>
-        </div>
+<section class="fx" id="problem" aria-labelledby="problem-title">
+  <div class="fx-wrap">
+    <p class="fx-kicker">The problem</p>
+    <h2 id="problem-title">A shorter school week in Bamenda. A first season still ahead in Texas.</h2>
+    <div class="fx-split">
+      <article>
+        <h3>Cameroon</h3>
+        <p>Kids in Bamenda were in school about four days a week because of the conflict there. Kids in other parts of the country were in school five days a week. Classes began in {{facts.cameroonStarted}}, under Glappy Foundation, so those children could keep learning to build.</p>
       </article>
-      <div class="places__bridge" aria-hidden="true">
-        <svg viewBox="0 0 88 180" width="88" height="180">
-          <path d="M14 22 C 44 22, 44 158, 74 158" fill="none" stroke="#1E2326" stroke-width="2" stroke-dasharray="4 5" stroke-linecap="round"/>
-          <circle cx="14" cy="22" r="7" fill="#fff" stroke="#1E2326" stroke-width="2"/>
-          <circle cx="74" cy="158" r="7" fill="#fff" stroke="#1E2326" stroke-width="2"/>
-        </svg>
+      <article>
+        <h3>Dallas–Fort Worth</h3>
+        <p>In 2024, about {{facts.mckinneyStudents}} children in McKinney, Texas, built in five to six teams, with parents in the room.</p>
+        <p>Robotics and AI should not depend on a family’s income or zip code.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="fx fx--band" id="model" aria-labelledby="model-title">
+  <div class="fx-wrap">
+    <p class="fx-kicker">The model</p>
+    <h2 id="model-title">Learn, build, and show the work.</h2>
+    <ol class="fx-steps">
+      <li>
+        <h3>Learn</h3>
+        <p>Classes with a mentor. A child takes part through a parent or guardian. Mentors are screened before they meet students.</p>
+      </li>
+      <li>
+        <h3>Build</h3>
+        <p>Ages 6–12 start with a hands-on build. Ages 13–17 work toward a humanoid robot. In 2027, Dallas–Fort Worth teams build small humanoid robots from open-source schematics and 3D-printed parts.</p>
+      </li>
+      <li>
+        <h3>Show</h3>
+        <p>Training, safety, and a showcase. Dallas–Fort Worth and Yaoundé meet on separate dates. AfroBot is hosting the Yaoundé event.</p>
+      </li>
+    </ol>
+    <p class="fx-more"><a href="programs.html">See the programs</a> for Discover through Advance.</p>
+  </div>
+</section>
+
+<section class="fx" id="proof" aria-labelledby="proof-title">
+  <div class="fx-wrap">
+    <p class="fx-kicker">Proof</p>
+    <h2 id="proof-title">Work that has already happened.</h2>
+    <div class="fx-photos">
+      <figure>
+        <picture>
+          <source srcset="assets/photos/mckinney-build-day-2024-960.avif 960w, assets/photos/mckinney-build-day-2024.avif 1000w" sizes="(max-width: 700px) 100vw, 40vw" type="image/avif">
+          <source srcset="assets/photos/mckinney-build-day-2024.webp" type="image/webp">
+          <img src="assets/photos/mckinney-build-day-2024.jpg" alt="A big group of kids and mentors pose with the robots they built, three robots on the floor in front" width="1000" height="920" loading="lazy" decoding="async">
+        </picture>
+        <figcaption>
+          <strong>McKinney, Texas, 2024.</strong>
+          About {{facts.mckinneyStudents}} children. Five to six teams. Parents were in the room.
+          <a href="usa.html">The US story</a>
+        </figcaption>
+      </figure>
+      <figure>
+        <picture>
+          <source sizes="(max-width: 800px) 100vw, 40vw" srcset="assets/photos/bamenda-circuit-team-800.avif 800w, assets/photos/bamenda-circuit-team.avif 2000w" type="image/avif">
+          <source sizes="(max-width: 800px) 100vw, 40vw" srcset="assets/photos/bamenda-circuit-team-800.webp 800w, assets/photos/bamenda-circuit-team.webp 2000w" type="image/webp">
+          <img src="assets/photos/bamenda-circuit-team.jpg" alt="Students lean in together to wire a small circuit beside an open workbook" width="2000" height="1500" loading="lazy" decoding="async">
+        </picture>
+        <figcaption>
+          <strong>Bamenda, since {{facts.cameroonStarted}}.</strong>
+          About {{facts.cameroonTrained}} children trained in holiday programs. About {{facts.cameroonActive}} learning now.
+          <a href="africa.html">The Cameroon story</a>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="fx fx--band" id="scale" aria-labelledby="scale-title">
+  <div class="fx-wrap fx-scale">
+    <div class="fx-scale__copy">
+      <p class="fx-kicker">2027</p>
+      <h2 id="scale-title">Dallas–Fort Worth, at the scale of a season.</h2>
+      <p>The 2024 pilot was about {{facts.mckinneyStudents}} children. The 2027 season is about {{impact.dallas2027Teams}} teams and about {{impact.dallas2027Students}} students, with training, safety, and a showcase. The Cameroon program continues.</p>
+      <p class="fx-source">Interest is open. Sessions are not open for enrollment on this site yet. Other US regions, and a Dallas championship in April 2028, are proposed. <a href="usa.html#plan">Read that horizon</a>.</p>
+    </div>
+    <ul class="fx-stats">
+      <li><strong data-count="{{impact.dallas2027Teams}}">{{impact.dallas2027Teams}}</strong><span>Teams</span></li>
+      <li><strong data-count="{{impact.dallas2027Students}}">{{impact.dallas2027Students}}</strong><span>Students</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="fx" id="where" aria-labelledby="where-title">
+  <div class="fx-wrap">
+    <p class="fx-kicker">Where we work</p>
+    <h2 id="where-title">Two places.</h2>
+    <div class="fx-places">
+      <article>
+        <h3>Dallas–Fort Worth</h3>
+        <p>The 2024 pilot was in McKinney. The 2027 season is about {{impact.dallas2027Teams}} teams and about {{impact.dallas2027Students}} students.</p>
+      </article>
+      <article>
+        <h3>Cameroon</h3>
+        <p>Bamenda since {{facts.cameroonStarted}}. In 2027 AfroBot is hosting an event in Yaoundé, on a separate date from Dallas–Fort Worth.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<aside class="fx fx--band" id="discussion" aria-labelledby="discuss-title">
+  <div class="fx-wrap">
+    <div class="fx-discuss">
+      <div>
+        <p class="fx-kicker">In discussion</p>
+        <h2 id="discuss-title">UT Dallas Africa Initiative.</h2>
       </div>
-      <article class="places__panel">
-        <figure>
-          <picture>
-            <source sizes="(max-width: 800px) 100vw, 42vw" srcset="assets/photos/cameroon-classroom-wide-800.webp 800w, assets/photos/cameroon-classroom-wide.webp 1280w" type="image/webp">
-            <img src="assets/photos/cameroon-classroom-wide.jpg" alt="Students in lab coats working at laptops in a classroom in Cameroon" width="1280" height="960" loading="lazy" decoding="async">
-          </picture>
-        </figure>
-        <div class="places__body">
-          <p class="kicker">Cameroon</p>
-          <p class="places__stat"><strong>{{facts.cameroonTrained}}</strong> <span>trained</span></p>
-          <p class="places__when">Since {{facts.cameroonStarted}}. {{facts.cameroonActive}} learning now.</p>
-          <p>Started in Bamenda to give kids an edge. It grows with every holiday program.</p>
-          <a class="btn btn--ink" href="africa.html">See the Cameroon story</a>
-        </div>
-      </article>
+      <p>A possible link through ImpactUTD is in discussion. This is not confirmed funding and not a confirmed partnership. No logo is shown until it is.</p>
+    </div>
+  </div>
+</aside>
+
+<section class="fx fx--ink" id="ask" aria-labelledby="ask-title">
+  <div class="fx-wrap fx-ask">
+    <div>
+      <p class="fx-kicker">The ask</p>
+      <h2 id="ask-title">Partner with us.</h2>
+      <p>A partner can fund a child’s place, a team’s robot build, or training, safety, and the showcase. The camp-week participation goal is $100 per child. Sponsor goals are on the partners page.</p>
+    </div>
+    <div class="fx-ask__actions">
+      <a class="btn btn--clay" href="partnership.html#register">Start a partnership inquiry</a>
+      <a class="btn btn--line-light" href="mailto:partnerships@afrobot.org">partnerships@afrobot.org</a>
     </div>
   </div>
 </section>
 
-{{plan}}
-
-<section class="section stages" id="route" aria-labelledby="route-title">
-  <div class="container">
-    <h2 id="route-title" class="h1">What a child can do next</h2>
-    <p class="lead">A child can take a class, join a team, and later try a bigger project. Starting a company is optional.</p>
-    <ol class="stage-line stage-line--four">
-      <li class="journey-step"><h3>Academy</h3><p>Classes with a mentor.</p></li>
-      <li class="journey-step"><h3>League</h3><p>A local team.</p></li>
-      <li class="journey-step"><h3>Global Innovation Challenge</h3><p>We plan a shared project for teams in different countries. No date yet.</p></li>
-      <li class="journey-step"><h3>Future Opportunities</h3><p>More school, a job, or a project they choose.</p></li>
-    </ol>
-  </div>
-</section>
-
-<div class="filmstrip" aria-hidden="true">
-  <img srcset="assets/photos/cameroon-table-coding-800.webp 800w, assets/photos/cameroon-table-coding.webp 1280w" sizes="(max-width: 700px) 50vw, 25vw" src="assets/photos/cameroon-table-coding.webp" alt="" width="1280" height="960" loading="lazy" decoding="async">
-  <img srcset="assets/photos/cameroon-long-table-800.webp 800w, assets/photos/cameroon-long-table.webp 1280w" sizes="(max-width: 700px) 50vw, 25vw" src="assets/photos/cameroon-long-table.webp" alt="" width="1280" height="960" loading="lazy" decoding="async">
-  <img src="assets/photos/bamenda-class-celebration.avif" alt="" width="980" height="735" loading="lazy" decoding="async">
-  <img src="assets/photos/bamenda-desktop-focus.avif" alt="" width="980" height="735" loading="lazy" decoding="async">
-</div>
-
-<section class="story-block" id="span" aria-labelledby="span-title">
-  <div class="story-block__top">
-    <p class="kicker">The work</p>
-    <h2 id="span-title" class="story-title">
-      <span class="story-title__lead">Two Continents.</span>
-      <span class="story-title__next">One Innovation Future.</span>
-    </h2>
-    <div class="story-block__row">
-      <div class="story-collage">
-      <figure class="story-collage__back">
-        <picture>
-          <source sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw" srcset="assets/photos/cameroon-classroom-wide-800.webp 800w, assets/photos/cameroon-classroom-wide.webp 1280w" type="image/webp">
-          <img src="assets/photos/cameroon-classroom-wide.jpg" alt="Students in lab coats working at laptops in a classroom in Cameroon" width="1280" height="960" loading="lazy" decoding="async">
-        </picture>
-        <figcaption>AfroBot program, Cameroon.</figcaption>
-      </figure>
-      <figure class="story-collage__front">
-        <picture>
-          <source sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw" srcset="assets/photos/mckinney-ai-track-2024-800.webp 800w, assets/photos/mckinney-ai-track-2024.webp 1200w" type="image/webp">
-          <img src="assets/photos/mckinney-ai-track-2024.jpg" alt="Kids at tables with their robots while a presenter teaches at a screen" width="1200" height="900" loading="lazy" decoding="async">
-        </picture>
-        <figcaption>AfroBot program, Dallas area, 2024.</figcaption>
-      </figure>
+<section class="fx fx--gap" id="still-to-add" aria-labelledby="gap-title">
+  <div class="fx-wrap fx-gapgrid">
+    <div>
+      <p class="fx-kicker">To be added</p>
+      <h2 id="gap-title">Evidence this site does not have yet.</h2>
     </div>
+    <div>
+      <p>These items are marked on purpose. They are not implied by the counts above.</p>
+      <ul>
+        <li>A theory of change.</li>
+        <li>Outcomes beyond headcount: who returns, what they can build, and the cost per child.</li>
+        <li>A 2027 budget and a use-of-funds note.</li>
+        <li>Founder and staff biographies.</li>
+        <li>Reflections from families or educators, with consent.</li>
+        <li>A confirmed partner list. No logos until then.</li>
+      </ul>
     </div>
   </div>
-</section>
-
-<section class="section stages" id="journey" aria-labelledby="journey-title" data-stage-mode="{{stage-mode}}">
-  <div class="container">
-    <h2 id="journey-title" class="h1">Ages</h2>
-    <p class="lead">A sponsor can cover the cost of a place.</p>
-    <ol class="stage-line">
-      <li class="journey-step stage-discover" data-stage-index="0"><h3>Discover</h3><p>Ages 6–9. Teams build a life-size vehicle by hand.</p></li>
-      <li class="journey-step stage-build" data-stage-index="1"><h3>Build</h3><p>Ages 9–12. Teams carry a life-size vehicle through a longer build.</p></li>
-      <li class="journey-step stage-innovate" data-stage-index="2"><h3>Innovate</h3><p>Ages 13–17. An AI agent is the brain of a humanoid robot.</p></li>
-      <li class="journey-step stage-compete" data-stage-index="3"><h3>Compete</h3><p>Ages 13–17. Teams prepare humanoid robots for recognized robotics competitions.</p></li>
-      <li class="journey-step stage-advance" data-stage-index="4"><h3>Advance</h3><p>Ages 13–17. Older students mentor younger teams with an adult coach.</p></li>
-    </ol>
-  </div>
-</section>
-
-<section class="season" id="dallas-2027" aria-labelledby="dallas-title">
-  <article class="season__main">
-    <p class="kicker">Proposed targets</p>
-    <p class="season__year">2027</p>
-    <h2 id="dallas-title" class="h1">AfroBot Dallas 2027: {{impact.dallas2027Students}} Students. {{impact.dallas2027Teams}} Teams.</h2>
-    <p>Registration is open. <a href="competitions.html">See the 2027 season</a>.</p>
-    <div class="season__figs">
-      <p><strong>{{impact.dallas2027Students}}</strong><span>Students</span></p>
-      <p><strong>{{impact.dallas2027Teams}}</strong><span>Teams</span></p>
-    </div>
-    <div class="hero__actions">
-      <a class="btn btn--ink" href="community.html?intent=parent#register">Register Your Interest</a>
-    </div>
-    <p class="season__next"><a href="mentorship.html">Become a mentor</a> <a href="partners.html">Become a partner</a></p>
-  </article>
-  <article class="season__side">
-    <p class="kicker">Planned hubs</p>
-    <h2 class="h1">Yaoundé 2027</h2>
-    <p>AfroBot is hosting the Yaoundé event.</p>
-    <p><a class="btn btn--line-light" href="competitions.html">See the hubs</a></p>
-  </article>
 </section>
 
 <section class="involve" id="involve" aria-labelledby="involve-title">

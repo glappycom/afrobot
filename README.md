@@ -6,7 +6,7 @@ Born from the African diaspora. Built for every kid who's been left out of tech.
 Concept preview: dates, partners and costs on the site are proposals.
 
 ## Structure
-- `index.html`, `styles.css`, `script.js`: the whole site. No build step.
+- `src/pages` and `src/partials` are the source. `npm run site:build` writes the root HTML files. `npm run site:lint` checks them.
 - `assets/`: logo and favicon SVGs (official lockup: H3 "Cutout" icon + single-colour "afrobot" wordmark, `logo-afrobot*.svg`; source files in the brand kit. `og-image.png` and `apple-touch-icon.png` are the social and home-screen images).
 - `fonts/`: self-hosted Outfit (headings), Inter (body) and Space Grotesk, all under the SIL Open Font License (licence files included).
 

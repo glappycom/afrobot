@@ -257,13 +257,18 @@ document.querySelectorAll('.work-gallery').forEach((gallery) => {
     const interest = data.get('interest');
     const experience = data.get('experience');
     const format = data.get('format');
-    const stage = age === '6-9' ? 'Discover' : 'Build';
-    const ages = age === '6-9' ? '6–9' : '9–12';
+    let stage = 'Build';
+    let ages = '9–12';
+    if (age === '6-9') { stage = 'Discover'; ages = '6–9'; }
+    if (age === '13-17') {
+      ages = '13–17';
+      stage = interest === 'mentorship' ? 'Advance' : interest === 'compete' ? 'Compete' : 'Innovate';
+    }
     const practice = experience === 'new' ? 'new to this' : 'some practice';
     const shape = format === 'workshop' ? 'a workshop' : 'an ongoing program';
     let extra = '';
-    if (interest === 'mentorship') extra = ' Mentorship is for adults.';
-    if (interest === 'compete') extra = ' Compete is for ages 13–17.';
+    if (interest === 'mentorship' && stage !== 'Advance') extra = ' Mentorship is for adults.';
+    if (interest === 'compete' && stage !== 'Compete') extra = ' Compete is for ages 13–17.';
     out.textContent = stage + ' fits ages ' + ages + ', ' + practice + ', in ' + shape + '.' + extra;
   });
 })();
@@ -274,13 +279,16 @@ document.querySelectorAll('.work-gallery').forEach((gallery) => {
   const reveal = document.querySelectorAll('[data-reveal], main > section:not(.season-hero):not(.split-hero):not(.page-hero):not(.events-hero), main > .filmstrip');
   if (!reduce && reveal.length && 'IntersectionObserver' in window) {
     reveal.forEach((el) => el.classList.add('will-reveal'));
+    document.querySelectorAll('.fx-steps > li, .fx-places > article, .path-cards > article, .fx-photos > figure, .goal-bands > article, .fx-meter li, .fx-stats li').forEach((el, i) => {
+      el.style.setProperty('--i', String(i % 6));
+    });
     const io = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         entry.target.classList.add('is-revealed');
         io.unobserve(entry.target);
       });
-    }, { threshold: 0.18 });
+    }, { threshold: 0, rootMargin: '0px 0px -8% 0px' });
     reveal.forEach((el) => io.observe(el));
   }
   const nums = document.querySelectorAll('[data-count]');
@@ -291,7 +299,7 @@ document.querySelectorAll('.work-gallery').forEach((gallery) => {
     if (!Number.isFinite(target)) return;
     const start = performance.now();
     const tick = (now) => {
-      const t = Math.min(1, (now - start) / 900);
+      const t = Math.min(1, (now - start) / 560);
       const eased = 1 - (1 - t) ** 3;
       el.textContent = format(Math.round(target * eased));
       if (t < 1) requestAnimationFrame(tick);
