@@ -16,7 +16,7 @@ Risk: a later edit pastes the old season table back. Mitigation: `npm run site:l
 
 ## Partners, trademarks, and IP
 
-Naming a company implies an agreement. The public site must not list UT Dallas, WhalesBot, K-Scale, Zeroth, LEGO, NSBE, venture firms, or university logos. Do not name a competition brand. Lint fails if an HTML file names one.
+Naming a company implies an agreement. The public site must not list an unconfirmed university, company, venture firm, or competition brand. Lint fails if an HTML file names one.
 
 WAAW Foundation appears only as Dr. Okorafor’s affiliation. Glappy Foundation appears as the organization that runs AfroBot, not as a sponsor logo.
 

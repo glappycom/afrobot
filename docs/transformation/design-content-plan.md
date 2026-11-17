@@ -37,7 +37,7 @@ Plain and specific. Say when something is not open, not affiliated, or not a pro
 
 Do not claim that gifts are tax-deductible. Call giving a sponsorship inquiry.
 
-Do not name UT Dallas, WhalesBot, K-Scale, Zeroth, LEGO, NSBE, venture firms, universities, or a competition brand. Do not use Disney or Baymax imagery or names.
+Do not name an unconfirmed university, company, venture firm, or competition brand. Do not use a character brand’s imagery or names.
 
 ## Content states
 
