@@ -1,8 +1,10 @@
-/* AfroBot tokens. White page, graphite text, blue actions, yellow marks.
-   --clay* names remain because older CSS uses them for ink, not for a clay color. */
+/* AfroBot tokens.
+   Paper and graphite are the surfaces. Yellow (--accent) is the signature mark, used as a rule or one closing band.
+   --cta is the brand primary: deep green #164A38. White text on it is 10.1:1.
+   Legacy names: --clay* are graphite, not a clay color. --gold is the yellow accent. */
 :root {
-  --cta: #1F4E9A;
-  --cta-hover: #173B75;
+  --cta: #164A38;
+  --cta-hover: #0F3D32;
   --ink: #1E2326;
   --ink-80: #3A4248;
   --surface-dark: #1E2326;
@@ -18,7 +20,7 @@
   --clay-strong-dk: #1E2326;
   --clay-text: #1E2326;
   --clay-deep: #1E2326;
-  --gold: #1E2326;
+  --gold: #F6C445; /* legacy name for the yellow accent; prefer --accent */
   --danger: #8C2A0A;
   --bone: #FFFFFF;
   --paper: #FFFFFF;
@@ -35,22 +37,22 @@
   --color-ink: var(--ink);
   --color-clay: var(--clay);
   --color-clay-text: var(--clay-text);
-  --t-12: 1.125rem;
-  --t-14: 1.125rem;
-  --t-16: 1.125rem;
-  --t-18: 1.25rem;
-  --t-22: 1.5rem;
-  --t-28: 1.85rem;
-  --t-h2: clamp(1.85rem, 2.6vw, 2.5rem);
-  --t-h1: clamp(2.2rem, 3.6vw, 3.35rem);
-  --t-display: clamp(44px, 4.6vw, 96px);
+  --t-12: 0.75rem;    /* 12 captions, kickers */
+  --t-14: 0.875rem;   /* 14 notes, nav */
+  --t-16: 1rem;       /* 16 body */
+  --t-18: 1.125rem;   /* 18 */
+  --t-22: 1.375rem;   /* 22 lead */
+  --t-28: 1.75rem;    /* 28 */
+  --t-h2: clamp(2rem, 3vw, 2.75rem);
+  --t-h1: clamp(2.5rem, 4vw, 3.5rem);
+  --t-display: clamp(2.75rem, 5vw, 4.75rem);
   --gutter: 24px;
   --margin: clamp(20px, 3vw, 40px);
   --max: 1360px;
   --s-section: clamp(4.75rem, 7vw, 8.5rem);
   --ease: cubic-bezier(.2, .7, .2, 1);
   --header-offset: 5.5rem;
-  --focus: #1E2326;
+  --focus: #164A38;
   --accent: #F6C445;
   --measure: 62ch;
   --space-1: 0.25rem;

@@ -1,5 +1,5 @@
 /* Tokens live in tokens.css. Later :root blocks in this file still override spacing and theme. */
-@import url("tokens.css?v=34");
+@import url("tokens.css?v=35");
 /* Public Sans, SIL OFL, self-hosted variable WOFF2. Weight comes from font-weight. */
 @font-face{font-family:"Public Sans";src:url("fonts/PublicSans-VF.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:optional}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -21,9 +21,9 @@ a{color:inherit;text-decoration:none}
 .c-7-13{grid-column:7/13}.c-4-13{grid-column:4/13}.c-7-9{grid-column:7/9}.c-8-13{grid-column:8/13}.c-5-7{grid-column:5/7}
 
 /* type */
-.display{font:600 var(--t-display)/.92 var(--display);letter-spacing:-.045em}
+.display{font:600 var(--t-display)/1.06 var(--display);letter-spacing:-.045em}
 .display--md{font-size:clamp(2.75rem,6.4vw,6rem)}
-.h1{font:500 var(--t-h1)/1.04 var(--display);letter-spacing:-.035em;max-width:20ch}
+.h1{font:500 var(--t-h1)/1.12 var(--display);letter-spacing:-.035em;max-width:20ch}
 .h2{font:500 var(--t-h2)/1.1 var(--display);letter-spacing:-.025em}
 h3{font:500 var(--t-22)/1.2 var(--display);letter-spacing:-.015em}
 .lead{font-size:var(--t-22);line-height:1.45;letter-spacing:-.01em;color:var(--ink-80)}
@@ -306,8 +306,8 @@ body[data-font="poppins"] .display,body[data-font="poppins"] .h1,body[data-font=
 body[data-font="poppins"] .display{letter-spacing:-.03em;line-height:1}
 
 /* v6 typography: Outfit Black for every heading (body stays Inter) */
-.display{font-weight:900;letter-spacing:-.03em;line-height:.95}
-.h1,.theme__name{font-weight:900;letter-spacing:-.025em;line-height:1.02}
+.display{font-weight:800;letter-spacing:-.03em;line-height:1.06}
+.h1,.theme__name{font-weight:800;letter-spacing:-.025em;line-height:1.12}
 .h2,.pname{font-weight:900;letter-spacing:-.015em}
 h3,.aud-k,.countdown__event,.awards dt,.tiers li span:first-child,.val-list b,.mnav a{font-weight:900;letter-spacing:-.01em}
 .val-list b{letter-spacing:-.02em}

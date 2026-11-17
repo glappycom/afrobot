@@ -64,7 +64,7 @@ const orgJson = `<script type="application/ld+json">
 </script>`;
 
 const pages = [
-  ['index.html', 'home.html', 'AfroBot · Youth robotics and AI', 'A program for African children in Cameroon and Dallas–Fort Worth. About 30 children in the 2024 McKinney pilot. 2027 is a scale-up, not a new pilot.', '/', orgJson + '\n<link rel="preload" as="image" href="assets/photos/mckinney-build-day-2024-960.avif" imagesrcset="assets/photos/mckinney-build-day-2024-960.avif 960w, assets/photos/mckinney-build-day-2024.avif 1000w" imagesizes="(max-width: 800px) 48vw, 32vw" type="image/avif" fetchpriority="high">'],
+  ['index.html', 'home.html', 'AfroBot · Youth robotics and AI', 'A program for African children in Cameroon and Dallas–Fort Worth. About 30 children in the 2024 McKinney pilot. The 2027 season is about 15 teams and about 90 students.', '/', orgJson + '\n<link rel="preload" as="image" href="assets/photos/bamenda-laptop-row.avif" type="image/avif" fetchpriority="high">'],
   ['mentorship.html', 'mentorship.html', 'Mentorship · AfroBot', 'Mentor with AfroBot. Screening is required before working with students.', '/mentorship', ''],
   ['about.html', 'about.html', 'About · AfroBot', 'AfroBot is a program of Glappy Foundation, a Texas nonprofit corporation. Kids in Cameroon have been building robots since November 2022.', '/about', ''],
   ['programs.html', 'programs.html', 'Programs · AfroBot', 'Academy, League, and Innovation Lab. Discover through Advance. $100 per child for a camp week is the participation goal.', '/programs', ''],

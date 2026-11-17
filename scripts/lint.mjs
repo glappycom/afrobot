@@ -32,7 +32,6 @@ const requiredHome = [
   'Community',
   'Ask about hosting',
   'Get session updates',
-  'not a new pilot',
   'open-source schematics',
   'To be added',
   'In discussion',
@@ -131,8 +130,10 @@ const programs = fs.readFileSync(path.join(root, 'programs.html'), 'utf8');
 for (const line of requiredHome) if (!home.includes(line)) fail('homepage missing: ' + line);
 if (home.includes('From Curiosity to Creation. From Community to the World.')) fail('old hero tagline still present');
 if (home.includes('From Curiosity to Creativity. From Africa to the World.')) fail('story heading is still the long line');
-if (!home.includes('class="hero__tag"><span>From Africa to the World</span>')) fail('hero tagline is not the angled tag');
+if (home.includes('hero__tag')) fail('homepage still uses the tag sticker');
+if (home.includes('may shift') || home.includes('fee charged') || home.includes('not a new pilot')) fail('homepage still hedges in the body');
 if (!home.includes('id="scale"')) fail('homepage missing the 2027 scale section');
+if (!home.includes('bamenda-laptop-row')) fail('homepage hero is missing the classroom photo');
 const about = fs.readFileSync(path.join(root, 'about.html'), 'utf8');
 const events = fs.readFileSync(path.join(root, 'events.html'), 'utf8');
 for (const line of ['Planned sessions', 'Affordable sessions', 'The camp-week cost has a $100 goal.', '$100 per child for a camp week is the participation goal.', 'A $10 workshop is a hope, not today’s price.', 'Which stage fits?', 'Ask about financial assistance']) {
@@ -154,7 +155,7 @@ for (const line of ['Screening', 'Supervision', 'two-adult rule', 'Photo and med
   if (!safety.includes(line)) fail('child safety missing: ' + line);
 }
 const competitions = fs.readFileSync(path.join(root, 'competitions.html'), 'utf8');
-if (!competitions.includes('2027 in Dallas–Fort Worth is a scale-up of the 2024 pilot: about 15 teams and about 90 students. It is not a new pilot.')) fail('competitions missing the 2027 season story');
+if (!competitions.includes('The 2027 season in Dallas–Fort Worth scales the 2024 pilot to about 15 teams and about 90 students.')) fail('competitions missing the 2027 season story');
 if (!competitions.includes('complementary to other youth robotics programs')) fail('competitions missing the season model');
 if (home.includes('Dates coming soon') || programs.includes('Dates coming soon') || competitions.includes('Dates coming soon')) fail('Dates coming soon is still on a primary page');
 if (home.includes('No social accounts') || fs.readFileSync(path.join(root, 'contact.html'), 'utf8').includes('No social accounts') || fs.readFileSync(path.join(root, 'social.html'), 'utf8').includes('No social accounts')) fail('social placeholder is still present');
@@ -212,7 +213,7 @@ function contrast(a, b) {
   const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x);
   return (hi + 0.05) / (lo + 0.05);
 }
-for (const [fg, bg, min] of [['#142033', '#FFFFFF', 4.5], ['#142033', '#F5F6F8', 4.5], ['#142033', '#F6C445', 4.5], ['#3E4C5E', '#FFFFFF', 4.5], ['#FFFFFF', '#1F4E9A', 4.5], ['#FFFFFF', '#173B75', 4.5], ['#FFFFFF', '#163FA8', 4.5], ['#FFFFFF', '#B9380F', 4.5], ['#FFFFFF', '#8C2A0A', 4.5], ['#B9380F', '#FFFFFF', 4.5], ['#FFFFFF', '#142033', 4.5], ['#D6DEEA', '#142033', 4.5]]) {
+for (const [fg, bg, min] of [['#142033', '#FFFFFF', 4.5], ['#142033', '#F5F6F8', 4.5], ['#142033', '#F6C445', 4.5], ['#3E4C5E', '#FFFFFF', 4.5], ['#FFFFFF', '#164A38', 4.5], ['#FFFFFF', '#0F3D32', 4.5], ['#164A38', '#FFFFFF', 4.5], ['#164A38', '#F5F6F8', 4.5], ['#FFFFFF', '#B9380F', 4.5], ['#FFFFFF', '#8C2A0A', 4.5], ['#B9380F', '#FFFFFF', 4.5], ['#FFFFFF', '#142033', 4.5], ['#D6DEEA', '#142033', 4.5], ['#F6C445', '#1E2326', 4.5]]) {
   const ratio = contrast(fg, bg);
   if (ratio < min) fail('contrast ' + fg + ' on ' + bg + ' is ' + ratio.toFixed(2));
 }

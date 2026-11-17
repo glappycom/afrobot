@@ -373,7 +373,7 @@ main * {
 .mosaic picture { display: block; width: 100%; height: 100%; }
 .mosaic img { width: 100%; height: 100%; object-fit: cover; object-position: center 40%; }
 .mosaic figcaption { position: absolute; left: 0; right: 0; bottom: 0; margin: 0; background: #1E2326; color: #fff; padding: 10px 14px; font-size: 0.85rem; font-weight: 700; }
-.split-hero__copy .h1 { font-weight: 800; letter-spacing: -0.045em; line-height: 0.98; }
+.split-hero__copy .h1 { font-weight: 800; letter-spacing: -0.035em; line-height: 1.12; margin-bottom: 0.55em; }
 .split-hero__copy .btn { align-self: flex-start; margin-top: 8px; }
 .split-hero + .stage-stack { margin-top: 0; }
 .stages { background: #fff; }
@@ -2099,7 +2099,7 @@ body[data-header="bone"] .nav.is-compact {
   flex: 1;
   padding: 22px 22px 24px;
 }
-.places__body .kicker { margin: 0; color: #1F4E9A; }
+.places__body .kicker { margin: 0; color: var(--cta); }
 .places__stat {
   margin: 0;
   display: flex;
@@ -2199,7 +2199,7 @@ body[data-header="bone"] .nav.is-compact {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #1F4E9A;
+  color: var(--cta);
 }
 .plan-card p:last-child { margin: 4px 0 0; font-size: 0.95rem; line-height: 1.35; color: #1E2326; }
 .plan-stop--finale { width: 76px; height: 76px; }
@@ -2254,7 +2254,7 @@ body[data-header="bone"] .nav.is-compact {
   font-family: "Outfit", "Public Sans", sans-serif;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: #1F4E9A;
+  color: var(--cta);
 }
 .story-hero .kicker, .story-chapter .kicker { color: #1E2326; }
 .story-hero .lead, .story-chapter p { max-width: 62ch; }
