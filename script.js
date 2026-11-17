@@ -145,8 +145,14 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
   els.forEach(e => io.observe(e));
 })();
 
-// ---- Nav hairline on scroll
-(() => { const n = document.querySelector('.nav'); const f = () => n.classList.toggle('is-compact', scrollY > 8); f(); addEventListener('scroll', f, { passive: true }); })();
+// Header chrome appears only after a short scroll. Position never changes.
+(() => {
+  const n = document.querySelector('.nav');
+  if (!n) return;
+  const apply = () => n.classList.toggle('is-scrolled', window.scrollY > 20);
+  apply();
+  addEventListener('scroll', apply, { passive: true });
+})();
 
 // v5 font preview: ?font=poppins swaps headline face; default unchanged
 const FONT = new URLSearchParams(location.search).get('font');
