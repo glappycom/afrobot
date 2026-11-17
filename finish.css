@@ -64,23 +64,90 @@ body {
 }
 
 body[data-header="bone"] .nav,
-body[data-header="bone"] .nav.is-compact {
-  width: min(var(--max), calc(100% - 2 * var(--margin)));
-  margin-inline: auto;
+body[data-header="bone"] .nav.is-compact,
+body[data-header="bone"] .nav.is-scrolled {
+  --nav-pad: 18px;
+  position: fixed;
+  top: max(10px, env(safe-area-inset-top));
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  width: min(calc(var(--max) + 2 * var(--nav-pad)), calc(100% - 2 * var(--margin) + 2 * var(--nav-pad)));
+  margin: 0;
+  height: auto;
+  background: transparent;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  box-shadow: none;
+  border-radius: 999px;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: background-color .22s ease, box-shadow .22s ease, border-color .22s ease;
 }
-body[data-header="bone"] .nav__inner {
+body[data-header="bone"] .nav.is-scrolled {
+  background-color: rgba(255, 255, 255, .96);
+  border-color: rgba(30, 35, 38, .08);
+  box-shadow: 0 10px 28px rgba(30, 35, 38, .08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+body[data-header="bone"] .nav__inner,
+body[data-header="bone"] .nav.is-compact .nav__inner {
   width: 100%;
   max-width: none;
-  padding-left: 0;
-  padding-right: 0;
+  height: 64px;
+  min-height: 64px;
+  padding: 0 var(--nav-pad, 18px);
 }
-.nav {
-  transition: box-shadow .3s ease, background-color .3s ease;
+body[data-header="bone"] .nav.is-compact .nav__brand img,
+body[data-header="bone"] .nav__brand img { height: 34px; width: auto; }
+.nav__logo--light { display: none; }
+.nav__brand { display: inline-flex; align-items: center; }
+.hero-bleed { padding-top: 5.25rem; background: var(--paper); }
+body:has(main > :is(.split-hero, .season-hero):first-child) :is(.split-hero, .season-hero)::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 7.5rem;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(30, 35, 38, .82), rgba(30, 35, 38, 0));
 }
-.nav.is-compact {
-  background: rgba(255, 255, 255, .96);
-  box-shadow: 0 10px 28px rgba(30, 35, 38, .08);
+.split-hero, .season-hero { position: relative; }
+main > :is(.story-hero, .events-hero):first-child { padding-top: 7.25rem; }
+
+/* Dark heroes: light wordmark and links until the white pill appears. */
+body:has(main > :is(.split-hero, .page-hero, .season-hero):first-child) .nav:not(.is-scrolled):not(.is-open) .nav__logo--ink { display: none; }
+body:has(main > :is(.split-hero, .page-hero, .season-hero):first-child) .nav:not(.is-scrolled):not(.is-open) .nav__logo--light { display: block; }
+body:has(main > :is(.split-hero, .page-hero, .season-hero):first-child) .nav:not(.is-scrolled):not(.is-open) .nav__links a,
+body:has(main > :is(.split-hero, .page-hero, .season-hero):first-child) .nav:not(.is-scrolled):not(.is-open) .nav__links > a {
+  color: #fff;
 }
+body:has(main > :is(.split-hero, .page-hero, .season-hero):first-child) .nav:not(.is-scrolled):not(.is-open) .nav__links > a::after {
+  background: #fff;
+}
+body:has(main > :is(.split-hero, .page-hero, .season-hero):first-child) .nav:not(.is-scrolled):not(.is-open) .nav__toggle i {
+  background: #fff;
+}
+.nav__toggle { flex-direction: column; }
+body[data-header="bone"] .nav.is-open {
+  top: 0;
+  left: 0;
+  transform: none;
+  width: 100%;
+  margin: 0;
+  border-radius: 0;
+  background: #fff;
+  background-color: #fff;
+  box-shadow: none;
+}
+body[data-header="bone"] .nav.is-open .nav__logo--light { display: none; }
+body[data-header="bone"] .nav.is-open .nav__logo--ink { display: block; }
+body[data-header="bone"] .nav.is-open .nav__toggle i { background: var(--ink); }
+body[data-header="bone"] .nav.is-open .nav__links a { color: var(--ink); }
 .nav__links > a { transition: color .2s ease; }
 :focus-visible {
   outline: 2px solid var(--cta);
@@ -224,6 +291,8 @@ body[data-header="bone"] .nav__inner {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  body[data-header="bone"] .nav,
+  body[data-header="bone"] .nav.is-scrolled { transition: none; }
   .hero-bleed__media img,
   .js .will-reveal,
   .js .will-reveal.is-revealed,
