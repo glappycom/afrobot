@@ -279,6 +279,9 @@ document.querySelectorAll('.work-gallery').forEach((gallery) => {
   const reveal = document.querySelectorAll('[data-reveal], main > section:not(.season-hero):not(.split-hero):not(.page-hero):not(.events-hero), main > .filmstrip');
   if (!reduce && reveal.length && 'IntersectionObserver' in window) {
     reveal.forEach((el) => el.classList.add('will-reveal'));
+    document.querySelectorAll('.fx-steps > li, .fx-places > article, .path-cards > article, .fx-photos > figure, .goal-bands > article, .fx-meter li, .fx-stats li').forEach((el, i) => {
+      el.style.setProperty('--i', String(i % 6));
+    });
     const io = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
@@ -296,7 +299,7 @@ document.querySelectorAll('.work-gallery').forEach((gallery) => {
     if (!Number.isFinite(target)) return;
     const start = performance.now();
     const tick = (now) => {
-      const t = Math.min(1, (now - start) / 900);
+      const t = Math.min(1, (now - start) / 560);
       const eased = 1 - (1 - t) ** 3;
       el.textContent = format(Math.round(target * eased));
       if (t < 1) requestAnimationFrame(tick);

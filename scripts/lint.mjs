@@ -200,7 +200,7 @@ const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
 if (!robots.includes('Sitemap: https://afrobot.org/sitemap.xml')) fail('robots.txt missing canonical sitemap');
 if (!sitemap.includes('https://afrobot.org/') || !sitemap.includes('https://afrobot.org/programs')) fail('sitemap missing canonical urls');
 
-const css = ['components.css', 'styles.css', 'tokens.css', 'visual.css', 'funder.css'].map((name) => fs.readFileSync(path.join(root, name), 'utf8')).join('\n');
+const css = ['components.css', 'styles.css', 'tokens.css', 'visual.css', 'funder.css', 'finish.css'].map((name) => fs.readFileSync(path.join(root, name), 'utf8')).join('\n');
 if (/#F6C445|#F6E4DC/i.test(css)) fail('yellow remains in css');
 if (/color:\s*var\(--ink-40\)/.test(fs.readFileSync(path.join(root, 'components.css'), 'utf8'))) fail('components.css uses ink-40 as text');
 if (!css.includes('Public Sans') || !css.includes('PublicSans-VF.woff2')) fail('Public Sans WOFF2 is not served');
