@@ -279,7 +279,7 @@ main * {
   .js .will-reveal { opacity: 1; transform: none; transition: none; }
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 900px) {
   .story-meta, .involve__grid, .story-grid { grid-template-columns: 1fr 1fr; }
   .nav .nav__updates { display: none; }
   .nav__toggle { display: block; margin-left: auto; }

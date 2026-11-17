@@ -257,13 +257,18 @@ document.querySelectorAll('.work-gallery').forEach((gallery) => {
     const interest = data.get('interest');
     const experience = data.get('experience');
     const format = data.get('format');
-    const stage = age === '6-9' ? 'Discover' : 'Build';
-    const ages = age === '6-9' ? '6–9' : '9–12';
+    let stage = 'Build';
+    let ages = '9–12';
+    if (age === '6-9') { stage = 'Discover'; ages = '6–9'; }
+    if (age === '13-17') {
+      ages = '13–17';
+      stage = interest === 'mentorship' ? 'Advance' : interest === 'compete' ? 'Compete' : 'Innovate';
+    }
     const practice = experience === 'new' ? 'new to this' : 'some practice';
     const shape = format === 'workshop' ? 'a workshop' : 'an ongoing program';
     let extra = '';
-    if (interest === 'mentorship') extra = ' Mentorship is for adults.';
-    if (interest === 'compete') extra = ' Compete is for ages 13–17.';
+    if (interest === 'mentorship' && stage !== 'Advance') extra = ' Mentorship is for adults.';
+    if (interest === 'compete' && stage !== 'Compete') extra = ' Compete is for ages 13–17.';
     out.textContent = stage + ' fits ages ' + ages + ', ' + practice + ', in ' + shape + '.' + extra;
   });
 })();
@@ -280,7 +285,7 @@ document.querySelectorAll('.work-gallery').forEach((gallery) => {
         entry.target.classList.add('is-revealed');
         io.unobserve(entry.target);
       });
-    }, { threshold: 0.18 });
+    }, { threshold: 0, rootMargin: '0px 0px -8% 0px' });
     reveal.forEach((el) => io.observe(el));
   }
   const nums = document.querySelectorAll('[data-count]');

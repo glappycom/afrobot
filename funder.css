@@ -1,0 +1,157 @@
+/* Shared patterns for the funder-facing story. Colors, type, and space come from tokens.css. */
+
+.fx {
+  padding: clamp(3.5rem, 6vw, 5.5rem) var(--margin);
+  background: var(--paper);
+  color: var(--ink);
+}
+.fx-wrap { max-width: var(--max); margin-inline: auto; }
+.fx-kicker {
+  margin: 0 0 var(--space-3);
+  font-family: var(--text);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cta);
+}
+.fx h2 {
+  margin: 0 0 var(--space-4);
+  max-width: 22ch;
+  font-family: var(--display);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  font-size: clamp(1.85rem, 3.2vw, 2.75rem);
+  line-height: 1.08;
+  color: inherit;
+  text-wrap: balance;
+}
+.fx h3 {
+  margin: 0 0 var(--space-2);
+  font-family: var(--display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-transform: none;
+  color: inherit;
+}
+.fx p, .fx li { max-width: var(--measure); line-height: 1.5; }
+.fx p { margin: 0 0 var(--space-4); }
+.fx a { font-weight: 700; }
+.fx--band { background: var(--band); }
+.fx--ink { background: var(--ink); color: var(--on-ink); }
+.fx--ink .fx-kicker { color: var(--accent); }
+.fx--ink a { color: var(--on-ink); }
+.fx--gap { background: var(--paper); border-top: 1px solid var(--line); }
+.fx-split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-6);
+  margin-top: var(--space-5);
+}
+.fx-split article, .fx-split > div { min-width: 0; }
+.fx-split ul, .fx--gap ul {
+  margin: 0;
+  padding-left: 1.15rem;
+}
+.fx-split li + li, .fx--gap li + li { margin-top: var(--space-3); }
+.fx-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-5);
+  margin: var(--space-5) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.fx-steps li {
+  margin: 0;
+  padding-top: var(--space-4);
+  border-top: 4px solid var(--accent);
+}
+.fx-more { margin-top: var(--space-6); }
+.fx-photos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5);
+  margin-top: var(--space-5);
+}
+.fx-photos figure { margin: 0; }
+.fx-photos img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  display: block;
+  background: var(--band);
+}
+.fx-photos figure:first-child img { object-position: center 78%; }
+.fx-photos figcaption {
+  margin-top: var(--space-3);
+  max-width: 42ch;
+  font-weight: 650;
+  line-height: 1.45;
+}
+.fx-photos figcaption a { display: inline-block; margin-top: var(--space-2); }
+.fx-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 180px));
+  gap: var(--space-4);
+  margin: 0 0 var(--space-5);
+  padding: 0;
+  list-style: none;
+}
+.fx-stats li {
+  margin: 0;
+  padding: var(--space-4);
+  background: var(--paper);
+  border-top: 4px solid var(--accent);
+}
+.fx--band .fx-stats li { background: var(--paper); }
+.fx-stats strong {
+  display: block;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--ink);
+}
+.fx-stats span {
+  display: block;
+  margin-top: var(--space-2);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+.fx-discuss {
+  max-width: 72ch;
+  padding: var(--space-6);
+  background: var(--band);
+  border-left: 4px solid var(--accent);
+}
+.fx-discuss h2 { max-width: none; }
+.fx-note { margin-top: var(--space-4); color: var(--on-ink-soft); }
+.fx-todo {
+  margin: var(--space-3) 0 0;
+  padding: var(--space-3) var(--space-4);
+  max-width: 36ch;
+  border-left: 3px solid var(--accent);
+  background: var(--band);
+  color: var(--ink);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+.cine-hero .display { max-width: 14ch; }
+.cine-hero .lead { max-width: 36rem; }
+.fx p a, .fx li a, .fx-photos figcaption a, .cine-hero__proof a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.cine-hero__proof a { color: var(--on-ink); }
+.fx--ink .hero__actions { margin-top: var(--space-2); }
+.fx--ink .btn--line-light { color: var(--on-ink); border-color: var(--on-ink); }
+
+@media (max-width: 800px) {
+  .fx-split, .fx-steps, .fx-photos, .fx-stats { grid-template-columns: 1fr; }
+  .cine-hero .display { max-width: 12ch; }
+  .fx--ink .hero__actions .btn { width: 100%; }
+}

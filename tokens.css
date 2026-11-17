@@ -1,14 +1,12 @@
-/* AfroBot tokens. White page, graphite text. Orange is for buttons. */
+/* AfroBot tokens. White page, graphite text, blue actions, yellow marks.
+   --clay* names remain because older CSS uses them for ink, not for a clay color. */
 :root {
-  /* Primary buttons. To switch back to orange, set these to #B9380F and #8C2A0A. */
   --cta: #1F4E9A;
   --cta-hover: #173B75;
   --ink: #1E2326;
   --ink-80: #3A4248;
-  /* Dark surfaces. Heather gray trial (#9C9899) was reverted. */
   --surface-dark: #1E2326;
   --surface-dark-rgb: 30, 35, 38;
-  /* Text on those surfaces. White on graphite. */
   --on-surface-dark: #fff;
   --ink-60: #3E4C5E;
   --ink-40: #4A5568;
@@ -21,7 +19,7 @@
   --clay-text: #1E2326;
   --clay-deep: #1E2326;
   --gold: #1E2326;
-  --danger: #1E2326;
+  --danger: #8C2A0A;
   --bone: #FFFFFF;
   --paper: #FFFFFF;
   --white: #FFFFFF;
@@ -53,4 +51,14 @@
   --ease: cubic-bezier(.2, .7, .2, 1);
   --header-offset: 5.5rem;
   --focus: #1E2326;
+  --accent: #F6C445;
+  --measure: 62ch;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
 }

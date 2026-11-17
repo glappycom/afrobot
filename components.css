@@ -834,7 +834,7 @@ h3, .audience-card h3, .info-card h2, .info-card h3 {
 .mnav { background: #fff; }
 .mnav a { font-weight: 700; font-size: 1.25rem; min-height: 48px; color: var(--ink); }
 .skip:focus { background: #fff; color: var(--ink); outline: 2px solid var(--focus); }
-@media (max-width: 1080px) {
+@media (max-width: 900px) {
   .nav__links { display: none; }
   .nav__toggle { display: block; margin-left: 0; }
   .nav__updates { margin-left: auto; }
