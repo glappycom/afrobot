@@ -1,35 +1,48 @@
 /* AfroBot tokens.
-   Paper, graphite, and one light gray-green tint. No yellow.
-   --cta is the brand primary: deep green #164A38. White text on it is 10.1:1.
-   Legacy names: --clay* are graphite. --gold and --accent alias the green primary so old references cannot paint yellow. */
+   Neutrals stay quiet. Color is a small set, used on purpose:
+   forest (primary actions), lagoon teal (labels), indigo (secondary actions),
+   terracotta (a third accent). No yellow.
+   White text on forest #14614A is 7.4:1. White on teal #0C6E78 is 6.0:1.
+   White on indigo #243E86 is 10.0:1. White on terracotta #9C3D18 is 6.8:1.
+   Legacy names: --clay* stay dark neutrals. --gold and --accent alias forest
+   so old references cannot paint yellow. */
 :root {
-  --cta: #164A38;
-  --cta-hover: #0F3D32;
-  --ink: #1E2326;
-  --ink-80: #3A4248;
-  --surface-dark: #1E2326;
-  --surface-dark-rgb: 30, 35, 38;
+  --cta: #14614A;
+  --cta-hover: #0E4636;
+  --accent-teal: #0A6270;
+  --accent-teal-fill: #0C6E78;
+  --accent-teal-fill-hover: #08555C;
+  --accent-indigo: #243E86;
+  --accent-indigo-hover: #1A2E68;
+  --accent-clay: #9C3D18;
+  --accent-clay-hover: #7A2E12;
+  --on-dark-btn: #1B7A62;
+  --ink: #17211C;
+  --ink-80: #3C4A44;
+  --surface-dark: #12241E;
+  --surface-dark-rgb: 18, 36, 30;
   --on-surface-dark: #fff;
-  --ink-60: #3E4C5E;
-  --ink-40: #4A5568;
-  --line: #E2E6EE;
-  --line-dk: #243044;
-  --clay: #1E2326;
-  --clay-dk: #0E1A2B;
-  --clay-strong: #1E2326;
-  --clay-strong-dk: #1E2326;
-  --clay-text: #1E2326;
-  --clay-deep: #1E2326;
-  --gold: #164A38; /* retired name; aliases the green primary */
+  --ink-60: #4E5E56;
+  --ink-40: #4E5E56;
+  --line: #E3E7E5;
+  --line-dk: #243830;
+  --clay: #17211C;
+  --clay-dk: #12241E;
+  --clay-strong: #14614A;
+  --clay-strong-dk: #0E4636;
+  --clay-text: #17211C;
+  --clay-deep: #12241E;
+  --gold: #14614A; /* retired name; aliases the forest primary */
   --danger: #8C2A0A;
   --bone: #FFFFFF;
   --paper: #FFFFFF;
   --white: #FFFFFF;
   --steel: #FFFFFF;
-  --band: #F3F6F4;
-  --steel-card: #F3F6F4;
+  --band: #F4F6F5;
+  --steel-card: #F4F6F5;
+  --sand: #F7F4EF;
   --on-ink: #FFFFFF;
-  --on-ink-soft: #D6DEEA;
+  --on-ink-soft: #C9D6D0;
   --display: "Outfit", "Public Sans", sans-serif;
   --text: "Public Sans", ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--text);
@@ -48,12 +61,12 @@
   --t-display: clamp(2.75rem, 5vw, 4.75rem);
   --gutter: 24px;
   --margin: clamp(20px, 3vw, 40px);
-  --max: 1360px;
+  --max: 1200px;
   --s-section: clamp(4.75rem, 7vw, 8.5rem);
   --ease: cubic-bezier(.2, .7, .2, 1);
   --header-offset: 5.5rem;
-  --focus: #164A38;
-  --accent: #164A38; /* retired yellow; aliases the green primary */
+  --focus: #0A6270;
+  --accent: #14614A; /* retired yellow; aliases the forest primary */
   --measure: 62ch;
   --space-1: 0.25rem;
   --space-2: 0.5rem;
