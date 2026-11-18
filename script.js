@@ -44,6 +44,45 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && n.classList.contains('is-open')) { close(); b.focus(); } });
 })();
 
+// Desktop menus. Click a label to open its panel. Escape or a click outside closes it.
+(() => {
+  const menus = document.querySelectorAll('.mega');
+  if (!menus.length) return;
+  const shut = () => menus.forEach((menu) => {
+    menu.classList.remove('is-open');
+    menu.querySelector('.mega__btn')?.setAttribute('aria-expanded', 'false');
+  });
+  menus.forEach((menu) => {
+    const btn = menu.querySelector('.mega__btn');
+    btn?.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const open = menu.classList.contains('is-open');
+      shut();
+      if (!open) {
+        menu.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+    menu.querySelector('.mega__x')?.addEventListener('click', (event) => {
+      event.stopPropagation();
+      shut();
+      btn?.focus();
+    });
+  });
+  document.addEventListener('click', (event) => { if (!event.target.closest('.mega')) shut(); });
+  document.addEventListener('keydown', (event) => { if (event.key === 'Escape') shut(); });
+  const row = document.querySelector('.stories__row');
+  const bar = document.querySelector('.stories__progress span');
+  if (!row || !bar) return;
+  const sync = () => {
+    const max = row.scrollWidth - row.clientWidth;
+    const ratio = max <= 8 ? 1 : row.scrollLeft / max;
+    bar.style.width = Math.min(100, Math.max(18, ratio * 100)) + '%';
+  };
+  row.addEventListener('scroll', sync, { passive: true });
+  sync();
+})();
+
 // ---- Register interest form: posts to /api/interest (stored server-side), inline errors, success/error states
 (() => {
   const f = document.getElementById('interest'); if (!f) return;
@@ -282,10 +321,10 @@ document.querySelectorAll('.work-gallery').forEach((gallery) => {
 (() => {
   document.documentElement.classList.add('js');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const reveal = document.querySelectorAll('[data-reveal], main > section:not(.season-hero):not(.split-hero):not(.page-hero):not(.events-hero), main > .filmstrip');
+  const reveal = document.querySelectorAll('[data-reveal], main > section:not(.dh):not(.season-hero):not(.split-hero):not(.page-hero):not(.events-hero), main > .filmstrip');
   if (!reduce && reveal.length && 'IntersectionObserver' in window) {
     reveal.forEach((el) => el.classList.add('will-reveal'));
-    document.querySelectorAll('.fx-steps > li, .fx-places > article, .path-cards > article, .fx-photos > figure, .goal-bands > article, .fx-meter li, .fx-stats li').forEach((el, i) => {
+    document.querySelectorAll('.fx-steps > li, .fx-places > article, .path-cards > article, .fx-photos > figure, .goal-bands > article, .fx-meter li, .fx-stats li, .home-card, .journey__list > li, .mosaic > *, .stories__row article, .checks > li').forEach((el, i) => {
       el.style.setProperty('--i', String(i % 6));
     });
     const io = new IntersectionObserver((entries) => {
