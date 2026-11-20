@@ -2,12 +2,18 @@
   "name": "afrobot-site",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "site:build": "node scripts/build.mjs",
-    "site:lint": "node scripts/lint.mjs"
+    "site:lint": "node scripts/lint.mjs",
+    "site:responsive": "node scripts/responsive-check.mjs"
   },
   "dependencies": {
     "@vercel/blob": "^2.8.2"
+  },
+  "devDependencies": {
+    "playwright": "^1.65.1"
   }
 }
