@@ -22,8 +22,7 @@ if (serverRoles.length !== 5) fail('Could not read server roles');
 if (serverRoles.includes('Student')) fail('Student is still a server role');
 
 const requiredHome = [
-  'Kids in Cameroon have been building and coding robots since November 2022.',
-  'A pilot in McKinney, Texas, followed in 2024.',
+  'We give children with limited access the tools, mentors and confidence to build the future with robotics and AI.',
   'Find a program',
   'Partner with us',
   'Sponsor a student',
@@ -39,7 +38,6 @@ const requiredHome = [
   'Regional launches',
   'National championship',
   'The camp-week participation goal is $100 per child.',
-  "TODO: Russell's mission sentence",
 ];
 
 const retiredCopy = [
