@@ -33,8 +33,7 @@
 <link rel="stylesheet" href="home.css">
 </head>
 <body>
-<div class="util"><div class="w"><a href="/events#stories">News</a><a href="/events">Events</a><a href="/contact">Contact</a><a href="/child-safety">Child safety</a></div></div>
-<nav><div class="w"><img src="assets/logo-afrobot-navy.svg" alt="AfroBot"><button type="button" class="nav-btn" aria-expanded="false" aria-controls="site-nav"><span class="sr">Menu</span><i></i><i></i><i></i></button><ul id="site-nav"><li><a href="/programs">Programs</a></li><li><a href="/community">Get Involved</a></li><li><a href="/partners">Partners &amp; Sponsors</a></li><li><a href="/impact">Impact</a></li><li><a href="/about">About</a></li><li class="nav-donate"><a class="btn b1" href="/partners">Donate</a></li></ul><a class="btn b1" href="/partners">Donate</a></div></nav>
+{{HEADER}}
 <div class="hero"><picture class="hero__bg"><source type="image/avif" srcset="assets/photos/bamenda-class-cropped.avif" sizes="100vw"><source type="image/webp" srcset="assets/photos/bamenda-class-cropped.webp 2400w" sizes="100vw"><img src="assets/photos/bamenda-class-cropped.jpg" srcset="assets/photos/bamenda-class-cropped.jpg 2400w" sizes="100vw" alt="Children in white coats gathered in a Bamenda classroom" width="2400" height="1800"></picture><div class="w"><div class="eyb">Youth robotics &amp; AI · Cameroon and the United States</div>
 <h1>Every child deserves the chance to build the future.</h1>
 <p>AfroBot teaches young people to design, build and program robots and AI, in classrooms in Cameroon and communities across the United States.</p>
@@ -73,31 +72,6 @@
 <div class="news"><div><picture><source type="image/avif" srcset="assets/photos/mckinney-build-day-2024-960.avif 960w, assets/photos/mckinney-build-day-2024.avif 1000w" sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1100px) 46vw, 380px"><img src="assets/photos/mckinney-build-day-2024.jpg" srcset="assets/photos/mckinney-build-day-2024.jpg 1000w" sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1100px) 46vw, 380px" alt="Children at the 2024 McKinney build day" width="1000" height="920"></picture><small>United States</small><h4>Inside the 2024 McKinney build day</h4></div>
 <div><picture><source type="image/avif" srcset="assets/photos/bamenda-class-celebration.avif" sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1100px) 46vw, 380px"><source type="image/webp" srcset="assets/photos/bamenda-class-celebration.webp 980w" sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1100px) 46vw, 380px"><img src="assets/photos/bamenda-class-celebration.jpg" srcset="assets/photos/bamenda-class-celebration.jpg 980w" sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1100px) 46vw, 380px" alt="Children at a Bamenda program" width="980" height="735"></picture><small>Cameroon</small><h4>How holiday programs reached 5,000 children</h4></div>
 <div><picture><source type="image/avif" srcset="assets/photos/bamenda-lab-towers-800.avif 800w, assets/photos/bamenda-lab-towers.avif 2000w" sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1100px) 46vw, 380px"><source type="image/webp" srcset="assets/photos/bamenda-lab-towers-800.webp 800w, assets/photos/bamenda-lab-towers.webp 2000w" sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1100px) 46vw, 380px"><img src="assets/photos/bamenda-lab-towers.jpg" srcset="assets/photos/bamenda-lab-towers.jpg 2000w" sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1100px) 46vw, 380px" alt="Students with robots in a Bamenda lab" width="2000" height="1500"></picture><small>2027 season</small><h4>Our proposed plan for the first national season</h4></div></div></div></section>
-<footer><div class="w"><div class="fg">
-<div><img src="assets/logo-afrobot-reversed.svg" alt="AfroBot" style="height:30px"><p style="margin-top:18px;line-height:1.6;max-width:260px">Youth robotics and AI education in Cameroon and the United States.</p><p style="margin-top:14px"><a href="mailto:info@afrobot.org">info@afrobot.org</a></p></div>
-<div><h5>Programs</h5><ul><li><a href="/programs#discover">Discover</a></li><li><a href="/programs#build">Build</a></li><li><a href="/programs#innovate">Teen track</a></li><li><a href="/events">Events</a></li></ul></div>
-<div><h5>Get involved</h5><ul><li><a href="/mentorship">Mentors</a></li><li><a href="/community?intent=host#register">Schools</a></li><li><a href="/volunteer">Volunteers</a></li><li><a href="/community?intent=parent#register">Parents</a></li></ul></div>
-<div><h5>Partners</h5><ul><li><a href="/partners">Sponsor a student</a></li><li><a href="/partnership">Partner with us</a></li><li><a href="/partners">Donate</a></li></ul></div>
-<div><h5>Impact</h5><ul><li><a href="/africa">Cameroon</a></li><li><a href="/usa">United States</a></li></ul></div>
-<div><h5>About</h5><ul><li><a href="/about">Mission</a></li><li><a href="/about">Leadership</a></li><li><a href="/child-safety">Child safety</a></li><li><a href="/contact">Contact</a></li></ul></div></div>
-<div class="legal"><span>© 2026 AfroBot. AfroBot is a program of Glappy Foundation, a Texas nonprofit corporation.</span><span><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/child-safety">Child Safety</a> · <a href="/accessibility">Accessibility</a></span></div></div></footer>
-<script>
-(() => {
-  const b = document.querySelector('.nav-btn');
-  const menu = document.getElementById('site-nav');
-  if (!b || !menu) return;
-  const close = () => { menu.classList.remove('is-open'); b.setAttribute('aria-expanded', 'false'); };
-  b.addEventListener('click', () => {
-    const open = !menu.classList.contains('is-open');
-    menu.classList.toggle('is-open', open);
-    b.setAttribute('aria-expanded', String(open));
-    if (open) menu.querySelector('a')?.focus();
-  });
-  menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', close));
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && menu.classList.contains('is-open')) { close(); b.focus(); }
-  });
-})();
-</script>
+{{FOOTER}}
 </body>
 </html>
