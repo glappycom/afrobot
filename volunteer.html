@@ -84,24 +84,6 @@
 <div><h5>Impact</h5><ul><li><a href="/africa">Cameroon</a></li><li><a href="/usa">United States</a></li></ul></div>
 <div><h5>About</h5><ul><li><a href="/about">Mission</a></li><li><a href="/about">Leadership</a></li><li><a href="/child-safety">Child safety</a></li><li><a href="/contact">Contact</a></li></ul></div></div>
 <div class="legal"><span>© 2026 AfroBot. AfroBot is a program of Glappy Foundation, a Texas nonprofit corporation.</span><span><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/child-safety">Child Safety</a> · <a href="/accessibility">Accessibility</a></span></div></div></footer>
-<script>
-(() => {
-  const b = document.querySelector('.nav-btn');
-  const menu = document.getElementById('site-nav');
-  if (!b || !menu) return;
-  const close = () => { menu.classList.remove('is-open'); b.setAttribute('aria-expanded', 'false'); };
-  b.addEventListener('click', () => {
-    const open = !menu.classList.contains('is-open');
-    menu.classList.toggle('is-open', open);
-    b.setAttribute('aria-expanded', String(open));
-    if (open) menu.querySelector('a')?.focus();
-  });
-  menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', close));
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && menu.classList.contains('is-open')) { close(); b.focus(); }
-  });
-})();
-</script>
-<script src="script.js?v=41"></script>
+<script src="script.js?v=42" defer></script>
 </body>
 </html>
