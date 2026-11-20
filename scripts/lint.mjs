@@ -22,17 +22,14 @@ if (serverRoles.length !== 5) fail('Could not read server roles');
 if (serverRoles.includes('Student')) fail('Student is still a server role');
 
 const requiredHome = [
-  'From Africa to the World',
   'Kids in Cameroon have been building and coding robots since November 2022.',
   'Find a program',
   'See the programs',
   'See the 2027 plan',
   'Partner with us',
-  'Sponsor a Student',
+  'Sponsor a student',
   'Parents',
-  'Community',
   'Ask about hosting',
-  'Get session updates',
   'open-source schematics',
 ];
 
@@ -131,7 +128,7 @@ if (home.includes('From Curiosity to Creativity. From Africa to the World.')) fa
 if (home.includes('hero__tag')) fail('homepage still uses the tag sticker');
 if (home.includes('may shift') || home.includes('fee charged') || home.includes('not a new pilot')) fail('homepage still hedges in the body');
 if (!home.includes('id="scale"')) fail('homepage missing the 2027 scale section');
-if (!home.includes('bamenda-laptop-row')) fail('homepage hero is missing the classroom photo');
+if (!home.includes('bamenda-class-cropped')) fail('homepage hero is missing the classroom photo');
 const about = fs.readFileSync(path.join(root, 'about.html'), 'utf8');
 const events = fs.readFileSync(path.join(root, 'events.html'), 'utf8');
 for (const line of ['Planned sessions', 'Affordable sessions', 'The camp-week cost has a $100 goal.', '$100 per child for a camp week is the participation goal.', 'A $10 workshop is a hope, not today’s price.', 'Which stage fits?', 'Ask about financial assistance']) {
@@ -175,7 +172,7 @@ else {
 if (!home.includes('>Get updates<')) fail('header CTA missing');
 if (!home.includes('>Donate<')) fail('donate link missing');
 const footer = home.slice(home.lastIndexOf('<footer'));
-for (const label of ['Programs', 'Events', 'About', 'Mentorship', 'Contact', 'Privacy', 'Terms', 'Child Safety', 'Accessibility']) {
+for (const label of ['Programs', 'Events', 'About', 'Mentorship', 'Contact', 'Privacy', 'Terms', 'Child Safety', 'Accessibility', 'Parents']) {
   if (!footer.includes('>' + label + '<')) fail('footer missing ' + label);
 }
 if (!footer.includes('href="mailto:info@afrobot.org"')) fail('footer missing email');
@@ -187,7 +184,7 @@ else {
 }
 if (!footer.includes('AfroBot is a program of Glappy Foundation, a Texas nonprofit corporation.')) fail('footer missing the Glappy legal line');
 if (!footer.includes('assets/logo-afrobot-footer.svg')) fail('footer logo missing');
-if (!home.includes('Sponsor a Student') || !home.includes('Help pay for a child’s place in a program.')) fail('sponsor band missing');
+if (!home.includes('Sponsor a student') || !home.includes('The camp-week participation goal is $100 per child.')) fail('sponsor band missing');
 if (footer.includes('Our classrooms in Cameroon') || footer.includes('close__photos')) fail('footer still has the classroom photo strip');
 if (home.includes('stickycta') || programs.includes('stickycta')) fail('sticky mobile bar is still in the page');
 if (home.includes('<option>Student</option>')) fail('Student role option is still on the form');
