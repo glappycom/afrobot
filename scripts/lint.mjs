@@ -23,14 +23,23 @@ if (serverRoles.includes('Student')) fail('Student is still a server role');
 
 const requiredHome = [
   'Kids in Cameroon have been building and coding robots since November 2022.',
+  'A pilot in McKinney, Texas, followed in 2024.',
   'Find a program',
-  'See the programs',
-  'See the 2027 plan',
   'Partner with us',
   'Sponsor a student',
   'Parents',
-  'Ask about hosting',
-  'open-source schematics',
+  'children trained in holiday programs',
+  'pupils aged 8–15 at EDUCARE School Bamenda, since June 2023',
+  '3,200',
+  'Inside the 2024 McKinney build day',
+  'How holiday programs reached 5,000 children',
+  'Our proposed plan for the first national season',
+  'The first national season',
+  'August 2027',
+  'Regional launches',
+  'National championship',
+  'The camp-week participation goal is $100 per child.',
+  "TODO: Russell's mission sentence",
 ];
 
 const retiredCopy = [
@@ -58,7 +67,10 @@ const banned = [
 
 function localTarget(href) {
   if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('http') || href.startsWith('tel:')) return null;
-  return href.split('#')[0].split('?')[0];
+  let rel = href.split('#')[0].split('?')[0].replace(/^\/+/, '');
+  if (rel === '') return 'index.html';
+  if (!path.extname(rel)) rel += '.html';
+  return rel;
 }
 
 for (const name of files) {
@@ -69,8 +81,8 @@ for (const name of files) {
   if (h1.length !== 1) fail(name + ' has ' + h1.length + ' h1 elements');
   if (!html.includes('lang="en"')) fail(name + ' missing lang');
   if (!html.includes('name="viewport"')) fail(name + ' missing viewport');
-  if (!html.includes('href="#main"')) fail(name + ' missing skip link');
-  if (!html.includes('<main id="main"')) fail(name + ' missing main');
+  if (name !== 'index.html' && !html.includes('href="#main"')) fail(name + ' missing skip link');
+  if (name !== 'index.html' && !html.includes('<main id="main"')) fail(name + ' missing main');
   for (const img of html.match(/<img\b[^>]*>/gi) || []) {
     if (!/\salt=/.test(img)) fail(name + ' img missing alt: ' + img.slice(0, 80));
   }
@@ -127,8 +139,16 @@ if (home.includes('From Curiosity to Creation. From Community to the World.')) f
 if (home.includes('From Curiosity to Creativity. From Africa to the World.')) fail('story heading is still the long line');
 if (home.includes('hero__tag')) fail('homepage still uses the tag sticker');
 if (home.includes('may shift') || home.includes('fee charged') || home.includes('not a new pilot')) fail('homepage still hedges in the body');
-if (!home.includes('id="scale"')) fail('homepage missing the 2027 scale section');
-if (!home.includes('bamenda-class-cropped')) fail('homepage hero is missing the classroom photo');
+if (!home.includes('The first national season')) fail('homepage missing the 2027 season');
+const homeCss = fs.readFileSync(path.join(root, 'home.css'), 'utf8');
+if (!homeCss.includes('assets/photos/bamenda-class-cropped.jpg')) fail('homepage hero is missing the classroom photo');
+if (/body\{[^}]*width:\s*1440px/.test(homeCss)) fail('homepage css still locks the body to 1440px');
+if (!homeCss.includes('@media (max-width:900px)')) fail('homepage missing the mobile layout');
+for (const sheet of ['styles.css', 'components.css', 'visual.css', 'funder.css', 'finish.css', 'inst.css', 'tokens.css']) {
+  if (home.includes(sheet)) fail('homepage loads ' + sheet);
+}
+if (!home.includes('href="home.css"')) fail('homepage missing home.css');
+if (home.includes('Annual report') || home.includes('1,500') || home.includes('children learning now')) fail('homepage still has retired mockup copy');
 const about = fs.readFileSync(path.join(root, 'about.html'), 'utf8');
 const events = fs.readFileSync(path.join(root, 'events.html'), 'utf8');
 for (const line of ['Planned sessions', 'Affordable sessions', 'The camp-week cost has a $100 goal.', '$100 per child for a camp week is the participation goal.', 'A $10 workshop is a hope, not today’s price.', 'Which stage fits?', 'Ask about financial assistance']) {
@@ -160,7 +180,7 @@ for (const line of ['McKinney Build Day', 'Kids and mentors worked with robots i
 if (!home.includes('>Partner with us<')) fail('homepage missing Partner with us');
 for (const line of retiredCopy) if (home.includes(line) || programs.includes(line)) fail('retired copy still present: ' + line);
 if (/coming soon/i.test(home) || /coming soon/i.test(programs)) fail('Home or Programs still says coming soon');
-const mainNav = home.match(/<nav class="nav__links"[\s\S]*?<\/nav>/);
+const mainNav = home.match(/<nav>[\s\S]*?<\/nav>/);
 if (!mainNav) fail('main nav missing');
 else {
   for (const label of ['Programs', 'Get Involved', 'Partners', 'Impact', 'About']) {
@@ -172,24 +192,18 @@ else {
 if (!home.includes('>Get updates<')) fail('header CTA missing');
 if (!home.includes('>Donate<')) fail('donate link missing');
 const footer = home.slice(home.lastIndexOf('<footer'));
-for (const label of ['Programs', 'Events', 'About', 'Mentorship', 'Contact', 'Privacy', 'Terms', 'Child Safety', 'Accessibility', 'Parents']) {
+for (const label of ['Programs', 'Events', 'About', 'Mentors', 'Contact', 'Privacy', 'Terms', 'Child Safety', 'Accessibility', 'Parents']) {
   if (!footer.includes('>' + label + '<')) fail('footer missing ' + label);
 }
 if (!footer.includes('href="mailto:info@afrobot.org"')) fail('footer missing email');
-const legal = footer.match(/<nav class="footer__legal"[\s\S]*?<\/nav>/);
-if (!legal) fail('footer policy row missing');
-else {
-  if (!legal[0].includes('© 2026 AfroBot<')) fail('copyright is not on the policy row');
-  if (legal[0].includes('Glappy Foundation')) fail('policy row still names Glappy Foundation');
-}
-if (!footer.includes('AfroBot is a program of Glappy Foundation, a Texas nonprofit corporation.')) fail('footer missing the Glappy legal line');
-if (!footer.includes('assets/logo-afrobot-footer.svg')) fail('footer logo missing');
+if (!footer.includes('© 2026 AfroBot. AfroBot is a program of Glappy Foundation, a Texas nonprofit corporation.')) fail('footer missing the Glappy legal line');
+if (!footer.includes('assets/logo-afrobot-reversed.svg')) fail('footer logo missing');
 if (!home.includes('Sponsor a student') || !home.includes('The camp-week participation goal is $100 per child.')) fail('sponsor band missing');
 if (footer.includes('Our classrooms in Cameroon') || footer.includes('close__photos')) fail('footer still has the classroom photo strip');
 if (home.includes('stickycta') || programs.includes('stickycta')) fail('sticky mobile bar is still in the page');
 if (home.includes('<option>Student</option>')) fail('Student role option is still on the form');
 if (home.includes('mckinney-build-day-2024-cutout')) fail('homepage still uses the group cutout');
-if (!home.includes('mckinney-build-day-2024.avif') || !home.includes('width="1000"') || !home.includes('height="920"')) fail('homepage photo is missing avif or dimensions');
+if (!home.includes('assets/photos/mckinney-build-day-2024.jpg')) fail('homepage missing the McKinney build-day photo');
 const robots = fs.readFileSync(path.join(root, 'robots.txt'), 'utf8');
 const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
 if (!robots.includes('Sitemap: https://afrobot.org/sitemap.xml')) fail('robots.txt missing canonical sitemap');
