@@ -112,6 +112,7 @@ for (const name of files) {
     if (!target) continue;
     if (!fs.existsSync(path.join(root, target))) fail(name + ' broken link ' + m[1]);
   }
+  if (html.includes('To be added') || /cannot show yet/i.test(html) || html.includes('Evidence this site does not have yet')) fail(name + ' still shows a missing-evidence note');
   if (html.includes('id="interest"')) {
     const options = [...html.matchAll(/<option>([^<]+)<\/option>/g)].map((m) => m[1]);
     if (options.join('|') !== serverRoles.join('|')) fail(name + ' form roles do not match the API');
@@ -128,7 +129,6 @@ for (const line of requiredHome) if (!home.includes(line)) fail('homepage missin
 if (home.includes('From Curiosity to Creation. From Community to the World.')) fail('old hero tagline still present');
 if (home.includes('From Curiosity to Creativity. From Africa to the World.')) fail('story heading is still the long line');
 if (home.includes('hero__tag')) fail('homepage still uses the tag sticker');
-if (home.includes('Evidence this site does not have yet') || home.includes('To be added')) fail('homepage still shows a missing-evidence section');
 if (home.includes('may shift') || home.includes('fee charged') || home.includes('not a new pilot')) fail('homepage still hedges in the body');
 if (!home.includes('id="scale"')) fail('homepage missing the 2027 scale section');
 if (!home.includes('bamenda-laptop-row')) fail('homepage hero is missing the classroom photo');
