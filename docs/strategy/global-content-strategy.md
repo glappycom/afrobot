@@ -49,7 +49,7 @@ Mobile uses the same five links, then the secondary links as quiet items. No Mor
 
 ## Facts
 
-Founder-reported counts live only in `content/facts.json`. Russell documented them in November 2026, so each count is `verified: true`: about 5,000 trained, about 1,500 learning now, about 4 years since November 2022, and about 30 students in the 2024 McKinney pilot. Public copy still says “about” or “nearly.” Dallas 2027 targets stay in `content/impact.json` as proposed targets, not as history.
+Founder-reported counts live only in `content/facts.json`. Holiday totals Russell documented in November 2026 are `verified: true`: about 5,000 trained in holiday programs, about 4 years since November 2022, and about 30 students in the 2024 McKinney pilot. EDUCARE school reach, confirmed by Russell on 20 November 2026 from the signed partnership letter, is about 3,200 pupils aged 8–15 at EDUCARE School Bamenda since June 2023. Public copy still says “about” or “nearly.” Dallas 2027 targets stay in `content/impact.json` as proposed targets, not as history.
 
 ## Decisions this strategy makes
 

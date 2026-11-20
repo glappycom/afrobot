@@ -1,5 +1,5 @@
 {
-  "source": "Documented by Russell, November 2026.",
+  "source": "Holiday totals documented by Russell, November 2026. EDUCARE school reach: signed partnership letter, November 2026, confirmed by Russell on 20 November 2026.",
   "verified": {
     "cameroonTrained": true,
     "cameroonActive": true,
@@ -8,8 +8,10 @@
   },
   "cameroonTrained": "5,000",
   "cameroonTrainedCount": "5000",
-  "cameroonActive": "1,500",
-  "cameroonActiveCount": "1500",
+  "cameroonActive": "3,200",
+  "cameroonActiveCount": "3200",
+  "educareAges": "8–15",
+  "educareSince": "June 2023",
   "cameroonYears": "4",
   "cameroonStarted": "November 2022",
   "mckinneyStudents": "30"

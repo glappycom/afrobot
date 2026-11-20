@@ -138,7 +138,7 @@ for (const line of ['Planned sessions', 'Affordable sessions', 'The camp-week co
   if (!programs.includes(line)) fail('programs missing: ' + line);
 }
 const legalHome = 'AfroBot is a program of Glappy Foundation, a Texas nonprofit corporation.';
-for (const line of [legalHome, 'About 5,000 children have been trained through our holiday programs in Cameroon.', 'About 1,500 children learn with us on an ongoing basis through our partner schools.', 'Access for every child', 'Robotics and AI should not depend on a family’s income or zip code.']) {
+for (const line of [legalHome, 'About 5,000 children have been trained through our holiday programs in Cameroon.', 'About 3,200 pupils aged 8–15 are in EDUCARE School Bamenda\'s primary and secondary schools. The partnership has run since June 2023.', 'Access for every child', 'Robotics and AI should not depend on a family’s income or zip code.']) {
   if (!about.includes(line)) fail('about missing: ' + line);
 }
 if (/>([^<]*\b[Dd]raft\b[^<]*)</.test(about)) fail('about shows the word Draft');
