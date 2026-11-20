@@ -67,6 +67,11 @@ footer{background:#0A1D36;color:#B9C6D6;padding:80px 0 36px;font-size:15px}
   .spons .t{padding:72px 40px}
   .split .in{left:32px;right:32px}
 }
+@media (max-width:1100px) and (min-width:641px){
+  .stats .stat,.stats .stat:first-child{padding:36px 28px;border-left:0;border-top:0}
+  .stats .stat:nth-child(even){border-left:1px solid rgba(255,255,255,.14)}
+  .stats .stat:nth-child(n+3){border-top:1px solid rgba(255,255,255,.14)}
+}
 @media (max-width:900px){
   .nav-btn{display:inline-flex;flex-direction:column;justify-content:center;gap:5px;order:1;margin-left:auto;width:44px;height:44px;padding:0 11px;border:0;background:transparent;flex:0 0 44px}
   .nav-btn i{display:block;height:2px;background:var(--navy)}
@@ -83,12 +88,14 @@ footer{background:#0A1D36;color:#B9C6D6;padding:80px 0 36px;font-size:15px}
 @media (max-width:640px){
   .stats .w,.ladder,.news,.inv,.fg{grid-template-columns:1fr}
   .hero{height:auto}
-  .hero .w{padding-top:72px;padding-bottom:56px}
+  .hero .w{width:calc(100% - 64px);padding-top:72px;padding-bottom:56px}
   .hero h1{font-size:34px}
   h2,.mission h2{font-size:30px}
   section{padding:64px 0}
   .util .w{flex-wrap:wrap;justify-content:flex-start;row-gap:0;column-gap:16px}
-  .stat{padding:28px 0;border-left:0}
+  .hero .eyb{display:block;max-width:16em;box-sizing:border-box;padding-right:.2em;letter-spacing:.06em;line-height:1.45}
+  .stats .stat,.stats .stat:first-child,.stats .stat:nth-child(even){padding:28px 0;border-left:0;border-top:0}
+  .stats .stat+.stat{border-top:1px solid rgba(255,255,255,.14)}
   .stat b{font-size:40px}
   .spons .t{padding:64px 24px}
   .legal{flex-direction:column;gap:8px;align-items:flex-start}
