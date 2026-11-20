@@ -33,6 +33,7 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
 // ---- Mobile nav
 (() => {
   const b = document.querySelector('.nav__toggle'), n = document.querySelector('.nav');
+  if (!b || !n) return;
   const close = () => { n.classList.remove('is-open'); b.setAttribute('aria-expanded', 'false'); document.documentElement.classList.remove('nav-lock'); };
   b.addEventListener('click', () => {
     const open = n.classList.toggle('is-open');

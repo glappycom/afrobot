@@ -2062,11 +2062,17 @@ body[data-header="bone"] .nav.is-compact {
 }
 .path-cards article:nth-child(even) :is(h2, h3, p, a):not(.btn) { color: #fff; }
 .stages .stage-line.stage-line--four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 1024px) {
+  .path-cards--three { grid-template-columns: 1fr 1fr; }
+}
 @media (max-width: 900px) {
+  .stages .stage-line.stage-line--four { grid-template-columns: 1fr 1fr; }
+  .stages .stage-line.stage-line--four .journey-step:last-child { grid-column: auto; }
+}
+@media (max-width: 640px) {
   .path-cards,
   .path-cards--three,
   .stages .stage-line.stage-line--four { grid-template-columns: 1fr; }
-  .stages .stage-line.stage-line--four .journey-step:last-child { grid-column: auto; }
 }
 
 .places { background: #F7F8FA; padding-bottom: 28px; }
