@@ -1,3 +1,4 @@
+document.documentElement.classList.add('js');
 // ---- Logo: header lockup = navy icon, white face, navy eyes, navy wordmark. Footer lockup = white icon, navy face, white eyes, white wordmark.
 // Archived directions for comparison: ?logo=e1 (Space Grotesk lockup) | d2 | a | b | c
 const Q = new URLSearchParams(location.search);
@@ -196,6 +197,40 @@ document.querySelectorAll('.founder__photo').forEach(btn => {
   const here = norm(location.pathname);
   document.querySelectorAll('a[data-nav]').forEach((a) => {
     if (norm(a.getAttribute('href')) === here) a.setAttribute('aria-current', 'page');
+  });
+})();
+
+(() => {
+  const open = document.getElementById('watch-open');
+  const dialog = document.getElementById('watch-dialog');
+  const stage = dialog && dialog.querySelector('.watch__stage');
+  if (!open || !dialog || !stage || typeof dialog.showModal !== 'function') return;
+  const id = stage.dataset.video;
+  if (!/^[A-Za-z0-9_-]{11}$/.test(id)) return;
+  open.addEventListener('click', (event) => {
+    event.preventDefault();
+    if (!stage.querySelector('iframe')) {
+      const frame = document.createElement('iframe');
+      frame.src = 'https://www.youtube-nocookie.com/embed/' + id + '?rel=0';
+      frame.title = 'Build Day presentation, Texas';
+      frame.allow = 'accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      frame.allowFullscreen = true;
+      frame.referrerPolicy = 'strict-origin-when-cross-origin';
+      stage.appendChild(frame);
+    }
+    dialog.showModal();
+  });
+  dialog.addEventListener('close', () => stage.replaceChildren());
+})();
+
+(() => {
+  const form = document.getElementById('program-finder');
+  if (!form) return;
+  form.addEventListener('submit', (event) => {
+    const age = new FormData(form).get('age');
+    if (age !== 'discover' && age !== 'build' && age !== 'innovate') return;
+    event.preventDefault();
+    location.href = '/programs#' + age;
   });
 })();
 
