@@ -37,39 +37,93 @@
 <link rel="stylesheet" href="visual.css?v=58">
 <link rel="stylesheet" href="funder.css?v=7">
 <link rel="stylesheet" href="finish.css?v=2">
+<link rel="stylesheet" href="inst.css?v=1">
 
 </head>
 <body data-header="bone">
 <a class="skip" href="#main">Skip to content</a>
 <header class="nav">
+  <div class="util">
+    <div class="container util__inner">
+      <nav class="util__links" aria-label="Utility">
+        <a href="events.html#stories">News</a>
+        <a href="events.html">Events</a>
+        <a href="contact.html">Contact</a>
+        <a href="child-safety.html">Child safety</a>
+      </nav>
+      <a class="btn btn--clay" href="partners.html">Donate</a>
+    </div>
+  </div>
   <div class="container nav__inner">
-    <a class="nav__brand" href="index.html" aria-label="AfroBot home"><img class="nav__logo nav__logo--ink" data-logo="primary" src="assets/logo-afrobot-navy.svg" alt="AfroBot" width="170" height="38"><img class="nav__logo nav__logo--light" src="assets/logo-afrobot-reversed.svg" alt="" width="170" height="38" aria-hidden="true"></a>
+    <a class="nav__brand" href="index.html" aria-label="AfroBot home"><img data-logo="primary" src="assets/logo-afrobot-navy.svg" alt="AfroBot" width="170" height="38"></a>
     <nav class="nav__links" aria-label="Main">
-      <a data-nav href="programs.html">Programs</a>
-      <a data-nav href="usa.html">USA</a>
-      <a data-nav href="africa.html">Africa</a>
-      <a data-nav href="impact.html">Impact</a>
-      <a data-nav href="partners.html">Partners</a>
+      <div class="drop">
+        <a data-nav href="programs.html">Programs</a>
+        <div class="drop__menu">
+          <a href="programs.html#discover">Discover, ages 6–9</a>
+          <a href="programs.html#build">Build, ages 9–12</a>
+          <a href="programs.html#innovate">Teen track, ages 13–17</a>
+          <a href="events.html">Events</a>
+        </div>
+      </div>
+      <div class="drop">
+        <a href="community.html">Get Involved</a>
+        <div class="drop__menu">
+          <a href="mentorship.html">Mentors and coaches</a>
+          <a href="community.html?intent=host#register">Schools and host sites</a>
+          <a href="volunteer.html">Volunteers</a>
+          <a href="community.html?intent=parent#register">Parents</a>
+        </div>
+      </div>
+      <div class="drop">
+        <a data-nav href="partners.html">Partners &amp; Sponsors</a>
+        <div class="drop__menu">
+          <a href="partners.html">Sponsor a student</a>
+          <a href="partnership.html">Partnership inquiry</a>
+        </div>
+      </div>
+      <div class="drop">
+        <a data-nav href="impact.html">Impact</a>
+        <div class="drop__menu">
+          <a href="africa.html">Cameroon story</a>
+          <a href="usa.html">US story</a>
+        </div>
+      </div>
+      <div class="drop">
+        <a data-nav href="about.html">About</a>
+        <div class="drop__menu">
+          <a href="about.html">Mission</a>
+          <a href="about.html">Leadership</a>
+          <a href="child-safety.html">Child safety</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
     </nav>
-    <a class="btn btn--clay nav__updates" href="partners.html">Partner with us</a>
     <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="mnav"><span class="sr">Menu</span><i></i><i></i></button>
   </div>
   <nav class="mnav" id="mnav" aria-label="Mobile">
-    <a data-nav href="programs.html">Programs</a>
-    <a data-nav href="usa.html">USA</a>
-    <a data-nav href="africa.html">Africa</a>
-    <a data-nav href="impact.html">Impact</a>
-    <a data-nav href="partners.html">Partners</a>
-    <a class="mnav__quiet" href="moonshot.html">Moonshot</a>
-    <a class="mnav__quiet" href="events.html">Events</a>
-    <a class="mnav__quiet" href="volunteer.html">Volunteer</a>
-    <a class="mnav__quiet" href="community.html?intent=updates#register">Get updates</a>
-    <a class="mnav__quiet" href="community.html?intent=support#register">Support</a>
-    <a class="btn btn--clay" href="partners.html">Partner with us</a>
-    <div class="mnav__foot">
-      <a data-nav href="about.html">About</a>
-      <a data-nav href="contact.html">Contact</a>
-    </div>
+    <p class="mnav__label">Programs</p>
+    <a href="programs.html#discover">Discover, ages 6–9</a>
+    <a href="programs.html#build">Build, ages 9–12</a>
+    <a href="programs.html#innovate">Teen track, ages 13–17</a>
+    <a href="events.html">Events</a>
+    <p class="mnav__label">Get Involved</p>
+    <a href="mentorship.html">Mentors and coaches</a>
+    <a href="community.html?intent=host#register">Schools and host sites</a>
+    <a href="volunteer.html">Volunteers</a>
+    <a href="community.html?intent=parent#register">Parents</a>
+    <a href="community.html?intent=updates#register">Get updates</a>
+    <p class="mnav__label">Partners</p>
+    <a href="partners.html">Sponsor a student</a>
+    <a href="partnership.html">Partnership inquiry</a>
+    <p class="mnav__label">Impact</p>
+    <a href="africa.html">Cameroon story</a>
+    <a href="usa.html">US story</a>
+    <p class="mnav__label">About</p>
+    <a href="about.html">About</a>
+    <a href="child-safety.html">Child safety</a>
+    <a href="contact.html">Contact</a>
+    <a class="btn btn--clay" href="partners.html">Donate</a>
   </nav>
 </header>
 <main id="main" tabindex="-1">
@@ -96,58 +150,49 @@
   </div>
 </section>
 </main>
-<footer class="footer close">
-  <div class="close__sponsor">
-    <div class="container close__sponsor-inner">
-      <div class="close__sponsor-copy">
-        <p class="kicker">Partners</p>
-        <h2>Sponsor a student.</h2>
-        <p>Help pay for a child’s place in a program.</p>
-      </div>
-      <a class="btn btn--ink" href="partners.html">Sponsor a Student</a>
+<footer class="footer inst-foot">
+  <div class="container inst-foot__grid">
+    <div class="inst-foot__brand">
+      <a href="index.html" aria-label="AfroBot home"><img data-logo="reversed" src="assets/logo-afrobot-footer.svg" alt="AfroBot" width="180" height="40"></a>
+      <p>From Africa to the World</p>
     </div>
+    <nav aria-label="Programs">
+      <h2>Programs</h2>
+      <a href="programs.html#discover">Discover</a>
+      <a href="programs.html#build">Build</a>
+      <a href="programs.html#innovate">Teen track</a>
+      <a href="events.html">Events</a>
+    </nav>
+    <nav aria-label="Get involved">
+      <h2>Get involved</h2>
+      <a href="mentorship.html">Mentorship</a>
+      <a href="community.html?intent=host#register">Schools and host sites</a>
+      <a href="volunteer.html">Volunteer</a>
+      <a href="community.html?intent=parent#register">Parents</a>
+    </nav>
+    <nav aria-label="Impact">
+      <h2>Impact</h2>
+      <a href="africa.html">Cameroon story</a>
+      <a href="usa.html">US story</a>
+      <a href="impact.html">Impact</a>
+      <a href="partners.html">Partners</a>
+    </nav>
+    <nav aria-label="About">
+      <h2>About</h2>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="mailto:info@afrobot.org">info@afrobot.org</a>
+    </nav>
+    <nav class="footer__legal" aria-label="Policies">
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="child-safety.html">Child Safety</a>
+      <a href="accessibility.html">Accessibility</a>
+      <span>© 2026 AfroBot</span>
+    </nav>
   </div>
-  <div class="close__base">
-    <div class="container">
-      <div class="close__main">
-        <div class="close__brand">
-          <a href="index.html" aria-label="AfroBot home"><img data-logo="reversed" src="assets/logo-afrobot-footer.svg" alt="AfroBot" width="180" height="40"></a>
-          <p class="close__tag">From Africa to the World.</p>
-        </div>
-        <nav class="close__cols" aria-label="Footer">
-          <div>
-            <p class="close__label">Explore</p>
-            <a data-nav href="programs.html">Programs</a>
-            <a data-nav href="usa.html">USA</a>
-            <a data-nav href="africa.html">Africa</a>
-            <a data-nav href="impact.html">Impact</a>
-          </div>
-          <div>
-            <p class="close__label">The program</p>
-            <a data-nav href="about.html">About</a>
-            <a data-nav href="moonshot.html">Moonshot</a>
-            <a data-nav href="collaboration.html">Collaboration</a>
-            <a data-nav href="challenge.html">Challenge</a>
-            <a data-nav href="mentorship.html">Mentorship</a>
-          </div>
-          <div>
-            <p class="close__label">Contact</p>
-            <a data-nav href="partners.html">Partners</a>
-            <a data-nav href="events.html">Events</a>
-            <a data-nav href="volunteer.html">Volunteer</a>
-            <a data-nav href="contact.html">Contact</a>
-            <a href="mailto:info@afrobot.org">info@afrobot.org</a>
-          </div>
-        </nav>
-      </div>
-      <nav class="footer__legal" aria-label="Policies">
-        <a data-nav href="privacy.html">Privacy</a>
-        <a data-nav href="terms.html">Terms</a>
-        <a data-nav href="child-safety.html">Child Safety</a>
-        <a data-nav href="accessibility.html">Accessibility</a>
-        <span class="footer__copy">© 2026 AfroBot</span>
-      </nav>
-    </div>
+  <div class="container inst-foot__legal">
+    <p>AfroBot is a program of Glappy Foundation, a Texas nonprofit corporation.</p>
   </div>
 </footer>
 <script src="script.js?v=41"></script>

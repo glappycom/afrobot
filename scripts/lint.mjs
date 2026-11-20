@@ -24,6 +24,7 @@ if (serverRoles.includes('Student')) fail('Student is still a server role');
 const requiredHome = [
   'From Africa to the World',
   'Kids in Cameroon have been building and coding robots since November 2022.',
+  'Find a program',
   'See the programs',
   'See the 2027 plan',
   'Partner with us',
@@ -33,7 +34,6 @@ const requiredHome = [
   'Ask about hosting',
   'Get session updates',
   'open-source schematics',
-  'To be added',
 ];
 
 const retiredCopy = [
@@ -128,6 +128,7 @@ for (const line of requiredHome) if (!home.includes(line)) fail('homepage missin
 if (home.includes('From Curiosity to Creation. From Community to the World.')) fail('old hero tagline still present');
 if (home.includes('From Curiosity to Creativity. From Africa to the World.')) fail('story heading is still the long line');
 if (home.includes('hero__tag')) fail('homepage still uses the tag sticker');
+if (home.includes('Evidence this site does not have yet') || home.includes('To be added')) fail('homepage still shows a missing-evidence section');
 if (home.includes('may shift') || home.includes('fee charged') || home.includes('not a new pilot')) fail('homepage still hedges in the body');
 if (!home.includes('id="scale"')) fail('homepage missing the 2027 scale section');
 if (!home.includes('bamenda-laptop-row')) fail('homepage hero is missing the classroom photo');
@@ -159,19 +160,20 @@ if (home.includes('No social accounts') || fs.readFileSync(path.join(root, 'cont
 for (const line of ['McKinney Build Day', 'Kids and mentors worked with robots in McKinney, Texas, in 2024.', 'From the program']) {
   if (!events.includes(line)) fail('events missing: ' + line);
 }
-if (!home.includes('class="btn btn--clay nav__updates" href="partners.html">Partner with us')) fail('nav button is not Partner with us');
+if (!home.includes('>Partner with us<')) fail('homepage missing Partner with us');
 for (const line of retiredCopy) if (home.includes(line) || programs.includes(line)) fail('retired copy still present: ' + line);
 if (/coming soon/i.test(home) || /coming soon/i.test(programs)) fail('Home or Programs still says coming soon');
 const mainNav = home.match(/<nav class="nav__links"[\s\S]*?<\/nav>/);
 if (!mainNav) fail('main nav missing');
 else {
-  for (const label of ['Programs', 'USA', 'Africa', 'Impact', 'Partners']) {
+  for (const label of ['Programs', 'Get Involved', 'Partners', 'Impact', 'About']) {
     if (!mainNav[0].includes(label)) fail('nav missing ' + label);
   }
-  if (mainNav[0].includes('>About<') || mainNav[0].includes('>More<')) fail('header nav still has About or More');
+  if (mainNav[0].includes('>More<')) fail('header nav still has More');
   if (mainNav[0].includes('social.html')) fail('empty directory is in the primary nav');
 }
 if (!home.includes('>Get updates<')) fail('header CTA missing');
+if (!home.includes('>Donate<')) fail('donate link missing');
 const footer = home.slice(home.lastIndexOf('<footer'));
 for (const label of ['Programs', 'Events', 'About', 'Mentorship', 'Contact', 'Privacy', 'Terms', 'Child Safety', 'Accessibility']) {
   if (!footer.includes('>' + label + '<')) fail('footer missing ' + label);
@@ -183,9 +185,9 @@ else {
   if (!legal[0].includes('© 2026 AfroBot<')) fail('copyright is not on the policy row');
   if (legal[0].includes('Glappy Foundation')) fail('policy row still names Glappy Foundation');
 }
-if (footer.includes('Glappy Foundation')) fail('footer still names Glappy Foundation');
+if (!footer.includes('AfroBot is a program of Glappy Foundation, a Texas nonprofit corporation.')) fail('footer missing the Glappy legal line');
 if (!footer.includes('assets/logo-afrobot-footer.svg')) fail('footer logo missing');
-if (!footer.includes('class="close__sponsor"') || !footer.includes('Sponsor a Student') || !footer.includes('Help pay for a child’s place in a program.')) fail('footer sponsor band missing');
+if (!home.includes('Sponsor a Student') || !home.includes('Help pay for a child’s place in a program.')) fail('sponsor band missing');
 if (footer.includes('Our classrooms in Cameroon') || footer.includes('close__photos')) fail('footer still has the classroom photo strip');
 if (home.includes('stickycta') || programs.includes('stickycta')) fail('sticky mobile bar is still in the page');
 if (home.includes('<option>Student</option>')) fail('Student role option is still on the form');
