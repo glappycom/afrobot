@@ -1,0 +1,97 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:PS;src:url(PublicSans-VF.woff2) format('woff2');font-weight:100 900}
+:root{--navy:#0E2747;--navy2:#163A66;--acc:#C4461A;--ink:#1A2230;--mute:#5A6472;--line:#E3E7EC;--bg:#F5F7FA}
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:PS,sans-serif;color:var(--ink);width:1440px;-webkit-font-smoothing:antialiased}
+.w{width:1200px;margin:0 auto}
+.util{background:var(--navy);color:#C9D3E0;font-size:13px}.util .w{display:flex;justify-content:flex-end;gap:28px;padding:9px 0}
+nav{border-bottom:1px solid var(--line);background:#fff}nav .w{display:flex;align-items:center;height:84px}
+nav img{height:34px}nav ul{display:flex;gap:34px;list-style:none;margin-left:auto;margin-right:32px;font-weight:600;font-size:16px}
+.btn{display:inline-block;padding:14px 26px;font-weight:700;font-size:15px;border-radius:4px;text-decoration:none}
+.b1{background:var(--acc);color:#fff}.b2{border:2px solid #fff;color:#fff}.b3{background:var(--navy);color:#fff}.b4{border:2px solid var(--navy);color:var(--navy)}
+.hero{position:relative;height:640px;background:url(p/bamenda-class-cropped.jpg) center 35%/cover}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(9,25,46,.92) 0%,rgba(9,25,46,.7) 45%,rgba(9,25,46,.05) 80%)}
+.hero .w{position:relative;z-index:1;padding-top:150px;color:#fff}
+.eyb{font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--acc)}
+.hero .eyb{color:#F3B08F}
+.hero h1{font-size:60px;line-height:1.06;font-weight:800;letter-spacing:-.02em;max-width:680px;margin:18px 0 22px}
+.hero p{font-size:20px;line-height:1.5;max-width:560px;color:#DCE3EC;margin-bottom:36px}.hero .btn{margin-right:14px}
+.stats{background:var(--navy);color:#fff}.stats .w{display:grid;grid-template-columns:repeat(4,1fr)}
+.stat{padding:44px 32px;border-left:1px solid rgba(255,255,255,.14)}.stat:first-child{border-left:0;padding-left:0}
+.stat b{display:block;font-size:52px;font-weight:800;letter-spacing:-.02em}.stat span{font-size:15px;color:#B9C6D6;line-height:1.4;display:block;margin-top:6px}
+section{padding:110px 0}.c{text-align:center}
+h2{font-size:44px;line-height:1.12;font-weight:800;letter-spacing:-.015em;color:var(--navy);margin:14px 0 18px}
+.lead{font-size:20px;line-height:1.6;color:var(--mute);max-width:780px}.c .lead{margin:0 auto}
+.mission h2{font-size:38px;font-weight:600;max-width:980px;margin:18px auto 0;line-height:1.3}
+.bg{background:var(--bg)}
+.ladder{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:56px}
+.card{background:#fff;border:1px solid var(--line)}.card img{width:100%;height:240px;object-fit:cover;display:block}
+.card div{padding:28px 28px 32px}.age{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--acc)}
+.card h3{font-size:26px;color:var(--navy);margin:8px 0 10px;font-weight:800}.card p{color:var(--mute);line-height:1.55;font-size:16px}
+.more{display:inline-block;margin-top:18px;font-weight:700;color:var(--navy);border-bottom:2px solid var(--acc);padding-bottom:2px;font-size:15px}
+.split{display:grid;grid-template-columns:1fr 1fr}.split>div{position:relative;height:520px;background-size:cover;background-position:center;color:#fff}
+.split>div:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(9,25,46,.9),rgba(9,25,46,.1) 65%)}
+.split .in{position:absolute;z-index:1;left:56px;right:56px;bottom:52px}.split h3{font-size:36px;font-weight:800;margin:10px 0}
+.split p{font-size:17px;line-height:1.55;color:#DCE3EC;max-width:500px}.split .eyb{color:#F3B08F}
+.season{background:var(--navy);color:#fff}.season h2{color:#fff}.season .lead{color:#B9C6D6}
+.tl{display:grid;grid-template-columns:repeat(3,1fr);margin-top:56px;border-top:3px solid var(--acc)}
+.tl div{padding:28px 32px 0 0}.tl b{font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:#F3B08F}.tl h4{font-size:24px;margin:10px 0 8px}.tl p{color:#B9C6D6;line-height:1.5}
+.tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border:1px solid #F3B08F;color:#F3B08F;padding:5px 10px;border-radius:3px;margin-left:12px;vertical-align:middle}
+.inv{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:52px;border-top:1px solid var(--line)}
+.inv div{padding:34px 30px 0 0}.inv h4{font-size:22px;color:var(--navy);margin-bottom:10px}.inv p{color:var(--mute);line-height:1.55;font-size:16px}
+.spons{display:grid;grid-template-columns:1.1fr 1fr;align-items:stretch}.spons .t{padding:96px 80px 96px calc((1440px - 1200px)/2);background:var(--bg)}
+.spons .im{background:url(p/mckinney-build-day-2024.jpg) center/cover}
+.news{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:48px}.news img{width:100%;height:220px;object-fit:cover}
+.news h4{font-size:21px;color:var(--navy);margin:14px 0 8px;line-height:1.3}.news small{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--acc)}
+.hd{display:flex;justify-content:space-between;align-items:end}
+footer{background:#0A1D36;color:#B9C6D6;padding:80px 0 36px;font-size:15px}
+.fg{display:grid;grid-template-columns:1.6fr repeat(5,1fr);gap:28px}.fg h5{color:#fff;font-size:15px;margin-bottom:16px}.fg li{list-style:none;margin-bottom:11px}
+.legal{border-top:1px solid rgba(255,255,255,.12);margin-top:56px;padding-top:26px;display:flex;justify-content:space-between;font-size:13px}
+</style></head><body>
+<div class="util"><div class="w"><span>News</span><span>Events</span><span>Contact</span><span>Child safety</span></div></div>
+<nav><div class="w"><img src="logo-afrobot-navy.svg"><ul><li>Programs</li><li>Get Involved</li><li>Partners &amp; Sponsors</li><li>Impact</li><li>About</li></ul><a class="btn b1">Donate</a></div></nav>
+<div class="hero"><div class="w"><div class="eyb">Youth robotics &amp; AI · Cameroon and the United States</div>
+<h1>Every child deserves the chance to build the future.</h1>
+<p>AfroBot teaches young people to design, build and program robots and AI, in classrooms in Cameroon and communities across the United States.</p>
+<a class="btn b1">Find a program</a><a class="btn b2">Sponsor a student</a></div></div>
+<div class="stats"><div class="w">
+<div class="stat"><b>5,000</b><span>children trained in Cameroon</span></div>
+<div class="stat"><b>1,500</b><span>children learning now</span></div>
+<div class="stat"><b>2022</b><span>first classes in Bamenda, November 2022</span></div>
+<div class="stat"><b>30</b><span>children in the 2024 McKinney, Texas pilot</span></div></div></div>
+<section class="mission c"><div class="w"><div class="eyb">Our mission</div>
+<h2>[Mission statement to be supplied by Russell: one sentence on who AfroBot serves and the change it exists to make.]</h2></div></section>
+<section class="bg"><div class="w"><div class="c"><div class="eyb">Programs</div><h2>A pathway for every age</h2>
+<p class="lead">Children start where they are and grow with us, from their first hands-on build to leading a competition team.</p></div>
+<div class="ladder">
+<div class="card"><img src="p/bamenda-robotics-build.jpg"><div><span class="age">Ages 6–9</span><h3>Discover</h3><p>First builds by hand. Children learn how machines move and work in small teams.</p><span class="more">Explore Discover</span></div></div>
+<div class="card"><img src="p/bamenda-circuit-team.jpg"><div><span class="age">Ages 9–12</span><h3>Build</h3><p>Larger builds, circuits and first code. Teams carry a project from idea to working robot.</p><span class="more">Explore Build</span></div></div>
+<div class="card"><img src="p/bamenda-mentors-lab.jpg"><div><span class="age">Ages 13–17</span><h3>Innovate · Compete · Advance</h3><p>AI-powered humanoid robots, competition seasons, and older students mentoring younger teams.</p><span class="more">Explore the teen track</span></div></div>
+</div></div></section>
+<div class="split">
+<div style="background-image:url(p/bamenda-side-by-side.jpg)"><div class="in"><div class="eyb">Africa</div><h3>Cameroon, since 2022</h3><p>Started in Bamenda when conflict cut the school week to four days. Holiday programs have grown it to nearly 5,000 children trained.</p><br><span class="btn b2">The Cameroon story</span></div></div>
+<div style="background-image:url(p/mckinney-ai-track-2024.jpg)"><div class="in"><div class="eyb">United States</div><h3>McKinney, Texas pilot, 2024</h3><p>About 30 children in five to six teams built solutions together, with parents in the room.</p><br><span class="btn b2">The US story</span></div></div>
+</div>
+<section class="season"><div class="w"><div class="eyb" style="color:#F3B08F">2027–2028 season</div><h2>The first national season <span class="tag">Proposed</span></h2>
+<p class="lead">A full US season with regional launches and a national championship in Dallas.</p>
+<div class="tl"><div><b>August 2027</b><h4>Season kickoff</h4><p>Teams form and the season challenge is released.</p></div>
+<div><b>2027</b><h4>Regional launches</h4><p>DC/Maryland · Atlanta · Houston · Dallas–Fort Worth</p></div>
+<div><b>April 2028</b><h4>National championship</h4><p>Dallas, Texas</p></div></div></div></section>
+<section><div class="w"><div class="eyb">Get involved</div><h2>There is a place for you on the team</h2>
+<div class="inv"><div><h4>Mentors &amp; coaches</h4><p>Guide a team through a season. All mentors are screened.</p><span class="more">Become a mentor</span></div>
+<div><h4>Schools &amp; host sites</h4><p>Bring AfroBot to your school, library or community center.</p><span class="more">Host a program</span></div>
+<div><h4>Volunteers</h4><p>Help at build days, showcases and regional events.</p><span class="more">Volunteer</span></div>
+<div><h4>Parents</h4><p>Find a program near you and get season updates.</p><span class="more">Get updates</span></div></div></div></section>
+<div class="spons"><div class="t"><div class="eyb">Partners &amp; sponsors</div><h2>Put a child on a team</h2><p class="lead">The camp-week participation goal is $100 per child. Sponsors can fund a child's place, a team's robot build, or training and safety for a season.</p><br><br><a class="btn b3">Sponsor a student</a>&nbsp;&nbsp;<a class="btn b4">Partnership inquiry</a></div><div class="im"></div></div>
+<section><div class="w"><div class="hd"><div><div class="eyb">News &amp; stories</div><h2 style="margin-bottom:0">From the AfroBot community</h2></div><span class="more">All news</span></div>
+<div class="news"><div><img src="p/mckinney-build-day-2024.jpg"><small>United States</small><h4>Inside the 2024 McKinney build day</h4></div>
+<div><img src="p/bamenda-class-celebration.jpg"><small>Cameroon</small><h4>How holiday programs reached 5,000 children</h4></div>
+<div><img src="p/bamenda-lab-towers.jpg"><small>2027 season</small><h4>Our proposed plan for the first national season</h4></div></div></div></section>
+<footer><div class="w"><div class="fg">
+<div><img src="logo-afrobot-reversed.svg" style="height:30px"><p style="margin-top:18px;line-height:1.6;max-width:260px">Youth robotics and AI education in Cameroon and the United States.</p><p style="margin-top:14px">info@afrobot.org</p></div>
+<div><h5>Programs</h5><ul><li>Discover</li><li>Build</li><li>Teen track</li><li>Events</li></ul></div>
+<div><h5>Get involved</h5><ul><li>Mentors</li><li>Schools</li><li>Volunteers</li><li>Parents</li></ul></div>
+<div><h5>Partners</h5><ul><li>Sponsor a student</li><li>Partner with us</li><li>Donate</li></ul></div>
+<div><h5>Impact</h5><ul><li>Cameroon</li><li>United States</li><li>Annual report</li></ul></div>
+<div><h5>About</h5><ul><li>Mission</li><li>Leadership</li><li>Child safety</li><li>Contact</li></ul></div></div>
+<div class="legal"><span>© 2026 AfroBot. AfroBot is a program of Glappy Foundation, a Texas nonprofit corporation.</span><span>Privacy · Terms · Child Safety · Accessibility</span></div></div></footer>
+</body></html>
