@@ -207,20 +207,30 @@ document.querySelectorAll('.founder__photo').forEach(btn => {
   if (!open || !dialog || !stage || typeof dialog.showModal !== 'function') return;
   const id = stage.dataset.video;
   if (!/^[A-Za-z0-9_-]{11}$/.test(id)) return;
+  const closeBtn = dialog.querySelector('.watch__x');
+  const lock = (on) => document.documentElement.classList.toggle('watch-lock', on);
   open.addEventListener('click', (event) => {
     event.preventDefault();
     if (!stage.querySelector('iframe')) {
       const frame = document.createElement('iframe');
       frame.src = 'https://www.youtube-nocookie.com/embed/' + id + '?rel=0';
       frame.title = 'Build Day presentation, Texas';
-      frame.allow = 'accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      frame.allow = 'clipboard-write; encrypted-media; picture-in-picture; web-share';
       frame.allowFullscreen = true;
       frame.referrerPolicy = 'strict-origin-when-cross-origin';
       stage.appendChild(frame);
     }
+    lock(true);
     dialog.showModal();
+    closeBtn.focus();
   });
-  dialog.addEventListener('close', () => stage.replaceChildren());
+  closeBtn.addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+  dialog.addEventListener('close', () => {
+    stage.replaceChildren();
+    lock(false);
+    open.focus();
+  });
 })();
 
 (() => {
