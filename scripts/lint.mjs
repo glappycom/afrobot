@@ -139,7 +139,7 @@ if (home.includes('hero__tag')) fail('homepage still uses the tag sticker');
 if (home.includes('may shift') || home.includes('fee charged') || home.includes('not a new pilot')) fail('homepage still hedges in the body');
 if (!home.includes('The first national season')) fail('homepage missing the 2027 season');
 const homeCss = fs.readFileSync(path.join(root, 'home.css'), 'utf8');
-if (!home.includes('assets/photos/bamenda-class-cropped.jpg') && !homeCss.includes('assets/photos/bamenda-class-cropped.jpg')) fail('homepage hero is missing the classroom photo');
+if (!home.includes('assets/photos/bamenda-circuit-team.jpg')) fail('homepage hero is missing the build photo');
 if (/body\{[^}]*width:\s*1440px/.test(homeCss)) fail('homepage css still locks the body to 1440px');
 if (!homeCss.includes('@media (max-width:900px)')) fail('homepage missing the mobile layout');
 for (const sheet of ['styles.css', 'components.css', 'visual.css', 'funder.css', 'finish.css', 'inst.css', 'tokens.css']) {

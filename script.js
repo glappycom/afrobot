@@ -1,3 +1,4 @@
+document.documentElement.classList.add('js');
 // ---- Logo: header lockup = navy icon, white face, navy eyes, navy wordmark. Footer lockup = white icon, navy face, white eyes, white wordmark.
 // Archived directions for comparison: ?logo=e1 (Space Grotesk lockup) | d2 | a | b | c
 const Q = new URLSearchParams(location.search);
@@ -32,17 +33,27 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
 
 // ---- Mobile nav
 (() => {
-  const b = document.querySelector('.nav__toggle'), n = document.querySelector('.nav');
-  if (!b || !n) return;
-  const close = () => { n.classList.remove('is-open'); b.setAttribute('aria-expanded', 'false'); document.documentElement.classList.remove('nav-lock'); };
+  const b = document.querySelector('.nav-btn');
+  const menu = document.getElementById('site-nav');
+  if (!b || !menu) return;
+  const close = () => { menu.classList.remove('is-open'); b.setAttribute('aria-expanded', 'false'); document.documentElement.classList.remove('nav-lock'); };
   b.addEventListener('click', () => {
-    const open = n.classList.toggle('is-open');
+    const open = !menu.classList.contains('is-open');
+    menu.classList.toggle('is-open', open);
     b.setAttribute('aria-expanded', String(open));
     document.documentElement.classList.toggle('nav-lock', open);
-    if (open) n.querySelector('.mnav a')?.focus();
+    if (open) menu.querySelector('a:not(.btn)')?.focus();
   });
-  document.querySelectorAll('.mnav a').forEach(a => a.addEventListener('click', close));
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && n.classList.contains('is-open')) { close(); b.focus(); } });
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menu.classList.contains('is-open')) { close(); b.focus(); } });
+  const here = (location.pathname.replace(/\/index\.html$/, '/').replace(/\.html$/, '').replace(/\/$/, '') || '/');
+  menu.querySelectorAll('a').forEach((a) => {
+    if (a.classList.contains('btn')) return;
+    let path = '';
+    try { path = new URL(a.getAttribute('href'), location.origin).pathname; } catch { return; }
+    path = path.replace(/\.html$/, '').replace(/\/$/, '') || '/';
+    if (path === here) a.setAttribute('aria-current', 'page');
+  });
 })();
 
 // ---- Register interest form: posts to /api/interest (stored server-side), inline errors, success/error states
@@ -148,7 +159,7 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
 
 // Header chrome appears only after a short scroll. Position never changes.
 (() => {
-  const n = document.querySelector('.nav');
+  const n = document.querySelector('nav');
   if (!n) return;
   const apply = () => n.classList.toggle('is-scrolled', window.scrollY > 20);
   apply();
@@ -186,6 +197,50 @@ document.querySelectorAll('.founder__photo').forEach(btn => {
   const here = norm(location.pathname);
   document.querySelectorAll('a[data-nav]').forEach((a) => {
     if (norm(a.getAttribute('href')) === here) a.setAttribute('aria-current', 'page');
+  });
+})();
+
+(() => {
+  const open = document.getElementById('watch-open');
+  const dialog = document.getElementById('watch-dialog');
+  const stage = dialog && dialog.querySelector('.watch__stage');
+  if (!open || !dialog || !stage || typeof dialog.showModal !== 'function') return;
+  const id = stage.dataset.video;
+  if (!/^[A-Za-z0-9_-]{11}$/.test(id)) return;
+  const closeBtn = dialog.querySelector('.watch__x');
+  const lock = (on) => document.documentElement.classList.toggle('watch-lock', on);
+  open.addEventListener('click', (event) => {
+    event.preventDefault();
+    if (!stage.querySelector('iframe')) {
+      const frame = document.createElement('iframe');
+      frame.src = 'https://www.youtube-nocookie.com/embed/' + id + '?rel=0';
+      frame.title = 'Build Day presentation, Texas';
+      frame.allow = 'clipboard-write; encrypted-media; picture-in-picture; web-share';
+      frame.allowFullscreen = true;
+      frame.referrerPolicy = 'strict-origin-when-cross-origin';
+      stage.appendChild(frame);
+    }
+    lock(true);
+    dialog.showModal();
+    closeBtn.focus();
+  });
+  closeBtn.addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+  dialog.addEventListener('close', () => {
+    stage.replaceChildren();
+    lock(false);
+    open.focus();
+  });
+})();
+
+(() => {
+  const form = document.getElementById('program-finder');
+  if (!form) return;
+  form.addEventListener('submit', (event) => {
+    const age = new FormData(form).get('age');
+    if (age !== 'discover' && age !== 'build' && age !== 'innovate') return;
+    event.preventDefault();
+    location.href = '/programs#' + age;
   });
 })();
 
@@ -283,12 +338,9 @@ document.querySelectorAll('.work-gallery').forEach((gallery) => {
 (() => {
   document.documentElement.classList.add('js');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const reveal = document.querySelectorAll('[data-reveal], main > section:not(.season-hero):not(.split-hero):not(.page-hero):not(.events-hero), main > .filmstrip');
+  const reveal = document.querySelectorAll('[data-reveal], main > section, main > .hero, main > .stats, main > .split, main > .spons');
   if (!reduce && reveal.length && 'IntersectionObserver' in window) {
-    reveal.forEach((el) => el.classList.add('will-reveal'));
-    document.querySelectorAll('.fx-steps > li, .fx-places > article, .path-cards > article, .fx-photos > figure, .goal-bands > article, .fx-meter li, .fx-stats li').forEach((el, i) => {
-      el.style.setProperty('--i', String(i % 6));
-    });
+    reveal.forEach((el, i) => { el.classList.add('will-reveal'); el.style.setProperty('--i', String(i % 6)); });
     const io = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
@@ -306,7 +358,7 @@ document.querySelectorAll('.work-gallery').forEach((gallery) => {
     if (!Number.isFinite(target)) return;
     const start = performance.now();
     const tick = (now) => {
-      const t = Math.min(1, (now - start) / 560);
+      const t = Math.min(1, (now - start) / 900);
       const eased = 1 - (1 - t) ** 3;
       el.textContent = format(Math.round(target * eased));
       if (t < 1) requestAnimationFrame(tick);

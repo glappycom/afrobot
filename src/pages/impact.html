@@ -1,48 +1,30 @@
-<section class="page-hero">
-  <div class="container">
-    <p class="kicker">Our impact</p>
-    <h1 class="h1">Kids we have already taught.</h1>
+<header class="pagehead">
+  <div class="w">
+    <p class="crumbs"><a href="/">Home</a> · Impact</p>
+    <div class="eyb">Our impact</div>
+    <h1>Kids we have already taught.</h1>
     <p class="lead">About {{facts.cameroonTrained}} children trained in Cameroon holiday programs. About {{facts.cameroonActive}} pupils aged 8–15 at EDUCARE School Bamenda. About {{facts.mckinneyStudents}} in the 2024 McKinney pilot.</p>
-    <p class="fx-source">Holiday totals: AfroBot records, November 2026. EDUCARE school reach: signed partnership letter, November 2026.</p>
   </div>
-</section>
-<section class="impact" aria-label="Founder-reported reach">
-  <div class="container impact__row">
-    <p>
-      <span class="impact__about">About</span>
-      <strong>{{facts.cameroonTrained}}</strong>
-      <span class="impact__label">children trained in Cameroon holiday programs</span>
-    </p>
-    <p>
-      <span class="impact__about">About</span>
-      <strong>{{facts.cameroonActive}}</strong>
-      <span class="impact__label">EDUCARE School Bamenda pupils, ages 8–15</span>
-    </p>
+</header>
+<div class="stats"><div class="w">
+  <div class="stat"><b><span class="stat__q">nearly</span>{{facts.cameroonTrained}}</b><span>children trained in Cameroon holiday programs</span></div>
+  <div class="stat"><b data-count="{{facts.cameroonActiveCount}}">{{facts.cameroonActive}}</b><span>EDUCARE School Bamenda pupils, ages 8–15</span></div>
+  <div class="stat"><b data-count="{{facts.mckinneyStudents}}">{{facts.mckinneyStudents}}</b><span>children in the 2024 McKinney pilot</span></div>
+</div></div>
+<section><div class="w sheet">
+  <p>Holiday totals: AfroBot records, November 2026. EDUCARE school reach: signed partnership letter, November 2026.</p>
+  <h2>Where this happened</h2>
+  <div class="ladder">
+    <article class="card"><div><h3>Cameroon</h3><p>Since {{facts.cameroonStarted}}, about {{facts.cameroonYears}} years of holiday training and ongoing school groups.</p><a class="more" href="africa.html">The Cameroon story</a></div></article>
+    <article class="card"><div><h3>McKinney, Texas</h3><p>In 2024, about {{facts.mckinneyStudents}} students joined a pilot. That Build Day is on the events page.</p><a class="more" href="events.html">McKinney Build Day</a></div></article>
   </div>
-</section>
-<section class="section band-quiet">
-  <div class="container">
-    <h2 class="h1">Where this happened</h2>
-    <div class="path-cards">
-      <article>
-        <h3>Cameroon</h3>
-        <p>Since {{facts.cameroonStarted}}, about {{facts.cameroonYears}} years. Holiday training and ongoing school groups.</p>
-      </article>
-      <article>
-        <h3>McKinney, Texas</h3>
-        <p>A 2024 pilot of about {{facts.mckinneyStudents}} students. Build Day is already on the events page.</p>
-      </article>
-    </div>
+</div></section>
+<section class="bg" id="slots"><div class="w sheet">
+  <h2 id="slots-title">Photos from the programs</h2>
+  <p>These pictures are already on the site. We do not add a new photo of a child without a parent’s consent.</p>
+  <div class="media-split">
+    <figure><img src="assets/photos/cameroon-classroom-wide.jpg" alt="Students in lab coats working at laptops in a classroom in Cameroon" width="1280" height="960"></figure>
+    <figure><img src="assets/photos/mckinney-ai-track-2024.jpg" alt="Kids at tables with their robots while a presenter teaches at a screen" width="1200" height="900"></figure>
   </div>
-</section>
-<section class="section" aria-labelledby="slots-title">
-  <div class="container">
-    <h2 id="slots-title" class="h1">Photos from the programs</h2>
-    <p>These pictures are already on the site. We do not add a new photo of a child without a parent’s consent.</p>
-    <div class="filmstrip">
-      <img src="assets/photos/cameroon-classroom-wide.jpg" alt="Students in lab coats working at laptops in a classroom in Cameroon" width="1280" height="960" loading="lazy" decoding="async">
-      <img src="assets/photos/mckinney-ai-track-2024.jpg" alt="Kids at tables with their robots while a presenter teaches at a screen" width="1200" height="900" loading="lazy" decoding="async">
-    </div>
-  </div>
-</section>
+</div></section>
 <!-- TODO: Russell may later add who comes back, what they can build after the program, the cost per child, and an independent count. Do not publish a missing-evidence heading. -->
