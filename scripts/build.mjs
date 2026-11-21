@@ -58,13 +58,13 @@ const orgJson = `<script type="application/ld+json">
   "@type": "EducationalOrganization",
   "name": "AfroBot",
   "url": "https://afrobot.org/",
-  "email": "info@afrobot.org",
+  "email": "hello@afrobot.org",
   "description": "Kids-only youth robotics and AI program."
 }
 </script>`;
 
 const pages = [
-  ['mentorship.html', 'mentorship.html', 'Mentorship · AfroBot', 'Mentor with AfroBot. Screening is required before working with students.', '/mentorship', ''],
+  ['mentorship.html', 'mentorship.html', 'Mentorship · AfroBot', 'Coach a team during a session. University students in Dallas have expressed interest in mentoring.', '/mentorship', ''],
   ['about.html', 'about.html', 'About · AfroBot', 'AfroBot is a program of Glappy Foundation, a Texas nonprofit corporation. Kids in Cameroon have been building robots since November 2022.', '/about', ''],
   ['programs.html', 'programs.html', 'Programs · AfroBot', 'Academy, League, and Innovation Lab. Discover through Advance. $100 per child for a camp week is the participation goal.', '/programs', ''],
   ['usa.html', 'usa.html', 'AfroBot USA · AfroBot', 'A 2024 pilot in McKinney, Texas, with about 30 students and five to six teams. The 2027 season is proposed.', '/usa', ''],
@@ -78,14 +78,14 @@ const pages = [
   ['community.html', 'community.html', 'Community · AfroBot', 'Parents, students through a parent, mentors, sponsors, schools, and manufacturers can register interest.', '/community', ''],
   ['partners.html', 'partners.html', 'Partners · AfroBot', 'Partner on the 2027 Dallas–Fort Worth scale-up. Names are not listed until a partnership is confirmed.', '/partners', ''],
   ['events.html', 'events.html', 'Events · AfroBot', 'McKinney Build Day, 2024. The 2027 footprint is Texas and Cameroon.', '/events', ''],
-  ['contact.html', 'contact.html', 'Contact · AfroBot', 'Write to AfroBot at info@afrobot.org.', '/contact', ''],
+  ['contact.html', 'contact.html', 'Contact · AfroBot', 'Write to AfroBot at hello@afrobot.org.', '/contact', ''],
   ['privacy.html', 'privacy.html', 'Privacy · AfroBot', 'What the AfroBot interest form collects.', '/privacy', ''],
   ['terms.html', 'terms.html', 'Terms · AfroBot', 'Sessions aren’t open for registration on this site yet.', '/terms', ''],
-  ['child-safety.html', 'child-safety.html', 'Child safety · AfroBot', 'AfroBot commitments on screening, supervision, photo consent, reporting, and event safety.', '/child-safety', ''],
-  ['accessibility.html', 'accessibility.html', 'Accessibility · AfroBot', 'AfroBot aims for WCAG 2.2 AA. Report a barrier to info@afrobot.org.', '/accessibility', ''],
-  ['volunteer.html', 'volunteer.html', 'Volunteer · AfroBot', 'Mentor and volunteer inquiries. Screening is required before working with students.', '/volunteer', ''],
+  ['child-safety.html', 'child-safety.html', 'Child safety · AfroBot', 'Children take part through a parent or guardian. Supervision, photo consent, reporting, and event safety.', '/child-safety', ''],
+  ['accessibility.html', 'accessibility.html', 'Accessibility · AfroBot', 'AfroBot aims for WCAG 2.2 AA. Report a barrier to hello@afrobot.org.', '/accessibility', ''],
+  ['volunteer.html', 'volunteer.html', 'Volunteer · AfroBot', 'Share what you know with the next generation of builders.', '/volunteer', ''],
   ['partnership.html', 'partnership.html', 'Partnership inquiries · AfroBot', 'Sponsorship and partnership inquiries.', '/partnership', ''],
-  ['social.html', 'social.html', 'Social · AfroBot', 'Reach AfroBot at info@afrobot.org for session updates.', '/social', ''],
+  ['social.html', 'social.html', 'Social · AfroBot', 'Reach AfroBot at hello@afrobot.org for session updates.', '/social', ''],
 ];
 
 for (const [out, src, title, description, urlPath, headExtra] of pages) {

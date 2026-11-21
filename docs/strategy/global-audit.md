@@ -23,7 +23,7 @@ The voice is a kids-only robotics and AI program preparing a 2027 season. Camero
 | mentorship.html | /mentorship | Mentor page and form |
 | volunteer.html | /volunteer | Same form, posts to `/api/volunteer` |
 | university-pathways.html | /university-pathways | Advance / older students |
-| contact.html | /contact | info@afrobot.org |
+| contact.html | /contact | hello@afrobot.org |
 | privacy, terms, child-safety, accessibility, social | matching paths | Policies |
 
 No routes yet for USA, Africa, Impact, Moonshot, global collaboration, or a challenge.
@@ -32,7 +32,7 @@ No routes yet for USA, Africa, Impact, Moonshot, global collaboration, or a chal
 
 Desktop row: Programs, Events, Volunteer, Partners, plus Sponsor a Student. The menu is one row. About and Contact sit in the mobile footer only. Nothing is under a “More” menu. Lint enforces that.
 
-Site footer: Programs, Events, About, Mentorship, Contact, policies, info@afrobot.org, tagline “From Africa to the World.”
+Site footer: Programs, Events, About, Mentorship, Contact, policies, hello@afrobot.org, tagline “From Africa to the World.”
 
 ## Components worth keeping
 

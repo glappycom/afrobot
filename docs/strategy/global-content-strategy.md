@@ -30,7 +30,7 @@ Footer groups:
 
 - Explore: Programs, USA, Africa, Impact
 - The work: About, Moonshot, Collaboration, Challenge, Mentorship
-- Contact: Partners, Events, Volunteer, Contact, info@afrobot.org
+- Contact: Partners, Events, Volunteer, Contact, hello@afrobot.org
 
 Mobile uses the same five links, then the secondary links as quiet items. No More label.
 
