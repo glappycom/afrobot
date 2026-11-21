@@ -19,7 +19,7 @@ One long homepage, anchored in place rather than routed:
 - Hero with a Season 1 / 2027–28 framing, a countdown to a proposed 11 December 2027 regional, and the McKinney build-day cut-out (2024).
 - Audience strip, proposed fees ($100 / $50 / $75 / $0 waiver), a six-step season, AI and robotics tracks, age divisions (Discover 6–9, Junior 9–12, Senior 13–17), values, a proposed competition calendar, awards, FAQ, founders, a partner list (WAAW Foundation and Glappy Foundation), sponsor tiers, and the interest form.
 - Header links scroll to page sections. Header actions are “Sponsor” and “Register interest”.
-- Footer links scroll on-page. Contact is `info@afrobot.org` plus the city line “Dallas, Texas”. No street address is published. No privacy, terms, child-safety, accessibility, volunteer, partnership, or social URLs exist.
+- Footer links scroll on-page. Contact is `hello@afrobot.org` plus the city line “Dallas, Texas”. No street address is published. No privacy, terms, child-safety, accessibility, volunteer, partnership, or social URLs exist.
 - Preview switches live in `script.js`: `?static`, `?header=none`, `?font=poppins`, `?logo=`, `?accent=blue`, `?bg=bone`, `?hero=photo`.
 
 Real media already in `assets/` should be treated as licensed program photography, not as stock to replace with invented scenes: McKinney build day and AI track (2024), founder portraits, logo and favicon lockups, Open Graph image. Fonts are self-hosted (Outfit, Inter, Space Grotesk, Poppins) under the SIL Open Font License.

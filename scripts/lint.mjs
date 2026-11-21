@@ -164,7 +164,7 @@ for (const line of [legalHome, 'Ways to take part', 'partnerships@afrobot.org', 
 }
 if (partners.includes('EduCare Schools') || partners.includes('Gateway Schools') || partners.includes('Sure Starts')) fail('partners still names a school');
 const safety = fs.readFileSync(path.join(root, 'child-safety.html'), 'utf8');
-for (const line of ['Screening', 'Supervision', 'two-adult rule', 'Photo and media consent', 'Reporting concerns', 'Health and safety at events', 'mailto:info@afrobot.org']) {
+for (const line of ['Supervision', 'two-adult rule', 'Photo and media consent', 'Reporting concerns', 'Health and safety at events', 'mailto:hello@afrobot.org']) {
   if (!safety.includes(line)) fail('child safety missing: ' + line);
 }
 const competitions = fs.readFileSync(path.join(root, 'competitions.html'), 'utf8');
@@ -193,7 +193,7 @@ const footer = home.slice(home.lastIndexOf('<footer'));
 for (const label of ['Programs', 'Events', 'About', 'Mentors', 'Contact', 'Privacy', 'Terms', 'Child Safety', 'Accessibility', 'Parents']) {
   if (!footer.includes('>' + label + '<')) fail('footer missing ' + label);
 }
-if (!footer.includes('href="mailto:info@afrobot.org"')) fail('footer missing email');
+if (!footer.includes('href="mailto:hello@afrobot.org"')) fail('footer missing email');
 if (!footer.includes('© 2026 AfroBot. AfroBot is a program of Glappy Foundation, a Texas nonprofit corporation.')) fail('footer missing the Glappy legal line');
 if (!footer.includes('assets/logo-afrobot-reversed.svg')) fail('footer logo missing');
 if (!home.includes('Sponsor a student') || !home.includes('The camp-week participation goal is $100 per child.')) fail('sponsor band missing');

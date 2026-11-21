@@ -201,35 +201,49 @@ document.querySelectorAll('.founder__photo').forEach(btn => {
 })();
 
 (() => {
-  const open = document.getElementById('watch-open');
   const dialog = document.getElementById('watch-dialog');
   const stage = dialog && dialog.querySelector('.watch__stage');
-  if (!open || !dialog || !stage || typeof dialog.showModal !== 'function') return;
-  const id = stage.dataset.video;
-  if (!/^[A-Za-z0-9_-]{11}$/.test(id)) return;
-  const closeBtn = dialog.querySelector('.watch__x');
+  const closeBtn = dialog && dialog.querySelector('.watch__x');
+  const titleEl = document.getElementById('watch-title');
+  if (!dialog || !stage || !closeBtn || typeof dialog.showModal !== 'function') return;
+  let lastFocus = null;
   const lock = (on) => document.documentElement.classList.toggle('watch-lock', on);
-  open.addEventListener('click', (event) => {
-    event.preventDefault();
-    if (!stage.querySelector('iframe')) {
-      const frame = document.createElement('iframe');
-      frame.src = 'https://www.youtube-nocookie.com/embed/' + id + '?rel=0';
-      frame.title = 'Build Day presentation, Texas';
-      frame.allow = 'clipboard-write; encrypted-media; picture-in-picture; web-share';
-      frame.allowFullscreen = true;
-      frame.referrerPolicy = 'strict-origin-when-cross-origin';
-      stage.appendChild(frame);
-    }
+  const openWatch = (id, title, trigger) => {
+    if (!/^[A-Za-z0-9_-]{11}$/.test(id)) return;
+    lastFocus = trigger || null;
+    stage.replaceChildren();
+    const frame = document.createElement('iframe');
+    frame.src = 'https://www.youtube-nocookie.com/embed/' + id + '?rel=0';
+    frame.title = title || 'Video';
+    frame.allow = 'clipboard-write; encrypted-media; picture-in-picture; web-share';
+    frame.allowFullscreen = true;
+    frame.referrerPolicy = 'strict-origin-when-cross-origin';
+    stage.appendChild(frame);
+    if (titleEl) titleEl.textContent = title || 'Video';
     lock(true);
     dialog.showModal();
     closeBtn.focus();
+  };
+  const watchOpen = document.getElementById('watch-open');
+  if (watchOpen) {
+    watchOpen.addEventListener('click', (event) => {
+      event.preventDefault();
+      openWatch(stage.dataset.video || '4F1Jm0-rMM0', 'Build Day presentation, Texas', watchOpen);
+    });
+  }
+  document.querySelectorAll('.video-play').forEach((btn) => {
+    btn.addEventListener('click', (event) => {
+      event.preventDefault();
+      const title = (btn.getAttribute('aria-label') || '').replace(/^Play video:\s*/, '');
+      openWatch(btn.dataset.video, title, btn);
+    });
   });
   closeBtn.addEventListener('click', () => dialog.close());
   dialog.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
   dialog.addEventListener('close', () => {
     stage.replaceChildren();
     lock(false);
-    open.focus();
+    if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
   });
 })();
 
@@ -244,19 +258,6 @@ document.querySelectorAll('.founder__photo').forEach(btn => {
   });
 })();
 
-document.querySelectorAll('.video-play').forEach((btn) => {
-  btn.addEventListener('click', () => {
-    const id = btn.dataset.video;
-    if (!/^[A-Za-z0-9_-]{11}$/.test(id)) return;
-    const frame = document.createElement('iframe');
-    frame.src = 'https://www.youtube-nocookie.com/embed/' + id + '?rel=0';
-    frame.title = btn.getAttribute('aria-label').replace(/^Play video:\s*/, '');
-    frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-    frame.allowFullscreen = true;
-    frame.referrerPolicy = 'strict-origin-when-cross-origin';
-    btn.parentElement.replaceChildren(frame);
-  });
-});
 
 document.querySelectorAll('.work-gallery').forEach((gallery) => {
   const dialog = gallery.querySelector('.work-lightbox');

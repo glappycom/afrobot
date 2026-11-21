@@ -104,7 +104,7 @@
     {
       "kind": "youtube",
       "id": "4F1Jm0-rMM0",
-      "poster": "https://i.ytimg.com/vi/4F1Jm0-rMM0/hqdefault.jpg",
+      "poster": "assets/video/posters/4F1Jm0-rMM0.jpg",
       "title": "Build Day presentation, Texas",
       "place": "usa",
       "chapter": "pilot",
@@ -124,7 +124,7 @@
     {
       "kind": "youtube",
       "id": "UabaIWvco2Y",
-      "poster": "https://i.ytimg.com/vi/UabaIWvco2Y/hqdefault.jpg",
+      "poster": "assets/video/posters/UabaIWvco2Y.jpg",
       "title": "Summer camp, Cameroon",
       "place": "cameroon",
       "chapter": "community",
