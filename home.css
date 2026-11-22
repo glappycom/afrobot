@@ -167,7 +167,7 @@ footer a.foot-donate:hover{background:var(--acc-dark);color:#fff}
 .signup__msg a{color:var(--navy)}
 .hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
 .fg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px 20px}.fg h5{color:var(--navy);font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}.fg li{list-style:none;margin-bottom:6px}.fg a{font-size:14px;line-height:1.35}
-.foot-mark{display:block;width:100%;height:auto;margin:36px 0 14px}
+.foot-mark{display:block;width:min(400px,40%);height:auto;max-height:90px;margin:32px 0 24px}
 .legal{margin-top:0;padding-top:0;display:flex;justify-content:space-between;align-items:baseline;gap:12px 24px;font-size:13px;color:var(--mute)}
 @media (max-width:1439px){
   .hero{height:auto;min-height:clamp(520px,44.45vw,640px)}
@@ -219,6 +219,7 @@ footer a.foot-donate:hover{background:var(--acc-dark);color:#fff}
   .fg{grid-template-columns:1fr 1fr}
   .signup__row{align-items:stretch}
   .signup input,.signup .btn,.foot-donate{width:100%}
+  .foot-mark{width:min(220px,60%);max-height:none}
   .hero{height:auto}
   .hero .w{width:calc(100% - 64px);padding-top:72px;padding-bottom:56px}
   .hero h1{font-size:34px}
