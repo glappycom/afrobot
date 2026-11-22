@@ -85,6 +85,7 @@ const pages = [
   ['accessibility.html', 'accessibility.html', 'Accessibility · AfroBot', 'AfroBot aims for WCAG 2.2 AA. Report a barrier to hello@afrobot.org.', '/accessibility', ''],
   ['volunteer.html', 'volunteer.html', 'Volunteer · AfroBot', 'Share what you know with the next generation of builders.', '/volunteer', ''],
   ['partnership.html', 'partnership.html', 'Partnership inquiries · AfroBot', 'Sponsorship and partnership inquiries.', '/partnership', ''],
+  ['schools.html', 'schools.html', 'Bring AfroBot to your school · AfroBot', 'Tell us about your school, and we’ll reach out to set it up.', '/schools', ''],
   ['social.html', 'social.html', 'Social · AfroBot', 'Reach AfroBot at hello@afrobot.org for session updates.', '/social', ''],
 ];
 

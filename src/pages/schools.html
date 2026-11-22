@@ -1,0 +1,83 @@
+<header class="pagehead">
+  <div class="w">
+    <p class="crumbs"><a href="/">Home</a> · Schools</p>
+    <div class="eyb">Schools</div>
+    <h1>Bring AfroBot to your school.</h1>
+    <p class="lead">Tell us about your school, and we’ll reach out to set it up.</p>
+    <div class="pagehero__actions"><a class="btn b1" href="#signup">School sign-up</a></div>
+  </div>
+</header>
+<section><div class="w">
+  <h2 class="sr">How it works</h2>
+  <ol class="steps">
+    <li><b>1</b><h3>Sign up</h3></li>
+    <li><b>2</b><h3>We reach out</h3></li>
+    <li><b>3</b><h3>We set up your school</h3></li>
+  </ol>
+</div></section>
+<section class="bg" id="signup">
+  <div class="w">
+    <h2>School sign-up</h2>
+    <p class="lead">Adults send this form.</p>
+    <p class="sr">Fields marked with an asterisk are required.</p>
+    <form class="form" id="school-signup" action="/api/interest" method="post" novalidate>
+      <div class="form__fields">
+        <label class="f f--full" for="sch-name"><span>School name <i aria-hidden="true">*</i></span><input id="sch-name" name="school" autocomplete="organization" required maxlength="160" aria-describedby="sch-name-err"><em class="f__err" id="sch-name-err"></em></label>
+        <label class="f" for="sch-type"><span>School type <i aria-hidden="true">*</i></span>
+          <select id="sch-type" name="schoolType" required aria-describedby="sch-type-err">
+            <option value="" selected disabled>Choose one</option>
+            <option>Primary</option>
+            <option>Secondary</option>
+            <option>Combined</option>
+            <option>After-school or club</option>
+            <option>Homeschool group</option>
+            <option>Other</option>
+          </select>
+          <em class="f__err" id="sch-type-err"></em>
+        </label>
+        <label class="f" for="sch-city"><span>City <i aria-hidden="true">*</i></span><input id="sch-city" name="city" autocomplete="address-level2" required maxlength="80" aria-describedby="sch-city-err"><em class="f__err" id="sch-city-err"></em></label>
+        <label class="f" for="sch-region"><span>State or region <i aria-hidden="true">*</i></span><input id="sch-region" name="region" autocomplete="address-level1" required maxlength="80" aria-describedby="sch-region-err"><em class="f__err" id="sch-region-err"></em></label>
+        <label class="f" for="sch-country"><span>Country <i aria-hidden="true">*</i></span><input id="sch-country" name="country" autocomplete="country-name" required maxlength="80" aria-describedby="sch-country-err"><em class="f__err" id="sch-country-err"></em></label>
+        <label class="f" for="sch-contact"><span>Contact name <i aria-hidden="true">*</i></span><input id="sch-contact" name="contact" autocomplete="name" required maxlength="120" aria-describedby="sch-contact-err"><em class="f__err" id="sch-contact-err"></em></label>
+        <label class="f" for="sch-role"><span>Role <i aria-hidden="true">*</i></span>
+          <select id="sch-role" name="contactRole" required aria-describedby="sch-role-err">
+            <option value="" selected disabled>Choose one</option>
+            <option>Principal</option>
+            <option>Teacher</option>
+            <option>Club leader</option>
+            <option>Administrator</option>
+            <option>Other</option>
+          </select>
+          <em class="f__err" id="sch-role-err"></em>
+        </label>
+        <label class="f" for="sch-email"><span>Email <i aria-hidden="true">*</i></span><input id="sch-email" name="email" type="email" inputmode="email" autocomplete="email" required maxlength="200" aria-describedby="sch-email-err"><em class="f__err" id="sch-email-err"></em></label>
+        <label class="f" for="sch-phone"><span>Phone <b>(optional)</b></span><input id="sch-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="40"></label>
+        <fieldset class="f f--full" aria-describedby="sch-ages-err">
+          <legend>Student ages served <i aria-hidden="true">*</i></legend>
+          <div class="checks">
+            <label><input id="sch-age-6" type="checkbox" name="ages" value="6–9">6–9</label>
+            <label><input id="sch-age-9" type="checkbox" name="ages" value="9–12">9–12</label>
+            <label><input id="sch-age-13" type="checkbox" name="ages" value="13+">13+</label>
+          </div>
+          <em class="f__err" id="sch-ages-err"></em>
+        </fieldset>
+        <label class="f" for="sch-count"><span>Approximate number of interested students <i aria-hidden="true">*</i></span><input id="sch-count" name="count" inputmode="numeric" required maxlength="20" aria-describedby="sch-count-err"><em class="f__err" id="sch-count-err"></em></label>
+        <fieldset class="f f--full" aria-describedby="sch-wants-err">
+          <legend>What you want <i aria-hidden="true">*</i></legend>
+          <div class="checks">
+            <label><input id="sch-want-club" type="checkbox" name="wants" value="After-school club or class">After-school club or class</label>
+            <label><input id="sch-want-comp" type="checkbox" name="wants" value="Enter the AfroBot competition">Enter the AfroBot competition</label>
+            <label><input id="sch-want-lab" type="checkbox" name="wants" value="Space on campus for a robotics lab">Space on campus for a robotics lab</label>
+            <label><input id="sch-want-train" type="checkbox" name="wants" value="Teacher training">Teacher training</label>
+          </div>
+          <em class="f__err" id="sch-wants-err"></em>
+        </fieldset>
+        <label class="f f--full" for="sch-msg"><span>Message <b>(optional)</b></span><textarea id="sch-msg" name="message" rows="4" maxlength="1500"></textarea></label>
+        <div class="f f--consent"><label class="consent"><input id="sch-consent" name="consent" type="checkbox" value="yes" required aria-describedby="sch-consent-err"><span>You may contact me about bringing AfroBot to this school. <i aria-hidden="true">*</i></span></label><em class="f__err" id="sch-consent-err"></em></div>
+        <div class="hp" aria-hidden="true"><label for="sch-website">Website</label><input id="sch-website" name="website" tabindex="-1" autocomplete="off"></div>
+      </div>
+      <button class="btn b1" type="submit">Send school sign-up</button>
+      <p class="form__msg" id="sch-status" role="status" aria-live="polite" hidden></p>
+    </form>
+  </div>
+</section>

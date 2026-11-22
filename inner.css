@@ -45,12 +45,24 @@
 .role__a{color:var(--acc);font-weight:700}
 .role__flag{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--acc)}
 .form{max-width:760px}
+.form input,.form select,.form textarea,.form fieldset{scroll-margin-top:110px}
 .form__fields{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .f{display:flex;flex-direction:column;gap:6px;color:var(--navy);font-weight:700;font-size:14px}
 .f input,.f select,.f textarea{width:100%;font:16px/1.4 PS,sans-serif;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:4px;padding:12px}
 .f input,.f select{min-height:44px}
-.f--consent{grid-column:1/-1}
-.consent{display:flex;gap:10px;align-items:flex-start;font-weight:600}
+.f--full,.f--consent{grid-column:1/-1}
+fieldset.f{border:0;margin:0;padding:0;min-width:0}
+.f legend{font-weight:700;margin-bottom:8px}
+.checks{display:flex;flex-direction:column;gap:10px}
+.checks label,.consent{display:flex;gap:10px;align-items:flex-start;align-self:flex-start;font-weight:600;color:var(--ink)}
+.f .checks input,.f .consent input{width:20px;height:20px;min-height:20px;padding:0;flex:0 0 20px;margin-top:1px;accent-color:var(--navy)}
+.f input[aria-invalid="true"],.f select[aria-invalid="true"],.f textarea[aria-invalid="true"]{border-color:var(--acc)}
+fieldset.f[aria-invalid="true"]{border-left:3px solid var(--acc);padding-left:12px}
+.ways+.inkind{margin-top:32px}
+.form>.btn{margin-top:8px}
+.form__msg{margin-top:16px;color:var(--ink);font-size:16px;line-height:1.5}
+.form__msg[data-kind="error"]{color:#8C3414}
+.form.is-sent .form__msg{margin-top:0;font-size:22px;font-weight:800;color:var(--navy);border-left:4px solid var(--acc);padding:4px 0 4px 16px}
 .hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
 .f__err{color:var(--acc);font-style:normal;font-weight:650}
 .finder{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:720px}
