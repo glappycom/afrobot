@@ -138,20 +138,30 @@
 </div>
 </dialog>
 </main>
-<footer><div class="w"><form class="signup" action="mailto:hello@afrobot.org" method="post" enctype="text/plain">
-<div><h5>Updates</h5><p>Ask for session updates by email.</p></div>
+<footer>
+<div class="w">
+<div class="foot-top">
+<form class="signup" id="footer-signup" action="/api/updates" method="post" novalidate>
+<h2>Get session updates.</h2>
+<div class="signup__row">
 <label class="sr" for="signup-email">Email</label>
 <input id="signup-email" type="email" name="email" required autocomplete="email" placeholder="Email">
+<input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
 <button class="btn b3" type="submit">Sign up</button>
+<a class="foot-donate" href="/partners">Donate</a>
+</div>
+<p class="signup__msg" role="status" hidden></p>
 </form>
 <div class="fg">
-<div><img src="assets/logo-afrobot-reversed.svg" alt="AfroBot" style="height:30px"><p style="margin-top:18px;line-height:1.6;max-width:260px">Youth robotics and AI education in Africa and North America.</p><p style="margin-top:14px"><a href="mailto:hello@afrobot.org">hello@afrobot.org</a></p></div>
 <div><h5>Programs</h5><ul><li><a href="/programs#discover">Discover</a></li><li><a href="/programs#build">Build</a></li><li><a href="/programs#innovate">Teen track</a></li><li><a href="/events">Events</a></li></ul></div>
 <div><h5>Get involved</h5><ul><li><a href="/mentorship">Mentors</a></li><li><a href="/schools">Schools</a></li><li><a href="/volunteer">Volunteers</a></li><li><a href="/community?intent=parent#register">Parents</a></li></ul></div>
-<div><h5>Partners</h5><ul><li><a href="/partners">Sponsor a student</a></li><li><a href="/partnership">Partner with us</a></li><li><a href="/partners">Donate</a></li></ul></div>
-<div><h5>Impact</h5><ul><li><a href="/africa">Africa</a></li><li><a href="/usa">North America</a></li></ul></div>
-<div><h5>About</h5><ul><li><a href="/about">Mission</a></li><li><a href="/about">Leadership</a></li><li><a href="/child-safety">Child safety</a></li><li><a href="/contact">Contact</a></li></ul></div></div>
-<div class="legal"><span>© 2026 AfroBot. AfroBot is a program of Glappy Foundation, a Texas nonprofit corporation.</span><span><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/child-safety">Child Safety</a> · <a href="/accessibility">Accessibility</a></span></div></div></footer>
+<div><h5>Support</h5><ul><li><a href="/partners">Sponsor a student</a></li><li><a href="/partnership">Partner with us</a></li></ul></div>
+<div><h5>About</h5><ul><li><a href="/about#mission">Mission</a></li><li><a href="/about#leadership">Leadership</a></li><li><a href="/africa">Africa</a></li><li><a href="/usa">North America</a></li><li><a href="/contact">Contact</a></li></ul></div>
+</div>
+</div>
+<img class="foot-mark" src="assets/logo-afrobot-footer-navy.svg" alt="AfroBot" width="517" height="115">
+<div class="legal"><span>© 2026 AfroBot. AfroBot is a program of Glappy Foundation, a Texas nonprofit corporation.</span><span><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/child-safety">Child Safety</a> · <a href="/accessibility">Accessibility</a> · <a href="mailto:hello@afrobot.org">hello@afrobot.org</a></span></div>
+</div></footer>
 <script src="script.js" defer></script>
 </body>
 </html>

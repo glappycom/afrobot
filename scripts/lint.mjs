@@ -195,7 +195,7 @@ for (const label of ['Programs', 'Events', 'About', 'Mentors', 'Contact', 'Priva
 }
 if (!footer.includes('href="mailto:hello@afrobot.org"')) fail('footer missing email');
 if (!footer.includes('© 2026 AfroBot. AfroBot is a program of Glappy Foundation, a Texas nonprofit corporation.')) fail('footer missing the Glappy legal line');
-if (!footer.includes('assets/logo-afrobot-reversed.svg')) fail('footer logo missing');
+if (!footer.includes('assets/logo-afrobot-footer-navy.svg')) fail('footer logo missing');
 if (!home.includes('Sponsor a student') || !home.includes('The camp-week participation goal is $100 per child.')) fail('sponsor band missing');
 if (footer.includes('Our classrooms in Africa') || footer.includes('close__photos')) fail('footer still has the classroom photo strip');
 if (home.includes('stickycta') || programs.includes('stickycta')) fail('sticky mobile bar is still in the page');
