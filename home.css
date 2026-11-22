@@ -153,14 +153,26 @@ footer a:hover{color:#fff}
 .news{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px;align-items:stretch}.news picture{display:block;overflow:hidden;aspect-ratio:3/2}.news img,.news-card img{height:100%}
 .news h4{font-size:21px;color:var(--navy);line-height:1.35}.news small{display:block;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--navy)}
 .hd{display:flex;justify-content:space-between;align-items:end}
-footer{background:#0A1D36;color:#B9C6D6;padding:56px 0 28px;font-size:15px;border-top:4px solid var(--navy2)}
-.signup{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(180px,280px) auto;gap:16px;align-items:center;padding-bottom:32px;margin-bottom:32px;border-bottom:1px solid rgba(255,255,255,.14)}
+footer{background:#0A1D36;color:#B9C6D6;padding:0 0 28px;font-size:15px}
+.foot-band{background:var(--navy)}
+.foot-band__in{display:grid;grid-template-columns:200px minmax(0,1fr);gap:28px;align-items:center;padding:40px 0 8px}
+.foot-band img{width:200px;height:150px;object-fit:cover;object-position:center 30%;display:block}
+.foot-band h2{color:#fff;font-size:clamp(28px,3vw,40px);line-height:1.15;margin:0 0 18px;max-width:16ch}
+.foot-band .actions{display:flex;flex-wrap:wrap;gap:12px}
+.foot-band .btn{margin:0}
+footer .btn.b2:hover{background:#fff;color:var(--navy)}
+.signup{padding:28px 0 8px}
+.signup__row{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(180px,280px) auto;gap:16px;align-items:center}
+.signup.is-sent .signup__row{display:none}
 .signup h5{color:#fff;font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
 .signup p{color:#C9D3E0;max-width:36ch}
 .signup input{min-height:44px;width:100%;font:16px/1.4 PS,sans-serif;color:var(--ink);background:#fff;border:0;border-radius:4px;padding:10px 12px}
 .signup .btn{margin:0}
-.fg{display:grid;grid-template-columns:1.6fr repeat(5,1fr);gap:36px 24px}.fg h5{color:#fff;font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:18px}.fg li{list-style:none;margin-bottom:10px}.fg p{color:#C9D3E0}
-.legal{border-top:1px solid rgba(255,255,255,.12);margin-top:48px;padding-top:22px;display:flex;justify-content:space-between;gap:16px;font-size:13px}
+.signup__msg{margin:8px 0 0;color:#fff;font-size:18px;font-weight:700}
+.signup__msg a{color:#fff}
+.hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+.fg{display:grid;grid-template-columns:minmax(180px,1.15fr) repeat(4,1fr);gap:28px 24px;padding-top:28px}.fg h5{color:#fff;font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:18px}.fg li{list-style:none;margin-bottom:10px}.fg p{color:#C9D3E0}
+.legal{margin-top:28px;padding-top:0;display:flex;justify-content:space-between;gap:16px;font-size:13px}
 @media (max-width:1439px){
   .hero{height:auto;min-height:clamp(520px,44.45vw,640px)}
   .hero h1{font-size:clamp(36px,4.17vw,60px)}
@@ -171,7 +183,7 @@ footer{background:#0A1D36;color:#B9C6D6;padding:56px 0 28px;font-size:15px;borde
   .stats .w{grid-template-columns:1fr 1fr}
   .inv{grid-template-columns:repeat(2,minmax(0,1fr))}
   .ladder,.news,.upcoming__list{grid-template-columns:1fr 1fr}
-  .fg{grid-template-columns:1fr 1fr}
+  .foot-band__in{grid-template-columns:160px minmax(0,1fr);gap:20px}
   .split,.tl,.spons{grid-template-columns:1fr}
   .stat{min-width:0}
   .spons .im{min-height:320px}
@@ -203,9 +215,17 @@ footer{background:#0A1D36;color:#B9C6D6;padding:56px 0 28px;font-size:15px;borde
   nav ul a::after{bottom:10px}
   .util a,.more,.fg a,.legal a{min-height:44px;display:inline-flex;align-items:center}
   html.nav-lock{overflow:hidden}
+  .fg{grid-template-columns:1fr 1fr}
+  .fg__brand{grid-column:1 / -1}
+  .foot-band__in{grid-template-columns:1fr}
+  .foot-band img{width:100%;height:180px}
 }
 @media (max-width:640px){
-  .stats .w,.ladder,.news,.inv,.fg,.upcoming__list,.signup{grid-template-columns:1fr}
+  .stats .w,.ladder,.news,.inv,.upcoming__list,.signup__row{grid-template-columns:1fr}
+  .fg{grid-template-columns:1fr 1fr}
+  .fg__brand{grid-column:1 / -1}
+  .foot-band__in{grid-template-columns:1fr}
+  .foot-band img{width:100%;height:180px}
   .hero{height:auto}
   .hero .w{width:calc(100% - 64px);padding-top:72px;padding-bottom:56px}
   .hero h1{font-size:34px}

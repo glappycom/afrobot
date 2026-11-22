@@ -148,6 +148,47 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
   });
 })();
 
+// ---- Footer updates: email only, stored with the interest records as source footer-updates.
+(() => {
+  const f = document.getElementById('footer-signup'); if (!f) return;
+  const t0 = Date.now();
+  const email = f.querySelector('#signup-email');
+  const btn = f.querySelector('button[type="submit"]');
+  const msg = f.querySelector('.signup__msg');
+  const EMAIL = /^[^\s@<>()[\]\\,;:"]+@[^\s@<>()[\]\\,;:"]+\.[A-Za-z]{2,}$/;
+  const show = (text, html) => {
+    msg.hidden = false;
+    if (html) msg.innerHTML = html; else msg.textContent = text;
+  };
+  f.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const value = email.value.trim();
+    if (!EMAIL.test(value)) { email.setAttribute('aria-invalid', 'true'); email.focus(); show('Please enter a valid email address.'); return; }
+    email.removeAttribute('aria-invalid');
+    btn.disabled = true; btn.setAttribute('aria-busy', 'true'); btn.textContent = 'Sending…';
+    msg.hidden = true;
+    try {
+      const r = await fetch('/api/updates', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ email: value, website: f.elements.website.value, t: t0, page: location.href.split('#')[0] }),
+      });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok && j.ok) {
+        f.classList.add('is-sent');
+        show('Thanks. We’ll email you.');
+        msg.setAttribute('tabindex', '-1');
+        msg.focus();
+        return;
+      }
+      show('', 'Not saved yet. Email <a href="mailto:hello@afrobot.org">hello@afrobot.org</a>.');
+    } catch {
+      show('', 'Not saved yet. Email <a href="mailto:hello@afrobot.org">hello@afrobot.org</a>.');
+    }
+    btn.disabled = false; btn.removeAttribute('aria-busy'); btn.textContent = 'Sign up';
+  });
+})();
+
 // ---- School sign-up: same /api/interest store as the partnership form, tagged School sign-up.
 (() => {
   const f = document.getElementById('school-signup'); if (!f) return;
