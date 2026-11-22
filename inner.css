@@ -56,15 +56,15 @@ fieldset.f{border:0;margin:0;padding:0;min-width:0}
 .checks{display:flex;flex-direction:column;gap:10px}
 .checks label,.consent{display:flex;gap:10px;align-items:flex-start;align-self:flex-start;font-weight:600;color:var(--ink)}
 .f .checks input,.f .consent input{width:20px;height:20px;min-height:20px;padding:0;flex:0 0 20px;margin-top:1px;accent-color:var(--navy)}
-.f input[aria-invalid="true"],.f select[aria-invalid="true"],.f textarea[aria-invalid="true"]{border-color:var(--acc)}
-fieldset.f[aria-invalid="true"]{border-left:3px solid var(--acc);padding-left:12px}
+.f input[aria-invalid="true"],.f select[aria-invalid="true"],.f textarea[aria-invalid="true"]{border-color:var(--danger)}
+fieldset.f[aria-invalid="true"]{border-left:3px solid var(--danger);padding-left:12px}
 .ways+.inkind{margin-top:32px}
 .form>.btn{margin-top:8px}
 .form__msg{margin-top:16px;color:var(--ink);font-size:16px;line-height:1.5}
 .form__msg[data-kind="error"]{color:#8C3414}
 .form.is-sent .form__msg{margin-top:0;font-size:22px;font-weight:800;color:var(--navy);border-left:4px solid var(--navy);padding:4px 0 4px 16px}
 .hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
-.f__err{color:var(--acc);font-style:normal;font-weight:650}
+.f__err{color:var(--danger);font-style:normal;font-weight:650}
 .finder{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:720px}
 .finder label{display:flex;flex-direction:column;gap:6px;font-weight:700;color:var(--navy)}
 .finder select{min-height:44px;font:16px/1.4 PS,sans-serif;border:1px solid var(--line);border-radius:4px;padding:8px 12px}
