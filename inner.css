@@ -195,8 +195,8 @@ main section,[id]{scroll-margin-top:96px}
 .band h2{color:#fff}
 .band .lead{color:#DCE3EC}
 .band .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
-.band .btn.b3{background:#fff;color:var(--navy)}
-.band .btn.b3:hover{background:#DCE3EC;color:var(--navy)}
+.band .btn.b3{background:#fff;color:var(--navy);border:2px solid #fff}
+.band .btn.b3:hover{background:#DCE3EC;color:var(--navy);border-color:#DCE3EC}
 .faq details{border-top:1px solid var(--line);padding:14px 0}
 .faq details:last-child{border-bottom:1px solid var(--line)}
 .faq summary{font-weight:800;color:var(--navy);font-size:18px;cursor:pointer;line-height:1.4}
