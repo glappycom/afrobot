@@ -100,7 +100,7 @@ for (const name of files) {
   const allowedAmounts = new Set(['$10', '$100', '$1,000', '$5,000', '$10,000', '$25,000']);
   const money = html.match(/\$\d[\d,]*/g) || [];
   for (const amount of money) if (!allowedAmounts.has(amount)) fail(name + ' unexpected amount ' + amount);
-  if (money.includes('$10') && !/not today’s price/i.test(html)) fail(name + ' uses $10 without saying it is not today’s price');
+  if (money.includes('$10') && !/goal:\s*\$10/i.test(html)) fail(name + ' uses $10 without marking it as a goal');
   const priced = money.filter((amount) => amount !== '$10');
   if (priced.length && !/goal/i.test(html)) fail(name + ' shows a dollar amount without calling it a goal');
   if (/\bFIRST\b/.test(html)) fail(name + ' names FIRST');
@@ -149,7 +149,7 @@ if (!home.includes('href="home.css"')) fail('homepage missing home.css');
 if (home.includes('Annual report') || home.includes('1,500') || home.includes('children learning now')) fail('homepage still has retired mockup copy');
 const about = fs.readFileSync(path.join(root, 'about.html'), 'utf8');
 const events = fs.readFileSync(path.join(root, 'events.html'), 'utf8');
-for (const line of ['Planned sessions', 'Affordable sessions', 'The camp-week cost has a $100 goal.', '$100 per child for a camp week is the participation goal.', 'A $10 workshop is a hope, not today’s price.', 'Which stage fits?', 'Ask about financial assistance']) {
+for (const line of ['Planned sessions', 'Affordable sessions', 'A $100 goal', '$100 per child for a camp week is the participation goal.', 'Goal: $10 workshops', 'Which stage fits?', 'Ask about financial assistance']) {
   if (!programs.includes(line)) fail('programs missing: ' + line);
 }
 const legalHome = 'AfroBot is a program of Glappy Foundation, a Texas nonprofit corporation.';
