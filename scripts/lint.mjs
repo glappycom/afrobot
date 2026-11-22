@@ -149,7 +149,7 @@ if (!home.includes('href="home.css"')) fail('homepage missing home.css');
 if (home.includes('Annual report') || home.includes('1,500') || home.includes('children learning now')) fail('homepage still has retired mockup copy');
 const about = fs.readFileSync(path.join(root, 'about.html'), 'utf8');
 const events = fs.readFileSync(path.join(root, 'events.html'), 'utf8');
-for (const line of ['Planned sessions', 'Affordable sessions', 'A $100 goal', '$100 per child for a camp week is the participation goal.', 'Goal: $10 workshops', 'Which stage fits?', 'Ask about financial assistance']) {
+for (const line of ['Planned sessions', 'Affordable sessions', 'Camp weeks within reach', 'Goal per child for a camp week.', 'Goal: $10 workshops', 'Which stage fits?', 'Ask about financial assistance']) {
   if (!programs.includes(line)) fail('programs missing: ' + line);
 }
 const legalHome = 'AfroBot is a program of Glappy Foundation, a Texas nonprofit corporation.';
