@@ -28,7 +28,7 @@ const requiredHome = [
   'Sponsor a student',
   'Parents',
   'children trained in holiday programs',
-  'pupils aged 8–15 at EDUCARE School Bamenda, since June 2023',
+  'students actively learning at partner schools in Africa',
   '3,200',
   'Inside the 2024 McKinney build day',
   'How holiday programs reached 5,000 children',
@@ -153,7 +153,7 @@ for (const line of ['Planned sessions', 'Affordable sessions', 'The camp-week co
   if (!programs.includes(line)) fail('programs missing: ' + line);
 }
 const legalHome = 'AfroBot is a program of Glappy Foundation, a Texas nonprofit corporation.';
-for (const line of [legalHome, 'About 5,000 children have been trained through our holiday programs in Cameroon.', 'About 3,200 pupils aged 8–15 are in EDUCARE School Bamenda\'s primary and secondary schools. The partnership has run since June 2023.', 'Access for every child', 'Robotics and AI should not depend on a family’s income or zip code.']) {
+for (const line of [legalHome, 'About 5,000 children have been trained through our holiday programs in Africa.', 'About 3,200 students are actively learning at partner schools in Africa. The partnership has run since June 2023.', 'Access for every child', 'Robotics and AI should not depend on a family’s income or zip code.']) {
   if (!about.includes(line)) fail('about missing: ' + line);
 }
 if (/>([^<]*\b[Dd]raft\b[^<]*)</.test(about)) fail('about shows the word Draft');
@@ -197,7 +197,7 @@ if (!footer.includes('href="mailto:hello@afrobot.org"')) fail('footer missing em
 if (!footer.includes('© 2026 AfroBot. AfroBot is a program of Glappy Foundation, a Texas nonprofit corporation.')) fail('footer missing the Glappy legal line');
 if (!footer.includes('assets/logo-afrobot-reversed.svg')) fail('footer logo missing');
 if (!home.includes('Sponsor a student') || !home.includes('The camp-week participation goal is $100 per child.')) fail('sponsor band missing');
-if (footer.includes('Our classrooms in Cameroon') || footer.includes('close__photos')) fail('footer still has the classroom photo strip');
+if (footer.includes('Our classrooms in Africa') || footer.includes('close__photos')) fail('footer still has the classroom photo strip');
 if (home.includes('stickycta') || programs.includes('stickycta')) fail('sticky mobile bar is still in the page');
 if (home.includes('<option>Student</option>')) fail('Student role option is still on the form');
 if (home.includes('mckinney-build-day-2024-cutout')) fail('homepage still uses the group cutout');
