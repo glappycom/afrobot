@@ -60,7 +60,7 @@ html.watch-lock,html.watch-lock body{overflow:hidden}
 .upcoming{padding:56px 0;background:var(--bg)}
 .upcoming h2{font-size:32px}
 .upcoming__list{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:28px}
-.upcoming__list a{display:flex;flex-direction:column;align-items:flex-start;gap:8px;height:100%;background:#fff;border:1px solid var(--line);border-top:3px solid var(--navy);padding:18px 16px 20px;color:inherit;transition:transform var(--t-med) var(--ease-out),box-shadow var(--t-med) var(--ease-out)}
+.upcoming__list a{display:flex;flex-direction:column;align-items:flex-start;gap:8px;height:100%;background:#fff;border:1px solid var(--line);padding:18px 16px 20px;color:inherit;transition:transform var(--t-med) var(--ease-out),box-shadow var(--t-med) var(--ease-out)}
 .upcoming__list a:hover{transform:translateY(-4px);box-shadow:var(--shadow-2)}
 .upcoming__list b{font-size:18px;color:var(--navy);letter-spacing:-.02em}
 .upcoming__list a>span:last-child{color:var(--ink);font-size:15px;line-height:1.45}
