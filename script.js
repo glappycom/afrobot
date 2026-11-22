@@ -148,6 +148,107 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
   });
 })();
 
+// ---- School sign-up: same /api/interest store as the partnership form, tagged School sign-up.
+(() => {
+  const f = document.getElementById('school-signup'); if (!f) return;
+  const t0 = Date.now();
+  const status = document.getElementById('sch-status');
+  const btn = f.querySelector('button[type="submit"]');
+  const EMAIL = /^[^\s@<>()[\]\\,;:"]+@[^\s@<>()[\]\\,;:"]+\.[A-Za-z]{2,}$/;
+  const fields = {
+    school: f.elements.school,
+    schoolType: f.elements.schoolType,
+    city: f.elements.city,
+    region: f.elements.region,
+    country: f.elements.country,
+    contact: f.elements.contact,
+    contactRole: f.elements.contactRole,
+    email: f.elements.email,
+    ages: f.querySelector('fieldset[aria-describedby="sch-ages-err"]'),
+    count: f.elements.count,
+    wants: f.querySelector('fieldset[aria-describedby="sch-wants-err"]'),
+    consent: f.elements.consent,
+  };
+  const setErr = (key, msg) => {
+    const el = fields[key];
+    const err = document.getElementById(el.getAttribute('aria-describedby'));
+    if (msg) el.setAttribute('aria-invalid', 'true'); else el.removeAttribute('aria-invalid');
+    if (err) err.textContent = msg || '';
+  };
+  const chosen = (name) => [...f.querySelectorAll('input[name="' + name + '"]:checked')].map((el) => el.value);
+  const check = () => {
+    const e = {};
+    if (fields.school.value.trim().length < 2) e.school = 'Please enter the school name.';
+    if (!fields.schoolType.value) e.schoolType = 'Please choose a school type.';
+    if (fields.city.value.trim().length < 2) e.city = 'Please enter the city.';
+    if (fields.region.value.trim().length < 2) e.region = 'Please enter the state or region.';
+    if (fields.country.value.trim().length < 2) e.country = 'Please enter the country.';
+    if (fields.contact.value.trim().length < 2) e.contact = 'Please enter a contact name.';
+    if (!fields.contactRole.value) e.contactRole = 'Please choose a role.';
+    if (!EMAIL.test(fields.email.value.trim())) e.email = 'Please enter a valid email address.';
+    if (!chosen('ages').length) e.ages = 'Please choose at least one age band.';
+    if (!/\d/.test(fields.count.value.trim())) e.count = 'Please enter a number.';
+    if (!chosen('wants').length) e.wants = 'Please choose at least one.';
+    if (!fields.consent.checked) e.consent = 'Please confirm we may contact you.';
+    return e;
+  };
+  const focusOf = (key) => key === 'ages' || key === 'wants' ? fields[key].querySelector('input') : fields[key];
+  Object.keys(fields).forEach((key) => {
+    const el = fields[key];
+    const watch = key === 'ages' || key === 'wants' ? 'change' : (el.type === 'checkbox' || el.tagName === 'SELECT' ? 'change' : 'blur');
+    el.addEventListener(watch, () => { if (el.getAttribute('aria-invalid')) setErr(key, check()[key]); });
+  });
+  const show = (msg, kind) => { status.textContent = msg; status.dataset.kind = kind; status.hidden = false; };
+  f.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const errs = check();
+    Object.keys(fields).forEach((key) => setErr(key, errs[key]));
+    const first = Object.keys(fields).find((key) => errs[key]);
+    if (first) { focusOf(first).focus(); show('Please check the highlighted fields.', 'error'); return; }
+    const ages = chosen('ages');
+    const wants = chosen('wants');
+    const phone = f.elements.phone.value.trim();
+    const note = f.elements.message.value.trim();
+    const place = [fields.city.value.trim(), fields.region.value.trim(), fields.country.value.trim()].join(', ');
+    const lines = [
+      'School sign-up',
+      'School type: ' + fields.schoolType.value,
+      'Role: ' + fields.contactRole.value,
+      phone ? 'Phone: ' + phone : '',
+      'Interested students: ' + fields.count.value.trim(),
+      'Ages: ' + ages.join(', '),
+      'Interested in: ' + wants.join('; '),
+      note,
+    ].filter(Boolean);
+    const payload = {
+      name: fields.contact.value.trim(),
+      email: fields.email.value.trim(),
+      role: 'School/educator',
+      city: place.slice(0, 120),
+      organization: fields.school.value.trim().slice(0, 160),
+      kids: ('Ages ' + ages.join(', ') + '; ' + fields.count.value.trim() + ' students').slice(0, 120),
+      message: lines.join('\n').slice(0, 2000),
+      consent: true,
+      website: f.elements.website.value,
+      t: t0,
+      page: location.href.split('#')[0],
+    };
+    btn.disabled = true; btn.setAttribute('aria-busy', 'true'); btn.textContent = 'Sending…'; status.hidden = true;
+    try {
+      const r = await fetch(f.getAttribute('action') || '/api/interest', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok && j.ok) {
+        f.classList.add('is-sent'); f.querySelector('.form__fields').hidden = true; btn.hidden = true;
+        show('Sent. We’ll reach out.', 'ok'); status.setAttribute('tabindex', '-1'); status.focus();
+        return;
+      }
+      if (r.status === 429) show('Too many tries. Wait a few minutes.', 'error');
+      else show('Not sent. Try again later.', 'error');
+    } catch { show('We couldn’t reach the server. Check your connection and try again.', 'error'); }
+    btn.disabled = false; btn.removeAttribute('aria-busy'); btn.textContent = 'Send school sign-up';
+  });
+})();
+
 // ---- Restrained reveal
 (() => {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches || new URLSearchParams(location.search).has('static')) return;
