@@ -34,7 +34,7 @@ const requiredHome = [
   'How holiday programs reached 5,000 children',
   'Our proposed plan for the first national season',
   'The first national season',
-  'August 2027',
+  'Aug 2027',
   'Regional launches',
   'National championship',
   'The camp-week participation goal is $100 per child.',

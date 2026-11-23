@@ -16,14 +16,16 @@ nav.is-scrolled{box-shadow:0 4px 24px rgba(14,39,71,.12)}
 .stats :focus-visible,.util :focus-visible,.hero :focus-visible,.pagehead :focus-visible{outline:2px solid #fff;box-shadow:0 0 0 4px #DCE3EC}
 .btn{display:inline-block;padding:14px 26px;font-weight:700;font-size:15px;border-radius:4px;text-decoration:none;transition:background-color var(--t-fast) var(--ease-out),color var(--t-fast) var(--ease-out),border-color var(--t-fast) var(--ease-out),box-shadow var(--t-fast) var(--ease-out),transform var(--t-fast) var(--ease-out)}
 .btn.b1:hover{background:var(--acc-dark);transform:translateY(-1px);box-shadow:0 6px 16px rgba(196,70,26,.28)}
-.btn.b3:hover{background:#163A66;transform:translateY(-1px);box-shadow:var(--shadow-1)}
+.btn.b3:hover{background:#163A66;transform:translateY(-1px);box-shadow:none}
 .hero .btn.b3,.pagehero .btn.b3{background:#fff;color:var(--navy);border:2px solid #fff}
 .hero .btn.b3:hover,.pagehero .btn.b3:hover{background:#DCE3EC;color:var(--navy);border-color:#DCE3EC}
 footer .signup .btn.b3{background:var(--navy);color:#fff}
 footer .signup .btn.b3:hover{background:var(--navy2);color:#fff}
 .btn.b4:hover,.btn.b2:hover{background:var(--navy);color:#fff}
 .btn:active{transform:translateY(0) scale(.98);box-shadow:none;transition-duration:60ms}
-.b1{background:var(--acc);color:#fff}.b2{border:2px solid #fff;color:#fff}.b3{background:var(--navy);color:#fff}.b4{border:2px solid var(--navy);color:var(--navy)}
+.b1{background:var(--acc);color:#fff}.b2{border:2px solid #fff;color:#fff}.b3{background:var(--navy);color:#fff;border:0;box-shadow:none;appearance:none}.b4{border:2px solid var(--navy);color:var(--navy)}
+.btn.b3:focus{outline:none}
+.btn.b3:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
 .hero{position:relative;height:640px;background:#0E2747}
 .hero__bg{position:absolute;inset:0;display:block}
 .hero__bg img{width:100%;height:100%;object-fit:cover;object-position:center 18%;display:block}
