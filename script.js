@@ -377,6 +377,16 @@ document.querySelectorAll('.founder__photo').forEach(btn => {
     btn.addEventListener('click', (event) => {
       event.preventDefault();
       const title = (btn.getAttribute('aria-label') || '').replace(/^Play video:\s*/, '');
+      if (btn.dataset.file) {
+        const video = document.createElement('video');
+        video.controls = true;
+        video.playsInline = true;
+        video.src = btn.dataset.file;
+        video.setAttribute('aria-label', title);
+        btn.replaceWith(video);
+        video.play();
+        return;
+      }
       openWatch(btn.dataset.video, title, btn);
     });
   });
