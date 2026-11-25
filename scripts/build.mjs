@@ -66,6 +66,7 @@ const orgJson = `<script type="application/ld+json">
 const pages = [
   ['mentorship.html', 'mentorship.html', 'Mentorship · AfroBot', 'Coach a team during a session. University students in Dallas have expressed interest in mentoring.', '/mentorship', ''],
   ['about.html', 'about.html', 'About · AfroBot', 'AfroBot is a program of Glappy Foundation, a Texas nonprofit corporation. Kids in Africa have been building robots since November 2022.', '/about', ''],
+  ['our-why.html', 'our-why.html', 'Our Why · AfroBot', 'AfroBot is a platform for the African dream. Why access to practical AI and robotics education matters, how students take part, and how to get involved.', '/our-why', ''],
   ['programs.html', 'programs.html', 'Programs · AfroBot', 'Academy, League, and Innovation Lab. Discover through Advance. $100 per child for a camp week is the participation goal.', '/programs', ''],
   ['usa.html', 'usa.html', 'North America · AfroBot', 'A 2024 pilot in McKinney, Texas, with about 30 students and five to six teams. The 2027 season is proposed.', '/usa', ''],
   ['africa.html', 'africa.html', 'AfroBot Africa · AfroBot', 'Classes began in November 2022. Nearly 5,000 children have trained in holiday programs. About 3,200 students are actively learning at partner schools in Africa.', '/africa', ''],

@@ -3,7 +3,7 @@
     <p class="crumbs"><a href="/">Home</a> · Schools</p>
     <div class="eyb">Schools</div>
     <h1>Bring AfroBot to your school.</h1>
-    <p class="lead">Tell us about your school, and we’ll reach out to set it up.</p>
+    <p class="lead">Help bring a first learning session to your students. Tell us about your school, and we’ll reach out.</p>
     <div class="pagehero__actions"><a class="btn b3" href="#signup">School sign-up</a></div>
   </div>
 </header>
@@ -18,7 +18,8 @@
 <section class="bg" id="signup">
   <div class="w">
     <h2>School sign-up</h2>
-    <p class="lead">Adults send this form.</p>
+    <p class="lead">Adults send this form. Coaches at a school or club can use it too. A mentor who is not with a school can <a class="more" href="mentorship.html">register as a mentor</a>.</p>
+    <p><a class="more" href="our-why.html">Why a first session matters</a></p>
     <p class="sr">Fields marked with an asterisk are required.</p>
     <form class="form" id="school-signup" action="/api/interest" method="post" novalidate>
       <div class="form__fields">
@@ -76,6 +77,7 @@
         <div class="f f--consent"><label class="consent"><input id="sch-consent" name="consent" type="checkbox" value="yes" required aria-describedby="sch-consent-err"><span>You may contact me about bringing AfroBot to this school. <i aria-hidden="true">*</i></span></label><em class="f__err" id="sch-consent-err"></em></div>
         <div class="hp" aria-hidden="true"><label for="sch-website">Website</label><input id="sch-website" name="website" tabindex="-1" autocomplete="off"></div>
       </div>
+      <p class="form__next">After you send this, we email you about a first learning session. The form does not enroll students, and sessions are not open for registration on this site yet.</p>
       <button class="btn b3" type="submit">Send school sign-up</button>
       <p class="form__msg" id="sch-status" role="status" aria-live="polite" hidden></p>
     </form>
