@@ -8,12 +8,17 @@
   "scripts": {
     "site:build": "node scripts/build.mjs",
     "site:lint": "node scripts/lint.mjs",
-    "site:responsive": "node scripts/responsive-check.mjs"
+    "site:responsive": "node scripts/responsive-check.mjs",
+    "workbench:build": "node scripts/build-workbench.mjs",
+    "workbench:test": "node --test workbench/src/sorter.test.js workbench/src/media.test.js workbench/src/unlisted.test.js workbench/src/classifier.test.js",
+    "workbench:e2e": "node workbench/e2e/lesson.mjs"
   },
   "dependencies": {
+    "@tensorflow/tfjs": "^4.22.0",
     "@vercel/blob": "^2.8.2"
   },
   "devDependencies": {
+    "esbuild": "^0.25.11",
     "playwright": "^1.65.1"
   }
 }
