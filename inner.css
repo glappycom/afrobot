@@ -44,6 +44,7 @@
 .role:hover{transform:translateY(-4px);box-shadow:var(--shadow-2)}
 .role__k{font-size:24px;font-weight:800;letter-spacing:-.02em;color:var(--navy)}
 .role__a{color:var(--navy);font-weight:700}
+.coach-note{margin-top:22px}
 .role__flag{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--navy)}
 .form{max-width:760px}
 .form input,.form select,.form textarea,.form fieldset{scroll-margin-top:110px}
@@ -60,10 +61,13 @@ fieldset.f{border:0;margin:0;padding:0;min-width:0}
 .f input[aria-invalid="true"],.f select[aria-invalid="true"],.f textarea[aria-invalid="true"]{border-color:var(--danger)}
 fieldset.f[aria-invalid="true"]{border-left:3px solid var(--danger);padding-left:12px}
 .ways+.inkind{margin-top:32px}
+.form__next{margin:4px 0 14px;max-width:62ch;color:var(--ink);font-size:16px;line-height:1.5;font-weight:500}
+.form.is-sent .form__next{display:none}
 .form>.btn{margin-top:8px}
 .form__msg{margin-top:16px;color:var(--ink);font-size:16px;line-height:1.5}
 .form__msg[data-kind="error"]{color:#8C3414}
 .form.is-sent .form__msg{margin-top:0;font-size:22px;font-weight:800;color:var(--navy);border-left:4px solid var(--navy);padding:4px 0 4px 16px}
+.form__fields[hidden],.form>.btn[hidden]{display:none !important}
 .hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
 .f__err{color:var(--danger);font-style:normal;font-weight:650}
 .finder{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:720px}
@@ -212,6 +216,7 @@ main section,[id]{scroll-margin-top:96px}
 .quote{margin:0;padding:4px 0 4px 18px;border-left:4px solid var(--navy);color:var(--navy);font-size:clamp(22px,2.2vw,30px);line-height:1.35;font-weight:650;max-width:40rem}
 .quote cite{display:block;margin-top:14px;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--navy);font-style:normal}
 .steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:28px;list-style:none}
+.steps.steps--four{grid-template-columns:1fr 1fr}
 .steps li,.steps article{background:#fff;border:1px solid var(--line);padding:22px 20px}
 .steps b{display:block;font-size:32px;color:var(--navy);line-height:1;margin-bottom:10px}
 .steps h3{margin:0 0 8px;color:var(--navy);font-size:22px}
@@ -234,7 +239,7 @@ main section,[id]{scroll-margin-top:96px}
 @media (max-width:800px){
   .pagehero{min-height:0}
   .pagehero .w{padding:56px 0 48px}
-  .facts .w,.feature,.steps,.related{grid-template-columns:1fr}
+  .facts .w,.feature,.steps,.steps.steps--four,.related{grid-template-columns:1fr}
   .video-grid,.video-grid--2{grid-template-columns:repeat(2,minmax(0,1fr))}
   .facts article,.facts article:first-child{border-left:0;padding:22px 0;border-top:1px solid rgba(255,255,255,.14)}
   .facts article:first-child{border-top:0}

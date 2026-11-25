@@ -137,7 +137,7 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
       const j = await r.json().catch(() => ({}));
       if (r.ok && j.ok) {
         f.classList.add('is-sent'); f.querySelector('.form__fields').hidden = true; btn.hidden = true;
-        show('Sent. We’ll email you.', 'ok'); status.setAttribute('tabindex', '-1'); status.focus();
+        show('Sent. We’ll email you about next steps. This does not enroll anyone.', 'ok'); status.setAttribute('tabindex', '-1'); status.focus();
         return;
       }
       if (j.errors) { Object.keys(fields).forEach(k => setErr(k, j.errors[k])); show('Please check the highlighted fields.', 'error'); }
@@ -280,7 +280,7 @@ const fav = document.querySelector('[data-logo-favicon]'); if (fav && LOGO !== '
       const j = await r.json().catch(() => ({}));
       if (r.ok && j.ok) {
         f.classList.add('is-sent'); f.querySelector('.form__fields').hidden = true; btn.hidden = true;
-        show('Sent. We’ll reach out.', 'ok'); status.setAttribute('tabindex', '-1'); status.focus();
+        show('Sent. We’ll email you about a first learning session. This does not enroll students yet.', 'ok'); status.setAttribute('tabindex', '-1'); status.focus();
         return;
       }
       if (r.status === 429) show('Too many tries. Wait a few minutes.', 'error');
