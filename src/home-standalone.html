@@ -12,7 +12,7 @@
 <link rel="icon" href="assets/favicon-48.png" type="image/png" sizes="48x48">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180">
 <link rel="manifest" href="site.webmanifest">
-<meta name="theme-color" content="#FFFFFF">
+<meta name="theme-color" content="#0E2747">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AfroBot">
 <meta property="og:title" content="AfroBot · Youth robotics and AI">
@@ -29,93 +29,88 @@
 <meta name="twitter:description" content="AfroBot is a platform for the African dream. Hands-on AI and robotics for young people with limited access.">
 <meta name="twitter:image" content="https://afrobot.org/assets/og-card-v3.png">
 <meta name="twitter:image:alt" content="AfroBot. Children building robots and AI in Africa and North America.">
-<link rel="preload" href="fonts/PublicSans-VF.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/fredoka-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/rubik-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="home.css">
 </head>
-<body>
+<body class="home">
 <a class="skip" href="#main">Skip to content</a>
 {{HEADER}}
 <main id="main">
-<div class="hero"><picture class="hero__bg"><source type="image/avif" srcset="assets/photos/bamenda-circuit-team.avif" sizes="100vw"><source type="image/webp" srcset="assets/photos/bamenda-circuit-team.webp 2000w" sizes="100vw"><img src="assets/photos/bamenda-circuit-team.jpg" srcset="assets/photos/bamenda-circuit-team.jpg 2000w" sizes="100vw" alt="Students wiring a circuit together during a build in Africa" width="2000" height="1500"></picture><div class="w"><div class="eyb">Youth robotics &amp; AI · Africa and North America</div>
-<h1>AfroBot is a platform for the African dream.</h1>
+<section class="oa-hero">
+<img src="assets/photos/bamenda-circuit-team.jpg" alt="Students wiring a circuit together during a build in Africa" width="2000" height="1500">
+<div class="w">
+<span class="kick">Youth robotics &amp; AI · Africa and North America</span>
+<h1 class="disp">AfroBot is a platform for the <em>African dream.</em></h1>
 <p>Hands-on AI and robotics for young people with limited access.</p>
-<a class="btn b1" href="/programs">Explore AfroBot</a><a class="btn b2" href="#involve">Get involved</a><a class="btn b2 watch" id="watch-open" href="/usa" aria-haspopup="dialog" aria-controls="watch-dialog"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M5 3.2v9.6L13.2 8 5 3.2z" fill="currentColor"/></svg>Watch</a></div></div>
-<section id="involve"><div class="w"><div class="sec"><div class="eyb">Get involved</div><h2>There is a place for you on the team</h2></div>
-<div class="paths">
-<a class="card" href="/programs"><picture><source type="image/avif" srcset="assets/photos/bamenda-robotics-kit.avif"><source type="image/webp" srcset="assets/photos/bamenda-robotics-kit.webp"><img src="assets/photos/bamenda-robotics-kit.jpg" alt="Students assembling a robotics kit together in Africa" width="980" height="735"></picture><div><span class="age">Ages 6–17</span><h3>Students</h3><p>A parent or guardian registers.</p><span class="btn b1">Find a program</span></div></a>
-<a class="card" href="/community?intent=updates#register"><picture><source type="image/webp" srcset="assets/photos/bamenda-side-by-side.webp"><img src="assets/photos/bamenda-side-by-side.jpg" alt="Two children working side by side at a laptop in Africa" width="2000" height="1500"></picture><div><span class="age">Families</span><h3>Parents</h3><p>Find a program near you and get season updates.</p><span class="btn b1">Get updates</span></div></a>
-<a class="card" href="/schools"><picture><source type="image/webp" srcset="assets/photos/cameroon-classroom-wide.webp"><img src="assets/photos/cameroon-classroom-wide.jpg" alt="Students in lab coats working at laptops in a classroom in Africa" width="1280" height="960"></picture><div><span class="age">Schools</span><h3>Coaches and schools</h3><p>Help bring a first learning session to your students.</p><span class="btn b1">Bring a first session</span></div></a>
-<a class="card" href="/mentorship"><picture><source type="image/webp" srcset="assets/photos/cameroon-mentor-two.webp"><img src="assets/photos/cameroon-mentor-two.jpg" alt="An adult helping two students at a laptop during a program in Africa" width="1280" height="960"></picture><div><span class="age">Adults</span><h3>Mentors and volunteers</h3><p>Help a team test an idea or work through a problem.</p><span class="btn b1">Help a team</span></div></a>
-<a class="card" href="/partners"><picture><source type="image/webp" srcset="assets/photos/cameroon-collaborate.webp"><img src="assets/photos/cameroon-collaborate.jpg" alt="Two students working together at a laptop during a program in Africa" width="1280" height="960"></picture><div><span class="age">Support</span><h3>Partners</h3><p>Help schools access equipment, coach training, or space to run sessions.</p><span class="btn b1">Sponsor a student</span></div></a>
-</div></div></section>
-<section class="band-navy" id="why"><div class="w photo-lead">
-<picture><source type="image/avif" srcset="assets/photos/bamenda-coats-outside.avif"><source type="image/webp" srcset="assets/photos/bamenda-coats-outside.webp"><img src="assets/photos/bamenda-coats-outside.jpg" alt="Students in white coats outside during a program in Africa" width="2000" height="1500"></picture>
-<div class="sec"><div class="eyb">Why AfroBot</div><h2>Learning should not depend on where a student is born.</h2>
-<p>We give children with limited access the tools, mentors and confidence to build the future with robotics and AI.</p>
-<p><a class="more" href="/about#why">Read our why</a></p></div>
-</div></section>
-<section id="programs"><div class="w"><div class="sec"><div class="eyb">Programs</div><h2>A pathway for every age</h2>
-<p class="lead">Children start where they are and grow with us, from their first hands-on build to leading a competition team.</p></div>
-<form id="program-finder" class="finder-inline" action="/programs" method="get">
-<p class="finderbar__k">Find a program for</p>
-<label class="sr" for="program-age">Age</label>
-<select id="program-age" name="age">
-<option value="discover">Ages 6–9</option>
-<option value="build">Ages 9–12</option>
-<option value="innovate">Ages 13–17</option>
-</select>
-<button class="btn b1" type="submit">Find a program</button>
-</form>
-<p class="finderbar__links"><a class="btn b4" href="/programs#discover">Ages 6–9</a><a class="btn b4" href="/programs#build">Ages 9–12</a><a class="btn b4" href="/programs#innovate">Ages 13–17</a></p>
-<div class="ladder">
-<a class="card" href="/programs#discover"><picture><source type="image/avif" srcset="assets/photos/bamenda-circuits.avif"><source type="image/webp" srcset="assets/photos/bamenda-circuits.webp"><img src="assets/photos/bamenda-circuits.jpg" alt="Students gathered around a robotics kit during a build in Africa" width="980" height="735"></picture><div><span class="age">Ages 6–9</span><h3>Discover</h3><p>First builds by hand.</p><span class="btn b1">Explore Discover</span></div></a>
-<a class="card" href="/programs#build"><picture><source type="image/avif" srcset="assets/photos/bamenda-robotics-build.avif"><source type="image/webp" srcset="assets/photos/bamenda-robotics-build.webp"><img src="assets/photos/bamenda-robotics-build.jpg" alt="Students lean in together to wire a small robotics circuit on a table" width="980" height="735"></picture><div><span class="age">Ages 9–12</span><h3>Build</h3><p>Larger builds, circuits and first code.</p><span class="btn b1">Explore Build</span></div></a>
-<a class="card" href="/programs#innovate"><picture><source type="image/avif" srcset="assets/photos/bamenda-mentors-lab.avif"><source type="image/webp" srcset="assets/photos/bamenda-mentors-lab.webp"><img src="assets/photos/bamenda-mentors-lab.jpg" alt="Students and a mentor in a lab in Africa" width="2000" height="1500"></picture><div><span class="age">Ages 13–17</span><h3>Innovate</h3><p>Competition seasons, and older students mentoring younger teams.</p><span class="btn b1">Explore the teen track</span></div></a>
-</div></div></section>
-<section class="band-navy" id="example"><div class="w photo-lead">
-<picture><source type="image/webp" srcset="assets/photos/bamenda-across-table.webp"><img src="assets/photos/bamenda-across-table.jpg" alt="Students working together at a table during a program in Africa" width="2000" height="1500"></picture>
-<div><div class="eyb">Illustrative</div><h2>A student journey</h2>
-<ol class="steps-plain">
-<li>Notices a chore people still do by hand.</li>
-<li>Practices on a tabletop sorter in Workbench.</li>
-<li>Tests it, then improves it.</li>
-<li>Tries a problem they choose.</li>
-</ol></div>
-</div></section>
-<section><div class="w"><div class="sec"><div class="eyb">Places</div><h2>Africa and North America</h2></div>
-<div class="ladder">
-<a class="card" href="/africa"><picture><source type="image/webp" srcset="assets/photos/bamenda-class-celebration.webp"><img src="assets/photos/bamenda-class-celebration.jpg" alt="Students celebrating together during a program in Africa" width="980" height="735"></picture><div><span class="age">Africa</span><h3>Africa, since 2022</h3><p>Started in Africa when conflict cut the school week to four days.</p><span class="btn b1">The Africa story</span></div></a>
-<a class="card" href="/usa"><picture><source type="image/webp" srcset="assets/photos/mckinney-ai-track-2024.webp"><img src="assets/photos/mckinney-ai-track-2024.jpg" alt="A mentor with children during the 2024 McKinney program" width="1200" height="900"></picture><div><span class="age">North America</span><h3>McKinney, Texas pilot, 2024</h3><p>Five to six teams built solutions together, with parents in the room.</p><span class="btn b1">The North America story</span></div></a>
-</div></div></section>
-<section id="stories" class="band-navy"><div class="w"><div class="sec"><div class="eyb">Stories</div><h2>In the room</h2></div>
-<div class="video-grid">
-{{videos}}
-</div></div></section>
-<section class="season" id="season"><div class="w"><div class="sec"><div class="eyb">2027–2028 season</div><h2>The first national season <span class="tag">Proposed</span></h2>
-<p class="lead">A full North America season with regional launches and a national championship in Dallas.</p></div>
-<div class="dates">
-<div><span class="dates__bar" aria-hidden="true"></span><p class="dates__n">Aug 2027</p><h3>Season kickoff</h3><p>Teams form and the season challenge is released.</p></div>
-<div><span class="dates__bar dates__bar--2" aria-hidden="true"></span><p class="dates__n">2027</p><h3>Regional launches</h3><p>DC/Maryland, Atlanta, Houston, Dallas–Fort Worth</p></div>
-<div><span class="dates__bar dates__bar--3" aria-hidden="true"></span><p class="dates__n dates__n--end">Apr 2028</p><h3>National championship</h3><p>Dallas, Texas</p></div>
-</div></div></section>
-<div class="stats"><div class="w">
-<div class="stat"><b><span class="stat__q">nearly</span>5,000</b><span>children trained in holiday programs</span></div>
-<div class="stat"><b>3,200</b><span>students actively learning at partner schools in Africa</span></div>
-<div class="stat"><b>2022</b><span>first classes in Africa, November 2022</span></div>
-<div class="stat"><b>30</b><span>children in the 2024 McKinney, Texas pilot</span></div></div></div>
-<div class="spons"><div class="t"><div class="eyb">Partners &amp; sponsors</div><h2>Put a child on a team</h2><p class="lead">The camp-week participation goal is $100 per child. Sponsors can fund a child's place, a team's robot build, or training and safety for a season.</p><br><br><a class="btn b1" href="/partners">Sponsor a student</a>&nbsp;&nbsp;<a class="btn b4" href="/partnership">Partnership inquiry</a></div><div class="im"><img src="assets/photos/cameroon-collaborate.jpg" srcset="assets/photos/cameroon-collaborate-800.webp 800w, assets/photos/cameroon-collaborate.webp 1280w" sizes="(max-width: 1024px) 100vw, 46vw" alt="Two students working together at a laptop during a program in Africa" width="1280" height="960"></div></div>
-<section class="band-navy"><div class="w"><div class="hd"><div class="sec"><div class="eyb">News &amp; stories</div><h2>From the AfroBot community</h2></div><a class="more" href="/events#stories">All news</a></div>
-<div class="news"><a class="news-card" href="/usa"><picture><source type="image/avif" srcset="assets/photos/mckinney-build-day-2024-960.avif 960w, assets/photos/mckinney-build-day-2024.avif 1000w" sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1100px) 46vw, 380px"><img src="assets/photos/mckinney-build-day-2024.jpg" srcset="assets/photos/mckinney-build-day-2024.jpg 1000w" sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1100px) 46vw, 380px" alt="" width="1000" height="920"></picture><span class="news__copy"><small>North America</small><h4>Inside the 2024 McKinney build day</h4><span class="news__go" aria-hidden="true">→</span></span></a>
-<a class="news-card" href="/africa"><picture><source type="image/avif" srcset="assets/photos/bamenda-class-celebration.avif" sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1100px) 46vw, 380px"><source type="image/webp" srcset="assets/photos/bamenda-class-celebration.webp 980w" sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1100px) 46vw, 380px"><img src="assets/photos/bamenda-class-celebration.jpg" srcset="assets/photos/bamenda-class-celebration.jpg 980w" sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1100px) 46vw, 380px" alt="" width="980" height="735"></picture><span class="news__copy"><small>Africa</small><h4>How holiday programs reached 5,000 children</h4><span class="news__go" aria-hidden="true">→</span></span></a>
-<a class="news-card" href="/competitions"><picture><source type="image/avif" srcset="assets/photos/bamenda-lab-towers-800.avif 800w, assets/photos/bamenda-lab-towers.avif 2000w" sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1100px) 46vw, 380px"><source type="image/webp" srcset="assets/photos/bamenda-lab-towers-800.webp 800w, assets/photos/bamenda-lab-towers.webp 2000w" sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1100px) 46vw, 380px"><img src="assets/photos/bamenda-lab-towers.jpg" srcset="assets/photos/bamenda-lab-towers.jpg 2000w" sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1100px) 46vw, 380px" alt="" width="2000" height="1500"></picture><span class="news__copy"><small>2027 season</small><h4>Our proposed plan for the first national season</h4><span class="news__go" aria-hidden="true">→</span></span></a></div></div></section>
-<dialog id="watch-dialog" aria-labelledby="watch-title">
-<div class="watch__panel">
-<button class="watch__x" type="button" aria-label="Close"><span aria-hidden="true">×</span></button>
-<h2 id="watch-title" class="sr">Build Day presentation, North America</h2>
-<p class="sr">In this film, a boy on the team explains the coding from that day.</p>
-<div class="watch__stage" data-video="4F1Jm0-rMM0"></div>
+<div class="ctas"><a class="btn" href="/programs">Find a program →</a><a class="btn ghost" href="#involve">Get involved</a></div>
 </div>
-</dialog>
+</section>
+<section class="oa-stats" aria-label="Program reach"><div class="w">
+<div class="stat"><b>~5,000</b><span>children trained in holiday programs</span></div>
+<div class="stat"><b>3,200</b><span>students actively learning at partner schools in Africa</span></div>
+<div class="stat"><b>2022</b><span>first classes in Africa</span></div>
+<div class="stat"><b>30</b><span>children in the 2024 North America pilot</span></div>
+</div></section>
+<section class="sec" id="involve"><div class="w">
+<div class="sh"><div><span class="kick">Find your way in</span><h2 class="disp">There's a place for you.</h2></div><p>Pick who you are. One clear next step each.</p></div>
+<div class="paths">
+<a class="path c1" href="/programs"><div><h3 class="disp">Students</h3><p>Start with a first build. Grow into a team.</p></div><span class="go">Find a program <span>→</span></span></a>
+<a class="path c2" href="/community?intent=updates#register"><div><h3 class="disp">Parents</h3><p>Register your child and get season updates.</p></div><span class="go"><span>Get updates</span><span>→</span></span></a>
+<a class="path c3" href="/schools"><div><h3 class="disp">Schools &amp; coaches</h3><p>Bring a first learning session to your students.</p></div><span class="go">Bring a session <span>→</span></span></a>
+<a class="path c4" href="/mentorship"><div><h3 class="disp">Mentors</h3><p>Help a team test an idea or fix a problem.</p></div><span class="go">Help a team <span>→</span></span></a>
+<a class="path c5" href="/partnership"><div><h3 class="disp">Partners</h3><p>Fund equipment, coach training or space.</p></div><span class="go">Offer support <span>→</span></span></a>
+</div>
+</div></section>
+<section class="sec oa-why" id="why"><div class="w oa-grid">
+<div class="txt">
+<span class="kick">Why AfroBot</span>
+<h2 class="disp">Learning shouldn't depend on <em>where you're born.</em></h2>
+<p>When students build something themselves, they learn to test an idea and improve it when it fails.</p>
+<p>We give children with limited access the tools, mentors and confidence to build the future with robotics and AI.</p>
+<a class="btn" href="/about#why">Read our why →</a>
+</div>
+<div class="pic">
+<img src="assets/photos/family/africa-outdoor.jpg" alt="A large group of students and coaches outside during a program in Africa" width="992" height="744">
+<div class="tag"><img src="assets/photos/founder-russell.jpg" alt="Dr. Russell Avre" width="720" height="720"><div><b>Dr. Russell Avre</b><span>Founder.</span></div></div>
+</div>
+</div></section>
+<section class="sec" id="programs"><div class="w">
+<div class="sh"><div><span class="kick">Programs</span><h2 class="disp">A pathway for every age.</h2></div><p>Start with a first build. Grow into a team leader.</p></div>
+<div class="progs">
+<a class="prog" href="/programs#discover"><img src="assets/photos/bamenda-robotics-kit.jpg" alt="Students assembling a robotics kit together in Africa" width="980" height="735"><div class="b"><span class="age" style="background:#FF5B3A">Ages 6–9</span><h3 class="disp">Discover</h3><p>First builds by hand. How machines move, in small teams.</p><span class="go">Explore Discover →</span></div></a>
+<a class="prog" href="/programs#build"><img src="assets/photos/bamenda-circuits.jpg" alt="Students gathered around a robotics kit during a build in Africa" width="980" height="735"><div class="b"><span class="age" style="background:#16A35A">Ages 9–12</span><h3 class="disp">Build</h3><p>Bigger builds, circuits and first code. Idea to working robot.</p><span class="go">Explore Build →</span></div></a>
+<a class="prog" href="/programs#innovate"><img src="assets/photos/bamenda-mentors-lab.jpg" alt="Students and a mentor in a lab in Africa" width="2000" height="1500"><div class="b"><span class="age" style="background:#0E2747">Ages 13–17</span><h3 class="disp">Innovate</h3><p>AI-powered humanoid robots, competition seasons, and mentoring younger teams.</p><span class="go">Explore the teen track →</span></div></a>
+</div>
+</div></section>
+<section class="sec oa-proof" id="stories"><div class="w">
+<div class="sh"><div><span class="kick">Stories</span><h2 class="disp">In the room.</h2></div><p>Real sessions, real builds, on two continents.</p></div>
+<div class="mosaic">
+<a class="tile t1" href="/africa"><img src="assets/photos/bamenda-class-celebration.jpg" alt="Students celebrating together during a program in Africa" width="980" height="735"><div class="cap"><small>Africa</small><h3>How holiday programs reached 5,000 children</h3></div></a>
+<a class="tile t2" href="/usa"><img src="assets/photos/mckinney-build-day-2024.jpg" alt="A big group of kids and mentors pose with the robots they built" width="1000" height="920"><div class="cap"><small>North America</small><h3>Inside the 2024 McKinney build day</h3></div></a>
+<a class="tile t3" href="/competitions"><img src="assets/photos/bamenda-side-by-side.jpg" alt="Two children working side by side at a laptop in Africa" width="2000" height="1500"><div class="cap"><small>2027 season</small><h3>Our proposed plan for the first national season</h3></div></a>
+</div>
+</div></section>
+<section class="sec" id="season"><div class="w">
+<div class="sh"><div><span class="kick">Proposed</span><h2 class="disp">The first national season</h2></div><p>A full North America season with regional launches and a national championship. Dates are proposed.</p></div>
+<div class="oa-dates">
+<div><b>Aug 2027</b><h3 class="disp">Season kickoff</h3><p>Teams form and the season challenge is released.</p></div>
+<div><b>2027</b><h3 class="disp">Regional launches</h3><p>North America regions.</p></div>
+<div><b>Apr 2028</b><h3 class="disp">National championship</h3><p>Proposed.</p></div>
+</div>
+</div></section>
+<section class="sec" id="sponsor"><div class="w">
+<div class="spon">
+<div class="txt">
+<span class="kick">Sponsor</span>
+<h2 class="disp">Put a child on a team.</h2>
+<div class="big">$100</div>
+<p>The camp-week participation goal is $100 per child. Sponsors can fund a child's place, a team's robot build, or training and safety for a season.</p>
+<div class="ctas"><a class="btn navy" href="/partners">Sponsor a student →</a><a class="btn ghost" href="/partnership">Partner with us</a></div>
+</div>
+<div class="pic"><img src="assets/photos/cameroon-collaborate.jpg" alt="Two students working together at a laptop during a program in Africa" width="1280" height="960"></div>
+</div>
+</div></section>
 </main>
 {{FOOTER}}
 <script src="script.js" defer></script>

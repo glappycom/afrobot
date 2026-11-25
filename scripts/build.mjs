@@ -87,6 +87,7 @@ const pages = [
   ['partnership.html', 'partnership.html', 'Partnership inquiries · AfroBot', 'Sponsorship and partnership inquiries.', '/partnership', ''],
   ['schools.html', 'schools.html', 'Bring AfroBot to your school · AfroBot', 'Tell us about your school, and we’ll reach out to set it up.', '/schools', ''],
   ['social.html', 'social.html', 'Social · AfroBot', 'Reach AfroBot at hello@afrobot.org for session updates.', '/social', ''],
+  ['brand-preview.html', 'brand-preview.html', 'Wordmarks · AfroBot', 'Preview of AfroBot wordmark settings. Not for indexing.', '/brand-preview', '<meta name="robots" content="noindex, nofollow">'],
 ];
 
 for (const [out, src, title, description, urlPath, headExtra] of pages) {
