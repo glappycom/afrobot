@@ -30,11 +30,11 @@ footer .signup .btn.b3:hover{background:var(--navy2);color:#fff}
 .hero__bg{position:absolute;inset:0;display:block}
 .hero__bg img{width:100%;height:100%;object-fit:cover;object-position:center 18%;display:block}
 .hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,20,38,.94) 0%,rgba(8,20,38,.84) 36%,rgba(8,20,38,.32) 66%,rgba(8,20,38,.08) 100%)}
-.hero .w{position:relative;z-index:1;padding-top:120px;padding-bottom:64px;color:#fff}
+.hero .w{position:relative;z-index:1;padding-top:150px;padding-bottom:72px;color:#fff}
 .eyb{font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--navy)}
 .hero .eyb{color:#DCE3EC}
 .hero h1{font-size:60px;line-height:1.06;font-weight:800;letter-spacing:-.02em;max-width:680px;margin:18px 0 22px}
-.hero p{font-size:18px;line-height:1.5;max-width:640px;color:#DCE3EC;margin-bottom:28px}.hero .btn{margin:0 12px 12px 0}
+.hero p{font-size:20px;line-height:1.5;max-width:28em;color:#DCE3EC;margin-bottom:32px}.hero .btn{margin:0 12px 12px 0}
 .watch{display:inline-flex;align-items:center;gap:8px}
 .watch svg{flex:0 0 auto}
 #watch-dialog{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:transparent;color:#fff}
@@ -151,11 +151,10 @@ footer a:hover{color:var(--navy2)}
 .dates__n--end{color:var(--navy);font-weight:400}
 .dates h3{margin:0 0 8px;font-size:22px;font-weight:650;color:var(--navy)}
 .dates p:last-child{margin:0;color:var(--ink);font-size:16px;line-height:1.45}
-.journey{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:28px;list-style:none}
-.journey li{background:#fff;border:1px solid var(--line);border-top:4px solid var(--navy);padding:22px 20px}
-.journey b{display:block;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--navy);margin-bottom:8px}
-.journey h3{margin:0 0 8px;font-size:22px;color:var(--navy)}
-.journey p{margin:0;color:var(--ink);font-size:16px;line-height:1.5}
+.journey{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:20px;list-style:none}
+.journey li{background:#fff;border:1px solid var(--line);border-top:4px solid var(--navy);padding:16px 16px 18px}
+.journey b{display:block;font-size:13px;font-weight:700;letter-spacing:.14em;color:var(--navy);margin-bottom:8px}
+.journey p{margin:0;color:var(--ink);font-size:16px;line-height:1.45}
 .tl{display:grid;grid-template-columns:repeat(3,1fr);margin-top:56px;border-top:3px solid #DCE3EC}
 .tl div{padding:28px 32px 0 0}.tl b{font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:#DCE3EC}.tl h4{font-size:24px;margin:10px 0 8px}.tl p{color:#B9C6D6;line-height:1.5}
 .tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border:1px solid #DCE3EC;color:#DCE3EC;padding:5px 10px;border-radius:3px;margin-left:12px;vertical-align:middle}
@@ -228,7 +227,7 @@ footer a.foot-donate:hover{background:var(--acc-dark);color:#fff}
   nav ul a{display:flex;align-items:center;min-height:44px}
   nav ul a::after{bottom:10px}
   .util a,.more,.fg a,.legal a{min-height:44px;display:inline-flex;align-items:center}
-  .video-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .video-grid,.journey{grid-template-columns:repeat(2,minmax(0,1fr))}
   html.nav-lock{overflow:hidden}
   .foot-top{grid-template-columns:1fr;gap:28px}
   .fg{grid-template-columns:1fr 1fr}
