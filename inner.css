@@ -1,6 +1,7 @@
 .skip{position:absolute;left:12px;top:-48px;z-index:60;background:#fff;color:var(--navy);padding:10px 14px;font-weight:700}
 .skip:focus{top:12px}
-.pagehead{background:var(--navy);color:#fff;padding:72px 0 68px}
+.pagehead{background:var(--navy);color:#fff;padding:72px 0 68px;text-align:center}
+.pagehead h1,.pagehead .lead{margin-left:auto;margin-right:auto}
 .pagehead--photo{position:relative;min-height:460px;display:flex;align-items:flex-end;background:#0E2747 center/cover no-repeat;padding:0}
 .pagehead--photo:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(9,25,46,.92) 0%,rgba(9,25,46,.55) 70%,rgba(9,25,46,.2))}
 .pagehead--photo .w{position:relative;z-index:1;padding:72px 0 56px}
@@ -192,14 +193,14 @@ fieldset.f[aria-invalid="true"]{border-left:3px solid var(--danger);padding-left
 }
 main section,[id]{scroll-margin-top:96px}
 .pagehero{position:relative;min-height:560px;display:flex;align-items:flex-end;background:#0E2747 center 22%/cover no-repeat;color:#fff}
-.pagehero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,20,38,.94) 0%,rgba(8,20,38,.78) 46%,rgba(8,20,38,.28) 100%)}
-.pagehero .w{position:relative;z-index:1;padding:96px 0 64px}
-.pagehero h1{color:#fff;font-size:clamp(36px,4.2vw,56px);line-height:1.08;font-weight:800;letter-spacing:-.025em;margin:12px 0 16px;max-width:16em}
-.pagehero .lead{color:#DCE3EC;max-width:38rem;font-size:18px;line-height:1.55;margin:0}
+.pagehero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,20,38,.35) 0%,rgba(8,20,38,.28) 42%,rgba(8,20,38,.82) 100%)}
+.pagehero .w{position:relative;z-index:1;padding:96px 0 64px;text-align:center}
+.pagehero h1{color:#fff;font-size:clamp(36px,4.2vw,56px);line-height:1.08;font-weight:800;letter-spacing:-.025em;margin:12px auto 16px;max-width:16em}
+.pagehero .lead{color:#DCE3EC;max-width:38rem;font-size:18px;line-height:1.55;margin:0 auto}
 .pagehero .eyb,.pagehead .eyb{color:var(--navy);background:var(--sun)}
 .pagehero .crumbs{font-size:14px;color:#B9C6D6;margin:0 0 14px}
 .pagehero .crumbs a{color:#DCE3EC;font-weight:700}
-.pagehero__actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.pagehero__actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;justify-content:center}
 .pagehero__actions .btn{margin:0}
 .facts{background:var(--navy);color:#fff;padding:0}
 .facts .w{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -222,9 +223,10 @@ main section,[id]{scroll-margin-top:96px}
 .steps h3{margin:0 0 8px;color:var(--navy);font-size:22px}
 .steps p{margin:0;color:var(--ink);line-height:1.5}
 .band{background:var(--navy);color:#fff}
-.band h2{color:#fff}
-.band .lead{color:#DCE3EC}
-.band .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+.band .w{max-width:720px;text-align:center}
+.band h2{color:#fff;margin-left:auto;margin-right:auto}
+.band .lead{color:#DCE3EC;margin-left:auto;margin-right:auto}
+.band .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px;justify-content:center}
 .band .btn.b3{background:#fff;color:var(--navy);border:2px solid #fff}
 .band .btn.b3:hover{background:#DCE3EC;color:var(--navy);border-color:#DCE3EC}
 .faq details{border-top:1px solid var(--line);padding:14px 0}
@@ -290,4 +292,38 @@ section.usa{padding:56px 0}
   .usa-hero__media,.usa-pair .work-video{max-width:240px}
   .usa-hero__media img,.usa-pair video{width:100%;height:auto;max-height:300px;aspect-ratio:4/5}
   .usa-stops{grid-template-columns:1fr}
+}
+/* Centered headers and callouts. Stories, FAQs, and forms stay left-aligned. */
+.pagehead h1,.pagehead .lead{margin-left:auto;margin-right:auto}
+.pagehero.usa .w,.usa-hero__copy,.feature__copy,.feature__copy h2,.feature__copy p,.reg__text,.reg__text h2,.reg__text p,.form,.form label{text-align:left}
+section>.w>.eyb,section>.w>.lead{display:block;max-width:720px;margin-left:auto;margin-right:auto;text-align:center}
+section>.w>.eyb{width:max-content}
+section>.w>h2{text-align:center;max-width:720px;margin-left:auto;margin-right:auto}
+.sheet{max-width:720px;margin-left:auto;margin-right:auto}
+.sheet>h2,.sheet>.eyb{text-align:center}
+.sheet>.eyb{display:table;margin-left:auto;margin-right:auto}
+.sheet p,.sheet li,.faq,.faq summary,.faq details p,.card,.card h2,.card h3,.card p,.role,.tier,.founders article{text-align:left}
+.coach-note{text-align:center;max-width:720px;margin-left:auto;margin-right:auto}
+.founders{margin-left:auto;margin-right:auto}
+.facts .w{display:flex;flex-wrap:wrap;justify-content:center}
+.facts article,.facts article:first-child{flex:1 1 30%;max-width:34%;text-align:center;padding-left:24px;padding-right:24px;box-sizing:border-box}
+.roles,.steps,.related,.ways,.ways-in,.video-grid,.work-gallery,.moments,.clips{display:flex;flex-wrap:wrap;justify-content:center;align-items:stretch}
+.roles>*,.steps>li,.steps>article,.related>a{flex:1 1 calc((100% - 48px) / 3);max-width:calc((100% - 48px) / 3);min-width:0}
+.steps.steps--four>li{flex-basis:calc((100% - 24px) / 2);max-width:calc((100% - 24px) / 2)}
+.ways>*{flex:1 1 calc((100% - 72px) / 4);max-width:calc((100% - 72px) / 4);min-width:0}
+.ways-in>*{flex:1 1 calc((100% - 48px) / 3);max-width:calc((100% - 48px) / 3);min-width:0}
+.video-grid>*{flex:1 1 calc((100% - 40px) / 3);max-width:calc((100% - 40px) / 3);min-width:0}
+.video-grid--2>*{flex-basis:calc((100% - 20px) / 2);max-width:calc((100% - 20px) / 2)}
+.work-gallery>*{flex:1 1 calc((100% - 32px) / 3);max-width:calc((100% - 32px) / 3);min-width:0}
+.moments>*,.clips>*{flex:1 1 calc((100% - 32px) / 3);max-width:calc((100% - 32px) / 3);min-width:0}
+@media (max-width:1100px){
+  .ways>*,.ways-in>*,.work-gallery>*,.moments>*,.clips>*{flex-basis:calc((100% - 24px) / 2);max-width:calc((100% - 24px) / 2)}
+}
+@media (max-width:800px){
+  .facts article,.facts article:first-child{flex-basis:100%;max-width:100%;padding-left:0;padding-right:0}
+  .roles>*,.steps>li,.steps>article,.steps.steps--four>li,.related>a,.ways>*,.ways-in>*,.work-gallery>*,.moments>*,.clips>*{flex-basis:100%;max-width:100%}
+  .video-grid>*{flex-basis:calc((100% - 20px) / 2);max-width:calc((100% - 20px) / 2)}
+}
+@media (max-width:640px){
+  .video-grid>*,.video-grid--2>*{flex-basis:100%;max-width:100%}
 }
