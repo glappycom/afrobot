@@ -66,7 +66,7 @@ const orgJson = `<script type="application/ld+json">
 const pages = [
   ['mentorship.html', 'mentorship.html', 'Mentorship · AfroBot', 'Coach a team during a session. University students in Dallas have expressed interest in mentoring.', '/mentorship', ''],
   ['about.html', 'about.html', 'About · AfroBot', 'AfroBot is a platform for the African dream. A program of Glappy Foundation, a Texas nonprofit corporation.', '/about', ''],
-  ['programs.html', 'programs.html', 'Programs · AfroBot', 'Academy, League, and Innovation Lab. Discover through Advance. $100 per child for a camp week is the participation goal.', '/programs', ''],
+  ['programs.html', 'programs.html', 'Programs · AfroBot', 'Academy, League, and Innovation Lab. Discover through Advance. $100 per child for a camp week is the participation goal.', '/programs', '<link rel="preload" as="image" href="assets/photos/bamenda-coding-desktop.webp" fetchpriority="high">'],
   ['usa.html', 'usa.html', 'North America · AfroBot', 'A 2024 pilot in McKinney, Texas, with about 30 students and five to six teams. The 2027 season is proposed.', '/usa', ''],
   ['africa.html', 'africa.html', 'AfroBot Africa · AfroBot', 'Classes began in November 2022. Nearly 5,000 children have trained in holiday programs. About 3,200 students are actively learning at partner schools in Africa.', '/africa', ''],
   ['impact.html', 'impact.html', 'Our Impact · AfroBot', 'Founder-reported counts: about 5,000 children trained in Africa and about 30 in the 2024 McKinney pilot.', '/impact', ''],

@@ -35,11 +35,11 @@
 <link rel="stylesheet" href="inner.css">
 
 </head>
-<body>
+<body class="page-about">
 <a class="skip" href="#main">Skip to content</a>
-<nav><div class="w"><a href="/" aria-label="AfroBot home"><img src="assets/logo-wordmark-navy.svg" alt="AfroBot" width="599" height="100"></a><button type="button" class="nav-btn" aria-expanded="false" aria-controls="site-nav"><span class="sr">Menu</span><i></i><i></i><i></i></button><ul id="site-nav"><li><a href="/programs">Programs</a></li><li><a href="/community">Get Involved</a></li><li><a href="/events#stories">Stories</a></li><li><a href="/about#why">Our Why</a></li><li><a href="/about">About</a></li><li class="nav-donate"><a class="btn" href="/partners">Donate</a></li></ul><a class="btn nav-donate-desk" href="/partners">Donate</a></div></nav>
+<nav><div class="w"><a href="/" aria-label="AfroBot home"><img src="assets/logo-wordmark-navy.svg" alt="AfroBot" width="599" height="100"></a><button type="button" class="nav-btn" aria-expanded="false" aria-controls="site-nav"><span class="sr">Menu</span><i></i><i></i><i></i></button><ul id="site-nav"><li class="has-sub"><a href="/programs">Programs</a><button type="button" class="sub-btn" aria-expanded="false" aria-controls="menu-programs"><span class="sr">Programs menu</span></button><ul class="sub-menu" id="menu-programs"><li><a href="/programs#discover">Discover, ages 6–9</a></li><li><a href="/programs#build">Build, ages 9–12</a></li><li><a href="/programs#innovate">Teen track</a></li></ul></li><li class="has-sub"><a href="/community">Get Involved</a><button type="button" class="sub-btn" aria-expanded="false" aria-controls="menu-involve"><span class="sr">Get Involved menu</span></button><ul class="sub-menu" id="menu-involve"><li><a href="/community?intent=parent#register">Parents</a></li><li><a href="/schools">Schools</a></li><li><a href="/mentorship">Mentors</a></li><li><a href="/volunteer">Volunteers</a></li><li><a href="/partners">Partners</a></li></ul></li><li><a href="/events#stories">Stories</a></li><li><a href="/about#why">Our Why</a></li><li class="has-sub"><a href="/about">About</a><button type="button" class="sub-btn" aria-expanded="false" aria-controls="menu-about"><span class="sr">About menu</span></button><ul class="sub-menu" id="menu-about"><li><a href="/about#leadership">Leadership</a></li><li><a href="/impact">Impact</a></li><li><a href="/child-safety">Child safety</a></li><li><a href="/contact">Contact</a></li></ul></li><li class="nav-donate"><a class="btn" href="/partners">Donate</a></li></ul><a class="btn nav-donate-desk" href="/partners">Donate</a></div></nav>
 <main id="main" tabindex="-1">
-<header class="pagehero" style="background-image:url(assets/photos/bamenda-class-cropped.jpg)">
+<header class="pagehero" style="background-image:url(assets/photos/bamenda-class-cropped.webp)">
   <div class="w">
     <p class="crumbs"><a href="/">Home</a> · About</p>
     <div class="eyb">About AfroBot</div>
@@ -91,7 +91,7 @@
   <p class="lead coach-note">A coach who is not with a school can use the mentor form.</p>
 </div></section>
 <section><div class="w feature">
-  <img src="assets/photos/bamenda-side-by-side.jpg" alt="Two children working side by side at a laptop in Africa" width="2000" height="1500">
+  <img loading="lazy" decoding="async" src="assets/photos/family/na-robot.webp" alt="A small robot on a table in North America" width="2000" height="1500">
   <div class="feature__copy">
     <div class="eyb">The foundation</div>
     <h2>A program of Glappy Foundation</h2>
@@ -99,7 +99,7 @@
   </div>
 </div></section>
 <section class="bg"><div class="w feature feature--flip">
-  <img src="assets/photos/bamenda-circuit-team.jpg" alt="Students lean in together to wire a small circuit beside an open workbook" width="2000" height="1500">
+  <img loading="lazy" decoding="async" src="assets/photos/family/robot-kits.webp" alt="Two robot kits on a table" width="2000" height="1500">
   <div class="feature__copy">
     <div class="eyb">Where it began</div>
     <h2>Africa, then McKinney</h2>
@@ -132,13 +132,13 @@
   <h2>Leadership</h2>
   <div class="founders">
     <article>
-      <img src="assets/photos/founder-unoma.webp" alt="Portrait of Dr. Unoma Okorafor" width="720" height="720">
+      <img loading="lazy" decoding="async" src="assets/photos/founder-unoma.webp" alt="Portrait of Dr. Unoma Okorafor" width="720" height="720">
       <h3>Dr. Unoma Okorafor</h3>
       <p>Founder. WAAW Foundation.</p>
       <!-- TODO: Russell to supply a biography. Do not invent one. -->
     </article>
     <article>
-      <img src="assets/photos/founder-russell.webp" alt="Portrait of Dr. Russell Avre" width="720" height="720">
+      <img loading="lazy" decoding="async" src="assets/photos/founder-russell.webp" alt="Portrait of Dr. Russell Avre" width="720" height="720">
       <h3>Dr. Russell Avre</h3>
       <p>Founder.</p>
       <!-- TODO: Russell to supply a biography. Do not invent one. -->
@@ -211,8 +211,10 @@
 <div><h4>Get involved</h4><ul><li><a href="/community?intent=parent#register">Parents</a></li><li><a href="/schools">Schools</a></li><li><a href="/mentorship">Mentors</a></li><li><a href="/partners">Partners</a></li><li><a href="/volunteer">Volunteers</a></li></ul></div>
 <div><h4>About</h4><ul><li><a href="/about#why">Our Why</a></li><li><a href="/about#leadership">Leadership</a></li><li><a href="/about#mission">Mission</a></li><li><a href="/impact">Impact</a></li><li><a href="/child-safety">Child Safety</a></li><li><a href="/contact">Contact</a></li></ul></div>
 </div>
+<nav class="routes" aria-label="Who you are"><a href="/programs">Students</a><a href="/community?intent=parent#register">Parents</a><a href="/schools">Schools</a><a href="/mentorship">Mentors</a><a href="/partners">Partners</a></nav>
 <div class="legal"><span>© 2026 AfroBot. AfroBot is a program of Glappy Foundation, a Texas nonprofit corporation.</span><span><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/child-safety">Child Safety</a> · <a href="/accessibility">Accessibility</a> · <a href="mailto:hello@afrobot.org">hello@afrobot.org</a></span></div>
 </div>
+<button type="button" class="to-top" hidden>Back to top</button>
 </footer>
 <dialog id="watch-dialog" aria-labelledby="watch-title">
 <div class="watch__panel">
