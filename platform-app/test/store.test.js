@@ -4,6 +4,8 @@ import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import { openDatabase } from '../src/db.js';
+import { postgresSetup } from '../src/pg-sql.js';
+import { LEDGER_SCHEMA, SCHEMA } from '../src/db.js';
 import { storeConfigFromEnv, TURSO_ENV, vercelBlockReason } from '../src/store-config.js';
 
 test('the digest ledger is a separate database and stays append-only', () => {
@@ -53,4 +55,9 @@ test('Vercel stays blocked until both Turso databases are named', () => {
     TURSO_LEDGER_URL: ready.ledgerUrl,
     TURSO_LEDGER_AUTH_TOKEN: ready.ledgerAuthToken,
   } }), null);
+  assert.equal(vercelBlockReason({ VERCEL: '1', DATABASE_URL: 'postgres://example' }), null);
+  const setup = postgresSetup(SCHEMA, LEDGER_SCHEMA).join('\n');
+  assert.equal(setup.includes('PRAGMA'), false);
+  assert.match(setup, /digest_ledger/);
+  assert.match(setup, /digest ledger is append-only/);
 });

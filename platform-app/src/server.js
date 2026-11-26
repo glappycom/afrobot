@@ -6,6 +6,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { userById, userByUsername } from './access.js';
 import { DEMO_USERS } from './constants.js';
 import { get, insert, openDatabase, run } from './db.js';
+import { openHostedDatabase } from './hosted-db.js';
 import {
   addEvent,
   addEvidence,
@@ -162,10 +163,11 @@ function stamp(now) {
 }
 
 export function createApp(options = {}) {
+  const hosted = Boolean(process.env.VERCEL && process.env.DATABASE_URL);
   const dbPath = options.dbPath || path.join(ROOT, 'data', 'demo.sqlite');
-  const filesDir = options.filesDir || path.join(ROOT, 'data', 'files');
+  const filesDir = options.filesDir || (hosted ? '/tmp/afrobot-files' : path.join(ROOT, 'data', 'files'));
   const now = options.now || (() => new Date().toISOString());
-  const db = openDatabase(dbPath, options.ledgerPath);
+  const db = hosted ? openHostedDatabase(process.env.DATABASE_URL) : openDatabase(dbPath, options.ledgerPath);
   const seeded = get(db, 'SELECT COUNT(*) AS n FROM users');
   if (!seeded || Number(seeded.n) === 0) seedAll(db, { filesDir, story: options.story !== false });
   fs.mkdirSync(filesDir, { recursive: true });

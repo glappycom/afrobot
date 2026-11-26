@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 
-const SCHEMA = `
+export const SCHEMA = `
 PRAGMA foreign_keys = ON;
 
 CREATE TABLE IF NOT EXISTS organisations (
@@ -442,7 +442,7 @@ BEGIN
 END;
 `;
 
-const LEDGER_SCHEMA = `
+export const LEDGER_SCHEMA = `
 CREATE TABLE IF NOT EXISTS digest_ledger (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   snapshot_id TEXT NOT NULL,

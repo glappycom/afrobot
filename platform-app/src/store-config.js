@@ -23,10 +23,11 @@ export function storeConfigFromEnv(env = process.env) {
 
 export function vercelBlockReason(env = process.env) {
   if (!env.VERCEL) return null;
+  if (env.DATABASE_URL) return null;
   try {
     const config = storeConfigFromEnv(env);
     if (config.driver !== 'turso') {
-      return 'This pilot on Vercel needs two Turso databases. No database has been created.';
+      return 'This pilot on Vercel needs a database. Set DATABASE_URL, or both Turso databases. No database has been created.';
     }
     return null;
   } catch (error) {
