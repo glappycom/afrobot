@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import http from 'node:http';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { userById, userByUsername } from './access.js';
+import { readableSchools, userById, userByUsername } from './access.js';
 import { DEMO_USERS } from './constants.js';
 import { get, insert, openDatabase, run } from './db.js';
 import { openHostedDatabase } from './hosted-db.js';
@@ -22,6 +22,7 @@ import {
   revokeGrant,
   saveClaimDraft,
   submitClaim,
+  submitIdempotentResult,
   submitCorrection,
   submitResultCorrection,
   traceClaim,
@@ -46,11 +47,15 @@ import {
 import { consentGaps, saveSessionLog } from './experience.js';
 import { liteHome } from './experience.js';
 import { HttpError, notFound } from './http-error.js';
+import { hashPassword, passwordIsHashed, verifyPassword } from './passwords.js';
+import { pageAllowed } from './routes.js';
 import { IDS } from './constants.js';
 import {
   accessPage,
   auditPage,
   auditorPage,
+  traceResultScreen,
+  resultScreen,
   coachPage,
   exportPage,
   familyPage,
@@ -162,6 +167,85 @@ function stamp(now) {
   return typeof now === 'function' ? now() : now;
 }
 
+const DUMMY_HASH = hashPassword('not-a-real-password');
+const LOCK_AFTER = 5;
+const LOCK_MS = 15 * 60 * 1000;
+
+function seedDemoOnce(db, filesDir, story) {
+  if (db.driver === 'neon') db.exec('SELECT pg_advisory_lock(4815162342)');
+  try {
+    const count = Number(get(db, 'SELECT COUNT(*) AS n FROM users')?.n || 0);
+    if (count === 0) {
+      try {
+        seedAll(db, { filesDir, story });
+      } catch (error) {
+        if (Number(get(db, 'SELECT COUNT(*) AS n FROM users')?.n || 0) === 0) throw error;
+      }
+    }
+    for (const row of DEMO_USERS) {
+      const existing = get(db, 'SELECT id, password FROM users WHERE username = ?', [row.username]);
+      if (existing && !passwordIsHashed(existing.password)) {
+        run(db, 'UPDATE users SET password = ? WHERE id = ?', [hashPassword(row.password), existing.id]);
+      }
+    }
+  } finally {
+    if (db.driver === 'neon') db.exec('SELECT pg_advisory_unlock(4815162342)');
+  }
+}
+
+function clientIp(req) {
+  const forwarded = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
+  return forwarded || req.socket?.remoteAddress || 'local';
+}
+
+function sessionCookie(id, req, maxAge) {
+  const secure = req.headers['x-forwarded-proto'] === 'https';
+  return `${COOKIE}=${id}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${maxAge}${secure ? '; Secure' : ''}`;
+}
+
+function attemptRow(db, subject) {
+  return get(db, 'SELECT * FROM login_attempts WHERE subject = ?', [subject]);
+}
+
+function loginLocked(db, username, ip, now) {
+  for (const subject of [`user:${username}`, `ip:${ip}`]) {
+    const row = attemptRow(db, subject);
+    if (row?.locked_until && row.locked_until > now) return true;
+  }
+  return false;
+}
+
+function recordFailure(db, username, ip, now) {
+  for (const subject of [`user:${username}`, `ip:${ip}`]) {
+    const row = attemptRow(db, subject);
+    const failures = (row?.failures || 0) + 1;
+    const lockedUntil = failures >= LOCK_AFTER ? new Date(Date.parse(now) + LOCK_MS).toISOString() : null;
+    if (!row) insert(db, 'login_attempts', { subject, failures, locked_until: lockedUntil, updated_at: now });
+    else run(db, 'UPDATE login_attempts SET failures = ?, locked_until = ?, updated_at = ? WHERE subject = ?', [failures, lockedUntil, now, subject]);
+  }
+}
+
+function clearFailures(db, username) {
+  run(db, 'DELETE FROM login_attempts WHERE subject = ?', [`user:${username}`]);
+}
+
+function needSchool(db, needId) {
+  if (needId.startsWith('need-pace-') || needId.startsWith('need-ok-')) {
+    const cohortId = needId.replace(/^need-(?:pace|ok)-/, '');
+    return get(db, 'SELECT school_id FROM cohorts WHERE id = ?', [cohortId])?.school_id || null;
+  }
+  if (needId.startsWith('need-renew-')) {
+    return get(db, 'SELECT school_id FROM learners WHERE id = ?', [needId.slice('need-renew-'.length)])?.school_id || null;
+  }
+  if (needId.startsWith('need-')) {
+    const rest = needId.slice('need-'.length);
+    return get(db, 'SELECT school_id FROM learners WHERE id = ?', [rest])?.school_id
+      || get(db, 'SELECT school_id FROM claims WHERE id = ?', [rest])?.school_id
+      || null;
+  }
+  return null;
+}
+
 export function createApp(options = {}) {
   const hostedUrl = process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL;
   const hosted = Boolean(process.env.VERCEL && hostedUrl);
@@ -170,8 +254,8 @@ export function createApp(options = {}) {
   const now = options.now || (() => new Date().toISOString());
   fs.mkdirSync(filesDir, { recursive: true });
   const db = hosted ? openHostedDatabase(hostedUrl) : openDatabase(dbPath, options.ledgerPath);
-  const seeded = get(db, 'SELECT COUNT(*) AS n FROM users');
-  if (!seeded || Number(seeded.n) === 0) seedAll(db, { filesDir, story: options.story !== false });
+  const demoSeed = options.demoSeed === true || process.env.AFROBOT_DEMO_SEED === 'true';
+  if (demoSeed) seedDemoOnce(db, filesDir, options.story !== false);
 
   function sessionUser(req) {
     const id = cookies(req)[COOKIE];
@@ -198,6 +282,9 @@ export function createApp(options = {}) {
     const method = req.method || 'GET';
       if (pathname === '/home.css' && method === 'GET') {
         return send(res, 200, fs.readFileSync(path.join(ROOT, 'public', 'home.css')), { 'content-type': 'text/css; charset=utf-8' });
+      }
+      if (pathname === '/result.js' && method === 'GET') {
+        return send(res, 200, fs.readFileSync(path.join(ROOT, 'public', 'result.js')), { 'content-type': 'text/javascript; charset=utf-8' });
       }
       if (pathname === '/home.js' && method === 'GET') {
         return send(res, 200, fs.readFileSync(path.join(ROOT, 'public', 'home.js')), { 'content-type': 'text/javascript; charset=utf-8' });
@@ -241,28 +328,46 @@ export function createApp(options = {}) {
 
       if ((pathname === '/login' || pathname === '/api/login') && method === 'GET') {
         if (user) return redirect(res, home(user.role));
-        return sendHtml(res, 200, loginPage());
+        return sendHtml(res, 200, loginPage({ demoMode: demoSeed }));
       }
       if ((pathname === '/login' || pathname === '/api/login') && method === 'POST') {
-        const found = userByUsername(db, String(req.input.username || ''));
-        if (!found || !safeEqual(found.password, req.input.password || '')) {
-          if (json) return sendJson(res, 401, { error: 'Sign-in failed' });
-          return sendHtml(res, 401, loginPage({ error: 'Sign-in failed. Check the demo username and password.' }));
+        const username = String(req.input.username || '').slice(0, 80);
+        const ip = clientIp(req);
+        const locked = loginLocked(db, username, ip, stamp(now));
+        if (locked) {
+          if (json) return sendJson(res, 429, { error: 'Too many sign-in attempts. Try again later.' });
+          return sendHtml(res, 429, loginPage({ demoMode: demoSeed, error: 'Too many sign-in attempts. Try again later.' }));
         }
+        const found = userByUsername(db, username);
+        const passwordOk = found ? verifyPassword(req.input.password || '', found.password) : verifyPassword(req.input.password || '', DUMMY_HASH);
+        if (!found || !passwordOk) {
+          recordFailure(db, username, ip, stamp(now));
+          if (json) return sendJson(res, 401, { error: 'Sign-in failed' });
+          return sendHtml(res, 401, loginPage({ demoMode: demoSeed, error: 'Sign-in failed.' }));
+        }
+        clearFailures(db, username);
         const opened = startSession(found);
-        res.setHeader('set-cookie', `${COOKIE}=${opened.id}; HttpOnly; SameSite=Lax; Path=/; Max-Age=28800`);
+        res.setHeader('set-cookie', sessionCookie(opened.id, req, 28800));
         if (json) return sendJson(res, 200, { role: found.role, displayName: found.display_name, csrf: opened.csrf });
         return redirect(res, home(found.role));
       }
       if (pathname === '/logout' && method === 'POST') {
         if (session) run(db, 'DELETE FROM sessions WHERE id = ?', [session.id]);
-        res.setHeader('set-cookie', `${COOKIE}=; HttpOnly; SameSite=Lax; Path=/; Max-Age=0`);
+        res.setHeader('set-cookie', sessionCookie('', req, 0));
         return redirect(res, '/login');
       }
       if (pathname === '/' && method === 'GET') return redirect(res, user ? home(user.role) : '/login');
       if (!user) {
         if (json) return sendJson(res, 401, { error: 'Sign in required' });
-        return sendHtml(res, 401, loginPage({ error: 'Sign in required.' }));
+        return sendHtml(res, 401, loginPage({ demoMode: demoSeed, error: 'Sign in required.' }));
+      }
+      if (!pageAllowed(pathname, user.role)) {
+        if (json) return sendJson(res, 403, { error: 'Not available' });
+        return sendHtml(res, 403, unavailablePage());
+      }
+      if (method === 'POST' && user.role !== 'coach' && ['/api/claims', '/coach/claims', '/api/evidence', '/coach/evidence', '/api/claims/draft', '/coach/drafts', '/api/results', '/coach/results', '/api/practice-complete', '/coach/practice-complete'].includes(pathname)) {
+        if (json) return sendJson(res, 403, { error: 'Not available' });
+        return sendHtml(res, 403, unavailablePage());
       }
 
       const notice = NOTICES[url.searchParams.get('notice')] || '';
@@ -270,6 +375,7 @@ export function createApp(options = {}) {
 
       if (pathname === '/demo' && method === 'GET') return sendHtml(res, 200, demoPage(db, user, now, session, pageOpts));
       if (pathname === '/coach' && method === 'GET') return sendHtml(res, 200, coachPage(db, user, now, session, pageOpts));
+      if (pathname === '/coach/result' && method === 'GET') return sendHtml(res, 200, resultScreen(db, user, session));
       if (pathname === '/coach/team' && method === 'GET') return sendHtml(res, 200, teamPage(db, user, session));
       if (pathname === '/coach/logs' && method === 'GET') return sendHtml(res, 200, logsPage(db, user, session));
       if (pathname === '/coach/log' && method === 'GET') return sendHtml(res, 200, logPage(db, user, session, '1'));
@@ -285,8 +391,24 @@ export function createApp(options = {}) {
       if (pathname === '/organiser/setup' && method === 'GET') return sendHtml(res, 200, setupPage('organiser', user, session, db));
       if (pathname === '/organiser/needs' && method === 'GET') return sendHtml(res, 200, needsPage(db, user, now, session, pageOpts));
       if (pathname === '/organiser/needs/act' && method === 'POST') {
+        const schoolId = needSchool(db, String(req.input.id || ''));
+        if (!schoolId || !readableSchools(db, user, stamp(now)).includes(schoolId)) throw notFound();
         addEvent(db, { now, action: 'submitted', user, subjectType: 'season', subjectId: IDS.seasonAfrica, detail: { need: req.input.id || 'need' } });
         return redirect(res, '/organiser/needs?notice=saved');
+      }
+      if ((pathname === '/api/results' || pathname === '/coach/results') && method === 'POST') {
+        const schoolId = postedSchool(db, user, req.input);
+        const result = submitIdempotentResult(db, user, { ...req.input, schoolId, filesDir }, now);
+        if (json || pathname.startsWith('/api/')) {
+          return sendJson(res, result.already ? 200 : 201, {
+            id: result.claim.id,
+            already: result.already,
+            status: result.claim.status,
+            numerator: result.claim.numerator,
+            denominator: result.claim.denominator,
+          });
+        }
+        return redirect(res, '/coach/result?notice=submitted');
       }
       if (pathname === '/student/journey' && method === 'GET') return sendHtml(res, 200, journeyPage(db, user, session));
       if (pathname === '/student/family' && method === 'GET') return sendHtml(res, 200, familyPage(db, user, session));
@@ -311,6 +433,8 @@ export function createApp(options = {}) {
       }
       if (pathname === '/organiser' && method === 'GET') return sendHtml(res, 200, organiserPage(db, user, now, session, pageOpts));
       if (pathname === '/auditor' && method === 'GET') return sendHtml(res, 200, auditorPage(db, user, now, session, pageOpts));
+      const traceView = pathname.match(/^\/auditor\/trace\/([a-z0-9-]+)$/);
+      if (traceView && method === 'GET') return sendHtml(res, 200, traceResultScreen(db, user, now, session, traceView[1]));
       if (pathname === '/student' && method === 'GET') return sendHtml(res, 200, studentPage(db, user, now, session, pageOpts));
       if (pathname === '/print' && method === 'GET') return sendHtml(res, 200, printPage(db, user, now, session));
       if (pathname === '/records' && method === 'GET') {

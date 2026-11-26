@@ -84,9 +84,20 @@ function startWorker(connectionString) {
 
 export function openHostedDatabase(connectionString) {
   const client = startWorker(connectionString);
-  for (const statement of postgresSetup(SCHEMA, LEDGER_SCHEMA)) {
-    client.exec(statement);
+  client.exec('CREATE TABLE IF NOT EXISTS schema_migrations (version INTEGER PRIMARY KEY)');
+  const version = client.prepare('SELECT MAX(version) AS version FROM schema_migrations').get();
+  if (!version?.version) {
+    for (const statement of postgresSetup(SCHEMA, LEDGER_SCHEMA)) client.exec(statement);
+    client.exec('INSERT INTO schema_migrations (version) VALUES (1) ON CONFLICT DO NOTHING');
   }
+  client.exec('ALTER TABLE claims ADD COLUMN IF NOT EXISTS idempotency_key TEXT');
+  client.exec('CREATE UNIQUE INDEX IF NOT EXISTS claims_idempotency_key ON claims (idempotency_key)');
+  client.exec(`CREATE TABLE IF NOT EXISTS login_attempts (
+    subject TEXT PRIMARY KEY,
+    failures INTEGER NOT NULL,
+    locked_until TEXT,
+    updated_at TEXT NOT NULL
+  )`);
   return {
     records: client,
     ledger: client,

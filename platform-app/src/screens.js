@@ -1,10 +1,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { readableSchools } from './access.js';
+import { traceClaim } from './domain.js';
+import { displayId } from './records.js';
 import { get } from './db.js';
 import { consentGaps, fallingBehind, joinCodeFor, learnersForSchool, needsQueue } from './experience.js';
 import { IDS } from './constants.js';
-import { esc } from './format.js';
+import { esc, rateLabel } from './format.js';
 
 const ICONS = fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), '../public/icons.html'), 'utf8');
 
@@ -24,7 +27,7 @@ function teamFor(schoolId) {
 
 function shell({ title, user, session, roleLabel, device, home, body, phone = false, bell = 0 }) {
   const initials = String(user.display_name || 'A').split(' ').map((part) => part[0]).join('').slice(0, 2);
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><link rel="stylesheet" href="/home.css"><style>body{font-family:PS,"Public Sans",sans-serif}</style></head><body class="${phone ? 'phone-app' : ''}">${ICONS}<a class="skip" href="#main">Skip to content</a><header class="shell"><div class="shell-in"><a href="${home}" aria-label="AfroBot platform home"><img class="mark" src="/logo-afrobot-navy.svg" alt="afrobot"></a><span class="prod">Platform</span><span class="viewas">View as</span><nav class="roles" aria-label="Signed-in role"><a class="on" href="${home}" aria-current="page">${esc(roleLabel)} <span class="dev">${esc(device)}</span></a></nav><span class="mocktag">Fictional data</span><div class="hbtns"><button class="ibtn" type="button" aria-label="Notifications, ${bell} unread">${icon('bell')}<span class="dot">${bell}</span></button><details class="menuwrap"><summary class="ibtn" aria-label="Profile and settings"><span class="me">${esc(initials)}</span></summary><div class="menu" role="menu"><b>${esc(user.display_name)}</b><a href="/settings">Settings</a><a href="/demo">Demo controls</a><form method="post" action="/logout">${hidden(session)}<button type="submit">Sign out</button></form></div></details></div></div></header><main id="main" tabindex="-1">${body}</main><div id="toasts" aria-live="polite"></div><script src="/home.js"></script></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><link rel="stylesheet" href="/home.css"><style>body{font-family:PS,"Public Sans",sans-serif}</style></head><body class="${phone ? 'phone-app' : ''}">${ICONS}<a class="skip" href="#main">Skip to content</a><header class="shell"><div class="shell-in"><a href="${home}" aria-label="AfroBot platform home"><img class="mark" src="/logo-afrobot-navy.svg" alt="afrobot"></a><span class="prod">Platform</span><span class="viewas">View as</span><nav class="roles" aria-label="Signed-in role"><a class="on" href="${home}" aria-current="page">${esc(roleLabel)} <span class="dev">${esc(device)}</span></a></nav><span class="mocktag">Fictional data</span><div class="hbtns"><button class="ibtn" type="button" aria-label="Notifications, ${bell} unread">${icon('bell')}<span class="dot">${bell}</span></button><details class="menuwrap"><summary class="ibtn" aria-label="Profile and settings"><span class="me">${esc(initials)}</span></summary><div class="menu" role="menu"><b>${esc(user.display_name)}</b><a href="/settings">Settings</a><a href="/demo">Demo controls</a><form method="post" action="/logout">${hidden(session)}<button type="submit">Sign out</button></form></div></details></div></div></header><main id="main" tabindex="-1">${body}</main><footer class="appfoot">Preview v0.3</footer><div id="toasts" aria-live="polite"></div><script src="/home.js"></script></body></html>`;
 }
 
 function tabs(on) {
@@ -50,7 +53,8 @@ export function coachScreen(db, user, now, session) {
     ? `<a href="/coach/logs"><span class="ic" style="background:#FBECE6;color:#8C2A0A">${icon('chart')}</span><span class="tx"><b>This team is falling behind</b><span>${pace.done} of ${pace.planned} challenges, ${pace.weeks_left} weeks left</span></span><span class="chev">${icon('chev', 'sm')}</span></a>`
     : '';
   const body = phone(`<div class="greet"><div class="d">Thursday 26 Nov <span class="mtag">Fictional</span></div><h1>Good morning,<br>${esc(user.display_name)}</h1></div>
-    <div class="cta"><a class="btn p big xl" href="/coach/log">${icon('plus', 'lg')} Log a session<span class="sub3">Photo, skills, save. About 20 seconds.</span></a></div>
+    <div class="cta"><a class="btn p big xl" href="/coach/log">${icon('plus', 'lg')} Log a session<span class="sub3">Photo, skills, save. About 20 seconds.</span></a>
+    <a class="btn o big" href="/coach/result">Send a result without a photo</a></div>
     ${gapNote}
     <div class="sect"><h3>This week</h3><span>3 sessions</span></div>
     <div class="week">
@@ -73,6 +77,21 @@ export function coachScreen(db, user, now, session) {
     <div class="sect"><h3>Recent logs</h3></div>
     <div class="due"><div class="rl"><span class="ic" style="background:#E8F3EC;color:#1B6B3A">${icon('check')}</span><span class="tx"><b>${esc(team.name)}</b><span>Sent by you · Approved by your organiser</span></span></div></div>`, 'today');
   return shell({ title: 'Today · afrobot', user, session, roleLabel: 'Coach', device: 'Phone', home: '/coach', body, phone: true, bell: gaps.length || 1 });
+}
+
+export function resultScreen(db, user, session) {
+  const body = phone(`<div class="appbar"><a class="back" href="/coach" aria-label="Back to Today">${icon('back')}</a><div><div class="t">Result</div><h1 style="font-size:20px">Attendance and result</h1></div></div>
+    <p class="qs">A photo is optional. Starters, completions, and your confirmation are enough. Do not include student names or faces.</p>
+    <form id="result-form" class="pad">${hidden(session)}
+      <label for="numerator">Completions</label><input id="numerator" name="numerator" inputmode="numeric" value="6">
+      <label for="denominator">Starters</label><input id="denominator" name="denominator" inputmode="numeric" value="8">
+      <p id="sync-status" role="status">Saved on this device</p>
+      <p id="sync-detail"></p>
+      <p><button class="btn p big" id="submit-result" type="submit">Send</button></p>
+      <p><button class="btn o big" id="retry-result" type="button">Retry</button></p>
+      <div id="paper-fallback" hidden><p>This browser cannot store the draft. Keep this tab open, or print this page and enter the same counts when you are back online.</p><button class="btn g" type="button" id="print-result">Print a paper copy</button></div>
+    </form>`, 'log');
+  return shell({ title: 'Result · afrobot', user, session, roleLabel: 'Coach', device: 'Phone', home: '/coach', body: body.replace('</body>', '<script src="/result.js"></script></body>'), phone: true, bell: 1 }).replace('</body>', '<script src="/result.js"></script></body>');
 }
 
 export function logScreen(db, user, session, step = '1') {
@@ -203,6 +222,8 @@ export function organiserScreen(db, user, now, session, extras = {}) {
 }
 
 export function auditorScreen(db, user, session) {
+  const schools = readableSchools(db, user, new Date().toISOString()).map((id) => get(db, 'SELECT display_name FROM schools WHERE id = ?', [id])?.display_name).filter(Boolean);
+  const scope = schools.length ? schools.join(', ') : 'Assigned schools';
   const body = `<div class="desk aud"><aside class="rail"><div class="org"><span class="av sm" style="background:#fff;color:#0E2747">AU</span><div><b>${esc(user.display_name)}</b><span>Read-only access</span></div></div>
     <a class="on" href="/auditor" aria-current="page">${icon('file')} Records</a>
     <a href="/records/${IDS.claimV2}">${icon('link')} Trace</a>
@@ -213,9 +234,27 @@ export function auditorScreen(db, user, session) {
     <a href="/verify">${icon('check')} Verify pack</a>
     <div class="bottom">This workspace can't change records.</div></aside>
     <div class="main"><div class="trust" role="region" aria-label="Workspace status">${icon('lock', 'sm')}<span><b>Read-only</b> · view, trace, export</span></div>
-    <div class="ph"><div><nav class="crumbs" aria-label="Breadcrumb"><span>Season 2026</span>${icon('chev')}<span>North Ridge Learning Circle</span></nav><h1>Team Sunbird attendance</h1><span class="chip c-bui">Build</span></div>
+    <div class="ph"><div><nav class="crumbs" aria-label="Breadcrumb"><span>Season 2026</span>${icon('chev')}<span>${esc(scope)}</span></nav><h1>Assigned records</h1><span class="chip c-bui">Build</span></div>
     <div class="r"><form method="post" action="/auditor/exports/${IDS.claimV2}/export">${hidden(session)}<button class="btn p" type="submit">${icon('down', 'sm')} Export pack</button></form></div></div>
     <p><a href="/records/${IDS.claimV2}">Open the trace</a> · <a href="/demo">Show how</a></p>
     <p class="note">A digest shows a later change. It does not delete the earlier record.</p></div></div>`;
   return shell({ title: 'Records · afrobot', user, session, roleLabel: 'Auditor', device: 'Read-only', home: '/auditor', body, phone: false, bell: 0 });
+}
+
+export function traceResultScreen(db, user, now, session, claimId) {
+  const trace = traceClaim(db, user, claimId, now);
+  const claim = trace.current || trace.requested;
+  const snapshot = trace.snapshots.find((row) => row.subject_id === claim.id) || trace.snapshots.at(-1);
+  const source = trace.evidence.map((row) => row.body_redacted).filter(Boolean).join(' ') || 'No redacted note yet.';
+  const figure = rateLabel(claim.numerator, claim.denominator) || '—';
+  const body = `<div class="desk aud"><aside class="rail"><div class="org"><span class="av sm" style="background:#fff;color:#0E2747">AU</span><div><b>${esc(user.display_name)}</b><span>Read-only</span></div></div>
+    <a href="/auditor">${icon('file')} Records</a>
+    <a class="on" href="/auditor/trace/${esc(claim.id)}" aria-current="page">${icon('link')} Trace</a></aside>
+    <div class="main"><div class="ph"><div><nav class="crumbs" aria-label="Breadcrumb"><a href="/auditor">Records</a>${icon('chev')}<span>${esc(displayId(claim.id))}</span></nav>
+    <h1>${esc(figure)}</h1></div></div>
+    <p>Numerator ${esc(claim.numerator)}. Denominator ${esc(claim.denominator)}. Reporting period ${esc(claim.window_start)} to ${esc(claim.window_end)}. Approved version ${esc(claim.version)} · ${esc(displayId(claim.id))}.</p>
+    <section class="card"><h2>File integrity checks</h2><p>These checks only say whether the file is unchanged since approval. SHA-256 ${esc(snapshot?.digest_sha256 || 'not approved yet')}.</p></section>
+    <section class="card"><h2>Evidence supporting the claim</h2><p>Redacted source: ${esc(source)}</p><p>Attendance list and project result: ${esc(claim.numerator)} completions of ${esc(claim.denominator)} starters. Coach attestation is the redacted note. Organiser approval is version ${esc(claim.version)}.</p></section>
+    </div></div>`;
+  return shell({ title: 'Trace · afrobot', user, session, roleLabel: 'Auditor', device: 'Read-only', home: '/auditor', body, phone: false, bell: 0 });
 }

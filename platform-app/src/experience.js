@@ -1,4 +1,5 @@
 import { readableSchools } from './access.js';
+import { esc } from './format.js';
 import { all, get, insert } from './db.js';
 import { listClaims } from './domain.js';
 import { HttpError, notAvailable, notFound } from './http-error.js';
@@ -31,16 +32,17 @@ export function needsQueue(db, user, now) {
   const items = [];
   const waiting = listClaims(db, user, now).filter((row) => row.status === 'submitted')
     .sort((a, b) => String(a.submitted_at).localeCompare(String(b.submitted_at)));
-  if (waiting[0]) {
-    const claim = waiting[0];
+  for (const [index, claim] of waiting.entries()) {
     const school = schoolName(claim.school_id);
     const when = new Date(`${String(claim.activity_date || claim.submitted_at).slice(0, 10)}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
     items.push({
       id: `need-${claim.id}`,
       group: 'Blocking a team now',
-      title: `Review ${teamName(claim.school_id)}'s session from ${when}`,
-      why: "Why first: it's the oldest waiting record. The team's season record can't be finished until it's reviewed.",
-      action: 'Review now',
+      title: `Review ${claim.numerator} of ${claim.denominator} · ${teamName(claim.school_id)} · ${when}`,
+      why: index === 0
+        ? "Why first: it's the oldest waiting record. The team's season record can't be finished until it's reviewed."
+        : `Why: ${claim.numerator} of ${claim.denominator} was sent without a photo and is waiting for approval.`,
+      action: 'Approve',
       meta: `${teamName(claim.school_id)} · ${school?.country_name || ''} · Coach`,
     });
   }
@@ -133,5 +135,5 @@ a{color:#163A66}h1{font-size:20px;color:#0E2747;margin:0 0 8px}
 .pad{padding:16px}.btn{display:flex;align-items:center;justify-content:center;min-height:56px;background:#0E2747;color:#fff;text-decoration:none;font-weight:700;border-radius:4px}
 .note{margin-top:12px;padding:8px 12px;background:#FBF3E2;border-left:4px solid #8A5A00}
 :focus-visible{outline:2px solid #0E2747;outline-offset:2px}
-</style></head><body><div class="bar"><b>afrobot</b><span class="tag">Lite · data saver</span></div><div class="pad"><p>Coach ${coachName}. Fictional.</p><h1>Good afternoon</h1><a class="btn" href="/lite/log">Log a session</a>${hidden}<p class="note">Pictures stay off until you tap them. A picture is about 40 KB.</p></div></body></html>`;
+</style></head><body><div class="bar"><b>afrobot</b><span class="tag">Lite · data saver</span></div><div class="pad"><p>Coach ${esc(coachName)}. Fictional.</p><h1>Good afternoon</h1><a class="btn" href="/lite/log">Log a session</a>${hidden}<p class="note">You can send starters and completions without a photo. Pictures stay off until you tap them. A picture is about 40 KB. If this phone cannot keep a draft, keep this tab open or print the counts.</p><p>Preview v0.3</p></div></body></html>`;
 }

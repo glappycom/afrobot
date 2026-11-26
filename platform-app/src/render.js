@@ -4,7 +4,8 @@ import { all, get } from './db.js';
 import { comparisonViews, followupsFor, goalRollup, listClaims, listProjects, projectReport, traceClaim, visibleEvents } from './domain.js';
 import { esc, rateLabel, sdgLabel, show } from './format.js';
 import { consentGaps, fallingBehind, joinCodeFor, learnersForSchool, liteHome, needsQueue } from './experience.js';
-import { auditorScreen, coachLogsScreen, coachScreen, coachTeamScreen, familyScreen, journeyScreen, logScreen, organiserScreen } from './screens.js';
+import { auditorScreen, coachLogsScreen, coachScreen, coachTeamScreen, familyScreen, journeyScreen, logScreen, organiserScreen, resultScreen, traceResultScreen } from './screens.js';
+export { traceResultScreen, resultScreen };
 import { accessReviewRows, custodyChain, displayId, filterEvents, formatStamps, gridClaims, integrityReport, provenanceDocument, retentionFor } from './records.js';
 
 const CSS = `
@@ -204,7 +205,7 @@ ${notice ? `<p class="notice" role="status">${esc(notice)}</p>` : ''}
 ${error ? `<p class="error" role="alert">${esc(error)}</p>` : ''}
 ${body}
 </main>`}
-<footer>Demo records controls. Not a certification. A digest shows a later change. It does not prove the first number was true.</footer>
+<footer>Preview v0.3. Demo records controls. Not a certification. A digest shows a later change. It does not prove the first number was true.</footer>
 <script src="/app.js"></script>
 </body>
 </html>`;
@@ -261,16 +262,11 @@ function showHow(claim, extra = '') {
   </details>`;
 }
 
-export function loginPage({ error } = {}) {
-  const cards = DEMO_USERS.map((row) => `<article class="role">
-    <b>${esc(row.displayName)}</b>
-    <span>${esc(row.role)}</span>
-    <code>${esc(row.username)}</code>
-    <code>${esc(row.password)}</code>
-  </article>`).join('');
+export function loginPage({ error, demoMode = false } = {}) {
+  const hint = demoMode ? '<p>Demo sign-ins are in the PR description.</p>' : '';
   return layout({
     title: 'Sign in · afrobot evidence',
-    body: `<p class="kicker">demo</p>
+    body: `<p class="kicker">sign in</p>
     <h1>Sign in</h1>
     <form class="card" method="post" action="/login">
       <label for="username">Username</label>
@@ -279,7 +275,8 @@ export function loginPage({ error } = {}) {
       <input id="password" name="password" type="password" autocomplete="current-password" required>
       <p><button type="submit">Sign in</button></p>
     </form>
-    <div class="roles">${cards}</div>`,
+    ${hint}
+    <p>Preview v0.3</p>`,
     error,
   });
 }

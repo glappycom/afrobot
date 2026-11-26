@@ -10,7 +10,7 @@
     "ws": "^8.18.3"
   },
   "scripts": {
-    "demo": "node --disable-warning=ExperimentalWarning src/server.js",
+    "demo": "AFROBOT_DEMO_SEED=true node --disable-warning=ExperimentalWarning src/server.js",
     "test": "node --disable-warning=ExperimentalWarning --test test/*.test.js",
     "write-example-pack": "node --disable-warning=ExperimentalWarning scripts/write-example-pack.mjs"
   }

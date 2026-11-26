@@ -198,8 +198,18 @@ CREATE TABLE IF NOT EXISTS claims (
   submitted_at TEXT,
   approved_by TEXT,
   approved_at TEXT,
-  created_at TEXT NOT NULL
+  created_at TEXT NOT NULL,
+  idempotency_key TEXT
 );
+
+CREATE TABLE IF NOT EXISTS login_attempts (
+  subject TEXT PRIMARY KEY,
+  failures INTEGER NOT NULL,
+  locked_until TEXT,
+  updated_at TEXT NOT NULL
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS claims_idempotency_key ON claims(idempotency_key);
 
 CREATE TABLE IF NOT EXISTS evidence_items (
   id TEXT PRIMARY KEY,
@@ -493,15 +503,40 @@ function openSqlite(dbPath) {
   return new DatabaseSync(dbPath);
 }
 
+function applied(db) {
+  db.exec('CREATE TABLE IF NOT EXISTS schema_migrations (version INTEGER PRIMARY KEY)');
+  return db.prepare('SELECT MAX(version) AS version FROM schema_migrations').get();
+}
+
 export function openDatabase(dbPath, ledgerPath) {
   const ledgerLocation = ledgerPath || (dbPath === ':memory:' ? ':memory:' : path.join(path.dirname(dbPath), 'ledger.sqlite'));
   const records = openSqlite(dbPath);
   const ledger = openSqlite(ledgerLocation);
-  records.exec(SCHEMA);
-  ledger.exec(LEDGER_SCHEMA);
+  const version = applied(records);
+  if (!version?.version) {
+    records.exec(SCHEMA);
+    ledger.exec(LEDGER_SCHEMA);
+    records.exec('INSERT INTO schema_migrations (version) VALUES (1) ON CONFLICT DO NOTHING');
+  }
+  ensureClaimKey(records);
+  records.exec(`CREATE TABLE IF NOT EXISTS login_attempts (
+    subject TEXT PRIMARY KEY,
+    failures INTEGER NOT NULL,
+    locked_until TEXT,
+    updated_at TEXT NOT NULL
+  )`);
   const store = new Store(records, ledger);
   store.ledgerPath = ledgerLocation;
   return store;
+}
+
+function ensureClaimKey(records) {
+  const cols = records.prepare('PRAGMA table_info(claims)').all();
+  if (!cols.length) return;
+  if (!cols.some((col) => col.name === 'idempotency_key')) {
+    records.exec('ALTER TABLE claims ADD COLUMN idempotency_key TEXT');
+  }
+  records.exec('CREATE UNIQUE INDEX IF NOT EXISTS claims_idempotency_key ON claims(idempotency_key)');
 }
 
 export function insert(db, table, row) {

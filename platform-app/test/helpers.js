@@ -10,6 +10,7 @@ export async function demo(options = {}) {
     filesDir: path.join(dir, 'files'),
     port: 0,
     story: options.story !== false,
+    demoSeed: options.demoSeed !== false,
     now: options.now,
   });
   return {

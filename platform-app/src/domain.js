@@ -209,6 +209,7 @@ export function submitClaim(db, user, input, now) {
     approved_by: null,
     approved_at: null,
     created_at: stamp,
+    idempotency_key: input.idempotencyKey || null,
   };
   transaction(db, () => {
     insert(db, 'claims', row);
@@ -223,6 +224,45 @@ export function submitClaim(db, user, input, now) {
     });
   });
   return claimById(db, id);
+}
+
+export function submitIdempotentResult(db, user, input, now) {
+  const schoolId = input.schoolId;
+  requireCoach(db, user, schoolId, at(now));
+  const key = String(input.idempotencyKey || '').trim().toLowerCase();
+  if (!/^[a-z0-9-]{8,80}$/.test(key)) throw new HttpError(422, 'A session key is required.');
+  const existing = get(db, 'SELECT * FROM claims WHERE idempotency_key = ? OR id = ?', [key, `clm-${key}`]);
+  if (existing) {
+    if (existing.school_id !== schoolId) throw notFound();
+    return { claim: existing, already: true };
+  }
+  const activityDate = input.activityDate || '2026-11-26';
+  try {
+    const claim = submitClaim(db, user, {
+      ...input,
+      schoolId,
+      id: `clm-${key}`,
+      seriesId: `clm-${key}`,
+      idempotencyKey: key,
+      activityDate,
+    }, now);
+    const evidenceId = `ev-${key}`;
+    if (!evidenceById(db, evidenceId)) {
+      addEvidence(db, user, {
+        id: evidenceId,
+        schoolId,
+        claimId: claim.id,
+        activityDate,
+        sourceType: 'coach_attestation',
+        body: `${claim.numerator} completions of ${claim.denominator} starters. No photo. Student names and faces are not included.`,
+      }, now, input.filesDir);
+    }
+    return { claim, already: false };
+  } catch (error) {
+    const again = get(db, 'SELECT * FROM claims WHERE idempotency_key = ? OR id = ?', [key, `clm-${key}`]);
+    if (again && again.school_id === schoolId) return { claim: again, already: true };
+    throw error;
+  }
 }
 
 export function submitCorrection(db, user, priorId, input, now) {

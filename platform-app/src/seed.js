@@ -9,6 +9,7 @@ import {
   withdrawEvidence,
 } from './domain.js';
 import { insert } from './db.js';
+import { hashPassword } from './passwords.js';
 
 function user(id) {
   return DEMO_USERS.find((row) => row.id === id);
@@ -77,7 +78,7 @@ export function seedFoundation(db) {
       username: row.username,
       display_name: row.displayName,
       role: row.role,
-      password: row.password,
+      password: hashPassword(row.password),
       mocked: 1,
     });
   }
