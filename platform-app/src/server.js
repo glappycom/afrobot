@@ -418,8 +418,14 @@ export function createApp(options = {}) {
           return sendHtml(res, 200, mfaPage(challenge));
         }
         if (Number(found.mfa_enabled) === 1) {
-          const codeOk = req.input.code ? await checkSecondFactor(db, found, req.input.code) : false;
-          if (!codeOk) {
+          const exempt = demoSeed && Number(found.mfa_exempt) === 1;
+          if (req.input.code) {
+            const codeOk = await checkSecondFactor(db, found, req.input.code);
+            if (!codeOk) {
+              if (json) return sendJson(res, 401, { error: 'Authenticator code required', mfa: true });
+              return sendHtml(res, 401, loginPage({ demoMode: demoSeed, error: 'Authenticator code required.' }));
+            }
+          } else if (!exempt) {
             if (json) return sendJson(res, 401, { error: 'Authenticator code required', mfa: true });
             return sendHtml(res, 401, loginPage({ demoMode: demoSeed, error: 'Authenticator code required.' }));
           }
