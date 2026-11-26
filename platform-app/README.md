@@ -4,7 +4,7 @@ Private pilot for reviewing a claim without exposing a learner. It is a separate
 
 Every school, count, and login in here is fictional. Sign-in is mocked. There is no external account service and no AI recommendation.
 
-The shell follows the shape of a Microsoft 365 admin or Purview records app: app bar, left navigation, command bar, dense grids, and a record with tabs. AfroBot's navy, sun, and coral are accents on the Fredoka wordmark and the primary button. Retention labels, legal hold, provenance, the audit log, the integrity check, and access review are demo controls in the spirit of ISO 15489, ISO 16175, NIST SP 800-53 AU, W3C PROV, and a SOC 2 control mindset. This demo is not certified, and it is not affiliated with any records body or prize.
+The workspace uses the live afrobot.org look: Public Sans, navy `#0E2747`, terracotta `#C4461A`, a white header, and the same robot wordmark. The left nav, records grid, provenance, integrity check, legal hold, and access review stay in place. Those controls follow the ideas in ISO 15489, ISO 16175, NIST SP 800-53 AU, W3C PROV, and a SOC 2 control mindset. This demo is not certified, and it is not affiliated with any records body or prize.
 
 ## Run
 

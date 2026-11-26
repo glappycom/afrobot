@@ -186,11 +186,14 @@ export function createApp(options = {}) {
       const file = path.join(ROOT, 'public', 'app.js');
       return send(res, 200, fs.readFileSync(file), { 'content-type': 'text/javascript; charset=utf-8', 'cache-control': 'public, max-age=3600' });
     }
-    const font = pathname.match(/^\/fonts\/(fredoka-700|rubik-400|rubik-500)\.woff2$/);
-    if (font && method === 'GET') {
-      const file = path.join(ROOT, 'public', 'fonts', `${font[1]}.woff2`);
-      if (!fs.existsSync(file)) throw notFound();
-      return send(res, 200, fs.readFileSync(file), {
+    if (pathname === '/logo-afrobot-navy.svg' && method === 'GET') {
+      return send(res, 200, fs.readFileSync(path.join(ROOT, 'public', 'logo-afrobot-navy.svg')), {
+        'content-type': 'image/svg+xml',
+        'cache-control': 'public, max-age=86400',
+      });
+    }
+    if (pathname === '/fonts/PublicSans-VF.woff2' && method === 'GET') {
+      return send(res, 200, fs.readFileSync(path.join(ROOT, 'public', 'fonts', 'PublicSans-VF.woff2')), {
         'content-type': 'font/woff2',
         'cache-control': 'public, max-age=31536000',
       });

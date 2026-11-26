@@ -16,8 +16,9 @@ test('each role home is a short visual page with one next step', async () => {
     for (const html of [coachHtml, organiserHtml, auditorHtml, studentHtml]) {
       assert.equal(html.status, 200);
       assert.match(html.text, /class="mark"/);
-      assert.match(html.text, />afrobot</);
-      assert.match(html.text, /Fredoka/);
+      assert.match(html.text, /alt="afrobot"/);
+      assert.match(html.text, /Public Sans|font-family:PS/);
+      assert.doesNotMatch(html.text, /Fredoka|#FFC531/);
       assert.match(html.text, /class="chip/);
       assert.equal((html.text.match(/<h1\b/g) || []).length, 1);
     }
@@ -29,7 +30,7 @@ test('each role home is a short visual page with one next step', async () => {
     assert.match(auditorHtml.text, /Export pack/);
     assert.match(organiserHtml.text, /Approve/);
     assert.match(studentHtml.text, /Save draft/);
-    const font = await api(app.url, coach, 'GET', '/fonts/fredoka-700.woff2');
+    const font = await api(app.url, coach, 'GET', '/fonts/PublicSans-VF.woff2');
     assert.equal(font.status, 200);
     assert.match(font.headers.get('content-type'), /font\/woff2/);
   } finally {
