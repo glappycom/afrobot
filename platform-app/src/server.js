@@ -17,7 +17,6 @@ import {
   listClaims,
   listProjects,
   readEvidenceBody,
-  resubmitClaim,
   returnClaim,
   revokeGrant,
   saveClaimDraft,
@@ -45,8 +44,22 @@ import {
   verifyPastedPack,
 } from './records.js';
 import { consentGaps, saveSessionLog } from './experience.js';
+import {
+  createClub,
+  createCoachAccount,
+  createLearnerAccount,
+  createMeeting,
+  ensureDemoMeetings,
+  marksFrom,
+  resubmitSession,
+  sessionBoard,
+  sessionTotals,
+  submitSessionCapture,
+  setReportingPeriod,
+} from './operations.js';
+import { adminPage, capturePage, fixPage, trackingPage } from './work-pages.js';
 import { liteHome } from './experience.js';
-import { HttpError, notFound } from './http-error.js';
+import { HttpError, notAvailable, notFound } from './http-error.js';
 import { hashPassword, passwordIsHashed, verifyPassword } from './passwords.js';
 import { pageAllowed } from './routes.js';
 import { IDS } from './constants.js';
@@ -188,6 +201,7 @@ function seedDemoOnce(db, filesDir, story) {
         run(db, 'UPDATE users SET password = ? WHERE id = ?', [hashPassword(row.password), existing.id]);
       }
     }
+    if (Number(get(db, 'SELECT COUNT(*) AS n FROM users')?.n || 0) > 0) ensureDemoMeetings(db);
   } finally {
     if (db.driver === 'neon') db.exec('SELECT pg_advisory_unlock(4815162342)');
   }
@@ -286,6 +300,9 @@ export function createApp(options = {}) {
       if (pathname === '/result.js' && method === 'GET') {
         return send(res, 200, fs.readFileSync(path.join(ROOT, 'public', 'result.js')), { 'content-type': 'text/javascript; charset=utf-8' });
       }
+      if (pathname === '/capture.js' && method === 'GET') {
+        return send(res, 200, fs.readFileSync(path.join(ROOT, 'public', 'capture.js')), { 'content-type': 'text/javascript; charset=utf-8' });
+      }
       if (pathname === '/home.js' && method === 'GET') {
         return send(res, 200, fs.readFileSync(path.join(ROOT, 'public', 'home.js')), { 'content-type': 'text/javascript; charset=utf-8' });
       }
@@ -310,6 +327,7 @@ export function createApp(options = {}) {
     const user = auth?.user || null;
     const session = auth?.session || null;
     let touched = null;
+    let formErrorPage = null;
     try {
       if (method === 'POST' && pathname !== '/login' && pathname !== '/api/login') {
         if (!session) {
@@ -318,7 +336,7 @@ export function createApp(options = {}) {
         }
         const inputPeek = await readInput(req);
         req.input = inputPeek;
-        const token = req.headers['x-csrf-token'] || inputPeek._csrf || '';
+        const token = req.headers['x-csrf-token'] || inputPeek._csrf || inputPeek.csrf || '';
         if (!safeEqual(token, session.csrf)) throw new HttpError(403, 'The form expired. Sign in again.');
       } else if (method === 'POST') {
         req.input = await readInput(req);
@@ -365,7 +383,7 @@ export function createApp(options = {}) {
         if (json) return sendJson(res, 403, { error: 'Not available' });
         return sendHtml(res, 403, unavailablePage());
       }
-      if (method === 'POST' && user.role !== 'coach' && ['/api/claims', '/coach/claims', '/api/evidence', '/coach/evidence', '/api/claims/draft', '/coach/drafts', '/api/results', '/coach/results', '/api/practice-complete', '/coach/practice-complete'].includes(pathname)) {
+      if (method === 'POST' && user.role !== 'coach' && ['/api/claims', '/coach/claims', '/api/evidence', '/coach/evidence', '/api/claims/draft', '/coach/drafts', '/api/results', '/coach/results', '/api/practice-complete', '/coach/practice-complete', '/api/captures', '/coach/captures'].includes(pathname)) {
         if (json) return sendJson(res, 403, { error: 'Not available' });
         return sendHtml(res, 403, unavailablePage());
       }
@@ -377,7 +395,14 @@ export function createApp(options = {}) {
       if (pathname === '/coach' && method === 'GET') return sendHtml(res, 200, coachPage(db, user, now, session, pageOpts));
       if (pathname === '/coach/result' && method === 'GET') return sendHtml(res, 200, resultScreen(db, user, session));
       if (pathname === '/coach/team' && method === 'GET') return sendHtml(res, 200, teamPage(db, user, session));
-      if (pathname === '/coach/logs' && method === 'GET') return sendHtml(res, 200, logsPage(db, user, session));
+      if (pathname === '/coach/logs' && method === 'GET') return sendHtml(res, 200, logsPage(db, user, now, session, pageOpts));
+      if (pathname === '/coach/capture' && method === 'GET') return sendHtml(res, 200, capturePage(db, user, now, session, pageOpts));
+      const fixView = pathname.match(/^\/coach\/fix\/([a-z0-9-]+)$/);
+      if (fixView && method === 'GET') {
+        const claim = get(db, 'SELECT * FROM claims WHERE id = ?', [fixView[1]]);
+        if (!claim || claim.submitted_by !== user.id || claim.status !== 'returned') throw notFound();
+        return sendHtml(res, 200, fixPage(db, user, session, claim, pageOpts));
+      }
       if (pathname === '/coach/log' && method === 'GET') return sendHtml(res, 200, logPage(db, user, session, '1'));
       if (pathname === '/coach/log/2' && method === 'GET') return sendHtml(res, 200, logPage(db, user, session, '2'));
       if (pathname === '/coach/log/saved' && method === 'GET') return sendHtml(res, 200, logPage(db, user, session, 'saved'));
@@ -410,6 +435,25 @@ export function createApp(options = {}) {
         }
         return redirect(res, '/coach/result?notice=submitted');
       }
+      if ((pathname === '/api/captures' || pathname === '/coach/captures') && method === 'POST') {
+        formErrorPage = (message) => capturePage(db, user, now, session, { error: message });
+        const result = submitSessionCapture(db, user, { ...req.input, attendance: marksFrom(req.input) }, now);
+        if (json || pathname.startsWith('/api/')) {
+          return sendJson(res, result.already ? 200 : 201, {
+            id: result.claim.id,
+            already: result.already,
+            status: result.claim.status,
+            version: result.claim.version,
+            numerator: result.claim.numerator,
+            denominator: result.claim.denominator,
+          });
+        }
+        return redirect(res, '/coach/logs?notice=submitted');
+      }
+      if (pathname === '/organiser/tracking' && method === 'GET') return sendHtml(res, 200, trackingPage(db, user, now, session, pageOpts));
+      if (pathname === '/organiser/admin' && method === 'GET') return sendHtml(res, 200, adminPage(db, user, now, session, pageOpts));
+      if (pathname === '/api/session-board' && method === 'GET') return sendJson(res, 200, sessionBoard(db, user, now));
+      if (pathname === '/api/session-totals' && method === 'GET') return sendJson(res, 200, sessionTotals(db, user, now));
       if (pathname === '/student/journey' && method === 'GET') return sendHtml(res, 200, journeyPage(db, user, session));
       if (pathname === '/student/family' && method === 'GET') return sendHtml(res, 200, familyPage(db, user, session));
       if (pathname === '/student/link' && method === 'GET') return sendHtml(res, 200, setupPage('student', user, session, db));
@@ -496,15 +540,72 @@ export function createApp(options = {}) {
       const returned = pathname.match(/^\/(?:api\/claims|organiser\/claims)\/([a-z0-9-]+)\/return$/);
       if (returned && method === 'POST') {
         touched = { subjectType: 'claim', subjectId: returned[1] };
+        formErrorPage = (message) => trackingPage(db, user, now, session, { error: message });
         returnClaim(db, user, returned[1], req.input.note, now);
         if (json) return sendJson(res, 200, { ok: true });
-        return redirect(res, '/organiser?notice=returned');
+        return redirect(res, '/organiser/tracking?notice=returned');
       }
-      const resubmit = pathname.match(/^\/api\/claims\/([a-z0-9-]+)\/resubmit$/);
+      const resubmit = pathname.match(/^\/(?:api\/claims|coach\/claims)\/([a-z0-9-]+)\/resubmit$/);
       if (resubmit && method === 'POST') {
         touched = { subjectType: 'claim', subjectId: resubmit[1] };
-        const claim = resubmitClaim(db, user, resubmit[1], req.input, now);
-        return sendJson(res, 200, publicClaim(claim));
+        formErrorPage = (message) => {
+          const claim = get(db, 'SELECT * FROM claims WHERE id = ?', [resubmit[1]]);
+          return claim ? fixPage(db, user, session, claim, { error: message }) : unavailablePage();
+        };
+        const claim = resubmitSession(db, user, resubmit[1], req.input, now);
+        if (json || pathname.startsWith('/api/')) return sendJson(res, 200, publicClaim(claim));
+        return redirect(res, '/coach/logs?notice=submitted');
+      }
+      if (pathname === '/organiser/admin/clubs' && method === 'POST') {
+        formErrorPage = (message) => adminPage(db, user, now, session, { error: message });
+        const created = createClub(db, user, req.input, now);
+        if (json) return sendJson(res, 201, created);
+        return redirect(res, '/organiser/admin?notice=saved');
+      }
+      if (pathname === '/api/admin/clubs' && method === 'POST') {
+        if (user.role !== 'organiser') throw notAvailable();
+        return sendJson(res, 201, createClub(db, user, req.input, now));
+      }
+      if (pathname === '/organiser/admin/period' && method === 'POST') {
+        formErrorPage = (message) => adminPage(db, user, now, session, { error: message });
+        setReportingPeriod(db, user, req.input, now);
+        if (json) return sendJson(res, 200, { ok: true });
+        return redirect(res, '/organiser/admin?notice=saved');
+      }
+      if (pathname === '/api/admin/period' && method === 'POST') {
+        if (user.role !== 'organiser') throw notAvailable();
+        const cohort = setReportingPeriod(db, user, req.input, now);
+        return sendJson(res, 200, { windowStart: cohort.window_start, windowEnd: cohort.window_end });
+      }
+      if (pathname === '/organiser/admin/coaches' && method === 'POST') {
+        formErrorPage = (message) => adminPage(db, user, now, session, { error: message });
+        createCoachAccount(db, user, req.input, now);
+        if (json) return sendJson(res, 201, { ok: true });
+        return redirect(res, '/organiser/admin?notice=saved');
+      }
+      if (pathname === '/api/admin/coaches' && method === 'POST') {
+        if (user.role !== 'organiser') throw notAvailable();
+        return sendJson(res, 201, createCoachAccount(db, user, req.input, now));
+      }
+      if (pathname === '/organiser/admin/learners' && method === 'POST') {
+        formErrorPage = (message) => adminPage(db, user, now, session, { error: message });
+        createLearnerAccount(db, user, req.input, now);
+        if (json) return sendJson(res, 201, { ok: true });
+        return redirect(res, '/organiser/admin?notice=saved');
+      }
+      if (pathname === '/api/admin/learners' && method === 'POST') {
+        if (user.role !== 'organiser') throw notAvailable();
+        return sendJson(res, 201, createLearnerAccount(db, user, req.input, now));
+      }
+      if (pathname === '/organiser/admin/meetings' && method === 'POST') {
+        formErrorPage = (message) => adminPage(db, user, now, session, { error: message });
+        createMeeting(db, user, req.input, now);
+        if (json) return sendJson(res, 201, { ok: true });
+        return redirect(res, '/organiser/admin?notice=saved');
+      }
+      if (pathname === '/api/admin/meetings' && method === 'POST') {
+        if (user.role !== 'organiser') throw notAvailable();
+        return sendJson(res, 201, createMeeting(db, user, req.input, now));
       }
       const verify = pathname.match(/^\/(?:api\/projects|organiser\/projects)\/([a-z0-9-]+)\/verify$/);
       if (verify && method === 'POST') {
@@ -689,6 +790,7 @@ export function createApp(options = {}) {
           if (json) return sendJson(res, 404, { error: 'Not found' });
           return sendHtml(res, 404, unavailablePage());
         }
+        if (error.status === 422 && !json && formErrorPage) return sendHtml(res, 422, formErrorPage(error.message));
         if (json || error.status !== 422) {
           const message = error.status === 403 && error.message === 'Not available' ? 'Not available' : error.message;
           if (json) return sendJson(res, error.status, { error: message });
@@ -724,8 +826,12 @@ function publicClaim(claim) {
     version: claim.version,
     numerator: claim.numerator,
     denominator: claim.denominator,
+    windowStart: claim.window_start,
+    windowEnd: claim.window_end,
     activityDate: claim.activity_date,
     correctionReason: claim.correction_reason,
+    returnNote: claim.return_note,
+    meetingId: claim.meeting_id,
     priorClaimId: claim.prior_claim_id,
     seriesId: claim.series_id,
     submittedBy: claim.submitted_by,

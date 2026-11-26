@@ -27,6 +27,8 @@ async function role(user, password) {
 
 const coach = await role('coach-a', 'demo-coach-a');
 await coach.page.goto(`${origin}/coach/result`);
+await coach.page.fill('#numerator', '6');
+await coach.page.fill('#denominator', '8');
 await coach.page.screenshot({ path: `${out}/acceptance-1-enter.png` });
 await coach.context.setOffline(true);
 await coach.page.click('#submit-result');

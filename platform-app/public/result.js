@@ -58,7 +58,7 @@
       idempotencyKey: existing.idempotencyKey || (crypto.randomUUID ? crypto.randomUUID() : `accept-${Date.now()}`),
       numerator: document.getElementById('numerator').value,
       denominator: document.getElementById('denominator').value,
-      activityDate: '2026-11-26',
+      activityDate: new Date().toISOString().slice(0, 10),
       status: existing.status || 'saved-on-device',
       recordId: existing.recordId || '',
     };

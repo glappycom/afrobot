@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Worker } from 'node:worker_threads';
-import { LEDGER_SCHEMA, SCHEMA } from './db.js';
+import { LEDGER_SCHEMA, POSTGRES_WORK_SQL, SCHEMA } from './db.js';
 import { bindPlaceholders, normalizeRow, postgresSetup } from './pg-sql.js';
 
 function redact(message) {
@@ -92,6 +92,7 @@ export function openHostedDatabase(connectionString) {
   }
   client.exec('ALTER TABLE claims ADD COLUMN IF NOT EXISTS idempotency_key TEXT');
   client.exec('CREATE UNIQUE INDEX IF NOT EXISTS claims_idempotency_key ON claims (idempotency_key)');
+  for (const statement of POSTGRES_WORK_SQL) client.exec(statement);
   client.exec(`CREATE TABLE IF NOT EXISTS login_attempts (
     subject TEXT PRIMARY KEY,
     failures INTEGER NOT NULL,

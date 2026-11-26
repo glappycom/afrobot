@@ -193,6 +193,10 @@ CREATE TABLE IF NOT EXISTS claims (
   version INTEGER NOT NULL,
   prior_claim_id TEXT,
   correction_reason TEXT,
+  meeting_id TEXT,
+  return_note TEXT,
+  project_result TEXT,
+  coach_note TEXT,
   activity_date TEXT NOT NULL,
   submitted_by TEXT,
   submitted_at TEXT,
@@ -369,7 +373,8 @@ CREATE TABLE IF NOT EXISTS learners (
   cohort_id TEXT NOT NULL,
   letter TEXT NOT NULL,
   consent TEXT NOT NULL,
-  consent_until TEXT
+  consent_until TEXT,
+  user_id TEXT
 );
 
 CREATE TABLE IF NOT EXISTS join_codes (
@@ -391,6 +396,25 @@ CREATE TABLE IF NOT EXISTS session_logs (
   coach_id TEXT NOT NULL,
   skills_json TEXT NOT NULL,
   created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS meetings (
+  id TEXT PRIMARY KEY,
+  school_id TEXT NOT NULL,
+  cohort_id TEXT NOT NULL,
+  coach_id TEXT NOT NULL,
+  meets_on TEXT NOT NULL,
+  label TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  created_by TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS attendance (
+  id TEXT PRIMARY KEY,
+  claim_id TEXT NOT NULL,
+  learner_id TEXT NOT NULL,
+  present INTEGER NOT NULL,
+  UNIQUE(claim_id, learner_id)
 );
 
 CREATE TRIGGER IF NOT EXISTS events_no_update
@@ -517,6 +541,7 @@ export function openDatabase(dbPath, ledgerPath) {
     records.exec('INSERT INTO schema_migrations (version) VALUES (1) ON CONFLICT DO NOTHING');
   }
   ensureClaimKey(records);
+  ensureSqliteWork(records);
   records.exec(`CREATE TABLE IF NOT EXISTS login_attempts (
     subject TEXT PRIMARY KEY,
     failures INTEGER NOT NULL,
@@ -536,6 +561,59 @@ function ensureClaimKey(records) {
   }
   records.exec('CREATE UNIQUE INDEX IF NOT EXISTS claims_idempotency_key ON claims(idempotency_key)');
 }
+
+function addColumn(records, table, name, type) {
+  const cols = records.prepare(`PRAGMA table_info(${table})`).all();
+  if (!cols.length || cols.some((col) => col.name === name)) return;
+  records.exec(`ALTER TABLE ${table} ADD COLUMN ${name} ${type}`);
+}
+
+function ensureSqliteWork(records) {
+  for (const name of ['meeting_id', 'return_note', 'project_result', 'coach_note']) addColumn(records, 'claims', name, 'TEXT');
+  addColumn(records, 'learners', 'user_id', 'TEXT');
+  records.exec(`CREATE TABLE IF NOT EXISTS meetings (
+    id TEXT PRIMARY KEY,
+    school_id TEXT NOT NULL,
+    cohort_id TEXT NOT NULL,
+    coach_id TEXT NOT NULL,
+    meets_on TEXT NOT NULL,
+    label TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    created_by TEXT NOT NULL
+  )`);
+  records.exec(`CREATE TABLE IF NOT EXISTS attendance (
+    id TEXT PRIMARY KEY,
+    claim_id TEXT NOT NULL,
+    learner_id TEXT NOT NULL,
+    present INTEGER NOT NULL,
+    UNIQUE(claim_id, learner_id)
+  )`);
+}
+
+export const POSTGRES_WORK_SQL = [
+  'ALTER TABLE claims ADD COLUMN IF NOT EXISTS meeting_id TEXT',
+  'ALTER TABLE claims ADD COLUMN IF NOT EXISTS return_note TEXT',
+  'ALTER TABLE claims ADD COLUMN IF NOT EXISTS project_result TEXT',
+  'ALTER TABLE claims ADD COLUMN IF NOT EXISTS coach_note TEXT',
+  'ALTER TABLE learners ADD COLUMN IF NOT EXISTS user_id TEXT',
+  `CREATE TABLE IF NOT EXISTS meetings (
+    id TEXT PRIMARY KEY,
+    school_id TEXT NOT NULL,
+    cohort_id TEXT NOT NULL,
+    coach_id TEXT NOT NULL,
+    meets_on TEXT NOT NULL,
+    label TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    created_by TEXT NOT NULL
+  )`,
+  `CREATE TABLE IF NOT EXISTS attendance (
+    id TEXT PRIMARY KEY,
+    claim_id TEXT NOT NULL,
+    learner_id TEXT NOT NULL,
+    present INTEGER NOT NULL,
+    UNIQUE(claim_id, learner_id)
+  )`,
+];
 
 export function insert(db, table, row) {
   if (!/^[a-z_]+$/.test(table)) throw new Error('bad table');

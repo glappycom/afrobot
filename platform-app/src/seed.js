@@ -95,7 +95,8 @@ export function seedFoundation(db) {
     ['lrn-tz-a', IDS.schoolTz, IDS.cohortTz, 'A', 'active', '2027-01-14'],
     ['lrn-tz-b', IDS.schoolTz, IDS.cohortTz, 'B', 'expired', '2026-11-01'],
   ]) {
-    insert(db, 'learners', { id: row[0], school_id: row[1], cohort_id: row[2], letter: row[3], consent: row[4], consent_until: row[5] });
+    const linked = row[0] === 'lrn-cm-a' ? 'user-student-a' : row[0] === 'lrn-cm-b' ? 'user-student-b' : null;
+    insert(db, 'learners', { id: row[0], school_id: row[1], cohort_id: row[2], letter: row[3], consent: row[4], consent_until: row[5], user_id: linked });
   }
   insert(db, 'join_codes', { cohort_id: IDS.cohortCm, code: 'NRLC-4821' });
   insert(db, 'join_codes', { cohort_id: IDS.cohortTz, code: 'LMC-2294' });

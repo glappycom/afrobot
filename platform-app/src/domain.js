@@ -236,7 +236,7 @@ export function submitIdempotentResult(db, user, input, now) {
     if (existing.school_id !== schoolId) throw notFound();
     return { claim: existing, already: true };
   }
-  const activityDate = input.activityDate || '2026-11-26';
+  const activityDate = input.activityDate || new Date().toISOString().slice(0, 10);
   try {
     const claim = submitClaim(db, user, {
       ...input,
@@ -397,7 +397,7 @@ export function returnClaim(db, user, claimId, note, now) {
   if (text.length < 8) throw new HttpError(422, 'Say what needs to change. Do not include learner names.');
   const stamp = at(now);
   transaction(db, () => {
-    run(db, `UPDATE claims SET status = 'returned' WHERE id = ? AND status = 'submitted'`, [claim.id]);
+    run(db, `UPDATE claims SET status = 'returned', return_note = ? WHERE id = ? AND status = 'submitted'`, [text, claim.id]);
     addEvent(db, {
       now: stamp,
       action: 'returned',
@@ -411,6 +411,34 @@ export function returnClaim(db, user, claimId, note, now) {
   return claimById(db, claim.id);
 }
 
+export function recordAttendance(db, schoolId, claimId, marks) {
+  if (!Array.isArray(marks) || !marks.length) throw new HttpError(422, 'Mark each student present or absent.');
+  const learners = all(db, 'SELECT * FROM learners WHERE school_id = ?', [schoolId]);
+  const byId = new Map(learners.map((row) => [row.id, row]));
+  const active = learners.filter((row) => row.consent === 'active');
+  if (!active.length) throw new HttpError(422, 'Add a student with consent before logging attendance.');
+  const seen = new Set();
+  for (const mark of marks) {
+    const learner = byId.get(mark.learnerId);
+    if (!learner) throw notFound();
+    if (seen.has(learner.id)) throw new HttpError(422, 'Each student is marked once.');
+    seen.add(learner.id);
+    const present = mark.present === true || mark.present === 1 || mark.present === '1' || mark.present === 'present';
+    if (present && learner.consent !== 'active') {
+      throw new HttpError(422, `Student ${learner.letter} is hidden until consent is in.`);
+    }
+    insert(db, 'attendance', {
+      id: newId('att'),
+      claim_id: claimId,
+      learner_id: learner.id,
+      present: present ? 1 : 0,
+    });
+  }
+  for (const learner of active) {
+    if (!seen.has(learner.id)) throw new HttpError(422, 'Mark each student present or absent.');
+  }
+}
+
 export function resubmitClaim(db, user, claimId, input, now) {
   const claim = claimById(db, claimId);
   requireClaim(db, user, claim, at(now));
@@ -422,21 +450,85 @@ export function resubmitClaim(db, user, claimId, input, now) {
   const denominator = parseCount(input.denominator, 'Denominator', true);
   if (numerator > denominator || denominator === 0) throw new HttpError(422, 'Check the numerator and the denominator.');
   const stamp = at(now);
+  if (claim.status === 'draft') {
+    transaction(db, () => {
+      run(db, `UPDATE claims SET status = 'submitted', numerator = ?, denominator = ?, activity_date = ?, submitted_by = ?, submitted_at = ? WHERE id = ?`, [
+        numerator, denominator, parseDate(input.activityDate), user.id, stamp, claim.id,
+      ]);
+      addEvent(db, {
+        now: stamp,
+        action: 'submitted',
+        user,
+        subjectType: 'claim',
+        subjectId: claim.id,
+        schoolId: claim.school_id,
+        detail: { version: claim.version, numerator, denominator, resubmit: true },
+      });
+    });
+    return claimById(db, claim.id);
+  }
+  const latest = get(db, 'SELECT * FROM claims WHERE series_id = ? ORDER BY version DESC LIMIT 1', [claim.series_id]);
+  if (!latest || latest.id !== claim.id) throw new HttpError(422, 'Fix the latest version in this series.');
+  const open = get(db, `SELECT id FROM claims WHERE series_id = ? AND status IN ('draft','submitted')`, [claim.series_id]);
+  if (open) throw new HttpError(422, 'A newer version is already waiting for review.');
+  const id = input.id || newId('claim');
+  if (!isId(id) || claimById(db, id)) throw new HttpError(422, 'That identifier is not valid.');
+  const projectResult = typeof input.projectResult === 'string' && input.projectResult.trim()
+    ? input.projectResult.trim()
+    : claim.project_result;
+  const coachNote = typeof input.note === 'string' && input.note.trim() ? input.note.trim() : claim.coach_note;
   transaction(db, () => {
-    run(db, `UPDATE claims SET status = 'submitted', numerator = ?, denominator = ?, activity_date = ?, submitted_by = ?, submitted_at = ? WHERE id = ?`, [
-      numerator, denominator, parseDate(input.activityDate), user.id, stamp, claim.id,
-    ]);
+    insert(db, 'claims', {
+      id,
+      school_id: claim.school_id,
+      cohort_id: claim.cohort_id,
+      season_id: claim.season_id,
+      series_id: claim.series_id,
+      definition_label: claim.definition_label,
+      metric_version: claim.metric_version,
+      rubric_version_id: claim.rubric_version_id,
+      window_start: claim.window_start,
+      window_end: claim.window_end,
+      numerator,
+      denominator,
+      coach_hours: claim.coach_hours,
+      evidence_coverage: claim.evidence_coverage,
+      scope_key: claim.scope_key,
+      inclusion_rules: claim.inclusion_rules,
+      status: 'submitted',
+      version: claim.version + 1,
+      prior_claim_id: claim.id,
+      correction_reason: coachNote,
+      meeting_id: claim.meeting_id,
+      return_note: null,
+      project_result: projectResult,
+      coach_note: coachNote,
+      activity_date: input.activityDate ? parseDate(input.activityDate) : claim.activity_date,
+      submitted_by: user.id,
+      submitted_at: stamp,
+      approved_by: null,
+      approved_at: null,
+      created_at: stamp,
+      idempotency_key: null,
+    });
+    if (Array.isArray(input.attendance) && input.attendance.length) recordAttendance(db, claim.school_id, id, input.attendance);
+    else {
+      const prior = all(db, 'SELECT * FROM attendance WHERE claim_id = ?', [claim.id]);
+      for (const mark of prior) {
+        insert(db, 'attendance', { id: newId('att'), claim_id: id, learner_id: mark.learner_id, present: mark.present });
+      }
+    }
     addEvent(db, {
       now: stamp,
       action: 'submitted',
       user,
       subjectType: 'claim',
-      subjectId: claim.id,
+      subjectId: id,
       schoolId: claim.school_id,
-      detail: { version: claim.version, numerator, denominator, resubmit: true },
+      detail: { version: claim.version + 1, numerator, denominator, prior_claim_id: claim.id, resubmit: true },
     });
   });
-  return claimById(db, claim.id);
+  return claimById(db, id);
 }
 
 export function traceClaim(db, user, claimId, now) {
