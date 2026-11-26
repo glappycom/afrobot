@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { readableSchools, userById, userByUsername } from './access.js';
 import { DEMO_USERS } from './constants.js';
-import { get, insert, openDatabase, run } from './db.js';
+import { all, get, insert, openDatabase, run } from './db.js';
 import { openHostedDatabase } from './hosted-db.js';
 import {
   addEvent,
@@ -67,6 +67,23 @@ import { adminPage, capturePage, fixPage, grantsPage, helpPage, trackingPage } f
 import { liteHome } from './experience.js';
 import { HttpError, notAvailable, notFound } from './http-error.js';
 import { hashPassword, passwordIsHashed, verifyPassword } from './passwords.js';
+import {
+  acceptInvite,
+  acceptReset,
+  authEvent,
+  checkSecondFactor,
+  confirmGuardian,
+  confirmTotp,
+  createInvite,
+  createReset,
+  endAllSessions,
+  joinWithCode,
+  mfaMustEnroll,
+  previewInvite,
+  previewReset,
+  startTotp,
+} from './auth.js';
+import { esc } from './format.js';
 import { pageAllowed } from './routes.js';
 import { IDS } from './constants.js';
 import {
@@ -100,7 +117,7 @@ import {
 import { seedAll } from './seed.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const COOKIE = 'afrobot_demo';
+const COOKIE = 'afrobot_session';
 
 function safeEqual(left, right) {
   const a = Buffer.from(String(left));
@@ -242,7 +259,20 @@ function recordFailure(db, username, ip, now) {
     const lockedUntil = failures >= LOCK_AFTER ? new Date(Date.parse(now) + LOCK_MS).toISOString() : null;
     if (!row) insert(db, 'login_attempts', { subject, failures, locked_until: lockedUntil, updated_at: now });
     else run(db, 'UPDATE login_attempts SET failures = ?, locked_until = ?, updated_at = ? WHERE subject = ?', [failures, lockedUntil, now, subject]);
+    if (lockedUntil) return true;
   }
+  return false;
+}
+
+function foundUser(db, username) {
+  return username ? userByUsername(db, username) : null;
+}
+
+function challengeUser(db, id, stampValue) {
+  if (!id) return null;
+  const row = get(db, 'SELECT * FROM mfa_challenges WHERE id = ? AND used_at IS NULL AND expires_at > ?', [id, stampValue]);
+  if (!row) return null;
+  return get(db, 'SELECT * FROM users WHERE id = ?', [row.user_id]);
 }
 
 function clearFailures(db, username) {
@@ -335,7 +365,11 @@ export function createApp(options = {}) {
     let touched = null;
     let formErrorPage = null;
     try {
-      if (method === 'POST' && pathname !== '/login' && pathname !== '/api/login') {
+      const openPost = pathname === '/login' || pathname === '/api/login' || pathname === '/api/join'
+        || /^\/(?:invite|reset)\/[A-Za-z0-9]+$/.test(pathname)
+        || pathname === '/api/invites/accept' || pathname === '/api/resets/accept'
+        || pathname === '/api/mfa/setup' || pathname === '/api/mfa/confirm';
+      if (method === 'POST' && !openPost) {
         if (!session) {
           if (json) return sendJson(res, 401, { error: 'Sign in required' });
           return sendHtml(res, 401, loginPage({ error: 'Sign in required.' }));
@@ -359,22 +393,40 @@ export function createApp(options = {}) {
         const ip = clientIp(req);
         const locked = loginLocked(db, username, ip, stamp(now));
         if (locked) {
+          authEvent(db, now, foundUser(db, username), 'lockout', { subject: username || 'unknown', username });
           if (json) return sendJson(res, 429, { error: 'Too many sign-in attempts. Try again later.' });
           return sendHtml(res, 429, loginPage({ demoMode: demoSeed, error: 'Too many sign-in attempts. Try again later.' }));
         }
         const found = userByUsername(db, username);
         const passwordOk = found ? verifyPassword(req.input.password || '', found.password) : verifyPassword(req.input.password || '', DUMMY_HASH);
         if (found && passwordOk && Number(found.active) === 0) {
+          authEvent(db, now, found, 'failed-sign-in', { subject: found.id, username, reason: 'inactive' });
           if (json) return sendJson(res, 403, { error: 'This account is not active.' });
           return sendHtml(res, 403, loginPage({ demoMode: demoSeed, error: 'This account is not active.' }));
         }
         if (!found || !passwordOk) {
-          recordFailure(db, username, ip, stamp(now));
+          const justLocked = recordFailure(db, username, ip, stamp(now));
+          authEvent(db, now, found || { id: 'auth', role: 'organiser' }, 'failed-sign-in', { subject: username || 'unknown', username });
+          if (justLocked) authEvent(db, now, found || { id: 'auth', role: 'organiser' }, 'lockout', { subject: username || 'unknown', username });
           if (json) return sendJson(res, 401, { error: 'Sign-in failed' });
           return sendHtml(res, 401, loginPage({ demoMode: demoSeed, error: 'Sign-in failed.' }));
         }
+        if (mfaMustEnroll(found, demoSeed)) {
+          const challenge = `mfa-${crypto.createHash('sha256').update(`${found.id}${stamp(now)}`).digest('hex').slice(0, 16)}`;
+          insert(db, 'mfa_challenges', { id: challenge, user_id: found.id, purpose: 'setup', expires_at: new Date(Date.parse(stamp(now)) + 15 * 60 * 1000).toISOString(), used_at: null });
+          if (json) return sendJson(res, 200, { mfaSetup: true, challenge });
+          return sendHtml(res, 200, mfaPage(challenge));
+        }
+        if (Number(found.mfa_enabled) === 1) {
+          const codeOk = req.input.code ? await checkSecondFactor(db, found, req.input.code) : false;
+          if (!codeOk) {
+            if (json) return sendJson(res, 401, { error: 'Authenticator code required', mfa: true });
+            return sendHtml(res, 401, loginPage({ demoMode: demoSeed, error: 'Authenticator code required.' }));
+          }
+        }
         clearFailures(db, username);
         const opened = startSession(found);
+        authEvent(db, now, found, 'signed-in', { subject: found.id, username: found.username });
         res.setHeader('set-cookie', sessionCookie(opened.id, req, 28800));
         if (json) return sendJson(res, 200, { role: found.role, displayName: found.display_name, csrf: opened.csrf });
         return redirect(res, home(found.role));
@@ -383,6 +435,94 @@ export function createApp(options = {}) {
         if (session) run(db, 'DELETE FROM sessions WHERE id = ?', [session.id]);
         res.setHeader('set-cookie', sessionCookie('', req, 0));
         return redirect(res, '/login');
+      }
+      if (pathname === '/api/sessions/end-all' && method === 'POST') {
+        endAllSessions(db, user, now);
+        res.setHeader('set-cookie', sessionCookie('', req, 0));
+        if (json) return sendJson(res, 200, { ok: true });
+        return redirect(res, '/login');
+      }
+      if ((pathname === '/api/mfa/setup' || pathname === '/api/mfa/confirm') && method === 'POST' && session) {
+        const token = req.headers['x-csrf-token'] || req.input._csrf || req.input.csrf || '';
+        if (!safeEqual(token, session.csrf)) throw new HttpError(403, 'The form expired. Sign in again.');
+      }
+      if ((pathname === '/api/mfa/setup') && method === 'POST') {
+        const owner = challengeUser(db, req.input.challenge, stamp(now)) || user;
+        if (!owner) throw new HttpError(401, 'Sign in required');
+        const started = await startTotp(db, owner.id, now);
+        if (json) return sendJson(res, 200, started);
+        return sendHtml(res, 200, `<!doctype html><html><body><main><h1>Authenticator</h1><p>Secret ${esc(started.secret)}</p><p>${esc(started.uri)}</p><p>Recovery codes, shown once: ${esc(started.recoveryCodes.join(' '))}</p><p>Preview v0.6</p></main></body></html>`);
+      }
+      if (pathname === '/api/mfa/confirm' && method === 'POST') {
+        const owner = challengeUser(db, req.input.challenge, stamp(now)) || user;
+        if (!owner) throw new HttpError(401, 'Sign in required');
+        const confirmed = await confirmTotp(db, owner.id, req.input.code, now, owner);
+        if (req.input.challenge) run(db, 'UPDATE mfa_challenges SET used_at = ? WHERE id = ?', [stamp(now), req.input.challenge]);
+        const opened = startSession(confirmed);
+        res.setHeader('set-cookie', sessionCookie(opened.id, req, 28800));
+        if (json) return sendJson(res, 200, { role: confirmed.role, csrf: opened.csrf, mfa: true });
+        return redirect(res, home(confirmed.role));
+      }
+      const inviteView = pathname.match(/^\/invite\/([A-Za-z0-9]+)$/);
+      if (inviteView && method === 'GET') {
+        const invite = previewInvite(db, inviteView[1], stamp(now));
+        if (!invite) return sendHtml(res, 422, '<!doctype html><html><body><main><h1>Invite</h1><p>This invite link is no longer valid.</p></main></body></html>');
+        return sendHtml(res, 200, `<!doctype html><html><body><main><h1>Set your password</h1><p>${esc(invite.display_name)} · ${esc(invite.role)}</p><form method="post" action="/invite/${esc(inviteView[1])}"><label>Password <input name="password" type="password" required></label><button type="submit">Save password</button></form><p>Preview v0.6</p></main></body></html>`);
+      }
+      if (inviteView && method === 'POST') {
+        const created = acceptInvite(db, inviteView[1], req.input.password, now);
+        if (json) return sendJson(res, 201, { id: created.id, username: created.username, role: created.role });
+        return redirect(res, '/login');
+      }
+      if (pathname === '/api/invites/accept' && method === 'POST') {
+        const created = acceptInvite(db, req.input.token, req.input.password, now);
+        return sendJson(res, 201, { id: created.id, username: created.username, role: created.role });
+      }
+      if ((pathname === '/api/invites' || pathname === '/organiser/invites') && method === 'POST') {
+        const invite = createInvite(db, user, req.input, now);
+        if (json || pathname.startsWith('/api/')) return sendJson(res, 201, { id: invite.id, path: invite.path, expiresAt: invite.expiresAt, username: invite.username });
+        return sendHtml(res, 201, `<!doctype html><html><body><main><h1>Invite link</h1><p>Give this link to ${esc(invite.username)}. It works once and expires in 7 days.</p><p><a href="${esc(invite.path)}">${esc(invite.path)}</a></p><p>Preview v0.6</p></main></body></html>`);
+      }
+      if (pathname === '/organiser/invites' && method === 'GET') {
+        return sendHtml(res, 200, `<!doctype html><html><body><main><h1>Invite a person</h1><form method="post" action="/organiser/invites"><input type="hidden" name="csrf" value="${esc(session.csrf)}"><label>Name <input name="displayName" required></label><label>Username <input name="username" required></label><label>Role <select name="role"><option>coach</option><option>guardian</option><option>auditor</option><option>organiser</option></select></label><label>Club id <input name="schoolId"></label><button type="submit">Create invite link</button></form><p><a href="/help">How it works</a></p><p>Preview v0.6</p></main></body></html>`);
+      }
+      const resetView = pathname.match(/^\/reset\/([A-Za-z0-9]+)$/);
+      if (resetView && method === 'GET') {
+        if (!previewReset(db, resetView[1], stamp(now))) return sendHtml(res, 422, '<!doctype html><html><body><main><h1>Reset</h1><p>This reset link is no longer valid.</p></main></body></html>');
+        return sendHtml(res, 200, `<!doctype html><html><body><main><h1>Choose a new password</h1><form method="post" action="/reset/${esc(resetView[1])}"><label>Password <input name="password" type="password" required></label><button type="submit">Save password</button></form><p>Preview v0.6</p></main></body></html>`);
+      }
+      if (resetView && method === 'POST') {
+        acceptReset(db, resetView[1], req.input.password, now);
+        if (json) return sendJson(res, 200, { ok: true });
+        return redirect(res, '/login');
+      }
+      if (pathname === '/api/resets' && method === 'POST') {
+        const reset = createReset(db, user, req.input.userId, now);
+        return sendJson(res, 201, { path: reset.path, username: reset.username });
+      }
+      if (pathname === '/api/resets/accept' && method === 'POST') {
+        acceptReset(db, req.input.token, req.input.password, now);
+        return sendJson(res, 200, { ok: true });
+      }
+      if (pathname === '/api/join' && method === 'POST') {
+        const joined = joinWithCode(db, req.input, now);
+        return sendJson(res, 201, { id: joined.user.id, username: joined.user.username, status: joined.status });
+      }
+      if (pathname === '/join' && method === 'GET') {
+        return sendHtml(res, 200, '<!doctype html><html><body><main><h1>Join with a team code</h1><form method="post" action="/api/join"><label>Code <input name="code" required></label><label>Your name <input name="displayName" required></label><label>Username <input name="username" required></label><label>Password <input name="password" type="password" required></label><label>Child letter <input name="letter" maxlength="1" required></label><button type="submit">Ask the organiser to link me</button></form><p>Preview v0.6</p></main></body></html>');
+      }
+      if (pathname === '/organiser/guardians' && method === 'GET') {
+        const pending = all(db, `SELECT guardian_links.id, users.username, learners.letter, schools.display_name FROM guardian_links
+          JOIN users ON users.id = guardian_links.user_id JOIN learners ON learners.id = guardian_links.learner_id
+          JOIN schools ON schools.id = learners.school_id WHERE guardian_links.status = 'pending'`);
+        const rows = pending.map((row) => `<li>${esc(row.username)} · Student ${esc(row.letter)} · ${esc(row.display_name)} <form method="post" action="/organiser/guardians/${esc(row.id)}/confirm"><input type="hidden" name="csrf" value="${esc(session.csrf)}"><button type="submit">Confirm</button></form></li>`).join('');
+        return sendHtml(res, 200, `<!doctype html><html><body><main><h1>Guardian links</h1><ul>${rows || '<li>None waiting</li>'}</ul><p>Preview v0.6</p></main></body></html>`);
+      }
+      const confirmLink = pathname.match(/^\/organiser\/guardians\/([a-z0-9-]+)\/confirm$/);
+      if (confirmLink && method === 'POST') {
+        confirmGuardian(db, user, confirmLink[1], now);
+        if (json) return sendJson(res, 200, { ok: true });
+        return redirect(res, '/organiser/guardians');
       }
       if (pathname === '/' && method === 'GET') return redirect(res, user ? home(user.role) : '/login');
       if (!user) {
@@ -913,7 +1053,7 @@ function publicClaim(claim) {
 function home(role) {
   if (role === 'organiser') return '/organiser';
   if (role === 'auditor') return '/auditor';
-  if (role === 'student') return '/student';
+  if (role === 'student' || role === 'guardian') return '/student';
   return '/coach';
 }
 

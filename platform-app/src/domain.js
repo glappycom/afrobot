@@ -11,6 +11,7 @@ import {
   canReadSchool,
   claimById,
   evidenceById,
+  isFamilyRole,
   isId,
   projectById,
   requireClaim,
@@ -107,7 +108,7 @@ function snapshotPayload(claim, evidenceRows) {
 }
 
 export function listClaims(db, user, now) {
-  if (!user || user.role === 'student') return [];
+  if (!user || isFamilyRole(user.role)) return [];
   return all(db, 'SELECT * FROM claims ORDER BY school_id, series_id, version')
     .filter((claim) => canReadClaim(db, user, claim, at(now)));
 }
@@ -118,7 +119,7 @@ export function listProjects(db, user, now) {
 }
 
 export function listEvidence(db, user, now) {
-  if (!user || user.role === 'student') return [];
+  if (!user || isFamilyRole(user.role)) return [];
   return all(db, 'SELECT * FROM evidence_items ORDER BY id')
     .filter((item) => canReadEvidence(db, user, item, at(now)));
 }
@@ -943,6 +944,7 @@ export function visibleEvents(db, user, now) {
     if (event.subject_type === 'project' || event.subject_type === 'project_stage' || event.subject_type === 'measurement') {
       return false;
     }
+    if (event.subject_type === 'auth') return user.role === 'organiser' || user.role === 'auditor';
     if (event.subject_type === 'season' || event.subject_type === 'comparison') return user.role === 'organiser';
     if (event.school_id) return canReadSchool(db, user, event.school_id, at(now));
     return false;
@@ -952,7 +954,7 @@ export function visibleEvents(db, user, now) {
 export function updateStudentDraft(db, user, projectId, input, now) {
   const project = projectById(db, projectId);
   requireProject(db, user, project, at(now));
-  if (user.role !== 'student' || project.owner_user_id !== user.id) throw notAvailable();
+  if (!isFamilyRole(user.role) || project.owner_user_id !== user.id) throw notAvailable();
   if (project.status !== 'draft') throw new HttpError(422, 'This draft can no longer be edited.');
   const text = typeof input.localProblem === 'string' ? input.localProblem.trim() : '';
   if (text.length < 8) throw new HttpError(422, 'Write a short note. Do not add a real name or contact detail.');

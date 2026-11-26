@@ -5,7 +5,7 @@ import { esc } from './format.js';
 import { listGrants, meetingsFor, sessionBoard, sessionTotals } from './operations.js';
 
 function page(title, home, body) {
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title></head><body><main id="main"><p><a href="${home}">Home</a></p>${body}<p>Preview v0.5</p></main></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title></head><body><main id="main"><p><a href="${home}">Home</a></p>${body}<p>Preview v0.6</p></main></body></html>`;
 }
 
 function hidden(session) {
@@ -220,5 +220,7 @@ export function helpPage(user) {
         <li>You cannot open another club's records.</li>
       </ol>`,
   };
-  return page('How it works', user.role === 'organiser' ? '/organiser' : user.role === 'auditor' ? '/auditor' : user.role === 'student' ? '/student' : '/coach', blocks[user.role] || blocks.coach);
+  const home = user.role === 'organiser' ? '/organiser' : user.role === 'auditor' ? '/auditor' : user.role === 'student' || user.role === 'guardian' ? '/student' : '/coach';
+  const body = user.role === 'guardian' ? blocks.student : (blocks[user.role] || blocks.coach);
+  return page('How it works', home, body);
 }

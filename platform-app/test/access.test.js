@@ -83,7 +83,7 @@ test('server-side access boundaries hide other schools, drafts, and metadata', a
     assert.equal(coachPageB.text.includes(IDS.claimV2), false);
 
     const studentPageA = await page(app.url, studentA, '/student');
-    assert.match(studentPageA.text, /Learner CM-1/);
+    assert.match(studentPageA.text, /Guardian A/);
     assert.equal(studentPageA.text.includes(OTHER_DRAFT_TOKEN), false);
     assert.equal(studentPageA.text.includes(IDS.projectStudentB), false);
 

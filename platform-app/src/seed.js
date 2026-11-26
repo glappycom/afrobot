@@ -80,14 +80,16 @@ export function seedFoundation(db) {
       role: row.role,
       password: hashPassword(row.password),
       mocked: 1,
+      mfa_enabled: 0,
+      mfa_exempt: row.role === 'organiser' || row.role === 'auditor' ? 1 : 0,
     });
   }
   insert(db, 'memberships', { id: 'mem-coach-a', user_id: 'user-coach-a', school_id: IDS.schoolCm, cohort_id: IDS.cohortCm, season_id: IDS.seasonAfrica, role: 'coach' });
   insert(db, 'memberships', { id: 'mem-coach-b', user_id: 'user-coach-b', school_id: IDS.schoolTz, cohort_id: IDS.cohortTz, season_id: IDS.seasonAfrica, role: 'coach' });
   insert(db, 'memberships', { id: 'mem-org-cm', user_id: 'user-organiser', school_id: IDS.schoolCm, cohort_id: null, season_id: IDS.seasonAfrica, role: 'organiser' });
   insert(db, 'memberships', { id: 'mem-org-tz', user_id: 'user-organiser', school_id: IDS.schoolTz, cohort_id: null, season_id: IDS.seasonAfrica, role: 'organiser' });
-  insert(db, 'memberships', { id: 'mem-stu-a', user_id: 'user-student-a', school_id: IDS.schoolCm, cohort_id: IDS.cohortCm, season_id: IDS.seasonAfrica, role: 'student' });
-  insert(db, 'memberships', { id: 'mem-stu-b', user_id: 'user-student-b', school_id: IDS.schoolCm, cohort_id: IDS.cohortCm, season_id: IDS.seasonAfrica, role: 'student' });
+  insert(db, 'memberships', { id: 'mem-stu-a', user_id: 'user-student-a', school_id: IDS.schoolCm, cohort_id: IDS.cohortCm, season_id: IDS.seasonAfrica, role: 'guardian' });
+  insert(db, 'memberships', { id: 'mem-stu-b', user_id: 'user-student-b', school_id: IDS.schoolCm, cohort_id: IDS.cohortCm, season_id: IDS.seasonAfrica, role: 'guardian' });
   for (const row of [
     ['lrn-cm-a', IDS.schoolCm, IDS.cohortCm, 'A', 'active', '2027-06-01'],
     ['lrn-cm-b', IDS.schoolCm, IDS.cohortCm, 'B', 'active', '2027-06-01'],
@@ -98,6 +100,8 @@ export function seedFoundation(db) {
     const linked = row[0] === 'lrn-cm-a' ? 'user-student-a' : row[0] === 'lrn-cm-b' ? 'user-student-b' : null;
     insert(db, 'learners', { id: row[0], school_id: row[1], cohort_id: row[2], letter: row[3], consent: row[4], consent_until: row[5], user_id: linked });
   }
+  insert(db, 'guardian_links', { id: 'glink-a', user_id: 'user-student-a', learner_id: 'lrn-cm-a', status: 'confirmed', created_at: '2026-11-01T00:00:00.000Z', confirmed_by: 'user-organiser', confirmed_at: '2026-11-01T00:00:00.000Z' });
+  insert(db, 'guardian_links', { id: 'glink-b', user_id: 'user-student-b', learner_id: 'lrn-cm-b', status: 'confirmed', created_at: '2026-11-01T00:00:00.000Z', confirmed_by: 'user-organiser', confirmed_at: '2026-11-01T00:00:00.000Z' });
   insert(db, 'join_codes', { cohort_id: IDS.cohortCm, code: 'NRLC-4821' });
   insert(db, 'join_codes', { cohort_id: IDS.cohortTz, code: 'LMC-2294' });
   insert(db, 'season_progress', { cohort_id: IDS.cohortCm, planned: 4, done: 4, weeks_left: 3 });

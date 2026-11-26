@@ -3,16 +3,16 @@ const PAGE = [
   { prefix: '/lite', roles: ['coach'] },
   { prefix: '/organiser', roles: ['organiser'] },
   { prefix: '/auditor', roles: ['auditor'] },
-  { prefix: '/student', roles: ['student'] },
+  { prefix: '/student', roles: ['student', 'guardian'] },
   { prefix: '/records', roles: ['coach', 'organiser', 'auditor'] },
   { prefix: '/audit', roles: ['organiser', 'auditor'] },
   { prefix: '/access', roles: ['organiser', 'auditor'] },
   { prefix: '/integrity', roles: ['organiser', 'auditor'] },
-  { prefix: '/settings', roles: ['coach', 'organiser', 'auditor', 'student'] },
-  { prefix: '/demo', roles: ['coach', 'organiser', 'auditor', 'student'] },
-  { prefix: '/print', roles: ['coach', 'organiser', 'auditor', 'student'] },
-  { prefix: '/search', roles: ['coach', 'organiser', 'auditor', 'student'] },
-  { prefix: '/verify', roles: ['coach', 'organiser', 'auditor', 'student'] },
+  { prefix: '/settings', roles: ['coach', 'organiser', 'auditor', 'student', 'guardian'] },
+  { prefix: '/demo', roles: ['coach', 'organiser', 'auditor', 'student', 'guardian'] },
+  { prefix: '/print', roles: ['coach', 'organiser', 'auditor', 'student', 'guardian'] },
+  { prefix: '/search', roles: ['coach', 'organiser', 'auditor', 'student', 'guardian'] },
+  { prefix: '/verify', roles: ['coach', 'organiser', 'auditor', 'student', 'guardian'] },
 ];
 
 export function isExportPost(pathname) {

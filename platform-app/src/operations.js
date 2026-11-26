@@ -5,6 +5,7 @@ import { addEvent, claimById, recordAttendance, resubmitClaim } from './domain.j
 import { rateLabel } from './format.js';
 import { hashPassword } from './passwords.js';
 import {
+  isFamilyRole,
   isId,
   readableSchools,
   requireCoach,
@@ -80,7 +81,7 @@ function cohortForSchool(db, schoolId) {
 
 export function meetingsFor(db, user, now, options = {}) {
   const schools = readableSchools(db, user, at(now));
-  if (!schools.length || user.role === 'student') return [];
+  if (!schools.length || isFamilyRole(user.role)) return [];
   const rows = all(db, `SELECT * FROM meetings WHERE school_id IN (${schools.map(() => '?').join(',')}) ORDER BY meets_on, label`, schools);
   const visible = options.includeCancelled ? rows : rows.filter((row) => !row.status || row.status === 'scheduled');
   if (user.role === 'coach') return visible.filter((row) => row.coach_id === user.id);
@@ -416,7 +417,7 @@ function statusLabel(status) {
 
 export function coachHistory(db, user, now) {
   const schools = readableSchools(db, user, at(now));
-  if (!schools.length || user.role === 'student') return [];
+  if (!schools.length || isFamilyRole(user.role)) return [];
   const claims = all(db, `SELECT * FROM claims WHERE school_id IN (${schools.map(() => '?').join(',')}) ORDER BY activity_date, version`, schools);
   return claims.map((claim) => {
     const meeting = claim.meeting_id ? get(db, 'SELECT * FROM meetings WHERE id = ?', [claim.meeting_id]) : null;
@@ -437,7 +438,7 @@ export function coachHistory(db, user, now) {
 }
 
 export function sessionBoard(db, user, now) {
-  if (!user || user.role === 'student') throw notAvailable();
+  if (!user || isFamilyRole(user.role)) throw notAvailable();
   const meetings = meetingsFor(db, user, now, { includeCancelled: true });
   return meetings.map((meeting) => {
     const school = get(db, 'SELECT display_name FROM schools WHERE id = ?', [meeting.school_id]);
@@ -461,7 +462,7 @@ export function sessionBoard(db, user, now) {
 }
 
 export function sessionTotals(db, user, now) {
-  if (!user || user.role === 'student') throw notAvailable();
+  if (!user || isFamilyRole(user.role)) throw notAvailable();
   const schools = readableSchools(db, user, at(now));
   return schools.map((schoolId) => {
     const school = get(db, 'SELECT display_name FROM schools WHERE id = ?', [schoolId]);
@@ -489,8 +490,10 @@ export function sessionTotals(db, user, now) {
 }
 
 export function learnerProgress(db, user) {
-  if (!user || user.role !== 'student') return null;
-  const learner = get(db, 'SELECT * FROM learners WHERE user_id = ?', [user.id]);
+  if (!user || !isFamilyRole(user.role)) return null;
+  const linked = get(db, `SELECT learners.* FROM guardian_links JOIN learners ON learners.id = guardian_links.learner_id
+    WHERE guardian_links.user_id = ? AND guardian_links.status = 'confirmed' ORDER BY learners.letter LIMIT 1`, [user.id]);
+  const learner = linked || get(db, 'SELECT * FROM learners WHERE user_id = ?', [user.id]);
   if (!learner) return null;
   const rows = all(db, `SELECT attendance.present AS present, claims.series_id AS series_id, claims.version AS version, claims.status AS status
     FROM attendance JOIN claims ON claims.id = attendance.claim_id
@@ -502,11 +505,11 @@ export function learnerProgress(db, user) {
   }
   const counted = [...latest.values()].filter((row) => row.status === 'approved' || row.status === 'submitted');
   const came = counted.filter((row) => Number(row.present) === 1).length;
-  return { came, total: counted.length, letter: learner.letter };
+  return { came, total: counted.length, letter: learner.letter, cohortId: learner.cohort_id };
 }
 
 export function approvedSessions(db, user, now) {
-  if (!user || user.role === 'student') return [];
+  if (!user || isFamilyRole(user.role)) return [];
   const schools = readableSchools(db, user, at(now));
   if (!schools.length) return [];
   const claims = all(db, `SELECT * FROM claims WHERE meeting_id IS NOT NULL AND status = 'approved' AND school_id IN (${schools.map(() => '?').join(',')}) ORDER BY activity_date, version`, schools);
@@ -727,5 +730,13 @@ export function ensureDemoMeetings(db) {
   }
   for (const [learnerId, userId] of [['lrn-cm-a', 'user-student-a'], ['lrn-cm-b', 'user-student-b']]) {
     run(db, 'UPDATE learners SET user_id = ? WHERE id = ? AND user_id IS NULL', [userId, learnerId]);
+    run(db, `UPDATE users SET role = 'guardian' WHERE id = ? AND role = 'student'`, [userId]);
+    if (!get(db, 'SELECT id FROM guardian_links WHERE user_id = ? AND learner_id = ?', [userId, learnerId])) {
+      insert(db, 'guardian_links', {
+        id: `glink-${learnerId}`, user_id: userId, learner_id: learnerId, status: 'confirmed',
+        created_at: '2026-11-01T00:00:00.000Z', confirmed_by: 'user-organiser', confirmed_at: '2026-11-01T00:00:00.000Z',
+      });
+    }
   }
+  run(db, `UPDATE users SET mfa_exempt = 1 WHERE username IN ('organiser', 'auditor') AND mfa_exempt = 0`);
 }

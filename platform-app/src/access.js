@@ -9,6 +9,10 @@ export function userById(db, id) {
   return get(db, 'SELECT * FROM users WHERE id = ?', [id]);
 }
 
+export function isFamilyRole(role) {
+  return role === 'guardian' || role === 'student';
+}
+
 export function userByUsername(db, username) {
   return get(db, 'SELECT * FROM users WHERE username = ?', [username]);
 }
@@ -56,8 +60,8 @@ export function requireCoach(db, user, schoolId, now) {
 
 export function canReadProject(db, user, project, now) {
   if (!user || !project) return false;
-  if (project.visibility === 'student_private') return user.role === 'student' && project.owner_user_id === user.id;
-  if (user.role === 'student') return false;
+  if (project.visibility === 'student_private') return isFamilyRole(user.role) && project.owner_user_id === user.id;
+  if (isFamilyRole(user.role)) return false;
   if (project.visibility === 'redacted_shared') {
     if (user.role === 'auditor') return false;
     if (user.role === 'organiser') return true;
@@ -73,7 +77,7 @@ export function requireProject(db, user, project, now) {
 }
 
 export function canReadClaim(db, user, claim, now) {
-  if (!user || !claim || user.role === 'student') return false;
+  if (!user || !claim || isFamilyRole(user.role)) return false;
   return canReadSchool(db, user, claim.school_id, now);
 }
 
@@ -84,7 +88,7 @@ export function requireClaim(db, user, claim, now) {
 
 export function canReadEvidence(db, user, item, now) {
   if (!user || !item || item.permission_state !== 'active') return false;
-  if (user.role === 'student') return false;
+  if (isFamilyRole(user.role)) return false;
   if (user.role === 'auditor') {
     return item.redaction_state === 'redacted' && canReadSchool(db, user, item.school_id, now);
   }

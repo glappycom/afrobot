@@ -194,18 +194,18 @@ ${shell}
 ${command ? `<div class="command">${command}</div>` : ''}
 <p id="loading" class="state" hidden role="status">Working…</p>
 <main id="main">
-<p class="banner">Synthetic demo. Mocked sign-in. No AI recommendations.</p>
+<p class="banner">Synthetic demo. Sign-in is stored on this server. No AI recommendations.</p>
 ${notice ? `<p class="notice" role="status">${esc(notice)}</p>` : ''}
 ${error ? `<p class="error" role="alert">${esc(error)}</p>` : ''}
 ${body}
 </main>
 </div></div>` : `<header><a class="mark" href="${home}"><img src="/logo-afrobot-navy.svg" alt="afrobot" width="148" height="33"></a></header><main id="main">
-<p class="banner">Synthetic demo. Mocked sign-in. No AI recommendations.</p>
+<p class="banner">Synthetic demo. Sign-in is stored on this server. No AI recommendations.</p>
 ${notice ? `<p class="notice" role="status">${esc(notice)}</p>` : ''}
 ${error ? `<p class="error" role="alert">${esc(error)}</p>` : ''}
 ${body}
 </main>`}
-<footer>Preview v0.5. Demo records controls. Not a certification. A digest shows a later change. It does not prove the first number was true.</footer>
+<footer>Preview v0.6. Demo records controls. Not a certification. A digest shows a later change. It does not prove the first number was true.</footer>
 <script src="/app.js"></script>
 </body>
 </html>`;
@@ -231,7 +231,7 @@ function hidden(session) {
 function homeFor(role) {
   if (role === 'organiser') return '/organiser';
   if (role === 'auditor') return '/auditor';
-  if (role === 'student') return '/student';
+  if (role === 'student' || role === 'guardian') return '/student';
   return '/coach';
 }
 
@@ -273,10 +273,13 @@ export function loginPage({ error, demoMode = false } = {}) {
       <input id="username" name="username" autocomplete="username" required>
       <label for="password">Password</label>
       <input id="password" name="password" type="password" autocomplete="current-password" required>
+      <label for="code">Authenticator code</label>
+      <input id="code" name="code" inputmode="numeric" autocomplete="one-time-code">
       <p><button type="submit">Sign in</button></p>
     </form>
     ${hint}
-    <p>Preview v0.5</p>`,
+    ${demoMode ? '<p>On this preview, the seeded organiser and auditor can sign in without an authenticator. Anyone else in those roles needs one.</p>' : ''}
+    <p>Preview v0.6</p>`,
     error,
   });
 }
@@ -770,7 +773,7 @@ function coachToday(db, membership) {
 export function demoPage(db, user, now, session, extras = {}) {
   if (user.role === 'organiser') return demoOrganiserPage(db, user, now, session, extras);
   if (user.role === 'auditor') return demoAuditorPage(db, user, now, session, extras);
-  if (user.role === 'student') return demoStudentPage(db, user, now, session, extras);
+  if (user.role === 'student' || user.role === 'guardian') return demoStudentPage(db, user, now, session, extras);
   return demoCoachPage(db, user, now, session, extras);
 }
 

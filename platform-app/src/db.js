@@ -412,6 +412,54 @@ CREATE TABLE IF NOT EXISTS meetings (
   created_by TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS invites (
+  id TEXT PRIMARY KEY,
+  token_hash TEXT NOT NULL UNIQUE,
+  username TEXT NOT NULL,
+  display_name TEXT NOT NULL,
+  role TEXT NOT NULL,
+  school_id TEXT,
+  expires_at TEXT NOT NULL,
+  used_at TEXT,
+  created_by TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS password_resets (
+  id TEXT PRIMARY KEY,
+  token_hash TEXT NOT NULL UNIQUE,
+  user_id TEXT NOT NULL,
+  expires_at TEXT NOT NULL,
+  used_at TEXT,
+  created_by TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS guardian_links (
+  id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  learner_id TEXT NOT NULL,
+  status TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  confirmed_by TEXT,
+  confirmed_at TEXT
+);
+
+CREATE TABLE IF NOT EXISTS recovery_codes (
+  id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  code_hash TEXT NOT NULL,
+  used_at TEXT
+);
+
+CREATE TABLE IF NOT EXISTS mfa_challenges (
+  id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  purpose TEXT NOT NULL,
+  expires_at TEXT NOT NULL,
+  used_at TEXT
+);
+
 CREATE TABLE IF NOT EXISTS attendance (
   id TEXT PRIMARY KEY,
   claim_id TEXT NOT NULL,
@@ -576,6 +624,9 @@ function ensureSqliteWork(records) {
   addColumn(records, 'learners', 'user_id', 'TEXT');
   addColumn(records, 'learners', 'active', 'INTEGER NOT NULL DEFAULT 1');
   addColumn(records, 'users', 'active', 'INTEGER NOT NULL DEFAULT 1');
+  addColumn(records, 'users', 'totp_secret', 'TEXT');
+  addColumn(records, 'users', 'mfa_enabled', 'INTEGER NOT NULL DEFAULT 0');
+  addColumn(records, 'users', 'mfa_exempt', 'INTEGER NOT NULL DEFAULT 0');
   addColumn(records, 'meetings', 'status', "TEXT NOT NULL DEFAULT 'scheduled'");
   records.exec(`CREATE TABLE IF NOT EXISTS meetings (
     id TEXT PRIMARY KEY,
@@ -594,6 +645,24 @@ function ensureSqliteWork(records) {
     present INTEGER NOT NULL,
     UNIQUE(claim_id, learner_id)
   )`);
+  records.exec(`CREATE TABLE IF NOT EXISTS invites (
+    id TEXT PRIMARY KEY, token_hash TEXT NOT NULL UNIQUE, username TEXT NOT NULL, display_name TEXT NOT NULL,
+    role TEXT NOT NULL, school_id TEXT, expires_at TEXT NOT NULL, used_at TEXT, created_by TEXT NOT NULL, created_at TEXT NOT NULL
+  )`);
+  records.exec(`CREATE TABLE IF NOT EXISTS password_resets (
+    id TEXT PRIMARY KEY, token_hash TEXT NOT NULL UNIQUE, user_id TEXT NOT NULL, expires_at TEXT NOT NULL,
+    used_at TEXT, created_by TEXT NOT NULL, created_at TEXT NOT NULL
+  )`);
+  records.exec(`CREATE TABLE IF NOT EXISTS guardian_links (
+    id TEXT PRIMARY KEY, user_id TEXT NOT NULL, learner_id TEXT NOT NULL, status TEXT NOT NULL,
+    created_at TEXT NOT NULL, confirmed_by TEXT, confirmed_at TEXT
+  )`);
+  records.exec(`CREATE TABLE IF NOT EXISTS recovery_codes (
+    id TEXT PRIMARY KEY, user_id TEXT NOT NULL, code_hash TEXT NOT NULL, used_at TEXT
+  )`);
+  records.exec(`CREATE TABLE IF NOT EXISTS mfa_challenges (
+    id TEXT PRIMARY KEY, user_id TEXT NOT NULL, purpose TEXT NOT NULL, expires_at TEXT NOT NULL, used_at TEXT
+  )`);
 }
 
 export const POSTGRES_WORK_SQL = [
@@ -604,6 +673,9 @@ export const POSTGRES_WORK_SQL = [
   'ALTER TABLE learners ADD COLUMN IF NOT EXISTS user_id TEXT',
   'ALTER TABLE learners ADD COLUMN IF NOT EXISTS active INTEGER NOT NULL DEFAULT 1',
   'ALTER TABLE users ADD COLUMN IF NOT EXISTS active INTEGER NOT NULL DEFAULT 1',
+  'ALTER TABLE users ADD COLUMN IF NOT EXISTS totp_secret TEXT',
+  'ALTER TABLE users ADD COLUMN IF NOT EXISTS mfa_enabled INTEGER NOT NULL DEFAULT 0',
+  'ALTER TABLE users ADD COLUMN IF NOT EXISTS mfa_exempt INTEGER NOT NULL DEFAULT 0',
   'ALTER TABLE meetings ADD COLUMN IF NOT EXISTS status TEXT NOT NULL DEFAULT \'scheduled\'',
   `CREATE TABLE IF NOT EXISTS meetings (
     id TEXT PRIMARY KEY,
@@ -621,6 +693,24 @@ export const POSTGRES_WORK_SQL = [
     learner_id TEXT NOT NULL,
     present INTEGER NOT NULL,
     UNIQUE(claim_id, learner_id)
+  )`,
+  `CREATE TABLE IF NOT EXISTS invites (
+    id TEXT PRIMARY KEY, token_hash TEXT NOT NULL UNIQUE, username TEXT NOT NULL, display_name TEXT NOT NULL,
+    role TEXT NOT NULL, school_id TEXT, expires_at TEXT NOT NULL, used_at TEXT, created_by TEXT NOT NULL, created_at TEXT NOT NULL
+  )`,
+  `CREATE TABLE IF NOT EXISTS password_resets (
+    id TEXT PRIMARY KEY, token_hash TEXT NOT NULL UNIQUE, user_id TEXT NOT NULL, expires_at TEXT NOT NULL,
+    used_at TEXT, created_by TEXT NOT NULL, created_at TEXT NOT NULL
+  )`,
+  `CREATE TABLE IF NOT EXISTS guardian_links (
+    id TEXT PRIMARY KEY, user_id TEXT NOT NULL, learner_id TEXT NOT NULL, status TEXT NOT NULL,
+    created_at TEXT NOT NULL, confirmed_by TEXT, confirmed_at TEXT
+  )`,
+  `CREATE TABLE IF NOT EXISTS recovery_codes (
+    id TEXT PRIMARY KEY, user_id TEXT NOT NULL, code_hash TEXT NOT NULL, used_at TEXT
+  )`,
+  `CREATE TABLE IF NOT EXISTS mfa_challenges (
+    id TEXT PRIMARY KEY, user_id TEXT NOT NULL, purpose TEXT NOT NULL, expires_at TEXT NOT NULL, used_at TEXT
   )`,
 ];
 
