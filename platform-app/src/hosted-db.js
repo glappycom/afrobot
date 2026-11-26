@@ -1,6 +1,25 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { Worker } from 'node:worker_threads';
 import { LEDGER_SCHEMA, SCHEMA } from './db.js';
 import { bindPlaceholders, normalizeRow, postgresSetup } from './pg-sql.js';
+
+function redact(message) {
+  return String(message || 'database error').replace(/postgres(?:ql)?:\/\/\S+/gi, '[redacted]');
+}
+
+function workerFile() {
+  const here = path.dirname(fileURLToPath(import.meta.url));
+  const candidates = [
+    path.join(here, 'hosted-worker.js'),
+    path.join(process.cwd(), 'src', 'hosted-worker.js'),
+    path.join(process.cwd(), 'hosted-worker.js'),
+  ];
+  const found = candidates.find((candidate) => fs.existsSync(candidate));
+  if (!found) throw new Error('The hosted database worker is missing from this deployment.');
+  return found;
+}
 
 const CAPACITY = 1_000_000;
 
@@ -10,11 +29,15 @@ function startWorker(connectionString) {
   const len = new Int32Array(sab, 4, 1);
   const bytes = new Uint8Array(sab, 8);
   Atomics.store(flag, 0, 3);
-  const worker = new Worker(new URL('./hosted-worker.js', import.meta.url), {
+  const worker = new Worker(workerFile(), {
     workerData: { sab, connectionString },
   });
   worker.unref();
   while (Atomics.load(flag, 0) === 3) Atomics.wait(flag, 0, 3, 20000);
+  if (Atomics.load(flag, 0) === 4) {
+    const detail = len[0] ? redact(Buffer.from(bytes.subarray(0, len[0])).toString()) : 'The hosted database did not connect.';
+    throw new Error(detail);
+  }
   if (Atomics.load(flag, 0) !== 0) throw new Error('The hosted database did not connect.');
 
   function call(sql, params = []) {
@@ -32,7 +55,7 @@ function startWorker(connectionString) {
     }
     const response = JSON.parse(Buffer.from(bytes.subarray(0, len[0])).toString());
     Atomics.store(flag, 0, 0);
-    if (response.error) throw new Error(response.error);
+    if (response.error) throw new Error(redact(response.error));
     return response;
   }
 

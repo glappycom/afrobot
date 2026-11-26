@@ -24,8 +24,20 @@ function writeResponse(payload) {
   len[0] = raw.length;
 }
 
-const pool = new Pool({ connectionString: workerData.connectionString });
-const client = await pool.connect();
+function safe(error) {
+  return String(error?.message || error || 'database error').replace(/postgres(?:ql)?:\/\/\S+/gi, '[redacted]');
+}
+
+let client;
+try {
+  const pool = new Pool({ connectionString: workerData.connectionString });
+  client = await pool.connect();
+} catch (error) {
+  writeResponse(safe(error));
+  Atomics.store(flag, 0, 4);
+  Atomics.notify(flag, 0);
+  throw new Error(safe(error));
+}
 
 Atomics.store(flag, 0, 0);
 Atomics.notify(flag, 0);
@@ -38,7 +50,7 @@ while (true) {
     const result = await client.query(request.sql, request.params);
     response = { rows: result.rows, rowCount: result.rowCount };
   } catch (error) {
-    response = { error: error.message };
+    response = { error: safe(error) };
   }
   writeResponse(response);
   Atomics.store(flag, 0, 2);

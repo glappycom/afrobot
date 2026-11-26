@@ -163,14 +163,15 @@ function stamp(now) {
 }
 
 export function createApp(options = {}) {
-  const hosted = Boolean(process.env.VERCEL && process.env.DATABASE_URL);
+  const hostedUrl = process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL;
+  const hosted = Boolean(process.env.VERCEL && hostedUrl);
   const dbPath = options.dbPath || path.join(ROOT, 'data', 'demo.sqlite');
   const filesDir = options.filesDir || (hosted ? '/tmp/afrobot-files' : path.join(ROOT, 'data', 'files'));
   const now = options.now || (() => new Date().toISOString());
-  const db = hosted ? openHostedDatabase(process.env.DATABASE_URL) : openDatabase(dbPath, options.ledgerPath);
+  fs.mkdirSync(filesDir, { recursive: true });
+  const db = hosted ? openHostedDatabase(hostedUrl) : openDatabase(dbPath, options.ledgerPath);
   const seeded = get(db, 'SELECT COUNT(*) AS n FROM users');
   if (!seeded || Number(seeded.n) === 0) seedAll(db, { filesDir, story: options.story !== false });
-  fs.mkdirSync(filesDir, { recursive: true });
 
   function sessionUser(req) {
     const id = cookies(req)[COOKIE];
