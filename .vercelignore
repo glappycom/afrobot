@@ -1,3 +1,5 @@
-# The evidence pilot is a separate local app. It is not part of the public static site.
-platform-app
+# The public site builds from the repository root. Its routes are not platform-app/api.
+# Ignore only the pilot's local data so the separate platform project can still deploy.
+platform-app/node_modules
+platform-app/data
 docs/platform
