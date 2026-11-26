@@ -113,7 +113,7 @@ test('the practice sorter cannot complete a season project, and the SDG 12 recor
     const message = await blocked.json();
     assert.match(message.error, /cannot complete a season project/);
 
-    const coachPage = await page(app.url, coach, '/coach');
+    const coachPage = await page(app.url, coach, '/demo');
     assert.match(coachPage.text, /Paper and plastic sorter/);
     assert.match(coachPage.text, /CM-SDG12-STATION/);
     assert.match(coachPage.text, /second-day recount/);
@@ -180,7 +180,7 @@ test('season comparison, guardrail hold, and the U.S. copy stay on the organiser
   const app = await demo();
   try {
     const organiser = await login(app.url, 'organiser', 'demo-organiser');
-    const screen = await page(app.url, organiser, '/organiser');
+    const screen = await page(app.url, organiser, '/demo');
     assert.equal(screen.status, 200);
     assert.match(screen.text, /1 versus 2 per hour and 2×/);
     assert.match(screen.text, /Multiplier suppressed: scope differs/);

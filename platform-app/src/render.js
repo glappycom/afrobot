@@ -4,6 +4,7 @@ import { all, get } from './db.js';
 import { comparisonViews, followupsFor, goalRollup, listClaims, listProjects, projectReport, traceClaim, visibleEvents } from './domain.js';
 import { esc, rateLabel, sdgLabel, show } from './format.js';
 import { consentGaps, fallingBehind, joinCodeFor, learnersForSchool, liteHome, needsQueue } from './experience.js';
+import { auditorScreen, coachLogsScreen, coachScreen, coachTeamScreen, familyScreen, journeyScreen, logScreen, organiserScreen } from './screens.js';
 import { accessReviewRows, custodyChain, displayId, filterEvents, formatStamps, gridClaims, integrityReport, provenanceDocument, retentionFor } from './records.js';
 
 const CSS = `
@@ -308,6 +309,10 @@ function projectCard(db, project) {
 }
 
 export function coachPage(db, user, now, session, extras = {}) {
+  return coachScreen(db, user, now, session, extras);
+}
+
+function demoCoachPage(db, user, now, session, extras = {}) {
   const claims = listClaims(db, user, now);
   const projects = listProjects(db, user, now).filter((project) => project.visibility === 'school');
   const school = get(db, 'SELECT * FROM schools WHERE id = ?', [projects[0]?.school_id || claims[0]?.school_id]);
@@ -403,6 +408,10 @@ export function coachPage(db, user, now, session, extras = {}) {
 }
 
 export function organiserPage(db, user, now, session, extras = {}) {
+  return organiserScreen(db, user, now, session, extras);
+}
+
+function demoOrganiserPage(db, user, now, session, extras = {}) {
   const claims = listClaims(db, user, now);
   const submitted = claims.filter((claim) => claim.status === 'submitted');
   const projects = listProjects(db, user, now).filter((project) => project.visibility === 'school');
@@ -471,6 +480,10 @@ function rollupCards(rollup) {
 }
 
 export function auditorPage(db, user, now, session, extras = {}) {
+  return auditorScreen(db, user, session, extras);
+}
+
+function demoAuditorPage(db, user, now, session, extras = {}) {
   const grant = get(db, 'SELECT * FROM access_grants WHERE user_id = ? ORDER BY expires_at DESC LIMIT 1', [user.id]);
   const claims = listClaims(db, user, now);
   const current = [...claims].reverse().find((claim) => claim.status === 'approved');
@@ -502,6 +515,10 @@ export function auditorPage(db, user, now, session, extras = {}) {
 }
 
 export function studentPage(db, user, now, session, extras = {}) {
+  return journeyScreen(db, user, session);
+}
+
+function demoStudentPage(db, user, now, session, extras = {}) {
   const projects = listProjects(db, user, now);
   const project = projects[0];
   return layout({
@@ -753,59 +770,35 @@ function coachToday(db, membership) {
     <p><a href="/lite">Lite</a> · <a href="/settings">Data saver</a> · <a href="/coach/setup">First-run setup</a></p>`;
 }
 
-export function logPage(db, user, session, step = '1') {
-  const membership = get(db, 'SELECT * FROM memberships WHERE user_id = ? AND role = ?', [user.id, 'coach']);
-  const kids = membership ? learnersForSchool(db, membership.school_id, { logging: true }) : [];
-  const steps = `<p class="steps" aria-live="polite">Step ${esc(step)} of 3</p>`;
-  let body = '';
-  if (step === '2') {
-    body = `<h1>Skills</h1>${steps}<form method="post" action="/coach/log/save">${hidden(session)}
-      <input type="hidden" name="letters" value="${esc(kids.map((row) => row.letter).join(','))}">
-      <label><input type="checkbox" name="skills" value="fair-test" checked> Fair test</label>
-      <p><button type="submit">Save</button></p></form>`;
-  } else if (step === 'saved') {
-    body = `<h1>Saved</h1><p role="status">Sent. <a href="/coach">Back</a></p>`;
-  } else {
-    body = `<h1>Who came</h1>${steps}<ul>${kids.map((row) => `<li>Student ${esc(row.letter)}</li>`).join('') || '<li>No students to log</li>'}</ul>
-      <p><a class="btn" href="/coach/log/2">Next</a></p>`;
-  }
-  return layout({
-    title: 'Log · afrobot evidence',
-    user: { ...user, csrf: session.csrf },
-    db, now: () => new Date().toISOString(), crumb: 'Log', section: 'home',
-    body,
-  });
+export function demoPage(db, user, now, session, extras = {}) {
+  if (user.role === 'organiser') return demoOrganiserPage(db, user, now, session, extras);
+  if (user.role === 'auditor') return demoAuditorPage(db, user, now, session, extras);
+  if (user.role === 'student') return demoStudentPage(db, user, now, session, extras);
+  return demoCoachPage(db, user, now, session, extras);
 }
 
-export function needsPage(db, user, now, session) {
-  const items = needsQueue(db, user, now);
-  const list = items.map((item, index) => `<li><b>${index + 1}. ${esc(item.title)}</b><p>Why: ${esc(item.why)}</p><form method="post" action="/organiser/needs/act">${hidden(session)}<input type="hidden" name="id" value="${esc(item.id)}"><button type="submit">${esc(item.action)}</button></form></li>`).join('');
-  return layout({
-    title: 'What needs me · afrobot evidence',
-    user: { ...user, csrf: session.csrf },
-    db, now, crumb: 'What needs me', section: 'home',
-    body: `<h1>What needs me</h1>${items.length ? `<ol>${list}</ol>` : '<p class="state">All caught up.</p>'}`,
-  });
+export function logPage(db, user, session, step = '1') {
+  return logScreen(db, user, session, step);
+}
+
+export function needsPage(db, user, now, session, extras = {}) {
+  return organiserScreen(db, user, now, session, extras);
 }
 
 export function journeyPage(db, user, session) {
-  const code = joinCodeFor(db, IDS.cohortCm);
-  return layout({
-    title: 'Journey · afrobot evidence',
-    user: { ...user, csrf: session.csrf },
-    db, now: () => new Date().toISOString(), crumb: 'Journey',
-    body: `<h1>Your journey</h1><ol class="pipe" aria-label="Stages"><li class="done">Discover</li><li class="now">Build</li><li>Innovate</li></ol><p>You are here: Build.</p><p>Join code ${esc(code?.code || '—')}</p>`,
-  });
+  return journeyScreen(db, user, session);
 }
 
 export function familyPage(db, user, session) {
-  const code = joinCodeFor(db, IDS.cohortCm);
-  return layout({
-    title: 'This week · afrobot evidence',
-    user: { ...user, csrf: session.csrf },
-    db, now: () => new Date().toISOString(), crumb: 'This week',
-    body: `<h1>This week</h1><p>Student A practised a fair test. The same join code is ${esc(code?.code || '—')}.</p><p><a href="/student/link">Link with a code</a></p>`,
-  });
+  return familyScreen(db, user, session);
+}
+
+export function teamPage(db, user, session) {
+  return coachTeamScreen(db, user, session);
+}
+
+export function logsPage(db, user, session) {
+  return coachLogsScreen(db, user, session);
 }
 
 export function setupPage(role, user, session, db) {

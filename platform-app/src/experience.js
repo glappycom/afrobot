@@ -26,26 +26,22 @@ export function fallingBehind(db, cohortId) {
 
 export function needsQueue(db, user, now) {
   const schools = readableSchools(db, user, typeof now === 'function' ? now() : now);
+  const schoolName = (id) => get(db, 'SELECT display_name, country_name FROM schools WHERE id = ?', [id]);
+  const teamName = (id) => (id === 'sch-tz-lakeside' ? 'Team Kilima' : 'Team Sunbird');
   const items = [];
-  for (const claim of listClaims(db, user, now).filter((row) => row.status === 'submitted')) {
+  const waiting = listClaims(db, user, now).filter((row) => row.status === 'submitted')
+    .sort((a, b) => String(a.submitted_at).localeCompare(String(b.submitted_at)));
+  if (waiting[0]) {
+    const claim = waiting[0];
+    const school = schoolName(claim.school_id);
+    const when = new Date(`${String(claim.activity_date || claim.submitted_at).slice(0, 10)}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
     items.push({
       id: `need-${claim.id}`,
-      rank: 'blocking',
-      title: `Review ${claim.numerator}/${claim.denominator}`,
-      why: 'A coach sent this total. It stays waiting until a different person approves it.',
-      action: 'Open the queue',
-    });
-  }
-  for (const learner of consentGaps(db, schools)) {
-    const title = learner.consent === 'expired'
-      ? `Consent expired for Student ${learner.letter}`
-      : `Consent missing for Student ${learner.letter}`;
-    items.push({
-      id: `need-${learner.id}`,
-      rank: 'blocking',
-      title,
-      why: `Student ${learner.letter} is hidden from logging until consent is in.`,
-      action: 'Ask the family',
+      group: 'Blocking a team now',
+      title: `Review ${teamName(claim.school_id)}'s session from ${when}`,
+      why: "Why first: it's the oldest waiting record. The team's season record can't be finished until it's reviewed.",
+      action: 'Review now',
+      meta: `${teamName(claim.school_id)} · ${school?.country_name || ''} · Coach`,
     });
   }
   for (const schoolId of schools) {
@@ -55,10 +51,50 @@ export function needsQueue(db, user, now) {
     if (pace?.behind) {
       items.push({
         id: `need-pace-${cohort.id}`,
-        rank: 'soon',
-        title: 'A team is falling behind',
-        why: `${pace.done} of ${pace.planned} challenges are done, with ${pace.weeks_left} weeks left. Falling behind means fewer challenges than the season plan at this point.`,
+        group: 'Blocking a team now',
+        title: `${teamName(schoolId)} is falling behind`,
+        why: `Why: ${pace.done} of ${pace.planned} challenges are done, with ${pace.weeks_left} weeks left. Falling behind means fewer challenges than the season plan at this point.`,
         action: 'Message the coach',
+        meta: `${teamName(schoolId)} · ${pace.done} of ${pace.planned}`,
+      });
+    }
+  }
+  for (const learner of consentGaps(db, schools)) {
+    const missing = learner.consent !== 'expired';
+    items.push({
+      id: `need-${learner.id}`,
+      group: 'Blocking a team now',
+      title: missing ? `Consent missing for Student ${learner.letter}` : `Consent expired for Student ${learner.letter}`,
+      why: `Why: Student ${learner.letter} is hidden from logging until consent is in.`,
+      action: 'Ask the family',
+      meta: `${teamName(learner.school_id)} · ${learner.consent}`,
+    });
+  }
+  const renewing = schools.length
+    ? all(db, `SELECT * FROM learners WHERE school_id IN (${schools.map(() => '?').join(',')}) AND consent = 'active' AND consent_until IS NOT NULL ORDER BY consent_until`, schools)
+    : [];
+  if (renewing[0]) {
+    items.push({
+      id: `need-renew-${renewing[0].id}`,
+      group: 'Will block soon',
+      title: `Family consent renews on ${renewing[0].consent_until}`,
+      why: 'Why: if it lapses, that student is hidden from logging.',
+      action: 'Send reminders',
+      meta: teamName(renewing[0].school_id),
+    });
+  }
+  for (const schoolId of schools) {
+    const cohort = get(db, 'SELECT id FROM cohorts WHERE school_id = ?', [schoolId]);
+    if (!cohort) continue;
+    const pace = fallingBehind(db, cohort.id);
+    if (pace && !pace.behind) {
+      items.push({
+        id: `need-ok-${cohort.id}`,
+        group: 'Good to know',
+        title: `${teamName(schoolId)} is on the season plan`,
+        why: `Why: ${pace.done} of ${pace.planned} challenges are done. Moving them on is your call.`,
+        action: 'Leave on Build',
+        meta: teamName(schoolId),
       });
     }
   }

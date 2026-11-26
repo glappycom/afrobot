@@ -96,8 +96,8 @@ export function seedFoundation(db) {
   ]) {
     insert(db, 'learners', { id: row[0], school_id: row[1], cohort_id: row[2], letter: row[3], consent: row[4], consent_until: row[5] });
   }
-  insert(db, 'join_codes', { cohort_id: IDS.cohortCm, code: 'SUN-4821' });
-  insert(db, 'join_codes', { cohort_id: IDS.cohortTz, code: 'LAKE-2294' });
+  insert(db, 'join_codes', { cohort_id: IDS.cohortCm, code: 'NRLC-4821' });
+  insert(db, 'join_codes', { cohort_id: IDS.cohortTz, code: 'LMC-2294' });
   insert(db, 'season_progress', { cohort_id: IDS.cohortCm, planned: 4, done: 4, weeks_left: 3 });
   insert(db, 'season_progress', { cohort_id: IDS.cohortTz, planned: 6, done: 2, weeks_left: 3 });
   insert(db, 'access_grants', {

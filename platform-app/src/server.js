@@ -57,6 +57,7 @@ import {
   journeyPage,
   logPage,
   loginPage,
+  logsPage,
   needsPage,
   organiserPage,
   settingsPage,
@@ -66,6 +67,8 @@ import {
   recordsPage,
   searchPage,
   studentPage,
+  teamPage,
+  demoPage,
   unavailablePage,
   verifyPage,
 } from './render.js';
@@ -122,7 +125,7 @@ function send(res, status, body, headers = {}) {
     'x-content-type-options': 'nosniff',
     'referrer-policy': 'no-referrer',
     'x-frame-options': 'DENY',
-    'content-security-policy': "default-src 'self'; style-src 'unsafe-inline'; font-src 'self'; form-action 'self'; frame-ancestors 'none'",
+    'content-security-policy': "default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; form-action 'self'; frame-ancestors 'none'",
     ...headers,
   });
   res.end(body);
@@ -190,7 +193,13 @@ export function createApp(options = {}) {
     const url = new URL(req.url || '/', 'http://127.0.0.1');
     const pathname = url.pathname;
     const method = req.method || 'GET';
-    if (pathname === '/app.js' && method === 'GET') {
+      if (pathname === '/home.css' && method === 'GET') {
+        return send(res, 200, fs.readFileSync(path.join(ROOT, 'public', 'home.css')), { 'content-type': 'text/css; charset=utf-8' });
+      }
+      if (pathname === '/home.js' && method === 'GET') {
+        return send(res, 200, fs.readFileSync(path.join(ROOT, 'public', 'home.js')), { 'content-type': 'text/javascript; charset=utf-8' });
+      }
+      if (pathname === '/app.js' && method === 'GET') {
       const file = path.join(ROOT, 'public', 'app.js');
       return send(res, 200, fs.readFileSync(file), { 'content-type': 'text/javascript; charset=utf-8', 'cache-control': 'public, max-age=3600' });
     }
@@ -256,7 +265,10 @@ export function createApp(options = {}) {
       const notice = NOTICES[url.searchParams.get('notice')] || '';
       const pageOpts = { notice };
 
+      if (pathname === '/demo' && method === 'GET') return sendHtml(res, 200, demoPage(db, user, now, session, pageOpts));
       if (pathname === '/coach' && method === 'GET') return sendHtml(res, 200, coachPage(db, user, now, session, pageOpts));
+      if (pathname === '/coach/team' && method === 'GET') return sendHtml(res, 200, teamPage(db, user, session));
+      if (pathname === '/coach/logs' && method === 'GET') return sendHtml(res, 200, logsPage(db, user, session));
       if (pathname === '/coach/log' && method === 'GET') return sendHtml(res, 200, logPage(db, user, session, '1'));
       if (pathname === '/coach/log/2' && method === 'GET') return sendHtml(res, 200, logPage(db, user, session, '2'));
       if (pathname === '/coach/log/saved' && method === 'GET') return sendHtml(res, 200, logPage(db, user, session, 'saved'));
@@ -268,7 +280,7 @@ export function createApp(options = {}) {
       }
       if (pathname === '/coach/setup' && method === 'GET') return sendHtml(res, 200, setupPage('coach', user, session, db));
       if (pathname === '/organiser/setup' && method === 'GET') return sendHtml(res, 200, setupPage('organiser', user, session, db));
-      if (pathname === '/organiser/needs' && method === 'GET') return sendHtml(res, 200, needsPage(db, user, now, session));
+      if (pathname === '/organiser/needs' && method === 'GET') return sendHtml(res, 200, needsPage(db, user, now, session, pageOpts));
       if (pathname === '/organiser/needs/act' && method === 'POST') {
         addEvent(db, { now, action: 'submitted', user, subjectType: 'season', subjectId: IDS.seasonAfrica, detail: { need: req.input.id || 'need' } });
         return redirect(res, '/organiser/needs?notice=saved');

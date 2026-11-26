@@ -16,10 +16,10 @@ test('consent hides a student, one join code, and falling behind', async () => {
     assert.equal(log.text.includes('Student C'), false);
     const home = await page(app.url, coach, '/coach');
     assert.match(home.text, /hidden from logging until consent is in/);
-    assert.match(home.text, /SUN-4821/);
+    assert.match(home.text, /NRLC-4821/);
     const family = await page(app.url, student, '/student/family');
     assert.match(family.text, /This week/);
-    assert.match(family.text, /SUN-4821/);
+    assert.match(family.text, /NRLC-4821/);
     const blocked = await api(app.url, coach, 'POST', '/api/session-logs', { letters: 'C', skills: 'fair-test', id: 'slog-c' });
     assert.equal(blocked.status, 422);
     const saved = await api(app.url, coach, 'POST', '/api/session-logs', { letters: 'A', skills: 'fair-test', id: 'slog-a' });
@@ -30,7 +30,7 @@ test('consent hides a student, one join code, and falling behind', async () => {
     assert.match(needs.text, /falling behind/);
     const tz = await page(app.url, coachB, '/coach');
     assert.match(tz.text, /falling behind/);
-    assert.equal(tz.text.includes('SUN-4821'), false);
+    assert.equal(tz.text.includes('NRLC-4821'), false);
     const lite = await page(app.url, coach, '/lite');
     const gzip = zlib.gzipSync(Buffer.from(lite.text)).length;
     assert.ok(gzip < 30 * 1024, `lite gzip ${gzip}`);
