@@ -152,7 +152,7 @@ The pack includes the 6/8 snapshot and the 5/8 snapshot. It does not include the
 - API denials for the other coach, the auditor editing or opening unassigned material, and a learner opening another learner's draft
 - an expired grant and a revoked grant
 
-Latest local run: 13 tests, 13 passed. See `docs/platform/TEST-RESULTS.md`.
+Latest local run: see `docs/platform/TEST-RESULTS.md` after `npm test`.
 
 ## What is mocked
 
@@ -181,19 +181,52 @@ This demo does not run a backup. A later operator can copy `data/demo.sqlite` an
 - Access checks live on the server, and the tests cover the refused cases. This is not an independent security or accessibility review. Do not put real children on it.
 - Login is not rate-limited. The session cookie is not marked `Secure` because the demo is plain HTTP on localhost.
 - A correction reason is free text. The form says not to type a learner's name. The server does not detect names.
-- The digest ledger is not yet copied off the same disk.
+- The digest ledger is a second SQLite file on the same disk in local dev. It is not yet on a separate Turso host.
 - The grant date is fixed so a review in 2026 still works. After 1 June 2027 the seeded auditor can no longer open the Cameroon claim until someone inserts a new grant.
 - The public static site and this app do not share a user table. Do not point the public navigation at this app.
 
-## Deployment and cost
+## Hosting plan for Vercel
 
-| Option | What it is | Assumption |
+The public AfroBot site stays a static project. This pilot is a second Vercel project, created only after Russell approves it. Nothing in this repo creates that project, a database, or a paid plan, and nothing here is deployed.
+
+A full move to Next.js is a larger rewrite than this pass. The app is still the Node server you run locally. What changed so it can sit on Vercel:
+
+- One data layer in `src/db.js`. Local dev uses SQLite. Records go in `data/demo.sqlite`. The digest ledger is a second file, `data/ledger.sqlite`, with its own append-only triggers. The event log stays on the records database and is still append-only.
+- `platform-app/vercel.json` and `platform-app/api/index.js` are the serverless entry. On Vercel the function answers 503 until both Turso databases are set. It will not boot a throwaway SQLite file and pretend that is production.
+- The SQL is SQLite. Turso (libSQL) is the production store because it runs that SQL. Neon or Vercel Postgres would mean rewriting every query. That wait is intentional.
+
+### Exact setup, after approval
+
+1. In the Vercel dashboard, create a new project from this GitHub repo. Set Root Directory to `platform-app`. Do not point it at the public site project.
+2. Leave Framework Preset empty. The repo's `platform-app/vercel.json` rewrites pages to `api/index.js` and leaves `/fonts/*` as static files.
+3. In the [Turso dashboard](https://turso.tech), create two databases, for example `afrobot-evidence-records` and `afrobot-evidence-ledger`. Create a token that can write to both. Do not reuse a token from another app.
+4. In the new Vercel project, add these environment variables for Preview and Production. Mark the tokens as sensitive.
+
+| Name | Value | Secret |
 | --- | --- | --- |
-| This demo | One command on a laptop | $0. No account, no card, no new Vercel project. |
-| Private staging later | A small virtual machine or a school server running `npm run demo` behind a VPN, with a real login in front | One small machine is often a few dollars to the low tens of dollars a month at public list prices. SQLite stays on that disk, so there is no separate database subscription. This is an assumption, not a quote. |
-| The current Vercel project | Static public site | Unchanged. It cannot run this SQLite server. |
+| `TURSO_DATABASE_URL` | `libsql://` URL of the records database | no |
+| `TURSO_AUTH_TOKEN` | token for the records database | yes |
+| `TURSO_LEDGER_URL` | `libsql://` URL of the ledger database | no |
+| `TURSO_LEDGER_AUTH_TOKEN` | token for the ledger database | yes |
 
-A private link was not created. Creating one needs a new host and a real login, which this task does not add.
+5. Install `@libsql/client` and connect those two URLs inside `openDatabase` before the first real deploy. The env check is already in `src/store-config.js`. The synchronous local driver does not open a network connection.
+6. Run the same schema SQL against each Turso database (records schema, then the ledger table and its two triggers). Seed only with the fictional demo, and only in a preview database.
+7. Turn on Vercel Authentication or a real login in front of the project. The mocked passwords must not be the production login.
+
+Local `npm run demo` ignores those variables when they are unset and keeps using the two SQLite files.
+
+### Free tier and paid assumptions
+
+These are public list-price assumptions to check on the day you create the accounts. They are not a quote, and no account was opened.
+
+| Piece | Free assumption | When it starts costing |
+| --- | --- | --- |
+| Vercel Hobby | $0 for a personal, non-commercial project. Functions and a modest bandwidth allowance are included. | An organisation or a commercial program usually needs Pro, about $20 per user per month. This pilot should be treated as an organisation project. |
+| Turso free | Enough for two small databases and the fictional pilot's reads and writes. | A paid Turso plan starts when storage, row reads, or locations pass the free cap. For this pilot that is unlikely in the first season. Budget a few dollars to about $30 a month if the free cap is passed. |
+| Neon, if chosen later instead of Turso | A free project with a small storage cap. | The launch plan is about $19 a month. It also requires rewriting the SQL, so it is not the path in this pass. |
+| This local demo | $0 | No card, no new Vercel project, no database. |
+
+The digest ledger must stay on `TURSO_LEDGER_URL`, not in the records database. The event log stays on the records database. Both reject updates and deletes. A person who can open either database can still drop triggers. Copy the ledger URL's backups to storage the day-to-day editor does not use.
 
 ## Decisions for Russell
 
@@ -203,5 +236,5 @@ A private link was not created. Creating one needs a new host and a real login, 
 4. Approval is a second account. A correction from 6 to 5 keeps the earlier snapshot and its digest.
 5. Season comparison shows 1 versus 2 per hour and 2×, suppresses the multiplier when scope, rubric, baseline, or coverage does not match, and records a human hold when learning worsens.
 6. There is no AI recommendation and no Dream Prize payment. The U.S. season receives coach materials only.
-7. A private staging link was not possible without a new service. Reviewers run it locally.
-8. Blockers before any real school: replace mocked login, put the digest ledger on a second store, complete an independent security and accessibility review, and get a written retention decision. Do not invite learners onto this build.
+7. Host it later as a second Vercel project with root `platform-app` and two Turso databases. The function entry, env names, and cost assumptions are in the hosting section. No project or database was created. A Next.js rewrite and the live Turso client wait until those databases are approved.
+8. Blockers before any real school: replace mocked login, create the two Turso databases and connect `@libsql/client`, complete an independent security and accessibility review, and get a written retention decision. Do not invite learners onto this build.

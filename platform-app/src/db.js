@@ -237,13 +237,6 @@ CREATE TABLE IF NOT EXISTS snapshots (
   UNIQUE(subject_type, subject_id)
 );
 
-CREATE TABLE IF NOT EXISTS digest_ledger (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  snapshot_id TEXT NOT NULL,
-  digest_sha256 TEXT NOT NULL,
-  created_at TEXT NOT NULL
-);
-
 CREATE TABLE IF NOT EXISTS events (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   at TEXT NOT NULL,
@@ -362,18 +355,6 @@ BEGIN
   SELECT RAISE(ABORT, 'snapshots are append-only');
 END;
 
-CREATE TRIGGER IF NOT EXISTS ledger_no_update
-BEFORE UPDATE ON digest_ledger
-BEGIN
-  SELECT RAISE(ABORT, 'digest ledger is append-only');
-END;
-
-CREATE TRIGGER IF NOT EXISTS ledger_no_delete
-BEFORE DELETE ON digest_ledger
-BEGIN
-  SELECT RAISE(ABORT, 'digest ledger is append-only');
-END;
-
 CREATE TRIGGER IF NOT EXISTS claims_freeze_approved
 BEFORE UPDATE ON claims
 WHEN OLD.status = 'approved'
@@ -407,11 +388,66 @@ BEGIN
 END;
 `;
 
-export function openDatabase(dbPath) {
+const LEDGER_SCHEMA = `
+CREATE TABLE IF NOT EXISTS digest_ledger (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  snapshot_id TEXT NOT NULL,
+  digest_sha256 TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+
+CREATE TRIGGER IF NOT EXISTS ledger_no_update
+BEFORE UPDATE ON digest_ledger
+BEGIN
+  SELECT RAISE(ABORT, 'digest ledger is append-only');
+END;
+
+CREATE TRIGGER IF NOT EXISTS ledger_no_delete
+BEFORE DELETE ON digest_ledger
+BEGIN
+  SELECT RAISE(ABORT, 'digest ledger is append-only');
+END;
+`;
+
+class Store {
+  constructor(records, ledger) {
+    this.records = records;
+    this.ledger = ledger;
+    this.driver = 'sqlite';
+  }
+
+  target(sql) {
+    return /\bdigest_ledger\b/i.test(sql) ? this.ledger : this.records;
+  }
+
+  prepare(sql) {
+    return this.target(sql).prepare(sql);
+  }
+
+  exec(sql) {
+    return this.target(sql).exec(sql);
+  }
+
+  close() {
+    this.records.close();
+    this.ledger.close();
+  }
+}
+
+function openSqlite(dbPath) {
   if (dbPath !== ':memory:') fs.mkdirSync(path.dirname(dbPath), { recursive: true });
-  const db = new DatabaseSync(dbPath);
-  db.exec(SCHEMA);
-  return db;
+  return new DatabaseSync(dbPath);
+}
+
+export function openDatabase(dbPath, ledgerPath) {
+  const ledgerLocation = ledgerPath || (dbPath === ':memory:' ? ':memory:' : path.join(path.dirname(dbPath), 'ledger.sqlite'));
+  const records = openSqlite(dbPath);
+  const ledger = openSqlite(ledgerLocation);
+  records.exec(SCHEMA);
+  ledger.exec(LEDGER_SCHEMA);
+  const store = new Store(records, ledger);
+  store.ledgerPath = ledgerLocation;
+  return store;
 }
 
 export function insert(db, table, row) {

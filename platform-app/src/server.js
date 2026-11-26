@@ -94,7 +94,7 @@ function send(res, status, body, headers = {}) {
     'x-content-type-options': 'nosniff',
     'referrer-policy': 'no-referrer',
     'x-frame-options': 'DENY',
-    'content-security-policy': "default-src 'self'; style-src 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'",
+    'content-security-policy': "default-src 'self'; style-src 'unsafe-inline'; font-src 'self'; form-action 'self'; frame-ancestors 'none'",
     ...headers,
   });
   res.end(body);
@@ -134,7 +134,7 @@ export function createApp(options = {}) {
   const dbPath = options.dbPath || path.join(ROOT, 'data', 'demo.sqlite');
   const filesDir = options.filesDir || path.join(ROOT, 'data', 'files');
   const now = options.now || (() => new Date().toISOString());
-  const db = openDatabase(dbPath);
+  const db = openDatabase(dbPath, options.ledgerPath);
   const seeded = get(db, 'SELECT COUNT(*) AS n FROM users');
   if (!seeded || Number(seeded.n) === 0) seedAll(db, { filesDir, story: options.story !== false });
   fs.mkdirSync(filesDir, { recursive: true });
@@ -162,6 +162,15 @@ export function createApp(options = {}) {
     const url = new URL(req.url || '/', 'http://127.0.0.1');
     const pathname = url.pathname;
     const method = req.method || 'GET';
+    const font = pathname.match(/^\/fonts\/(fredoka-700|rubik-400|rubik-500)\.woff2$/);
+    if (font && method === 'GET') {
+      const file = path.join(ROOT, 'public', 'fonts', `${font[1]}.woff2`);
+      if (!fs.existsSync(file)) throw notFound();
+      return send(res, 200, fs.readFileSync(file), {
+        'content-type': 'font/woff2',
+        'cache-control': 'public, max-age=31536000',
+      });
+    }
     const json = wantsJson(req);
     const auth = sessionUser(req);
     const user = auth?.user || null;

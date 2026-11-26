@@ -1,0 +1,6 @@
+{
+  "framework": null,
+  "rewrites": [
+    { "source": "/((?!fonts/).*)", "destination": "/api" }
+  ]
+}
