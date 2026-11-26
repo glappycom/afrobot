@@ -209,8 +209,6 @@ CREATE TABLE IF NOT EXISTS login_attempts (
   updated_at TEXT NOT NULL
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS claims_idempotency_key ON claims(idempotency_key);
-
 CREATE TABLE IF NOT EXISTS evidence_items (
   id TEXT PRIMARY KEY,
   project_id TEXT,
