@@ -13,7 +13,11 @@ async function role(user, password) {
   const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
   const page = await context.newPage();
   if (share) await page.goto(share, { waitUntil: 'domcontentloaded' });
-  await page.goto(`${origin}/login`);
+  await page.goto(`${origin}/login`, { waitUntil: 'domcontentloaded' });
+  if (!(await page.locator('#username').count())) {
+    const text = await page.locator('body').innerText();
+    throw new Error(`sign-in page missing: ${text.slice(0, 180).replace(/\s+/g, ' ')}`);
+  }
   await page.fill('#username', user);
   await page.fill('#password', password);
   await page.click('button[type="submit"]');
