@@ -30,7 +30,7 @@ const requiredHome = [
   'children trained in holiday programs',
   'students actively learning at partner schools in Africa',
   '3,200',
-  'Inside the 2024 McKinney build day',
+  'Inside the 2024 North America build day',
   'How holiday programs reached 5,000 children',
   'Our proposed plan for the first national season',
   'The first national season',
@@ -168,11 +168,11 @@ for (const line of ['Supervision', 'two-adult rule', 'Photo and media consent', 
   if (!safety.includes(line)) fail('child safety missing: ' + line);
 }
 const competitions = fs.readFileSync(path.join(root, 'competitions.html'), 'utf8');
-if (!competitions.includes('The 2027 season in Dallas–Fort Worth scales the 2024 pilot to about 15 teams and about 90 students.')) fail('competitions missing the 2027 season story');
+if (!competitions.includes('The 2027 season in North America scales the 2024 pilot to about 15 teams and about 90 students.')) fail('competitions missing the 2027 season story');
 if (!competitions.includes('complementary to other youth robotics programs')) fail('competitions missing the season model');
 if (home.includes('Dates coming soon') || programs.includes('Dates coming soon') || competitions.includes('Dates coming soon')) fail('Dates coming soon is still on a primary page');
 if (home.includes('No social accounts') || fs.readFileSync(path.join(root, 'contact.html'), 'utf8').includes('No social accounts') || fs.readFileSync(path.join(root, 'social.html'), 'utf8').includes('No social accounts')) fail('social placeholder is still present');
-for (const line of ['McKinney Build Day', 'Kids and mentors worked with robots in McKinney, Texas, in 2024.', 'From the program']) {
+for (const line of ['North America Build Day', 'Kids and mentors worked with robots in North America in 2024.', 'From the program']) {
   if (!events.includes(line)) fail('events missing: ' + line);
 }
 if (!home.includes('>Partner with us<')) fail('homepage missing Partner with us');
