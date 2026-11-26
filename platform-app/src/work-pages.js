@@ -2,10 +2,10 @@ import { readableSchools } from './access.js';
 import { all, get } from './db.js';
 import { learnersForSchool } from './experience.js';
 import { esc } from './format.js';
-import { meetingsFor, sessionBoard, sessionTotals } from './operations.js';
+import { listGrants, meetingsFor, sessionBoard, sessionTotals } from './operations.js';
 
 function page(title, home, body) {
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title></head><body><main id="main"><p><a href="${home}">Home</a></p>${body}<p>Preview v0.4</p></main></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title></head><body><main id="main"><p><a href="${home}">Home</a></p>${body}<p>Preview v0.5</p></main></body></html>`;
 }
 
 function hidden(session) {
@@ -96,10 +96,15 @@ export function adminPage(db, user, now, session, extras = {}) {
     ? all(db, `SELECT users.id, users.display_name, schools.display_name AS school_name FROM users
       JOIN memberships ON memberships.user_id = users.id AND memberships.role = 'coach'
       JOIN schools ON schools.id = memberships.school_id
-      WHERE users.role = 'coach' AND schools.id IN (${allowed.map(() => '?').join(',')})
+      WHERE users.role = 'coach' AND (users.active IS NULL OR users.active = 1) AND schools.id IN (${allowed.map(() => '?').join(',')})
       ORDER BY schools.display_name, users.display_name`, allowed)
     : [];
   const coachOptions = coaches.map((row) => `<option value="${esc(row.id)}">${esc(row.display_name)} · ${esc(row.school_name)}</option>`).join('');
+  const learners = allowed.length
+    ? all(db, `SELECT id, letter, school_id FROM learners WHERE (active IS NULL OR active = 1) AND school_id IN (${allowed.map(() => '?').join(',')}) ORDER BY letter`, allowed)
+    : [];
+  const learnerOptions = learners.map((row) => `<option value="${esc(row.id)}">Student ${esc(row.letter)}</option>`).join('');
+  const meetingOptions = meetingsFor(db, user, now).map((row) => `<option value="${esc(row.id)}">${esc(row.label)} · ${esc(row.meets_on)}</option>`).join('');
   const body = `${error}${notice}<h1>Add a club, coach, student, or session</h1>
     <form method="post" action="/organiser/admin/clubs">${hidden(session)}
       <h2>Club</h2>
@@ -139,6 +144,81 @@ export function adminPage(db, user, now, session, extras = {}) {
       <label>Date <input name="meetsOn" required placeholder="YYYY-MM-DD"></label>
       <label>Name <input name="label" required></label>
       <button type="submit">Add session</button>
-    </form>`;
+    </form>
+    <form method="post" action="/organiser/admin/meetings/edit">${hidden(session)}
+      <h2>Change a session</h2>
+      <label>Session <select name="meetingId">${meetingOptions}</select></label>
+      <label>New date <input name="meetsOn" placeholder="YYYY-MM-DD"></label>
+      <label>New name <input name="label"></label>
+      <button type="submit">Save session</button>
+      <button type="submit" name="cancel" value="1">Cancel session</button>
+    </form>
+    <form method="post" action="/organiser/admin/deactivate">${hidden(session)}
+      <h2>Deactivate</h2>
+      <label>Coach <select name="coachId"><option value="">—</option>${coachOptions}</select></label>
+      <label>Student <select name="learnerId"><option value="">—</option>${learnerOptions}</select></label>
+      <button type="submit">Deactivate</button>
+    </form>
+    <p><a href="/organiser/grants">Auditor access</a> · <a href="/organiser/export.csv">Export CSV</a> · <a href="/help">How it works</a></p>`;
   return page('Add a club', '/organiser', body);
+}
+
+export function grantsPage(db, user, now, session, extras = {}) {
+  const error = extras.error ? `<p role="alert">${esc(extras.error)}</p>` : '';
+  const notice = extras.notice ? `<p role="status">${esc(extras.notice)}</p>` : '';
+  const schools = sessionTotals(db, user, now);
+  const schoolOptions = schools.map((row) => `<option value="${esc(row.schoolId)}">${esc(row.displayName)}</option>`).join('');
+  const auditors = all(db, `SELECT id, display_name, username FROM users WHERE role = 'auditor' AND (active IS NULL OR active = 1) ORDER BY display_name`);
+  const auditorOptions = auditors.map((row) => `<option value="${esc(row.id)}">${esc(row.display_name)} · ${esc(row.username)}</option>`).join('');
+  const grants = listGrants(db, user, now);
+  const rows = grants.map((row) => `<tr><td>${esc(row.school_name)}</td><td>${esc(row.auditor_name)}</td><td>${esc(String(row.starts_at).slice(0, 10))} to ${esc(String(row.expires_at).slice(0, 10))}</td><td>${row.revoked_at ? 'Revoked' : 'Active'}</td><td>${row.revoked_at ? '' : `<form method="post" action="/organiser/grants/${esc(row.id)}/revoke">${hidden(session)}<button type="submit">Revoke</button></form>`}</td></tr>`).join('');
+  const body = `${error}${notice}<h1>Auditor access</h1>
+    <p>A grant lets that auditor read one club between two dates. Revoking hides the club again. Earlier records stay in the audit log.</p>
+    <form method="post" action="/organiser/grants">${hidden(session)}
+      <label>Auditor <select name="auditorId">${auditorOptions}</select></label>
+      <label>Club <select name="schoolId">${schoolOptions}</select></label>
+      <label>From <input name="startsOn" required placeholder="YYYY-MM-DD"></label>
+      <label>Until <input name="expiresOn" required placeholder="YYYY-MM-DD"></label>
+      <button type="submit">Grant read access</button>
+    </form>
+    <table><thead><tr><th>Club</th><th>Auditor</th><th>Period</th><th>State</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
+  return page('Auditor access', '/organiser', body);
+}
+
+export function helpPage(user) {
+  const blocks = {
+    coach: `<h1>How it works for a coach</h1>
+      <ol>
+        <li>Sign in.</li>
+        <li>Open Capture a session and pick the session for your club.</li>
+        <li>Mark each student present or absent. Students without consent, and deactivated students, are not on the list.</li>
+        <li>Enter starters, completions, the project result, and a short note. Do not add names or photos.</li>
+        <li>Send. Sent means the server stored one record. If you are offline, it stays Pending sync until you retry.</li>
+        <li>If the organiser sends it back, Session history says Needs attention and shows the reason. Fix and resubmit. That makes a new version and keeps the old one.</li>
+        <li>Overdue means the date passed and nothing was sent. Falling behind means fewer captured sessions than the season plan calls for by today.</li>
+      </ol>`,
+    organiser: `<h1>How it works for an organiser</h1>
+      <ol>
+        <li>Add a club, its reporting period, a coach, a student, and a session. You can change or cancel a session later. Cancelling keeps any record already sent.</li>
+        <li>Deactivate a coach or student when they leave. They cannot sign in or be marked. Their old records stay.</li>
+        <li>What needs me and Session tracking use the same approve and send-back actions. Send back needs a reason.</li>
+        <li>Overdue sessions and falling behind are calculated from the schedule and the captured sessions.</li>
+        <li>Grant an auditor read access to a club and a period, including a club you just added. Revoke ends that access.</li>
+        <li>Export CSV downloads sessions, attendance, and approved figures for one club.</li>
+      </ol>`,
+    auditor: `<h1>How it works for an auditor</h1>
+      <ol>
+        <li>You can read only the clubs an organiser granted, and only during that period.</li>
+        <li>Open a trace to see the figure, the reporting period, the approved version, and the redacted note.</li>
+        <li>File integrity checks are separate from the evidence note.</li>
+        <li>You cannot submit, approve, or change a record.</li>
+      </ol>`,
+    student: `<h1>How it works for a student or family</h1>
+      <ol>
+        <li>Sign in with the family join code account your organiser gave you.</li>
+        <li>This week shows how many captured sessions you were marked present for.</li>
+        <li>You cannot open another club's records.</li>
+      </ol>`,
+  };
+  return page('How it works', user.role === 'organiser' ? '/organiser' : user.role === 'auditor' ? '/auditor' : user.role === 'student' ? '/student' : '/coach', blocks[user.role] || blocks.coach);
 }

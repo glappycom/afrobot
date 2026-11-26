@@ -48,16 +48,22 @@ import {
   createClub,
   createCoachAccount,
   createLearnerAccount,
+  cancelMeeting,
+  clubSummaryCsv,
   createMeeting,
+  deactivateCoach,
+  deactivateLearner,
   ensureDemoMeetings,
+  grantAuditorRead,
   marksFrom,
   resubmitSession,
   sessionBoard,
   sessionTotals,
   submitSessionCapture,
   setReportingPeriod,
+  updateMeeting,
 } from './operations.js';
-import { adminPage, capturePage, fixPage, trackingPage } from './work-pages.js';
+import { adminPage, capturePage, fixPage, grantsPage, helpPage, trackingPage } from './work-pages.js';
 import { liteHome } from './experience.js';
 import { HttpError, notAvailable, notFound } from './http-error.js';
 import { hashPassword, passwordIsHashed, verifyPassword } from './passwords.js';
@@ -358,6 +364,10 @@ export function createApp(options = {}) {
         }
         const found = userByUsername(db, username);
         const passwordOk = found ? verifyPassword(req.input.password || '', found.password) : verifyPassword(req.input.password || '', DUMMY_HASH);
+        if (found && passwordOk && Number(found.active) === 0) {
+          if (json) return sendJson(res, 403, { error: 'This account is not active.' });
+          return sendHtml(res, 403, loginPage({ demoMode: demoSeed, error: 'This account is not active.' }));
+        }
         if (!found || !passwordOk) {
           recordFailure(db, username, ip, stamp(now));
           if (json) return sendJson(res, 401, { error: 'Sign-in failed' });
@@ -416,7 +426,20 @@ export function createApp(options = {}) {
       if (pathname === '/organiser/setup' && method === 'GET') return sendHtml(res, 200, setupPage('organiser', user, session, db));
       if (pathname === '/organiser/needs' && method === 'GET') return sendHtml(res, 200, needsPage(db, user, now, session, pageOpts));
       if (pathname === '/organiser/needs/act' && method === 'POST') {
-        const schoolId = needSchool(db, String(req.input.id || ''));
+        if (req.input.undo === '1') return redirect(res, '/organiser/needs?notice=saved');
+        const raw = String(req.input.id || '');
+        const claimKey = raw.startsWith('need-') ? raw.slice('need-'.length) : '';
+        const queued = claimKey ? get(db, 'SELECT * FROM claims WHERE id = ?', [claimKey]) : null;
+        if (queued) {
+          if (!readableSchools(db, user, stamp(now)).includes(queued.school_id)) throw notFound();
+          if (req.input.note) {
+            returnClaim(db, user, queued.id, req.input.note, now);
+            return redirect(res, '/organiser/needs?notice=returned');
+          }
+          approveClaim(db, user, queued.id, now, req.input);
+          return redirect(res, '/organiser/needs?notice=approved');
+        }
+        const schoolId = needSchool(db, raw);
         if (!schoolId || !readableSchools(db, user, stamp(now)).includes(schoolId)) throw notFound();
         addEvent(db, { now, action: 'submitted', user, subjectType: 'season', subjectId: IDS.seasonAfrica, detail: { need: req.input.id || 'need' } });
         return redirect(res, '/organiser/needs?notice=saved');
@@ -607,6 +630,54 @@ export function createApp(options = {}) {
         if (user.role !== 'organiser') throw notAvailable();
         return sendJson(res, 201, createMeeting(db, user, req.input, now));
       }
+      if (pathname === '/organiser/grants' && method === 'GET') return sendHtml(res, 200, grantsPage(db, user, now, session, pageOpts));
+      if ((pathname === '/organiser/grants' || pathname === '/api/admin/grants') && method === 'POST') {
+        formErrorPage = (message) => grantsPage(db, user, now, session, { error: message });
+        if (user.role !== 'organiser') throw notAvailable();
+        const grant = grantAuditorRead(db, user, req.input, now);
+        if (json || pathname.startsWith('/api/')) return sendJson(res, 201, grant);
+        return redirect(res, '/organiser/grants?notice=saved');
+      }
+      const grantRevokeHtml = pathname.match(/^\/organiser\/grants\/([a-z0-9-]+)\/revoke$/);
+      if (grantRevokeHtml && method === 'POST') {
+        revokeGrant(db, user, grantRevokeHtml[1], now);
+        if (json) return sendJson(res, 200, { ok: true });
+        return redirect(res, '/organiser/grants?notice=saved');
+      }
+      if (pathname === '/organiser/admin/meetings/edit' && method === 'POST') {
+        formErrorPage = (message) => adminPage(db, user, now, session, { error: message });
+        if (req.input.cancel === '1') cancelMeeting(db, user, String(req.input.meetingId || ''), now);
+        else updateMeeting(db, user, String(req.input.meetingId || ''), req.input, now);
+        if (json) return sendJson(res, 200, { ok: true });
+        return redirect(res, '/organiser/admin?notice=saved');
+      }
+      const meetingEdit = pathname.match(/^\/api\/admin\/meetings\/([a-z0-9-]+)$/);
+      if (meetingEdit && method === 'POST') {
+        if (user.role !== 'organiser') throw notAvailable();
+        if (req.input.cancel === '1' || req.input.cancel === true) return sendJson(res, 200, cancelMeeting(db, user, meetingEdit[1], now));
+        return sendJson(res, 200, updateMeeting(db, user, meetingEdit[1], req.input, now));
+      }
+      if (pathname === '/organiser/admin/deactivate' && method === 'POST') {
+        formErrorPage = (message) => adminPage(db, user, now, session, { error: message });
+        if (req.input.coachId) deactivateCoach(db, user, req.input.coachId, now);
+        if (req.input.learnerId) deactivateLearner(db, user, req.input.learnerId, now);
+        if (!req.input.coachId && !req.input.learnerId) throw new HttpError(422, 'Choose a coach or a student.');
+        if (json) return sendJson(res, 200, { ok: true });
+        return redirect(res, '/organiser/admin?notice=saved');
+      }
+      if (pathname === '/api/admin/deactivate' && method === 'POST') {
+        if (user.role !== 'organiser') throw notAvailable();
+        const result = {};
+        if (req.input.coachId) result.coach = deactivateCoach(db, user, req.input.coachId, now);
+        if (req.input.learnerId) result.learner = deactivateLearner(db, user, req.input.learnerId, now);
+        if (!result.coach && !result.learner) throw new HttpError(422, 'Choose a coach or a student.');
+        return sendJson(res, 200, result);
+      }
+      if (pathname === '/organiser/export.csv' && method === 'GET') {
+        const csv = clubSummaryCsv(db, user, now, Object.fromEntries(url.searchParams.entries()));
+        return send(res, 200, csv, { 'content-type': 'text/csv; charset=utf-8', 'content-disposition': 'attachment; filename="club-summary.csv"' });
+      }
+      if (pathname === '/help' && method === 'GET') return sendHtml(res, 200, helpPage(user));
       const verify = pathname.match(/^\/(?:api\/projects|organiser\/projects)\/([a-z0-9-]+)\/verify$/);
       if (verify && method === 'POST') {
         touched = { subjectType: 'project', subjectId: verify[1] };

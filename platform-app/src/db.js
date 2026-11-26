@@ -50,7 +50,8 @@ CREATE TABLE IF NOT EXISTS users (
   display_name TEXT NOT NULL,
   role TEXT NOT NULL,
   password TEXT NOT NULL,
-  mocked INTEGER NOT NULL DEFAULT 1
+  mocked INTEGER NOT NULL DEFAULT 1,
+  active INTEGER NOT NULL DEFAULT 1
 );
 
 CREATE TABLE IF NOT EXISTS memberships (
@@ -374,7 +375,8 @@ CREATE TABLE IF NOT EXISTS learners (
   letter TEXT NOT NULL,
   consent TEXT NOT NULL,
   consent_until TEXT,
-  user_id TEXT
+  user_id TEXT,
+  active INTEGER NOT NULL DEFAULT 1
 );
 
 CREATE TABLE IF NOT EXISTS join_codes (
@@ -405,6 +407,7 @@ CREATE TABLE IF NOT EXISTS meetings (
   coach_id TEXT NOT NULL,
   meets_on TEXT NOT NULL,
   label TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'scheduled',
   created_at TEXT NOT NULL,
   created_by TEXT NOT NULL
 );
@@ -571,6 +574,9 @@ function addColumn(records, table, name, type) {
 function ensureSqliteWork(records) {
   for (const name of ['meeting_id', 'return_note', 'project_result', 'coach_note']) addColumn(records, 'claims', name, 'TEXT');
   addColumn(records, 'learners', 'user_id', 'TEXT');
+  addColumn(records, 'learners', 'active', 'INTEGER NOT NULL DEFAULT 1');
+  addColumn(records, 'users', 'active', 'INTEGER NOT NULL DEFAULT 1');
+  addColumn(records, 'meetings', 'status', "TEXT NOT NULL DEFAULT 'scheduled'");
   records.exec(`CREATE TABLE IF NOT EXISTS meetings (
     id TEXT PRIMARY KEY,
     school_id TEXT NOT NULL,
@@ -596,6 +602,9 @@ export const POSTGRES_WORK_SQL = [
   'ALTER TABLE claims ADD COLUMN IF NOT EXISTS project_result TEXT',
   'ALTER TABLE claims ADD COLUMN IF NOT EXISTS coach_note TEXT',
   'ALTER TABLE learners ADD COLUMN IF NOT EXISTS user_id TEXT',
+  'ALTER TABLE learners ADD COLUMN IF NOT EXISTS active INTEGER NOT NULL DEFAULT 1',
+  'ALTER TABLE users ADD COLUMN IF NOT EXISTS active INTEGER NOT NULL DEFAULT 1',
+  'ALTER TABLE meetings ADD COLUMN IF NOT EXISTS status TEXT NOT NULL DEFAULT \'scheduled\'',
   `CREATE TABLE IF NOT EXISTS meetings (
     id TEXT PRIMARY KEY,
     school_id TEXT NOT NULL,

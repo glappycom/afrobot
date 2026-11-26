@@ -6,23 +6,59 @@ import { HttpError, notAvailable, notFound } from './http-error.js';
 
 export function learnersForSchool(db, schoolId, { logging = false } = {}) {
   const rows = all(db, 'SELECT * FROM learners WHERE school_id = ? ORDER BY letter', [schoolId]);
-  if (!logging) return rows;
-  return rows.filter((row) => row.consent === 'active');
+  const live = rows.filter((row) => Number(row.active ?? 1) === 1);
+  if (!logging) return live;
+  return live.filter((row) => row.consent === 'active');
 }
 
 export function consentGaps(db, schoolIds) {
   if (!schoolIds.length) return [];
-  return all(db, `SELECT * FROM learners WHERE school_id IN (${schoolIds.map(() => '?').join(',')}) AND consent != 'active' ORDER BY letter`, schoolIds);
+  return all(db, `SELECT * FROM learners WHERE school_id IN (${schoolIds.map(() => '?').join(',')}) AND consent != 'active' AND (active IS NULL OR active = 1) ORDER BY letter`, schoolIds);
 }
 
 export function joinCodeFor(db, cohortId) {
   return get(db, 'SELECT * FROM join_codes WHERE cohort_id = ?', [cohortId]);
 }
 
-export function fallingBehind(db, cohortId) {
-  const row = get(db, 'SELECT * FROM season_progress WHERE cohort_id = ?', [cohortId]);
-  if (!row) return null;
-  return { ...row, behind: row.done < row.planned };
+function todayOf(now) {
+  return String(typeof now === 'function' ? now() : (now || new Date().toISOString())).slice(0, 10);
+}
+
+export function fallingBehind(db, cohortId, now) {
+  const cohort = get(db, 'SELECT * FROM cohorts WHERE id = ?', [cohortId]);
+  if (!cohort) return null;
+  const plan = get(db, 'SELECT planned FROM season_progress WHERE cohort_id = ?', [cohortId]);
+  const meetings = all(db, `SELECT id FROM meetings WHERE cohort_id = ? AND (status IS NULL OR status = 'scheduled')`, [cohortId]);
+  const plannedTotal = plan ? Number(plan.planned) : meetings.length;
+  const today = todayOf(now);
+  let plannedToDate = 0;
+  if (today >= cohort.window_start) {
+    if (today >= cohort.window_end || cohort.window_end <= cohort.window_start) plannedToDate = plannedTotal;
+    else {
+      const span = Date.parse(`${cohort.window_end}T00:00:00Z`) - Date.parse(`${cohort.window_start}T00:00:00Z`);
+      const elapsed = Date.parse(`${today}T00:00:00Z`) - Date.parse(`${cohort.window_start}T00:00:00Z`);
+      plannedToDate = Math.round(plannedTotal * elapsed / span);
+    }
+  }
+  let done = 0;
+  for (const meeting of meetings) {
+    const claim = get(db, 'SELECT status FROM claims WHERE meeting_id = ? ORDER BY version DESC LIMIT 1', [meeting.id]);
+    if (claim && (claim.status === 'submitted' || claim.status === 'approved')) done += 1;
+  }
+  const end = Date.parse(`${cohort.window_end}T00:00:00Z`);
+  const nowMs = Date.parse(`${today}T00:00:00Z`);
+  const weeksLeft = nowMs >= end ? 0 : Math.ceil((end - nowMs) / (7 * 86400000));
+  return { done, planned: plannedToDate, plannedTotal, weeks_left: weeksLeft, behind: done < plannedToDate };
+}
+
+export function overdueMeetings(db, schoolIds, now) {
+  if (!schoolIds.length) return [];
+  const today = todayOf(now);
+  const meetings = all(db, `SELECT * FROM meetings WHERE school_id IN (${schoolIds.map(() => '?').join(',')}) AND (status IS NULL OR status = 'scheduled') AND meets_on < ? ORDER BY meets_on`, [...schoolIds, today]);
+  return meetings.filter((meeting) => {
+    const claim = get(db, 'SELECT status FROM claims WHERE meeting_id = ? ORDER BY version DESC LIMIT 1', [meeting.id]);
+    return !(claim && (claim.status === 'submitted' || claim.status === 'approved'));
+  });
 }
 
 export function needsQueue(db, user, now) {
@@ -43,13 +79,25 @@ export function needsQueue(db, user, now) {
         ? "Why first: it's the oldest waiting record. The team's season record can't be finished until it's reviewed."
         : `Why: ${claim.numerator} of ${claim.denominator} was sent without a photo and is waiting for approval.`,
       action: 'Approve',
+      claimId: claim.id,
       meta: `${teamName(claim.school_id)} · ${school?.country_name || ''} · Coach`,
+    });
+  }
+  for (const meeting of overdueMeetings(db, schools, now)) {
+    items.push({
+      id: `need-overdue-${meeting.id}`,
+      group: 'Blocking a team now',
+      title: `Overdue: ${meeting.label} · ${meeting.meets_on}`,
+      why: 'Why: the session date has passed and nothing was sent.',
+      action: 'Open tracking',
+      href: '/organiser/tracking',
+      meta: schoolName(meeting.school_id)?.display_name || '',
     });
   }
   for (const schoolId of schools) {
     const cohort = get(db, 'SELECT id FROM cohorts WHERE school_id = ?', [schoolId]);
     if (!cohort) continue;
-    const pace = fallingBehind(db, cohort.id);
+    const pace = fallingBehind(db, cohort.id, now);
     if (pace?.behind) {
       items.push({
         id: `need-pace-${cohort.id}`,
@@ -73,7 +121,7 @@ export function needsQueue(db, user, now) {
     });
   }
   const renewing = schools.length
-    ? all(db, `SELECT * FROM learners WHERE school_id IN (${schools.map(() => '?').join(',')}) AND consent = 'active' AND consent_until IS NOT NULL ORDER BY consent_until`, schools)
+    ? all(db, `SELECT * FROM learners WHERE school_id IN (${schools.map(() => '?').join(',')}) AND consent = 'active' AND (active IS NULL OR active = 1) AND consent_until IS NOT NULL ORDER BY consent_until`, schools)
     : [];
   if (renewing[0]) {
     items.push({
@@ -88,7 +136,7 @@ export function needsQueue(db, user, now) {
   for (const schoolId of schools) {
     const cohort = get(db, 'SELECT id FROM cohorts WHERE school_id = ?', [schoolId]);
     if (!cohort) continue;
-    const pace = fallingBehind(db, cohort.id);
+    const pace = fallingBehind(db, cohort.id, now);
     if (pace && !pace.behind) {
       items.push({
         id: `need-ok-${cohort.id}`,
@@ -135,5 +183,5 @@ a{color:#163A66}h1{font-size:20px;color:#0E2747;margin:0 0 8px}
 .pad{padding:16px}.btn{display:flex;align-items:center;justify-content:center;min-height:56px;background:#0E2747;color:#fff;text-decoration:none;font-weight:700;border-radius:4px}
 .note{margin-top:12px;padding:8px 12px;background:#FBF3E2;border-left:4px solid #8A5A00}
 :focus-visible{outline:2px solid #0E2747;outline-offset:2px}
-</style></head><body><div class="bar"><b>afrobot</b><span class="tag">Lite · data saver</span></div><div class="pad"><p>Coach ${esc(coachName)}. Fictional.</p><h1>Good afternoon</h1><a class="btn" href="/lite/log">Log a session</a>${hidden}<p class="note">You can send starters and completions without a photo. Pictures stay off until you tap them. A picture is about 40 KB. If this phone cannot keep a draft, keep this tab open or print the counts.</p><p>Preview v0.4</p></div></body></html>`;
+</style></head><body><div class="bar"><b>afrobot</b><span class="tag">Lite · data saver</span></div><div class="pad"><p>Coach ${esc(coachName)}. Fictional.</p><h1>Good afternoon</h1><a class="btn" href="/lite/log">Log a session</a>${hidden}<p class="note">You can send starters and completions without a photo. Pictures stay off until you tap them. A picture is about 40 KB. If this phone cannot keep a draft, keep this tab open or print the counts.</p><p>Preview v0.5</p></div></body></html>`;
 }

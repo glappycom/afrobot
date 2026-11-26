@@ -415,12 +415,13 @@ export function recordAttendance(db, schoolId, claimId, marks) {
   if (!Array.isArray(marks) || !marks.length) throw new HttpError(422, 'Mark each student present or absent.');
   const learners = all(db, 'SELECT * FROM learners WHERE school_id = ?', [schoolId]);
   const byId = new Map(learners.map((row) => [row.id, row]));
-  const active = learners.filter((row) => row.consent === 'active');
+  const active = learners.filter((row) => row.consent === 'active' && Number(row.active ?? 1) === 1);
   if (!active.length) throw new HttpError(422, 'Add a student with consent before logging attendance.');
   const seen = new Set();
   for (const mark of marks) {
     const learner = byId.get(mark.learnerId);
     if (!learner) throw notFound();
+    if (Number(learner.active ?? 1) !== 1) throw new HttpError(422, `Student ${learner.letter} is not active.`);
     if (seen.has(learner.id)) throw new HttpError(422, 'Each student is marked once.');
     seen.add(learner.id);
     const present = mark.present === true || mark.present === 1 || mark.present === '1' || mark.present === 'present';

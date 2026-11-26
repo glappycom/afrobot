@@ -5,7 +5,7 @@ import { readableSchools } from './access.js';
 import { traceClaim } from './domain.js';
 import { displayId } from './records.js';
 import { get } from './db.js';
-import { consentGaps, fallingBehind, joinCodeFor, learnersForSchool, needsQueue } from './experience.js';
+import { consentGaps, fallingBehind, joinCodeFor, learnersForSchool, needsQueue, overdueMeetings } from './experience.js';
 import { approvedSessions, coachHistory, learnerProgress } from './operations.js';
 import { IDS } from './constants.js';
 import { esc, rateLabel } from './format.js';
@@ -28,7 +28,7 @@ function teamFor(schoolId) {
 
 function shell({ title, user, session, roleLabel, device, home, body, phone = false, bell = 0 }) {
   const initials = String(user.display_name || 'A').split(' ').map((part) => part[0]).join('').slice(0, 2);
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><link rel="stylesheet" href="/home.css"><style>body{font-family:PS,"Public Sans",sans-serif}</style></head><body class="${phone ? 'phone-app' : ''}">${ICONS}<a class="skip" href="#main">Skip to content</a><header class="shell"><div class="shell-in"><a href="${home}" aria-label="AfroBot platform home"><img class="mark" src="/logo-afrobot-navy.svg" alt="afrobot"></a><span class="prod">Platform</span><span class="viewas">View as</span><nav class="roles" aria-label="Signed-in role"><a class="on" href="${home}" aria-current="page">${esc(roleLabel)} <span class="dev">${esc(device)}</span></a></nav><span class="mocktag">Fictional data</span><div class="hbtns"><button class="ibtn" type="button" aria-label="Notifications, ${bell} unread">${icon('bell')}<span class="dot">${bell}</span></button><details class="menuwrap"><summary class="ibtn" aria-label="Profile and settings"><span class="me">${esc(initials)}</span></summary><div class="menu" role="menu"><b>${esc(user.display_name)}</b><a href="/settings">Settings</a><a href="/demo">Demo controls</a><form method="post" action="/logout">${hidden(session)}<button type="submit">Sign out</button></form></div></details></div></div></header><main id="main" tabindex="-1">${body}</main><footer class="appfoot">Preview v0.4</footer><div id="toasts" aria-live="polite"></div><script src="/home.js"></script></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><link rel="stylesheet" href="/home.css"><style>body{font-family:PS,"Public Sans",sans-serif}</style></head><body class="${phone ? 'phone-app' : ''}">${ICONS}<a class="skip" href="#main">Skip to content</a><header class="shell"><div class="shell-in"><a href="${home}" aria-label="AfroBot platform home"><img class="mark" src="/logo-afrobot-navy.svg" alt="afrobot"></a><span class="prod">Platform</span><span class="viewas">View as</span><nav class="roles" aria-label="Signed-in role"><a class="on" href="${home}" aria-current="page">${esc(roleLabel)} <span class="dev">${esc(device)}</span></a></nav><span class="mocktag">Fictional data</span><div class="hbtns"><button class="ibtn" type="button" aria-label="Notifications, ${bell} unread">${icon('bell')}<span class="dot">${bell}</span></button><details class="menuwrap"><summary class="ibtn" aria-label="Profile and settings"><span class="me">${esc(initials)}</span></summary><div class="menu" role="menu"><b>${esc(user.display_name)}</b><a href="/settings">Settings</a><a href="/demo">Demo controls</a><form method="post" action="/logout">${hidden(session)}<button type="submit">Sign out</button></form></div></details></div></div></header><main id="main" tabindex="-1">${body}</main><footer class="appfoot">Preview v0.5</footer><div id="toasts" aria-live="polite"></div><script src="/home.js"></script></body></html>`;
 }
 
 function tabs(on) {
@@ -46,7 +46,8 @@ export function coachScreen(db, user, now, session, extras = {}) {
   const team = teamFor(school?.id);
   const gaps = membership ? consentGaps(db, [membership.school_id]) : [];
   const code = membership ? joinCodeFor(db, membership.cohort_id) : null;
-  const pace = membership ? fallingBehind(db, membership.cohort_id) : null;
+  const pace = membership ? fallingBehind(db, membership.cohort_id, now) : null;
+  const late = membership ? overdueMeetings(db, [membership.school_id], now) : [];
   const gapNote = gaps.length
     ? `<div class="banner warn" role="status" style="margin:16px 20px 0">${icon('alert')}<div><b>Student ${esc(gaps.map((row) => row.letter).join(', '))} ${gaps.length === 1 ? 'is' : 'are'} hidden from logging until consent is in.</b><span>Ask the organiser. ${esc(school?.display_name || '')}.</span></div></div>`
     : '';
@@ -56,7 +57,8 @@ export function coachScreen(db, user, now, session, extras = {}) {
   const body = phone(`<div class="greet"><div class="d">Thursday 26 Nov <span class="mtag">Fictional</span></div><h1>Good morning,<br>${esc(user.display_name)}</h1></div>
     <div class="cta"><a class="btn p big xl" href="/coach/log">${icon('plus', 'lg')} Log a session<span class="sub3">Photo, skills, save. About 20 seconds.</span></a>
     <a class="btn o big" href="/coach/capture">Capture a session</a>
-    <a class="btn o big" href="/coach/result">Send a result without a photo</a></div>
+    <a class="btn o big" href="/coach/result">Send a result without a photo</a>
+    <a href="/help">How it works</a></div>
     ${extras.error ? `<p role="alert">${esc(extras.error)}</p>` : ''}
     ${gapNote}
     <div class="sect"><h3>This week</h3><span>3 sessions</span></div>
@@ -70,6 +72,7 @@ export function coachScreen(db, user, now, session, extras = {}) {
     </div>
     <div class="sect"><h3>Needs you</h3><a href="/coach/logs">See all</a></div>
     <div class="due">
+      ${late.length ? `<p role="status"><b>Overdue</b> ${late.map((meeting) => `${esc(meeting.label)} · ${esc(meeting.meets_on)}`).join('; ')}. The date passed and nothing was sent.</p>` : ''}
       ${behind}
       <a href="/coach/logs"><span class="ic" style="background:#EEF1F4;color:#4E5D73">${icon('file')}</span><span class="tx"><b>Sessions not sent yet</b><span>Only you can see these</span></span><span class="chev">${icon('chev', 'sm')}</span></a>
       <a href="/coach/logs"><span class="ic" style="background:#E9EFF7;color:#163A66">${icon('clock')}</span><span class="tx"><b>Today, 15:30</b><span>${esc(team.name)} · ${esc(school?.display_name || '')}</span></span><span class="chev">${icon('chev', 'sm')}</span></a>
@@ -183,7 +186,7 @@ export function familyScreen(db, user, session) {
   const code = joinCodeFor(db, IDS.cohortCm);
   const progress = learnerProgress(db, user);
   const body = `<div class="stage-phone"><div class="phone"><div class="sbar" aria-hidden="true"><span>9:41</span></div><div class="scr">
-    <div class="appbar"><div><div class="t">Family</div><h1 style="font-size:20px">Good afternoon</h1></div><span class="mtag" style="margin-left:auto">Fictional</span></div>
+    <div class="appbar"><div><div class="t">Family</div><h1 style="font-size:20px">Good afternoon</h1></div><a href="/help">How it works</a><span class="mtag" style="margin-left:auto">Fictional</span></div>
     <div class="kidcard card"><span class="kav" aria-hidden="true">A</span><div><b>Student A</b><span>Team Sunbird · Coach A</span><span class="lk">${icon('link', 'sm')} Linked with ${esc(code?.code || '')}</span></div><span class="chip c-bui" style="margin-left:auto">Build</span></div>
     <div class="week2 card"><div class="wk"><span>${icon('sparkle', 'sm')}</span><h3>This week</h3><span>23–26 Nov</span></div><ul><li>Came to <b>${progress ? `${progress.came} of ${progress.total}` : '0 of 0'}</b> sessions.</li><li>Session counts come from records sent by the coach.</li></ul></div>
     <div class="sect"><h3>Student A's journey</h3><a href="/student/journey">Open</a></div>
@@ -205,7 +208,12 @@ function needList(db, user, now, session) {
       last = item.group;
     }
     n += 1;
-    html += `<li class="need${n === 1 ? ' top' : ''}"><span class="rk">${n}</span><span class="nic" style="background:#EEF1F4;color:#4E5D73">${icon('flag')}</span><div class="nb"><b>${esc(item.title)}</b><p><span class="why">${esc(item.why.split(':')[0])}:</span> ${esc(item.why.slice(item.why.indexOf(':') + 1).trim())}</p><div class="nm"><span>${esc(item.meta || '')}</span></div></div><form method="post" action="/organiser/needs/act">${hidden(session)}<input type="hidden" name="id" value="${esc(item.id)}"><button class="btn ${n === 1 ? 'p' : 'o'}" type="submit">${esc(item.action)}</button><button class="btn g" type="submit" name="undo" value="1">Undo</button></form></li>`;
+    const actions = item.claimId
+      ? `<form method="post" action="/organiser/claims/${esc(item.claimId)}/approve">${hidden(session)}<button class="btn ${n === 1 ? 'p' : 'o'}" type="submit">Approve</button></form><form method="post" action="/organiser/claims/${esc(item.claimId)}/return">${hidden(session)}<label>Reason <input name="note"></label><button class="btn g" type="submit">Send back</button></form>`
+      : item.href
+        ? `<a href="${esc(item.href)}">${esc(item.action)}</a>`
+        : `<form method="post" action="/organiser/needs/act">${hidden(session)}<input type="hidden" name="id" value="${esc(item.id)}"><button class="btn ${n === 1 ? 'p' : 'o'}" type="submit">${esc(item.action)}</button><button class="btn g" type="submit" name="undo" value="1">Undo</button></form>`;
+    html += `<li class="need${n === 1 ? ' top' : ''}"><span class="rk">${n}</span><span class="nic" style="background:#EEF1F4;color:#4E5D73">${icon('flag')}</span><div class="nb"><b>${esc(item.title)}</b><p><span class="why">${esc(item.why.split(':')[0])}:</span> ${esc(item.why.slice(item.why.indexOf(':') + 1).trim())}</p><div class="nm"><span>${esc(item.meta || '')}</span></div></div>${actions}</li>`;
   }
   return { html, count: n };
 }
@@ -218,6 +226,8 @@ export function organiserScreen(db, user, now, session, extras = {}) {
     <a class="on" href="/organiser/needs" aria-current="page">${icon('flag')} What needs me <span class="ct">${count}</span></a>
     <a href="/organiser/tracking">${icon('grid')} Session tracking</a>
     <a href="/organiser/admin">${icon('cal')} Add a club</a>
+    <a href="/organiser/grants">${icon('lock')} Auditor access</a>
+    <a href="/help">How it works</a>
     <a href="/demo">${icon('inbox')} Approvals</a>
     <a href="/organiser/setup">${icon('cal')} Season setup</a>
     <a href="/settings">${icon('gear')} Settings</a>
@@ -237,6 +247,7 @@ export function auditorScreen(db, user, session) {
     <a href="/integrity">${icon('shield')} Integrity check</a>
     <a href="/auditor">${icon('box')} Audit pack</a>
     <a href="/access">${icon('lock')} Access review</a>
+    <a href="/help">How it works</a>
     <a href="/verify">${icon('check')} Verify pack</a>
     <div class="bottom">This workspace can't change records.</div></aside>
     <div class="main"><div class="trust" role="region" aria-label="Workspace status">${icon('lock', 'sm')}<span><b>Read-only</b> · view, trace, export</span></div>

@@ -78,12 +78,13 @@ function cohortForSchool(db, schoolId) {
   return get(db, 'SELECT * FROM cohorts WHERE school_id = ? ORDER BY id LIMIT 1', [schoolId]);
 }
 
-export function meetingsFor(db, user, now) {
+export function meetingsFor(db, user, now, options = {}) {
   const schools = readableSchools(db, user, at(now));
   if (!schools.length || user.role === 'student') return [];
   const rows = all(db, `SELECT * FROM meetings WHERE school_id IN (${schools.map(() => '?').join(',')}) ORDER BY meets_on, label`, schools);
-  if (user.role === 'coach') return rows.filter((row) => row.coach_id === user.id);
-  return rows;
+  const visible = options.includeCancelled ? rows : rows.filter((row) => !row.status || row.status === 'scheduled');
+  if (user.role === 'coach') return visible.filter((row) => row.coach_id === user.id);
+  return visible;
 }
 
 export function createClub(db, user, input, now) {
@@ -249,7 +250,7 @@ export function createMeeting(db, user, input, now) {
   const coachId = String(input.coachId || '');
   const coach = get(db, `SELECT users.id FROM users
     JOIN memberships ON memberships.user_id = users.id
-    WHERE users.id = ? AND users.role = 'coach' AND memberships.school_id = ? AND memberships.role = 'coach'`, [coachId, schoolId]);
+    WHERE users.id = ? AND users.role = 'coach' AND (users.active IS NULL OR users.active = 1) AND memberships.school_id = ? AND memberships.role = 'coach'`, [coachId, schoolId]);
   if (!coach) throw notFound();
   const cohort = cohortForSchool(db, schoolId);
   if (!cohort) throw notFound();
@@ -266,6 +267,7 @@ export function createMeeting(db, user, input, now) {
     coach_id: coachId,
     meets_on: meetsOn,
     label,
+    status: 'scheduled',
     created_at: at(now),
     created_by: user.id,
   });
@@ -297,7 +299,7 @@ export function submitSessionCapture(db, user, input, now) {
   const meetingId = String(input.meetingId || '');
   if (!isId(meetingId)) throw new HttpError(422, 'Choose a session.');
   const meeting = get(db, 'SELECT * FROM meetings WHERE id = ?', [meetingId]);
-  if (!meeting) throw notFound();
+  if (!meeting || meeting.status === 'cancelled') throw meeting ? new HttpError(422, 'That session was cancelled.') : notFound();
   requireCoach(db, user, meeting.school_id, at(now));
   if (meeting.coach_id !== user.id) throw notFound();
   const key = String(input.idempotencyKey || `meet-${meeting.id}`).trim().toLowerCase();
@@ -436,7 +438,7 @@ export function coachHistory(db, user, now) {
 
 export function sessionBoard(db, user, now) {
   if (!user || user.role === 'student') throw notAvailable();
-  const meetings = meetingsFor(db, user, now);
+  const meetings = meetingsFor(db, user, now, { includeCancelled: true });
   return meetings.map((meeting) => {
     const school = get(db, 'SELECT display_name FROM schools WHERE id = ?', [meeting.school_id]);
     const coach = get(db, 'SELECT display_name FROM users WHERE id = ?', [meeting.coach_id]);
@@ -449,7 +451,7 @@ export function sessionBoard(db, user, now) {
       week: isoWeek(meeting.meets_on),
       meetsOn: meeting.meets_on,
       label: meeting.label,
-      status: claim ? statusLabel(claim.status) : 'Missing',
+      status: meeting.status === 'cancelled' ? 'Cancelled' : (claim ? statusLabel(claim.status) : 'Missing'),
       claimId: claim?.id || null,
       version: claim?.version || null,
       figure: claim ? rateLabel(claim.numerator, claim.denominator) : null,
@@ -525,6 +527,181 @@ export function approvedSessions(db, user, now) {
   });
 }
 
+export function grantAuditorRead(db, user, input, now) {
+  requireOrganiserRole(user);
+  const schoolId = String(input.schoolId || '');
+  requireOrganiser(db, user, schoolId, at(now));
+  const auditor = get(db, `SELECT * FROM users WHERE id = ? AND role = 'auditor'`, [String(input.auditorId || '')]);
+  if (!auditor || Number(auditor.active ?? 1) !== 1) throw notFound();
+  const starts = parseDate(input.startsOn);
+  const expires = parseDate(input.expiresOn);
+  if (expires <= starts) throw new HttpError(422, 'The access end is before the start.');
+  const id = newId('grant');
+  const stamp = at(now);
+  transaction(db, () => {
+    insert(db, 'access_grants', {
+      id,
+      user_id: auditor.id,
+      scope_type: 'school',
+      scope_id: schoolId,
+      permission: 'read',
+      starts_at: `${starts}T00:00:00.000Z`,
+      expires_at: `${expires}T23:59:59.000Z`,
+      revoked_at: null,
+      granted_by: user.id,
+    });
+    addEvent(db, {
+      now: stamp,
+      action: 'granted',
+      user,
+      subjectType: 'access_grant',
+      subjectId: id,
+      schoolId,
+      detail: { auditor_id: auditor.id, starts_on: starts, expires_on: expires },
+    });
+  });
+  return { id, schoolId, auditorId: auditor.id, startsOn: starts, expiresOn: expires };
+}
+
+export function listGrants(db, user, now) {
+  requireOrganiserRole(user);
+  const schools = readableSchools(db, user, at(now));
+  if (!schools.length) return [];
+  return all(db, `SELECT access_grants.*, users.username, users.display_name AS auditor_name, schools.display_name AS school_name
+    FROM access_grants
+    JOIN users ON users.id = access_grants.user_id
+    JOIN schools ON schools.id = access_grants.scope_id
+    WHERE access_grants.scope_type = 'school' AND access_grants.scope_id IN (${schools.map(() => '?').join(',')})
+    ORDER BY access_grants.starts_at`, schools);
+}
+
+export function updateMeeting(db, user, meetingId, input, now) {
+  requireOrganiserRole(user);
+  if (!isId(meetingId)) throw notFound();
+  const meeting = get(db, 'SELECT * FROM meetings WHERE id = ?', [meetingId]);
+  if (!meeting) throw notFound();
+  requireOrganiser(db, user, meeting.school_id, at(now));
+  if (meeting.status === 'cancelled') throw new HttpError(422, 'That session was cancelled.');
+  const cohort = get(db, 'SELECT * FROM cohorts WHERE id = ?', [meeting.cohort_id]);
+  const label = input.label ? cleanName(input.label, 'Session name') : meeting.label;
+  const meetsOn = input.meetsOn ? parseDate(input.meetsOn) : meeting.meets_on;
+  if (cohort && (meetsOn < cohort.window_start || meetsOn > cohort.window_end)) {
+    throw new HttpError(422, 'That date is outside this club reporting period.');
+  }
+  run(db, 'UPDATE meetings SET label = ?, meets_on = ? WHERE id = ?', [label, meetsOn, meeting.id]);
+  addEvent(db, {
+    now: at(now),
+    action: 'submitted',
+    user,
+    subjectType: 'school',
+    subjectId: meeting.school_id,
+    schoolId: meeting.school_id,
+    detail: { meeting_id: meeting.id, label, meets_on: meetsOn, edited: true },
+  });
+  return get(db, 'SELECT * FROM meetings WHERE id = ?', [meeting.id]);
+}
+
+export function cancelMeeting(db, user, meetingId, now) {
+  requireOrganiserRole(user);
+  if (!isId(meetingId)) throw notFound();
+  const meeting = get(db, 'SELECT * FROM meetings WHERE id = ?', [meetingId]);
+  if (!meeting) throw notFound();
+  requireOrganiser(db, user, meeting.school_id, at(now));
+  if (meeting.status !== 'cancelled') {
+    run(db, `UPDATE meetings SET status = 'cancelled' WHERE id = ?`, [meeting.id]);
+    addEvent(db, {
+      now: at(now),
+      action: 'revoked',
+      user,
+      subjectType: 'school',
+      subjectId: meeting.school_id,
+      schoolId: meeting.school_id,
+      detail: { meeting_id: meeting.id, cancelled: true },
+    });
+  }
+  return get(db, 'SELECT * FROM meetings WHERE id = ?', [meeting.id]);
+}
+
+export function deactivateCoach(db, user, coachId, now) {
+  requireOrganiserRole(user);
+  const coach = get(db, `SELECT * FROM users WHERE id = ? AND role = 'coach'`, [String(coachId || '')]);
+  if (!coach) throw notFound();
+  const membership = get(db, `SELECT school_id FROM memberships WHERE user_id = ? AND role = 'coach'`, [coach.id]);
+  if (!membership) throw notFound();
+  requireOrganiser(db, user, membership.school_id, at(now));
+  run(db, 'UPDATE users SET active = 0 WHERE id = ?', [coach.id]);
+  addEvent(db, {
+    now: at(now),
+    action: 'deactivated',
+    user,
+    subjectType: 'school',
+    subjectId: membership.school_id,
+    schoolId: membership.school_id,
+    detail: { coach_id: coach.id },
+  });
+  return { id: coach.id, active: 0 };
+}
+
+export function deactivateLearner(db, user, learnerId, now) {
+  requireOrganiserRole(user);
+  const learner = get(db, 'SELECT * FROM learners WHERE id = ?', [String(learnerId || '')]);
+  if (!learner) throw notFound();
+  requireOrganiser(db, user, learner.school_id, at(now));
+  run(db, 'UPDATE learners SET active = 0 WHERE id = ?', [learner.id]);
+  if (learner.user_id) run(db, 'UPDATE users SET active = 0 WHERE id = ?', [learner.user_id]);
+  addEvent(db, {
+    now: at(now),
+    action: 'deactivated',
+    user,
+    subjectType: 'school',
+    subjectId: learner.school_id,
+    schoolId: learner.school_id,
+    detail: { learner_id: learner.id },
+  });
+  return { id: learner.id, active: 0 };
+}
+
+function csvCell(value) {
+  const text = value == null ? '' : String(value);
+  if (/[",\n]/.test(text)) return `"${text.replaceAll('"', '""')}"`;
+  return text;
+}
+
+export function clubSummaryCsv(db, user, now, input) {
+  if (!user || user.role !== 'organiser') throw notAvailable();
+  const schoolId = String(input.schoolId || '');
+  requireOrganiser(db, user, schoolId, at(now));
+  const from = input.from ? parseDate(input.from) : '0000-01-01';
+  const to = input.to ? parseDate(input.to) : '9999-12-31';
+  const school = get(db, 'SELECT display_name FROM schools WHERE id = ?', [schoolId]);
+  const meetings = all(db, 'SELECT * FROM meetings WHERE school_id = ? AND meets_on >= ? AND meets_on <= ? ORDER BY meets_on, label', [schoolId, from, to]);
+  const lines = ['club,coach,session,date,status,starters,completions,present,absent,approved_numerator,approved_denominator'];
+  for (const meeting of meetings) {
+    const coach = get(db, 'SELECT display_name FROM users WHERE id = ?', [meeting.coach_id]);
+    const claim = get(db, 'SELECT * FROM claims WHERE meeting_id = ? ORDER BY version DESC LIMIT 1', [meeting.id]);
+    const marks = claim
+      ? all(db, `SELECT attendance.present AS present, learners.letter AS letter FROM attendance JOIN learners ON learners.id = attendance.learner_id WHERE attendance.claim_id = ? ORDER BY learners.letter`, [claim.id])
+      : [];
+    const present = marks.filter((row) => Number(row.present) === 1).map((row) => row.letter).join(' ');
+    const absent = marks.filter((row) => Number(row.present) !== 1).map((row) => row.letter).join(' ');
+    const approved = claim?.status === 'approved';
+    lines.push([
+      school?.display_name,
+      coach?.display_name,
+      meeting.label,
+      meeting.meets_on,
+      meeting.status === 'cancelled' ? 'Cancelled' : (claim ? statusLabel(claim.status) : 'Missing'),
+      claim?.denominator ?? '',
+      claim?.numerator ?? '',
+      present,
+      absent,
+      approved ? claim.numerator : '',
+      approved ? claim.denominator : '',
+    ].map(csvCell).join(','));
+  }
+  return `${lines.join('\n')}\n`;
+}
+
 export function ensureDemoMeetings(db) {
   const rows = [
     ['mtg-cm-w1', IDS.schoolCm, IDS.cohortCm, 'user-coach-a', '2026-03-09', 'Week 1'],
@@ -543,6 +720,7 @@ export function ensureDemoMeetings(db) {
       coach_id: row[3],
       meets_on: row[4],
       label: row[5],
+      status: 'scheduled',
       created_at: '2026-03-01T00:00:00.000Z',
       created_by: 'user-organiser',
     });
