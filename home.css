@@ -324,7 +324,7 @@ body.home nav{position:sticky;background:#fff}
 .oa-hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%}
 .oa-hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,39,71,.82) 0%,rgba(14,39,71,.35) 55%,rgba(14,39,71,.1) 100%),linear-gradient(180deg,rgba(14,39,71,.5) 0%,transparent 25%,rgba(14,39,71,.6) 100%)}
 .oa-hero .w{position:relative;z-index:2;width:100%;padding-top:0;padding-bottom:88px;color:#fff}
-.oa-hero h1{font-size:132px;max-width:1100px;margin:24px 0 28px;color:#fff;text-transform:lowercase}
+.oa-hero h1{font-size:132px;max-width:1100px;margin:0 0 28px;color:#fff;text-transform:lowercase}
 .oa-hero h1 em{font-style:normal;color:var(--sun)}
 .oa-hero p{font-size:24px;max-width:560px;margin-bottom:36px;color:#fff}
 .oa-hero .ctas{display:flex;gap:16px;flex-wrap:wrap}
