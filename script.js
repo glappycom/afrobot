@@ -491,7 +491,7 @@ document.querySelectorAll('.work-gallery').forEach((gallery) => {
 (() => {
   document.documentElement.classList.add('js');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const reveal = document.querySelectorAll('[data-reveal], main > section, main > .hero, main > .stats, main > .split, main > .spons');
+  const reveal = document.querySelectorAll('[data-reveal], main > section, main > .stats, main > .split, main > .spons');
   if (!reduce && reveal.length && 'IntersectionObserver' in window) {
     reveal.forEach((el, i) => { el.classList.add('will-reveal'); el.style.setProperty('--i', String(i % 6)); });
     const io = new IntersectionObserver((entries) => {
@@ -513,7 +513,8 @@ document.querySelectorAll('.work-gallery').forEach((gallery) => {
     const tick = (now) => {
       const t = Math.min(1, (now - start) / 900);
       const eased = 1 - (1 - t) ** 3;
-      el.textContent = format(Math.round(target * eased));
+      const value = Math.round(target * eased);
+    el.textContent = el.hasAttribute('data-plain') ? String(value) : format(value);
       if (t < 1) requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
@@ -526,6 +527,20 @@ document.querySelectorAll('.work-gallery').forEach((gallery) => {
     });
   }, { threshold: 0.5 });
   nums.forEach((el) => counts.observe(el));
+})();
+
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const top = document.querySelector('.to-top');
+  if (!top) return;
+  const footer = document.querySelector('footer');
+  const sync = () => {
+    const footerSeen = footer && footer.getBoundingClientRect().top < window.innerHeight - 8;
+    top.hidden = window.scrollY < 700 || footerSeen;
+  };
+  addEventListener('scroll', sync, { passive: true });
+  sync();
+  top.addEventListener('click', () => window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }));
 })();
 
 if (Q.get('hero') === 'photo') {
