@@ -355,6 +355,36 @@ CREATE TABLE IF NOT EXISTS reason_codes (
   label TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS learners (
+  id TEXT PRIMARY KEY,
+  school_id TEXT NOT NULL,
+  cohort_id TEXT NOT NULL,
+  letter TEXT NOT NULL,
+  consent TEXT NOT NULL,
+  consent_until TEXT
+);
+
+CREATE TABLE IF NOT EXISTS join_codes (
+  cohort_id TEXT PRIMARY KEY,
+  code TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS season_progress (
+  cohort_id TEXT PRIMARY KEY,
+  planned INTEGER NOT NULL,
+  done INTEGER NOT NULL,
+  weeks_left INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS session_logs (
+  id TEXT PRIMARY KEY,
+  school_id TEXT NOT NULL,
+  cohort_id TEXT NOT NULL,
+  coach_id TEXT NOT NULL,
+  skills_json TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+
 CREATE TRIGGER IF NOT EXISTS events_no_update
 BEFORE UPDATE ON events
 BEGIN

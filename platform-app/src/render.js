@@ -3,6 +3,7 @@ import { DEMO_USERS, IDS } from './constants.js';
 import { all, get } from './db.js';
 import { comparisonViews, followupsFor, goalRollup, listClaims, listProjects, projectReport, traceClaim, visibleEvents } from './domain.js';
 import { esc, rateLabel, sdgLabel, show } from './format.js';
+import { consentGaps, fallingBehind, joinCodeFor, learnersForSchool, liteHome, needsQueue } from './experience.js';
 import { accessReviewRows, custodyChain, displayId, filterEvents, formatStamps, gridClaims, integrityReport, provenanceDocument, retentionFor } from './records.js';
 
 const CSS = `
@@ -326,6 +327,7 @@ export function coachPage(db, user, now, session, extras = {}) {
     body: `<p class="kicker">${icon('pencil')} coach</p>
     <h1>${heading}</h1>
     <p>${esc(school ? `${school.display_name}, ${school.country_name}` : '—')}</p>
+    ${coachToday(db, membership)}
     <section class="card">
       <p class="figure">${esc(rateLabel(focus?.numerator, focus?.denominator) || '—')}</p>
       ${pipeline(focus?.status || 'draft')}
@@ -433,6 +435,7 @@ export function organiserPage(db, user, now, session, extras = {}) {
     error: extras.error,
     body: `<p class="kicker">${icon('check')} organiser</p>
     <h1>${first ? 'Approve this total' : 'Review'}</h1>
+    <p><a href="/organiser/needs">What needs me</a></p>
     <p>A different person from the coach.</p>
     <section class="card">
       <p class="figure">${esc(rateLabel(first?.numerator, first?.denominator) || '—')}</p>
@@ -509,6 +512,7 @@ export function studentPage(db, user, now, session, extras = {}) {
     error: extras.error,
     body: `<p class="kicker">learner</p>
     <h1>Your note</h1>
+    <p><a href="/student/journey">Your journey</a> · <a href="/student/family">This week</a></p>
     <p class="row">${chip('Draft', 'draft')}<span>Signed in as ${esc(user.display_name)}. Only your draft.</span></p>
     ${project ? `<form class="card" method="post" action="/student/projects/${esc(project.id)}">
       ${hidden(session)}
@@ -734,4 +738,94 @@ export function searchPage(db, user, now, session, query, results) {
   });
 }
 
-export { homeFor };
+function coachToday(db, membership) {
+  if (!membership?.school_id) return '';
+  const gaps = consentGaps(db, [membership.school_id]);
+  const code = joinCodeFor(db, membership.cohort_id);
+  const pace = fallingBehind(db, membership.cohort_id);
+  const gapNote = gaps.length
+    ? `<p role="status">Student ${gaps.map((row) => row.letter).join(', ')} ${gaps.length === 1 ? 'is' : 'are'} hidden from logging until consent is in.</p>`
+    : '';
+  return `<p><a class="btn" href="/coach/log">Log a session</a></p>
+    ${gapNote}
+    <p>Join code <b>${esc(code?.code || '—')}</b>. One code for students and families.</p>
+    <p>${pace?.behind ? 'This team is falling behind the season plan.' : 'This team is on the season plan.'}</p>
+    <p><a href="/lite">Lite</a> · <a href="/settings">Data saver</a> · <a href="/coach/setup">First-run setup</a></p>`;
+}
+
+export function logPage(db, user, session, step = '1') {
+  const membership = get(db, 'SELECT * FROM memberships WHERE user_id = ? AND role = ?', [user.id, 'coach']);
+  const kids = membership ? learnersForSchool(db, membership.school_id, { logging: true }) : [];
+  const steps = `<p class="steps" aria-live="polite">Step ${esc(step)} of 3</p>`;
+  let body = '';
+  if (step === '2') {
+    body = `<h1>Skills</h1>${steps}<form method="post" action="/coach/log/save">${hidden(session)}
+      <input type="hidden" name="letters" value="${esc(kids.map((row) => row.letter).join(','))}">
+      <label><input type="checkbox" name="skills" value="fair-test" checked> Fair test</label>
+      <p><button type="submit">Save</button></p></form>`;
+  } else if (step === 'saved') {
+    body = `<h1>Saved</h1><p role="status">Sent. <a href="/coach">Back</a></p>`;
+  } else {
+    body = `<h1>Who came</h1>${steps}<ul>${kids.map((row) => `<li>Student ${esc(row.letter)}</li>`).join('') || '<li>No students to log</li>'}</ul>
+      <p><a class="btn" href="/coach/log/2">Next</a></p>`;
+  }
+  return layout({
+    title: 'Log · afrobot evidence',
+    user: { ...user, csrf: session.csrf },
+    db, now: () => new Date().toISOString(), crumb: 'Log', section: 'home',
+    body,
+  });
+}
+
+export function needsPage(db, user, now, session) {
+  const items = needsQueue(db, user, now);
+  const list = items.map((item, index) => `<li><b>${index + 1}. ${esc(item.title)}</b><p>Why: ${esc(item.why)}</p><form method="post" action="/organiser/needs/act">${hidden(session)}<input type="hidden" name="id" value="${esc(item.id)}"><button type="submit">${esc(item.action)}</button></form></li>`).join('');
+  return layout({
+    title: 'What needs me · afrobot evidence',
+    user: { ...user, csrf: session.csrf },
+    db, now, crumb: 'What needs me', section: 'home',
+    body: `<h1>What needs me</h1>${items.length ? `<ol>${list}</ol>` : '<p class="state">All caught up.</p>'}`,
+  });
+}
+
+export function journeyPage(db, user, session) {
+  const code = joinCodeFor(db, IDS.cohortCm);
+  return layout({
+    title: 'Journey · afrobot evidence',
+    user: { ...user, csrf: session.csrf },
+    db, now: () => new Date().toISOString(), crumb: 'Journey',
+    body: `<h1>Your journey</h1><ol class="pipe" aria-label="Stages"><li class="done">Discover</li><li class="now">Build</li><li>Innovate</li></ol><p>You are here: Build.</p><p>Join code ${esc(code?.code || '—')}</p>`,
+  });
+}
+
+export function familyPage(db, user, session) {
+  const code = joinCodeFor(db, IDS.cohortCm);
+  return layout({
+    title: 'This week · afrobot evidence',
+    user: { ...user, csrf: session.csrf },
+    db, now: () => new Date().toISOString(), crumb: 'This week',
+    body: `<h1>This week</h1><p>Student A practised a fair test. The same join code is ${esc(code?.code || '—')}.</p><p><a href="/student/link">Link with a code</a></p>`,
+  });
+}
+
+export function setupPage(role, user, session, db) {
+  return layout({
+    title: 'Setup · afrobot evidence',
+    user: user ? { ...user, csrf: session.csrf } : null,
+    db, now: () => new Date().toISOString(), crumb: 'Setup',
+    body: `<h1>Set up</h1><p aria-live="polite">Step 1 of 4</p><p><a href="/${role === 'organiser' ? 'organiser' : role === 'student' ? 'student' : 'coach'}">Skip for now</a></p>`,
+  });
+}
+
+export function settingsPage(user, session, db, saver) {
+  return layout({
+    title: 'Settings · afrobot evidence',
+    user: { ...user, csrf: session.csrf },
+    db, now: () => new Date().toISOString(), crumb: 'Settings',
+    body: `<h1>Data saver</h1><p>Lite mode is ${saver ? 'on' : 'off'}. Photos stay off until tapped.</p>
+    <form method="post" action="/settings">${hidden(session)}<input type="hidden" name="dataSaver" value="${saver ? '0' : '1'}"><button type="submit">${saver ? 'Turn data saver off' : 'Turn data saver on'}</button></form>
+    <p><a href="/lite">Open Lite</a></p>`,
+  });
+}
+
+export { homeFor, liteHome };

@@ -1,0 +1,101 @@
+import { readableSchools } from './access.js';
+import { all, get, insert } from './db.js';
+import { listClaims } from './domain.js';
+import { HttpError, notAvailable, notFound } from './http-error.js';
+
+export function learnersForSchool(db, schoolId, { logging = false } = {}) {
+  const rows = all(db, 'SELECT * FROM learners WHERE school_id = ? ORDER BY letter', [schoolId]);
+  if (!logging) return rows;
+  return rows.filter((row) => row.consent === 'active');
+}
+
+export function consentGaps(db, schoolIds) {
+  if (!schoolIds.length) return [];
+  return all(db, `SELECT * FROM learners WHERE school_id IN (${schoolIds.map(() => '?').join(',')}) AND consent != 'active' ORDER BY letter`, schoolIds);
+}
+
+export function joinCodeFor(db, cohortId) {
+  return get(db, 'SELECT * FROM join_codes WHERE cohort_id = ?', [cohortId]);
+}
+
+export function fallingBehind(db, cohortId) {
+  const row = get(db, 'SELECT * FROM season_progress WHERE cohort_id = ?', [cohortId]);
+  if (!row) return null;
+  return { ...row, behind: row.done < row.planned };
+}
+
+export function needsQueue(db, user, now) {
+  const schools = readableSchools(db, user, typeof now === 'function' ? now() : now);
+  const items = [];
+  for (const claim of listClaims(db, user, now).filter((row) => row.status === 'submitted')) {
+    items.push({
+      id: `need-${claim.id}`,
+      rank: 'blocking',
+      title: `Review ${claim.numerator}/${claim.denominator}`,
+      why: 'A coach sent this total. It stays waiting until a different person approves it.',
+      action: 'Open the queue',
+    });
+  }
+  for (const learner of consentGaps(db, schools)) {
+    const title = learner.consent === 'expired'
+      ? `Consent expired for Student ${learner.letter}`
+      : `Consent missing for Student ${learner.letter}`;
+    items.push({
+      id: `need-${learner.id}`,
+      rank: 'blocking',
+      title,
+      why: `Student ${learner.letter} is hidden from logging until consent is in.`,
+      action: 'Ask the family',
+    });
+  }
+  for (const schoolId of schools) {
+    const cohort = get(db, 'SELECT id FROM cohorts WHERE school_id = ?', [schoolId]);
+    if (!cohort) continue;
+    const pace = fallingBehind(db, cohort.id);
+    if (pace?.behind) {
+      items.push({
+        id: `need-pace-${cohort.id}`,
+        rank: 'soon',
+        title: 'A team is falling behind',
+        why: `${pace.done} of ${pace.planned} challenges are done, with ${pace.weeks_left} weeks left. Falling behind means fewer challenges than the season plan at this point.`,
+        action: 'Message the coach',
+      });
+    }
+  }
+  return items;
+}
+
+export function saveSessionLog(db, user, input, now) {
+  if (user.role !== 'coach') throw notAvailable();
+  const membership = get(db, 'SELECT school_id, cohort_id FROM memberships WHERE user_id = ? AND role = ?', [user.id, 'coach']);
+  if (!membership) throw notFound();
+  const letters = String(input.letters || '').split(',').map((part) => part.trim()).filter(Boolean);
+  const allowed = new Set(learnersForSchool(db, membership.school_id, { logging: true }).map((row) => row.letter));
+  for (const letter of letters) {
+    if (!allowed.has(letter)) throw new HttpError(422, `Student ${letter} is hidden until consent is in.`);
+  }
+  const id = input.id || `slog-${Date.now()}`;
+  const stamp = typeof now === 'function' ? now() : now;
+  insert(db, 'session_logs', {
+    id,
+    school_id: membership.school_id,
+    cohort_id: membership.cohort_id,
+    coach_id: user.id,
+    skills_json: JSON.stringify({ letters, skills: String(input.skills || '').split(',').filter(Boolean) }),
+    created_at: stamp,
+  });
+  return get(db, 'SELECT * FROM session_logs WHERE id = ?', [id]);
+}
+
+export function liteHome(coachName, gaps) {
+  const hidden = gaps.length ? `<p class="lm">${gaps.length} student${gaps.length === 1 ? '' : 's'} hidden until consent is in.</p>` : '';
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AfroBot Lite</title><style>
+body{margin:0;font-family:system-ui,sans-serif;color:#1A2230;font-size:16px;line-height:1.45}
+a{color:#163A66}h1{font-size:20px;color:#0E2747;margin:0 0 8px}
+.bar{display:flex;gap:8px;align-items:center;padding:8px 16px;border-bottom:1px solid #E3E7EC}
+.tag{margin-left:auto;font-size:12px;font-weight:700;border:1px solid #6E7E94;padding:2px 8px}
+.pad{padding:16px}.btn{display:flex;align-items:center;justify-content:center;min-height:56px;background:#0E2747;color:#fff;text-decoration:none;font-weight:700;border-radius:4px}
+.note{margin-top:12px;padding:8px 12px;background:#FBF3E2;border-left:4px solid #8A5A00}
+:focus-visible{outline:2px solid #0E2747;outline-offset:2px}
+</style></head><body><div class="bar"><b>afrobot</b><span class="tag">Lite · data saver</span></div><div class="pad"><p>Coach ${coachName}. Fictional.</p><h1>Good afternoon</h1><a class="btn" href="/lite/log">Log a session</a>${hidden}<p class="note">Pictures stay off until you tap them. A picture is about 40 KB.</p></div></body></html>`;
+}

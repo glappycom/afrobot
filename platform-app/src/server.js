@@ -42,6 +42,8 @@ import {
   searchRecords,
   verifyPastedPack,
 } from './records.js';
+import { consentGaps, saveSessionLog } from './experience.js';
+import { liteHome } from './experience.js';
 import { HttpError, notFound } from './http-error.js';
 import { IDS } from './constants.js';
 import {
@@ -50,9 +52,15 @@ import {
   auditorPage,
   coachPage,
   exportPage,
+  familyPage,
   integrityPage,
+  journeyPage,
+  logPage,
   loginPage,
+  needsPage,
   organiserPage,
+  settingsPage,
+  setupPage,
   printPage,
   recordPage,
   recordsPage,
@@ -249,6 +257,43 @@ export function createApp(options = {}) {
       const pageOpts = { notice };
 
       if (pathname === '/coach' && method === 'GET') return sendHtml(res, 200, coachPage(db, user, now, session, pageOpts));
+      if (pathname === '/coach/log' && method === 'GET') return sendHtml(res, 200, logPage(db, user, session, '1'));
+      if (pathname === '/coach/log/2' && method === 'GET') return sendHtml(res, 200, logPage(db, user, session, '2'));
+      if (pathname === '/coach/log/saved' && method === 'GET') return sendHtml(res, 200, logPage(db, user, session, 'saved'));
+      if ((pathname === '/coach/log/save' || pathname === '/api/session-logs') && method === 'POST') {
+        const skills = Array.isArray(req.input.skills) ? req.input.skills.join(',') : req.input.skills;
+        saveSessionLog(db, user, { ...req.input, skills }, now);
+        if (json) return sendJson(res, 201, { ok: true });
+        return redirect(res, '/coach/log/saved');
+      }
+      if (pathname === '/coach/setup' && method === 'GET') return sendHtml(res, 200, setupPage('coach', user, session, db));
+      if (pathname === '/organiser/setup' && method === 'GET') return sendHtml(res, 200, setupPage('organiser', user, session, db));
+      if (pathname === '/organiser/needs' && method === 'GET') return sendHtml(res, 200, needsPage(db, user, now, session));
+      if (pathname === '/organiser/needs/act' && method === 'POST') {
+        addEvent(db, { now, action: 'submitted', user, subjectType: 'season', subjectId: IDS.seasonAfrica, detail: { need: req.input.id || 'need' } });
+        return redirect(res, '/organiser/needs?notice=saved');
+      }
+      if (pathname === '/student/journey' && method === 'GET') return sendHtml(res, 200, journeyPage(db, user, session));
+      if (pathname === '/student/family' && method === 'GET') return sendHtml(res, 200, familyPage(db, user, session));
+      if (pathname === '/student/link' && method === 'GET') return sendHtml(res, 200, setupPage('student', user, session, db));
+      if (pathname === '/student/join' && method === 'GET') return sendHtml(res, 200, setupPage('student', user, session, db));
+      if (pathname === '/settings' && method === 'GET') {
+        const saver = cookies(req).data_saver === '1';
+        return sendHtml(res, 200, settingsPage(user, session, db, saver));
+      }
+      if (pathname === '/settings' && method === 'POST') {
+        const on = req.input.dataSaver === '1';
+        res.setHeader('set-cookie', `data_saver=${on ? '1' : '0'}; Path=/; SameSite=Lax; Max-Age=31536000`);
+        return redirect(res, '/settings');
+      }
+      if (pathname === '/lite' && method === 'GET') {
+        const membership = get(db, 'SELECT school_id FROM memberships WHERE user_id = ? AND role = ?', [user.id, 'coach']);
+        const gaps = membership ? consentGaps(db, [membership.school_id]) : [];
+        return send(res, 200, liteHome(user.display_name, gaps), { 'content-type': 'text/html; charset=utf-8' });
+      }
+      if (pathname === '/lite/log' && method === 'GET') {
+        return send(res, 200, liteHome(user.display_name, []), { 'content-type': 'text/html; charset=utf-8' });
+      }
       if (pathname === '/organiser' && method === 'GET') return sendHtml(res, 200, organiserPage(db, user, now, session, pageOpts));
       if (pathname === '/auditor' && method === 'GET') return sendHtml(res, 200, auditorPage(db, user, now, session, pageOpts));
       if (pathname === '/student' && method === 'GET') return sendHtml(res, 200, studentPage(db, user, now, session, pageOpts));

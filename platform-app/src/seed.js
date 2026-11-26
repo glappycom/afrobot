@@ -87,6 +87,19 @@ export function seedFoundation(db) {
   insert(db, 'memberships', { id: 'mem-org-tz', user_id: 'user-organiser', school_id: IDS.schoolTz, cohort_id: null, season_id: IDS.seasonAfrica, role: 'organiser' });
   insert(db, 'memberships', { id: 'mem-stu-a', user_id: 'user-student-a', school_id: IDS.schoolCm, cohort_id: IDS.cohortCm, season_id: IDS.seasonAfrica, role: 'student' });
   insert(db, 'memberships', { id: 'mem-stu-b', user_id: 'user-student-b', school_id: IDS.schoolCm, cohort_id: IDS.cohortCm, season_id: IDS.seasonAfrica, role: 'student' });
+  for (const row of [
+    ['lrn-cm-a', IDS.schoolCm, IDS.cohortCm, 'A', 'active', '2027-06-01'],
+    ['lrn-cm-b', IDS.schoolCm, IDS.cohortCm, 'B', 'active', '2027-06-01'],
+    ['lrn-cm-c', IDS.schoolCm, IDS.cohortCm, 'C', 'missing', null],
+    ['lrn-tz-a', IDS.schoolTz, IDS.cohortTz, 'A', 'active', '2027-01-14'],
+    ['lrn-tz-b', IDS.schoolTz, IDS.cohortTz, 'B', 'expired', '2026-11-01'],
+  ]) {
+    insert(db, 'learners', { id: row[0], school_id: row[1], cohort_id: row[2], letter: row[3], consent: row[4], consent_until: row[5] });
+  }
+  insert(db, 'join_codes', { cohort_id: IDS.cohortCm, code: 'SUN-4821' });
+  insert(db, 'join_codes', { cohort_id: IDS.cohortTz, code: 'LAKE-2294' });
+  insert(db, 'season_progress', { cohort_id: IDS.cohortCm, planned: 4, done: 4, weeks_left: 3 });
+  insert(db, 'season_progress', { cohort_id: IDS.cohortTz, planned: 6, done: 2, weeks_left: 3 });
   insert(db, 'access_grants', {
     id: IDS.grantAuditor,
     user_id: 'user-auditor',
