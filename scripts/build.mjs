@@ -112,6 +112,7 @@ for (const [out, src, title, description, urlPath, headExtra] of pages) {
     .replaceAll('{{DESCRIPTION}}', esc(description))
     .replaceAll('{{CANONICAL}}', 'https://afrobot.org' + urlPath)
     .replaceAll('{{HEAD_EXTRA}}', headExtra)
+    .replaceAll('{{BODY_CLASS}}', 'page-' + out.replace(/\.html$/, ''))
     .replaceAll('{{HEADER}}', header)
     .replaceAll('{{FOOTER}}', footer)
     .replaceAll('{{CONTENT}}', content);
