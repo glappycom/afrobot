@@ -58,6 +58,8 @@ fieldset.f{border:0;margin:0;padding:0;min-width:0}
 .checks{display:flex;flex-direction:column;gap:10px}
 .checks label,.consent{display:flex;gap:10px;align-items:flex-start;align-self:flex-start;font-weight:600;color:var(--ink)}
 .f .checks input,.f .consent input{width:20px;height:20px;min-height:20px;padding:0;flex:0 0 20px;margin-top:1px;accent-color:var(--navy)}
+.f input:focus-visible,.f select:focus-visible,.f textarea:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+.f__err:empty{display:none}
 .f input[aria-invalid="true"],.f select[aria-invalid="true"],.f textarea[aria-invalid="true"]{border-color:var(--danger)}
 fieldset.f[aria-invalid="true"]{border-left:3px solid var(--danger);padding-left:12px}
 .ways+.inkind{margin-top:32px}
@@ -229,7 +231,7 @@ main section,[id]{scroll-margin-top:96px}
 .band .btn.b3:hover{background:#DCE3EC;color:var(--navy);border-color:#DCE3EC}
 .faq details{border-top:1px solid var(--line);padding:14px 0}
 .faq details:last-child{border-bottom:1px solid var(--line)}
-.faq summary{font-weight:800;color:var(--navy);font-size:18px;cursor:pointer;line-height:1.4}
+.faq summary{display:flex;align-items:center;min-height:44px;font-weight:800;color:var(--navy);font-size:18px;cursor:pointer;line-height:1.4}
 .faq details p{margin:12px 0 0;max-width:68ch}
 .related{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}
 .related a{display:flex;flex-direction:column;gap:8px;min-height:140px;background:#fff;border:1px solid var(--line);padding:22px 20px;color:inherit;transition:transform var(--t-med) var(--ease-out),box-shadow var(--t-med) var(--ease-out)}
