@@ -398,6 +398,23 @@ export function seedFoundation(db) {
     guardrail_note: 'A faster count fails if learning or equitable access worsens.',
     decision: 'undecided',
   });
+  for (const row of [
+    ['claim', 'internal', 'Aggregate count', 7, 'review'],
+    ['snapshot', 'internal', 'Approved snapshot', null, 'keep'],
+    ['evidence_light', 'internal', 'Light redacted evidence', 3, 'review'],
+    ['evidence_removable', 'restricted', 'Removable private note', 1, 'delete-when-eligible'],
+    ['audit_event', 'internal', 'Audit event', 7, 'keep'],
+  ]) {
+    insert(db, 'retention_schedule', {
+      record_type: row[0], classification: row[1], retention_label: row[2], retain_years: row[3], disposition: row[4],
+    });
+  }
+  for (const [code, label] of [
+    ['COUNT-CONFIRMED', 'Count matches the redacted source'],
+    ['CORRECTION-ACCEPTED', 'Correction accepted'],
+    ['EVIDENCE-SUFFICIENT', 'Evidence is sufficient to approve'],
+  ]) insert(db, 'reason_codes', { code, label });
+
   insert(db, 'weekly_goals', {
     id: 'goal-cm-1',
     project_id: IDS.projectCm,

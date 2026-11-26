@@ -1,8 +1,9 @@
 import { comparisonPhrase, uncertaintyNote } from './compare.js';
 import { DEMO_USERS, IDS } from './constants.js';
 import { all, get } from './db.js';
-import { comparisonViews, followupsFor, goalRollup, listClaims, listProjects, projectReport, traceClaim } from './domain.js';
+import { comparisonViews, followupsFor, goalRollup, listClaims, listProjects, projectReport, traceClaim, visibleEvents } from './domain.js';
 import { esc, rateLabel, sdgLabel, show } from './format.js';
+import { accessReviewRows, custodyChain, displayId, filterEvents, formatStamps, gridClaims, integrityReport, provenanceDocument, retentionFor } from './records.js';
 
 const CSS = `
 @font-face{font-family:Fredoka;src:url(/fonts/fredoka-700.woff2) format('woff2');font-weight:700;font-display:swap}
@@ -63,7 +64,43 @@ footer{color:var(--navy);padding:18px 0 32px;font-size:15px}
   header{align-items:flex-start;flex-direction:column}
   nav{margin-left:0}
 }
-@media print{nav,form,details,footer{display:none}body{background:#fff}}
+@media print{nav,form,details,footer,.appbar,.sidenav{display:none}body{background:#fff}}
+body{background:#f5f5f5;color:#242424}
+.app{display:grid;grid-template-columns:220px minmax(0,1fr);min-height:100vh}
+.app>*{min-width:0}
+.appbar{grid-column:1 / -1;display:flex;align-items:center;gap:12px;height:48px;padding:0 12px;background:#fff;border-bottom:1px solid #e0e0e0;position:sticky;top:0;z-index:5}
+.sidenav{background:#fafafa;border-right:1px solid #e0e0e0;padding:8px;align-self:start;position:sticky;top:48px}
+.sidenav a{display:block;padding:8px 10px;border-radius:4px;color:#242424;text-decoration:none}
+.sidenav a[aria-current="page"]{background:#0E2747;color:#fff}
+.workspace{padding:12px 16px 32px;overflow-x:auto}
+table.grid{min-width:36rem}
+.crumbs{font-size:13px;color:#242424;margin:0 0 8px}
+.command{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px}
+.command a,.command button{font-size:14px;padding:6px 12px;min-height:32px}
+table.grid{width:100%;border-collapse:collapse;background:#fff;font-size:14px}
+table.grid th,table.grid td{border-bottom:1px solid #e0e0e0;padding:6px 8px;text-align:left;vertical-align:top}
+table.grid td:first-child,table.grid th:first-child{white-space:nowrap}
+table.grid th a{color:#0E2747}
+.tabs{display:flex;gap:0;border-bottom:1px solid #e0e0e0;margin:8px 0}
+.tabs a{padding:8px 12px;text-decoration:none;color:#242424}
+.tabs a[aria-current="page"]{border-bottom:2px solid #0E2747;font-weight:500}
+.rail{border:1px solid #e0e0e0;background:#fff;border-radius:4px;padding:12px}
+.split{display:grid;grid-template-columns:minmax(0,1fr) 16rem;gap:16px;align-items:start}
+@media (max-width:40rem){.split{grid-template-columns:1fr}}
+.prov{background:#fff;border:1px solid #e0e0e0;border-radius:4px;overflow:auto}
+.state{padding:16px;background:#fff;border:1px solid #e0e0e0}
+.search{flex:1;display:flex;gap:6px}
+.search input{max-width:28rem;border-color:#8a8886;border-radius:2px;padding:6px 8px;min-height:32px}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.badge{font-size:12px;border:1px solid #0E2747;border-radius:2px;padding:2px 6px;color:#0E2747}
+details.menu{position:relative}
+details.menu summary{list-style:none}
+.menu-pop{position:absolute;right:0;background:#fff;border:1px solid #e0e0e0;padding:8px;min-width:14rem;z-index:6}
+@media (max-width:40rem){
+  .app{grid-template-columns:1fr}
+  .sidenav{display:flex;gap:4px;overflow:auto;border-right:0;border-bottom:1px solid #e0e0e0}
+  .sidenav a{white-space:nowrap}
+}
 `;
 
 function icon(name) {
@@ -87,8 +124,9 @@ function statusChip(status) {
   return `<span class="chip chip-${esc(kind)}">${glyph}${esc(labels[status] || status)}</span>`;
 }
 
-function layout({ title, user, body, notice, error }) {
+function layout({ title, user, body, notice, error, db, now, crumb = 'Home', section = 'home', command = '' }) {
   const home = user ? homeFor(user.role) : '/login';
+  const shell = user && db ? shellParts(db, user, now, section) : '';
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -100,20 +138,59 @@ function layout({ title, user, body, notice, error }) {
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<header>
+${user && db ? `<div class="app">
+<header class="appbar">
 <a class="mark" href="${home}">afrobot</a>
-${user ? `<nav aria-label="Demo"><a href="${home}">Home</a><a href="/print">Print sheet</a>
-<form method="post" action="/logout"><input type="hidden" name="_csrf" value="${esc(user.csrf)}"><button class="quiet" type="submit">Sign out</button></form></nav>` : ''}
+<form method="get" action="${home}"><label class="sr" for="tenant">Organisation</label>
+<select id="tenant" name="tenant"><option selected>AfroBot fictional pilot</option></select></form>
+<form class="search" method="get" action="/search" role="search">
+<label class="sr" for="q">Search records</label>
+<input id="q" name="q" type="search" placeholder="Search">
+<button type="submit">Search</button>
+</form>
+${shell}
 </header>
+<nav class="sidenav" aria-label="Sections">
+<a href="${home}" ${section === 'home' ? 'aria-current="page"' : ''}>Home</a>
+<a href="/records" ${section === 'records' ? 'aria-current="page"' : ''}>Records</a>
+<a href="/audit" ${section === 'audit' ? 'aria-current="page"' : ''}>Audit log</a>
+<a href="/integrity" ${section === 'integrity' ? 'aria-current="page"' : ''}>Integrity</a>
+<a href="/access" ${section === 'access' ? 'aria-current="page"' : ''}>Access review</a>
+<a href="/verify" ${section === 'verify' ? 'aria-current="page"' : ''}>Verify pack</a>
+</nav>
+<div class="workspace">
+<p class="crumbs">afrobot / ${esc(crumb)}</p>
+${command ? `<div class="command">${command}</div>` : ''}
+<p id="loading" class="state" hidden role="status">Working…</p>
 <main id="main">
 <p class="banner">Synthetic demo. Mocked sign-in. No AI recommendations.</p>
 ${notice ? `<p class="notice" role="status">${esc(notice)}</p>` : ''}
 ${error ? `<p class="error" role="alert">${esc(error)}</p>` : ''}
 ${body}
 </main>
-<footer>Local demo. A digest shows a later change. It does not prove the first number was true.</footer>
+</div></div>` : `<header><a class="mark" href="${home}">afrobot</a></header><main id="main">
+<p class="banner">Synthetic demo. Mocked sign-in. No AI recommendations.</p>
+${notice ? `<p class="notice" role="status">${esc(notice)}</p>` : ''}
+${error ? `<p class="error" role="alert">${esc(error)}</p>` : ''}
+${body}
+</main>`}
+<footer>Demo records controls. Not a certification. A digest shows a later change. It does not prove the first number was true.</footer>
+<script src="/app.js"></script>
 </body>
 </html>`;
+}
+
+function shellParts(db, user, now, section) {
+  const events = visibleEvents(db, user, now).slice(-3).reverse();
+  const grant = get(db, 'SELECT expires_at, revoked_at FROM access_grants WHERE user_id = ? ORDER BY expires_at DESC LIMIT 1', [user.id]);
+  const expiry = grant && !grant.revoked_at ? grant.expires_at.slice(0, 10) : 'standing';
+  const notes = events.map((event) => `<li>${esc(formatStamps(event.at).utc)} ${esc(event.action)}</li>`).join('') || '<li>No notices</li>';
+  return `<details class="menu"><summary aria-label="Notifications">Bell ${events.length}</summary><div class="menu-pop"><ul>${notes}</ul></div></details>
+<details class="menu"><summary>${esc(user.display_name)}</summary><div class="menu-pop">
+<p><span class="badge">${esc(user.role)}</span></p>
+<p>Access until ${esc(expiry)}</p>
+<form method="post" action="/logout"><input type="hidden" name="_csrf" value="${esc(user.csrf)}"><button class="quiet" type="submit">Sign out</button></form>
+</div></details>`;
 }
 
 function hidden(session) {
@@ -215,6 +292,7 @@ export function coachPage(db, user, now, session, extras = {}) {
   return layout({
     title: 'Coach · afrobot evidence',
     user: { ...user, csrf: session.csrf },
+    db, now, crumb: 'Home', section: 'home',
     notice: extras.notice,
     error: extras.error,
     body: `<p class="kicker">${icon('pencil')} coach</p>
@@ -321,6 +399,7 @@ export function organiserPage(db, user, now, session, extras = {}) {
   return layout({
     title: 'Organiser · afrobot evidence',
     user: { ...user, csrf: session.csrf },
+    db, now, crumb: 'Home', section: 'home',
     notice: extras.notice,
     error: extras.error,
     body: `<p class="kicker">${icon('check')} organiser</p>
@@ -368,6 +447,7 @@ export function auditorPage(db, user, now, session, extras = {}) {
   return layout({
     title: 'Auditor · afrobot evidence',
     user: { ...user, csrf: session.csrf },
+    db, now, crumb: 'Home', section: 'home',
     notice: extras.notice,
     error: extras.error,
     body: `<p class="kicker">${icon('eye')} read only</p>
@@ -394,6 +474,7 @@ export function studentPage(db, user, now, session, extras = {}) {
   return layout({
     title: 'Student · afrobot evidence',
     user: { ...user, csrf: session.csrf },
+    db, now, crumb: 'Home', section: 'home',
     notice: extras.notice,
     error: extras.error,
     body: `<p class="kicker">learner</p>
@@ -408,10 +489,11 @@ export function studentPage(db, user, now, session, extras = {}) {
   });
 }
 
-export function printPage(user, session) {
+export function printPage(db, user, now, session) {
   return layout({
     title: 'Print sheet · afrobot evidence',
     user: user ? { ...user, csrf: session.csrf } : null,
+    db, now, crumb: 'Print sheet',
     body: `<h1>Capture sheet</h1>
     <p>Empty on purpose. Write later. No learner names.</p>
     <table>
@@ -427,15 +509,198 @@ export function printPage(user, session) {
   });
 }
 
-export function exportPage(user, session, pack) {
+export function exportPage(db, user, now, session, pack) {
   const files = Object.keys(pack.files).map((name) => `<li><a href="/exports/${esc(pack.manifest.pack_id)}/files/${esc(name)}">${esc(name)}</a></li>`).join('');
   return layout({
     title: 'Export · afrobot evidence',
     user: { ...user, csrf: session.csrf },
+    db, now, crumb: 'Export',
     body: `<h1>Pack ready</h1>
     <p class="figure">${esc(pack.manifest.calculation.current.label || '—')}</p>
     <p>Earlier ${esc(pack.manifest.calculation.superseded?.label || '—')}</p>
     <ul>${files}</ul>`,
+  });
+}
+
+function commandLinks(base, view) {
+  const views = [['all', 'All'], ['approved', 'Approved'], ['waiting', 'Waiting']];
+  return views.map(([id, label]) => `<a href="${base}?view=${id}" ${view === id ? 'aria-current="page"' : ''}>${label}</a>`).join('');
+}
+
+export function recordsPage(db, user, now, session, query) {
+  const grid = gridClaims(db, user, now, query);
+  const cols = new Set((query.cols || 'record,status,total,date,school').split(','));
+  const dir = grid.dir === 'asc' ? 'desc' : 'asc';
+  const head = (key, label) => cols.has(key) ? `<th aria-sort="${query.sort === key ? grid.dir + 'ending' : 'none'}"><a href="/records?sort=${key}&dir=${query.sort === key ? dir : 'asc'}&view=${esc(query.view || 'all')}">${label}</a></th>` : '';
+  const rows = grid.rows.map((row) => `<tr>
+    ${cols.has('record') ? `<td><a href="/records/${esc(row.id)}">${esc(row.displayId)}</a></td>` : ''}
+    ${cols.has('status') ? `<td>${statusChip(row.status)}</td>` : ''}
+    ${cols.has('total') ? `<td>${esc(rateLabel(row.numerator, row.denominator) || '—')}</td>` : ''}
+    ${cols.has('date') ? `<td>${esc(formatStamps(row.submitted_at || row.created_at, row.country).utc)}<br>${esc(formatStamps(row.submitted_at || row.created_at, row.country).local)}</td>` : ''}
+    ${cols.has('school') ? `<td>${esc(row.schoolName)}</td>` : ''}
+  </tr>`).join('');
+  const empty = grid.total === 0 ? '<p class="state">No records in this view.</p>' : '';
+  return layout({
+    title: 'Records · afrobot evidence',
+    user: { ...user, csrf: session.csrf },
+    db, now, crumb: 'Records', section: 'records',
+    command: `${commandLinks('/records', query.view || 'all')}<a href="/records?cols=record,status,total">Fewer columns</a><a href="/records?cols=record,status,total,date,school">All columns</a>`,
+    body: `<h1>Records</h1>
+    <form method="get" action="/records" class="command">
+      <label for="status">Status</label>
+      <select id="status" name="status"><option value="">Any</option><option>draft</option><option>submitted</option><option>returned</option><option>approved</option></select>
+      <button type="submit">Filter</button>
+    </form>
+    ${empty || `<table class="grid" aria-label="Records" aria-rowcount="${grid.total}" aria-colcount="${cols.size}">
+      <caption>Showing ${grid.rows.length ? `${(grid.page - 1) * grid.size + 1}–${(grid.page - 1) * grid.size + grid.rows.length}` : '0'} of ${grid.total}</caption>
+      <thead><tr>${head('record', 'Record')}${head('status', 'Status')}${head('total', 'Total')}${head('date', 'When')}${head('school', 'School')}</tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`}
+    <p class="command"><span>Page ${grid.page}</span>${grid.page > 1 ? `<a href="/records?page=${grid.page - 1}">Previous</a>` : ''}${grid.page * grid.size < grid.total ? `<a href="/records?page=${grid.page + 1}">Next</a>` : ''}</p>`,
+  });
+}
+
+export function recordPage(db, user, now, session, claimId, tab = 'overview') {
+  const trace = traceClaim(db, user, claimId, now);
+  const claim = trace.current || trace.requested;
+  const school = get(db, 'SELECT country_name, display_name FROM schools WHERE id = ?', [claim.school_id]);
+  const tabs = ['overview', 'evidence', 'calculation', 'versions', 'audit', 'access'];
+  const tabNav = `<nav class="tabs" aria-label="Record sections">${tabs.map((name) => `<a href="/records/${esc(claim.id)}?tab=${name}" ${tab === name ? 'aria-current="page"' : ''}>${name[0].toUpperCase()}${name.slice(1)}</a>`).join('')}</nav>`;
+  const prov = provenanceDocument(db, user, claim.id, now);
+  const chain = custodyChain(db, user, claim.id, now);
+  const schedule = retentionFor(db, 'claim');
+  const when = formatStamps(claim.approved_at || claim.submitted_at || claim.created_at, school?.country_name);
+  let panel = '';
+  if (tab === 'evidence') {
+    panel = trace.evidence.length ? `<ul>${trace.evidence.map((row) => `<li><a href="/evidence/${esc(row.id)}/download">${esc(displayId(row.id))}</a> ${esc(row.source_type)}</li>`).join('')}</ul>` : '<p class="state">No evidence in this view.</p>';
+  } else if (tab === 'calculation') {
+    panel = showHow(claim);
+  } else if (tab === 'versions') {
+    panel = timeline(trace.versions, trace.snapshots);
+  } else if (tab === 'audit') {
+    panel = chain.length ? `<ol>${chain.map((row) => `<li>${esc(formatStamps(row.at, school?.country_name).utc)} ${esc(row.actorRole)} ${esc(row.action)} ${esc(row.displayId)}</li>`).join('')}</ol>` : '<p class="state">No audit rows.</p>';
+  } else if (tab === 'access') {
+    panel = `<p>Scope ${esc(school?.display_name || '—')}. Dual control: a different person approves.</p>`;
+  } else {
+    const nodes = ['Claim', 'Calculation', 'Version', 'Evidence', 'Attestation'];
+    panel = `<p class="figure">${esc(rateLabel(claim.numerator, claim.denominator) || '—')}</p>
+    <div class="row">${statusChip(claim.status)} <span>${esc(displayId(claim.id))}</span></div>
+    ${showHow(claim)}
+    <svg class="prov" viewBox="0 0 760 90" role="img" aria-label="Provenance from claim to attestation">
+      ${nodes.map((name, i) => `<g><rect x="${20 + i * 150}" y="20" width="120" height="48" rx="4" fill="#fff" stroke="#0E2747"/><text x="${80 + i * 150}" y="48" text-anchor="middle" font-size="13" fill="#0E2747">${name}</text>${i < nodes.length - 1 ? `<path d="M${140 + i * 150} 44h30" stroke="#0E2747" marker-end=""/>` : ''}</g>`).join('')}
+    </svg>
+    <p>${esc(when.utc)} · ${esc(when.local)}</p>`;
+  }
+  return layout({
+    title: `${displayId(claim.id)} · afrobot evidence`,
+    user: { ...user, csrf: session.csrf },
+    db, now, crumb: `Records / ${displayId(claim.id)}`, section: 'records',
+    command: `<a href="/records">Back to records</a>`,
+    body: `<h1>${esc(displayId(claim.id))}</h1>
+    ${tabNav}
+    <div class="split">
+      <div>${panel}</div>
+      <aside class="rail">
+        <p>Classification ${esc(schedule?.classification || 'internal')}</p>
+        <p>Retention ${esc(schedule?.retention_label || '—')}</p>
+        <p>${schedule?.retain_years ? `${schedule.retain_years} years, then ${esc(schedule.disposition)}` : esc(schedule?.disposition || 'keep')}</p>
+        <p>${esc(school?.display_name || '')}</p>
+        <p>Entities in provenance: ${Object.keys(prov.entity).length}</p>
+      </aside>
+    </div>`,
+  });
+}
+
+export function auditPage(db, user, now, session, query) {
+  const rows = filterEvents(db, user, now, query);
+  const bodyRows = rows.slice(0, 50).map((event) => `<tr>
+    <td>${esc(formatStamps(event.at).utc)}<br>${esc(formatStamps(event.at).local)}</td>
+    <td>${esc(event.action)}</td>
+    <td>${esc(event.actor_role)}</td>
+    <td>${esc(displayId(event.subject_id))}</td>
+  </tr>`).join('');
+  return layout({
+    title: 'Audit log · afrobot evidence',
+    user: { ...user, csrf: session.csrf },
+    db, now, crumb: 'Audit log', section: 'audit',
+    command: `<a href="/audit.csv">Export CSV</a>`,
+    body: `<h1>Audit log</h1>
+    <form class="command" method="get" action="/audit">
+      <label for="action">Action</label>
+      <input id="action" name="action" value="${esc(query.action || '')}">
+      <label for="from">From UTC</label>
+      <input id="from" name="from" value="${esc(query.from || '')}">
+      <label for="to">To UTC</label>
+      <input id="to" name="to" value="${esc(query.to || '')}">
+      <button type="submit">Filter</button>
+    </form>
+    ${rows.length ? `<table class="grid" aria-label="Audit log"><caption>${rows.length} events you can read</caption><thead><tr><th>When</th><th>Action</th><th>Role</th><th>Record</th></tr></thead><tbody>${bodyRows}</tbody></table>` : '<p class="state">No audit rows in this view.</p>'}`,
+  });
+}
+
+export function integrityPage(db, user, now, session) {
+  const rows = integrityReport(db, user, now);
+  const bodyRows = rows.map((row) => `<tr>
+    <td>${esc(row.displayId)}</td>
+    <td>v${row.version}</td>
+    <td><code title="${esc(row.stored)}">${esc(row.stored.slice(0, 16))}…</code></td>
+    <td>${row.pass ? 'Pass' : 'Fail'}</td>
+  </tr>`).join('');
+  return layout({
+    title: 'Integrity · afrobot evidence',
+    user: { ...user, csrf: session.csrf },
+    db, now, crumb: 'Integrity', section: 'integrity',
+    body: `<h1>Integrity check</h1>
+    <p>Each snapshot digest is recomputed and compared with the separate ledger.</p>
+    ${rows.length ? `<table class="grid" aria-label="Integrity"><caption>${rows.filter((row) => row.pass).length} pass, ${rows.filter((row) => !row.pass).length} fail</caption><thead><tr><th>Snapshot</th><th>Version</th><th>SHA-256</th><th>Result</th></tr></thead><tbody>${bodyRows}</tbody></table>` : '<p class="state">No snapshots in your scope.</p>'}`,
+  });
+}
+
+export function accessPage(db, user, now, session) {
+  const rows = accessReviewRows(db, user, now);
+  const bodyRows = rows.map((row) => `<tr>
+    <td>${esc(row.user_id)}</td>
+    <td>${esc(row.scope_id)}</td>
+    <td>${esc(formatStamps(row.starts_at).utc)}</td>
+    <td>${esc(formatStamps(row.expires_at).utc)}<br>${esc(formatStamps(row.expires_at).local)}</td>
+    <td>${esc(row.displayState)}</td>
+    <td>${user.role === 'organiser' && row.displayState === 'Active' ? `<form method="post" action="/api/grants/${esc(row.id)}/revoke">${hidden(session)}<button class="quiet" type="submit">Revoke</button></form>` : '—'}</td>
+  </tr>`).join('');
+  return layout({
+    title: 'Access review · afrobot evidence',
+    user: { ...user, csrf: session.csrf },
+    db, now, crumb: 'Access review', section: 'access',
+    body: `<h1>Access review</h1>
+    <p>Time-boxed grants. Review them before they expire.</p>
+    ${rows.length ? `<table class="grid" aria-label="Access grants"><thead><tr><th>Person</th><th>Scope</th><th>Starts UTC</th><th>Ends</th><th>State</th><th></th></tr></thead><tbody>${bodyRows}</tbody></table>` : '<p class="state">No grants in your scope.</p>'}`,
+  });
+}
+
+export function verifyPage(user, session, result, db, now) {
+  const table = result ? `<table class="grid" aria-label="Verify result"><caption>${result.pass ? 'Pass' : 'Fail'}</caption><thead><tr><th>Item</th><th>Kind</th><th>Result</th></tr></thead><tbody>${result.results.map((row) => `<tr><td>${esc(row.name)}</td><td>${esc(row.kind)}</td><td>${row.pass ? 'Pass' : 'Fail'}</td></tr>`).join('')}</tbody></table>` : '<p class="state">Paste an export pack to check it.</p>';
+  return layout({
+    title: 'Verify · afrobot evidence',
+    user: user ? { ...user, csrf: session.csrf } : null,
+    db, now, crumb: 'Verify pack', section: 'verify',
+    body: `<h1>Verify a pack</h1>
+    <p>Paste the export JSON. The check uses only what you paste.</p>
+    <form method="post" action="/verify">
+      ${session ? hidden(session) : ''}
+      <label for="pack">Pack JSON</label>
+      <textarea id="pack" name="pack" required></textarea>
+      <p><button type="submit">Check integrity</button></p>
+    </form>
+    ${table}`,
+  });
+}
+
+export function searchPage(db, user, now, session, query, results) {
+  return layout({
+    title: 'Search · afrobot evidence',
+    user: { ...user, csrf: session.csrf },
+    db, now, crumb: 'Search',
+    body: `<h1>Search</h1>
+    ${results.length ? `<ul>${results.map((row) => `<li><a href="${row.type === 'claim' ? `/records/${esc(row.id)}` : '/records'}">${esc(row.displayId)}</a> ${esc(row.label)} ${statusChip(row.status)}</li>`).join('')}</ul>` : '<p class="state">No records in this view.</p>'}`,
   });
 }
 

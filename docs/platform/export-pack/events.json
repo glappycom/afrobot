@@ -32,7 +32,10 @@
       "version": 1,
       "numerator": 6,
       "denominator": 8,
-      "digest_sha256": "7906c75cf9645c2e5e23a01335814e43477ab4002cce0f8e0d8e2a6f7903e45f"
+      "digest_sha256": "7906c75cf9645c2e5e23a01335814e43477ab4002cce0f8e0d8e2a6f7903e45f",
+      "reason_code": "COUNT-CONFIRMED",
+      "approval_mark": "4f551fb5a89484aebd4d32a540fefb90c7d4e766d285f34d6579eaade1c9a4a2",
+      "dual_control": true
     }
   },
   {
@@ -59,7 +62,10 @@
       "version": 2,
       "numerator": 5,
       "denominator": 8,
-      "digest_sha256": "5c9ab2b47e96bef4b9f69c20fa432dbf5ccb9db4729da89067bb4758b51596e1"
+      "digest_sha256": "5c9ab2b47e96bef4b9f69c20fa432dbf5ccb9db4729da89067bb4758b51596e1",
+      "reason_code": "COUNT-CONFIRMED",
+      "approval_mark": "a315cbdb0236393ca1142eb38b5a32b3783b5689a1374af15969cb0ba89681a0",
+      "dual_control": true
     }
   },
   {

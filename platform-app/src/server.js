@@ -29,17 +29,37 @@ import {
   withdrawEvidence,
 } from './domain.js';
 import { createExport, readExport } from './export-pack.js';
+import {
+  accessReviewRows,
+  buildAuditZip,
+  eventsCsv,
+  filterEvents,
+  integrityReport,
+  placeLegalHold,
+  provenanceDocument,
+  releaseLegalHold,
+  retentionSchedule,
+  searchRecords,
+  verifyPastedPack,
+} from './records.js';
 import { HttpError, notFound } from './http-error.js';
 import { IDS } from './constants.js';
 import {
+  accessPage,
+  auditPage,
   auditorPage,
   coachPage,
   exportPage,
+  integrityPage,
   loginPage,
   organiserPage,
   printPage,
+  recordPage,
+  recordsPage,
+  searchPage,
   studentPage,
   unavailablePage,
+  verifyPage,
 } from './render.js';
 import { seedAll } from './seed.js';
 
@@ -162,6 +182,10 @@ export function createApp(options = {}) {
     const url = new URL(req.url || '/', 'http://127.0.0.1');
     const pathname = url.pathname;
     const method = req.method || 'GET';
+    if (pathname === '/app.js' && method === 'GET') {
+      const file = path.join(ROOT, 'public', 'app.js');
+      return send(res, 200, fs.readFileSync(file), { 'content-type': 'text/javascript; charset=utf-8', 'cache-control': 'public, max-age=3600' });
+    }
     const font = pathname.match(/^\/fonts\/(fredoka-700|rubik-400|rubik-500)\.woff2$/);
     if (font && method === 'GET') {
       const file = path.join(ROOT, 'public', 'fonts', `${font[1]}.woff2`);
@@ -225,7 +249,24 @@ export function createApp(options = {}) {
       if (pathname === '/organiser' && method === 'GET') return sendHtml(res, 200, organiserPage(db, user, now, session, pageOpts));
       if (pathname === '/auditor' && method === 'GET') return sendHtml(res, 200, auditorPage(db, user, now, session, pageOpts));
       if (pathname === '/student' && method === 'GET') return sendHtml(res, 200, studentPage(db, user, now, session, pageOpts));
-      if (pathname === '/print' && method === 'GET') return sendHtml(res, 200, printPage(user, session));
+      if (pathname === '/print' && method === 'GET') return sendHtml(res, 200, printPage(db, user, now, session));
+      if (pathname === '/records' && method === 'GET') {
+        return sendHtml(res, 200, recordsPage(db, user, now, session, Object.fromEntries(url.searchParams.entries())));
+      }
+      if (pathname === '/audit' && method === 'GET') {
+        return sendHtml(res, 200, auditPage(db, user, now, session, Object.fromEntries(url.searchParams.entries())));
+      }
+      if (pathname === '/audit.csv' && method === 'GET') {
+        const csv = eventsCsv(filterEvents(db, user, now, Object.fromEntries(url.searchParams.entries())));
+        return send(res, 200, csv, { 'content-type': 'text/csv; charset=utf-8', 'content-disposition': 'attachment; filename="audit-log.csv"' });
+      }
+      if (pathname === '/integrity' && method === 'GET') return sendHtml(res, 200, integrityPage(db, user, now, session));
+      if (pathname === '/access' && method === 'GET') return sendHtml(res, 200, accessPage(db, user, now, session));
+      if (pathname === '/verify' && method === 'GET') return sendHtml(res, 200, verifyPage(user, session, null, db, now));
+      if (pathname === '/search' && method === 'GET') {
+        const q = url.searchParams.get('q') || '';
+        return sendHtml(res, 200, searchPage(db, user, now, session, q, searchRecords(db, user, now, q)));
+      }
 
       if ((pathname === '/coach/claims' || pathname === '/api/claims') && method === 'POST') {
         const schoolId = postedSchool(db, user, req.input);
@@ -261,7 +302,7 @@ export function createApp(options = {}) {
       const approve = pathname.match(/^\/(?:api\/claims|organiser\/claims)\/([a-z0-9-]+)\/approve$/);
       if (approve && method === 'POST') {
         touched = { subjectType: 'claim', subjectId: approve[1] };
-        const result = approveClaim(db, user, approve[1], now);
+        const result = approveClaim(db, user, approve[1], now, req.input);
         if (json) return sendJson(res, 200, { id: result.claim.id, status: result.claim.status, digest: result.digest, version: result.claim.version });
         return redirect(res, '/organiser?notice=approved');
       }
@@ -336,7 +377,7 @@ export function createApp(options = {}) {
         touched = { subjectType: 'export', subjectId: exportGet[1] };
         const pack = readExport(db, user, exportGet[1], now);
         if (json) return sendJson(res, 200, pack);
-        return sendHtml(res, 200, exportPage(user, session, pack));
+        return sendHtml(res, 200, exportPage(db, user, now, session, pack));
       }
       const exportFile = pathname.match(/^\/exports\/([a-z0-9-]+)\/files\/([a-z0-9.-]+)$/);
       if (exportFile && method === 'GET') {
@@ -395,6 +436,48 @@ export function createApp(options = {}) {
           subject_id: event.subject_id,
           detail: JSON.parse(event.detail_json),
         })));
+      }
+      const recordGet = pathname.match(/^\/records\/([a-z0-9-]+)$/);
+      if (recordGet && method === 'GET') {
+        touched = { subjectType: 'claim', subjectId: recordGet[1] };
+        return sendHtml(res, 200, recordPage(db, user, now, session, recordGet[1], url.searchParams.get('tab') || 'overview'));
+      }
+      if ((pathname === '/api/search' || pathname === '/search') && method === 'GET' && json) {
+        return sendJson(res, 200, searchRecords(db, user, now, url.searchParams.get('q') || ''));
+      }
+      if (pathname === '/api/integrity' && method === 'GET') return sendJson(res, 200, integrityReport(db, user, now));
+      if (pathname === '/api/retention' && method === 'GET') return sendJson(res, 200, retentionSchedule(db));
+      if (pathname === '/api/access' && method === 'GET') return sendJson(res, 200, accessReviewRows(db, user, now));
+      if ((pathname === '/api/verify' || pathname === '/verify') && method === 'POST') {
+        let payload = req.input;
+        if (typeof req.input.pack === 'string') {
+          try { payload = JSON.parse(req.input.pack); } catch { throw new HttpError(422, 'That pack is not valid JSON.'); }
+        }
+        const result = verifyPastedPack(payload);
+        if (json || pathname.startsWith('/api/')) return sendJson(res, 200, result);
+        return sendHtml(res, 200, verifyPage(user, session, result, db, now));
+      }
+      const hold = pathname.match(/^\/api\/evidence\/([a-z0-9-]+)\/hold$/);
+      if (hold && method === 'POST') {
+        touched = { subjectType: 'evidence', subjectId: hold[1] };
+        const item = readEvidenceBody(db, user, hold[1], now, filesDir);
+        if (!item) throw notFound();
+        placeLegalHold(db, user, hold[1], req.input.reason, now);
+        return sendJson(res, 200, { ok: true });
+      }
+      const release = pathname.match(/^\/api\/evidence\/([a-z0-9-]+)\/release-hold$/);
+      if (release && method === 'POST') {
+        touched = { subjectType: 'evidence', subjectId: release[1] };
+        releaseLegalHold(db, user, release[1], now);
+        return sendJson(res, 200, { ok: true });
+      }
+      const auditPack = pathname.match(/^\/api\/claims\/([a-z0-9-]+)\/audit-pack$/);
+      if (auditPack && method === 'POST') {
+        touched = { subjectType: 'claim', subjectId: auditPack[1] };
+        const pack = createExport(db, user, auditPack[1], now);
+        const prov = provenanceDocument(db, user, auditPack[1], now);
+        const zip = buildAuditZip(pack, prov);
+        return send(res, 201, zip, { 'content-type': 'application/zip', 'content-disposition': `attachment; filename="${pack.packId}.zip"` });
       }
       if (pathname === '/api/me' && method === 'GET') {
         return sendJson(res, 200, { role: user.role, displayName: user.display_name, mocked: true });

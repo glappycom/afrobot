@@ -331,6 +331,30 @@ CREATE TABLE IF NOT EXISTS export_log (
   files_json TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS retention_schedule (
+  record_type TEXT PRIMARY KEY,
+  classification TEXT NOT NULL,
+  retention_label TEXT NOT NULL,
+  retain_years INTEGER,
+  disposition TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS legal_holds (
+  id TEXT PRIMARY KEY,
+  record_type TEXT NOT NULL,
+  record_id TEXT NOT NULL,
+  reason TEXT NOT NULL,
+  active INTEGER NOT NULL,
+  placed_by TEXT NOT NULL,
+  placed_at TEXT NOT NULL,
+  released_at TEXT
+);
+
+CREATE TABLE IF NOT EXISTS reason_codes (
+  code TEXT PRIMARY KEY,
+  label TEXT NOT NULL
+);
+
 CREATE TRIGGER IF NOT EXISTS events_no_update
 BEFORE UPDATE ON events
 BEGIN

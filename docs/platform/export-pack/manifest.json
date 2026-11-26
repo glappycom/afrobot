@@ -60,8 +60,8 @@
     },
     {
       "name": "events.json",
-      "sha256": "0935623e351eb82133d0cfbb14352fa62365ed17ae3f9b00402499c5e96ccc6f",
-      "bytes": 1904
+      "sha256": "86070a11ee9847ffbaf297b3003a331c483d02aa1164a7f19853ebf00d2b806c",
+      "bytes": 2222
     }
   ],
   "validation_script": "platform-app/scripts/validate-snapshot.mjs"

@@ -2,7 +2,7 @@
 
 Command: `npm test` in `platform-app` (Node.js 22.23.4).
 
-Result: 16 passed, 0 failed.
+Result: 18 passed, 0 failed.
 
 - server-side access boundaries hide other schools, drafts, and metadata
 - an expired or revoked auditor grant cannot read the assigned school
@@ -20,3 +20,5 @@ Result: 16 passed, 0 failed.
 - the practice sorter cannot complete a season project, and the SDG 12 record is separate
 - season comparison, guardrail hold, and the U.S. copy stay on the organiser screen
 - approved rows, events, and snapshots cannot be rewritten in place
+- legal hold blocks removal and retention labels are available
+- integrity, provenance, and search stay inside the caller scope

@@ -292,7 +292,7 @@ export function submitCorrection(db, user, priorId, input, now) {
   return claimById(db, id);
 }
 
-export function approveClaim(db, user, claimId, now) {
+export function approveClaim(db, user, claimId, now, input = {}) {
   const claim = claimById(db, claimId);
   requireClaim(db, user, claim, at(now));
   requireOrganiser(db, user, claim.school_id, at(now));
@@ -307,6 +307,8 @@ export function approveClaim(db, user, claimId, now) {
   const digest = sha256(canonical);
   const stamp = at(now);
   const snapshotId = `snap-${claim.id}`;
+  const reasonCode = typeof input.reasonCode === 'string' && input.reasonCode.trim() ? input.reasonCode.trim() : 'COUNT-CONFIRMED';
+  const approvalMark = sha256(`demo-approval-mark|${digest}|${reasonCode}|${stamp}`);
   transaction(db, () => {
     insert(db, 'snapshots', {
       id: snapshotId,
@@ -332,7 +334,15 @@ export function approveClaim(db, user, claimId, now) {
       subjectType: 'claim',
       subjectId: claim.id,
       schoolId: claim.school_id,
-      detail: { version: claim.version, numerator: claim.numerator, denominator: claim.denominator, digest_sha256: digest },
+      detail: {
+        version: claim.version,
+        numerator: claim.numerator,
+        denominator: claim.denominator,
+        digest_sha256: digest,
+        reason_code: reasonCode,
+        approval_mark: approvalMark,
+        dual_control: true,
+      },
     });
   });
   return { claim: claimById(db, claim.id), digest, snapshotId };
@@ -459,6 +469,8 @@ export function withdrawEvidence(db, user, evidenceId, now, filesDir) {
   if (item.retention_class !== 'removable_private') {
     throw new HttpError(422, 'This redacted note stays with the approved snapshot. Only a removable private file can be withdrawn.');
   }
+  const hold = get(db, 'SELECT id FROM legal_holds WHERE record_id = ? AND active = 1', [item.id]);
+  if (hold) throw new HttpError(422, 'Legal hold blocks removal.');
   const stamp = at(now);
   transaction(db, () => {
     run(db, `UPDATE evidence_items
