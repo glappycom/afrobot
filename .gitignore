@@ -6,3 +6,5 @@ node_modules/
 .env*
 shots/
 .vercel
+platform-app/node_modules/
+platform-app/data/

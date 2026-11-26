@@ -1,0 +1,75 @@
+[
+  {
+    "at": "2026-04-20T10:00:00.000Z",
+    "action": "submitted",
+    "actor_role": "coach",
+    "subject_type": "evidence",
+    "subject_id": "ev-cm-test-log",
+    "detail": {
+      "source_type": "test_log",
+      "redaction_state": "redacted"
+    }
+  },
+  {
+    "at": "2026-04-24T15:00:00.000Z",
+    "action": "submitted",
+    "actor_role": "coach",
+    "subject_type": "claim",
+    "subject_id": "claim-cm-rubric-v1",
+    "detail": {
+      "version": 1,
+      "numerator": 6,
+      "denominator": 8
+    }
+  },
+  {
+    "at": "2026-04-24T16:00:00.000Z",
+    "action": "approved",
+    "actor_role": "organiser",
+    "subject_type": "claim",
+    "subject_id": "claim-cm-rubric-v1",
+    "detail": {
+      "version": 1,
+      "numerator": 6,
+      "denominator": 8,
+      "digest_sha256": "7906c75cf9645c2e5e23a01335814e43477ab4002cce0f8e0d8e2a6f7903e45f"
+    }
+  },
+  {
+    "at": "2026-05-02T15:00:00.000Z",
+    "action": "corrected",
+    "actor_role": "coach",
+    "subject_type": "claim",
+    "subject_id": "claim-cm-rubric-v2",
+    "detail": {
+      "prior_claim_id": "claim-cm-rubric-v1",
+      "from_numerator": 6,
+      "to_numerator": 5,
+      "denominator": 8,
+      "reason": "One finisher had only completed the paper/plastic sorter practice lesson, which cannot complete the season project."
+    }
+  },
+  {
+    "at": "2026-05-03T15:00:00.000Z",
+    "action": "approved",
+    "actor_role": "organiser",
+    "subject_type": "claim",
+    "subject_id": "claim-cm-rubric-v2",
+    "detail": {
+      "version": 2,
+      "numerator": 5,
+      "denominator": 8,
+      "digest_sha256": "5c9ab2b47e96bef4b9f69c20fa432dbf5ccb9db4729da89067bb4758b51596e1"
+    }
+  },
+  {
+    "at": "2026-11-26T12:00:00.000Z",
+    "action": "export",
+    "actor_role": "auditor",
+    "subject_type": "claim",
+    "subject_id": "claim-cm-rubric-v2",
+    "detail": {
+      "pack_id": "pack-claim-cm-rubric-v2"
+    }
+  }
+]
