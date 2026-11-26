@@ -541,12 +541,24 @@ document.querySelectorAll('.work-gallery').forEach((gallery) => {
     const btn = item.querySelector('.sub-btn');
     const menu = item.querySelector('.sub-menu');
     if (!btn || !menu) return;
-    const set = (open) => { item.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', String(open)); };
+    const set = (open) => { item.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', String(open)); if (open) delete item.dataset.dismissed; };
     const wide = () => matchMedia('(min-width:901px)').matches;
+    const canHover = () => wide() && matchMedia('(hover:hover) and (pointer:fine)').matches;
     btn.addEventListener('click', (e) => { e.stopPropagation(); set(!item.classList.contains('is-open')); });
-    item.addEventListener('mouseenter', () => { if (wide()) set(true); });
-    item.addEventListener('mouseleave', () => { if (wide() && !item.contains(document.activeElement)) set(false); });
-    item.addEventListener('keydown', (e) => { if (e.key === 'Escape') { set(false); btn.focus(); } });
+    item.addEventListener('mouseenter', () => { if (canHover()) set(true); });
+    item.addEventListener('mouseleave', () => { if (canHover() && !item.contains(document.activeElement)) set(false); });
+    item.addEventListener('focusin', () => { if (wide() && item.dataset.dismissed !== 'true') set(true); });
+    item.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      set(false);
+      item.dataset.dismissed = 'true';
+      (item.querySelector(':scope > a') || btn).focus();
+    });
+    item.addEventListener('focusout', (e) => {
+      if (item.contains(e.relatedTarget)) return;
+      delete item.dataset.dismissed;
+      if (wide()) set(false);
+    });
   });
   document.addEventListener('click', () => document.querySelectorAll('.has-sub.is-open').forEach((item) => {
     item.classList.remove('is-open');
