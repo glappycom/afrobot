@@ -554,7 +554,11 @@ document.querySelectorAll('.work-gallery').forEach((gallery) => {
   }));
   const top = document.querySelector('.to-top');
   if (top) {
-    const sync = () => { top.hidden = window.scrollY < 700; };
+    const footer = document.querySelector('footer');
+    const sync = () => {
+      const footerSeen = footer && footer.getBoundingClientRect().top < window.innerHeight - 8;
+      top.hidden = window.scrollY < 700 || footerSeen;
+    };
     addEventListener('scroll', sync, { passive: true });
     sync();
     top.addEventListener('click', () => window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }));
