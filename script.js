@@ -485,13 +485,20 @@ document.querySelectorAll('.work-gallery').forEach((gallery) => {
     if (interest === 'mentorship' && stage !== 'Advance') extra = ' Mentorship is for adults.';
     if (interest === 'compete' && stage !== 'Compete') extra = ' Compete is for ages 13–17.';
     out.textContent = stage + ' fits ages ' + ages + ', ' + practice + ', in ' + shape + '.' + extra;
+    const id = stage === 'Discover' ? 'discover' : stage === 'Build' ? 'build' : 'innovate';
+    const card = document.getElementById(id);
+    document.querySelectorAll('.ladder .card.is-picked').forEach((el) => el.classList.remove('is-picked'));
+    if (card) {
+      card.classList.add('is-picked');
+      card.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+    }
   });
 })();
 
 (() => {
   document.documentElement.classList.add('js');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const reveal = document.querySelectorAll('[data-reveal], main > section, main > .hero, main > .stats, main > .split, main > .spons');
+  const reveal = document.querySelectorAll('[data-reveal], main > section:not(.oa-hero), main > .stats, main > .split, main > .spons');
   if (!reduce && reveal.length && 'IntersectionObserver' in window) {
     reveal.forEach((el, i) => { el.classList.add('will-reveal'); el.style.setProperty('--i', String(i % 6)); });
     const io = new IntersectionObserver((entries) => {
@@ -526,6 +533,53 @@ document.querySelectorAll('.work-gallery').forEach((gallery) => {
     });
   }, { threshold: 0.5 });
   nums.forEach((el) => counts.observe(el));
+})();
+
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('.has-sub').forEach((item) => {
+    const btn = item.querySelector('.sub-btn');
+    const menu = item.querySelector('.sub-menu');
+    if (!btn || !menu) return;
+    const set = (open) => { item.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', String(open)); if (open) delete item.dataset.dismissed; };
+    const wide = () => matchMedia('(min-width:901px)').matches;
+    const canHover = () => wide() && matchMedia('(hover:hover) and (pointer:fine)').matches;
+    btn.addEventListener('click', (e) => { e.stopPropagation(); set(!item.classList.contains('is-open')); });
+    item.addEventListener('mouseenter', () => { if (canHover()) set(true); });
+    item.addEventListener('mouseleave', () => { if (canHover() && !item.contains(document.activeElement)) set(false); });
+    item.addEventListener('focusin', () => { if (wide() && item.dataset.dismissed !== 'true') set(true); });
+    item.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      set(false);
+      item.dataset.dismissed = 'true';
+      (item.querySelector(':scope > a') || btn).focus();
+    });
+    item.addEventListener('focusout', (e) => {
+      if (item.contains(e.relatedTarget)) return;
+      delete item.dataset.dismissed;
+      if (wide()) set(false);
+    });
+  });
+  document.addEventListener('click', () => document.querySelectorAll('.has-sub.is-open').forEach((item) => {
+    item.classList.remove('is-open');
+    item.querySelector('.sub-btn')?.setAttribute('aria-expanded', 'false');
+  }));
+  const top = document.querySelector('.to-top');
+  if (top) {
+    const footer = document.querySelector('footer');
+    const sync = () => {
+      const footerSeen = footer && footer.getBoundingClientRect().top < window.innerHeight - 8;
+      top.hidden = window.scrollY < 700 || footerSeen;
+    };
+    addEventListener('scroll', sync, { passive: true });
+    sync();
+    top.addEventListener('click', () => window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }));
+  }
+  document.querySelectorAll('img[loading="lazy"]').forEach((img) => {
+    if (img.complete) return;
+    img.classList.add('is-pending');
+    img.addEventListener('load', () => img.classList.remove('is-pending'), { once: true });
+  });
 })();
 
 if (Q.get('hero') === 'photo') {

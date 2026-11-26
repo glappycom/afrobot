@@ -33,10 +33,6 @@ const requiredHome = [
   'Inside the 2024 McKinney build day',
   'How holiday programs reached 5,000 children',
   'Our proposed plan for the first national season',
-  'The first national season',
-  'Aug 2027',
-  'Regional launches',
-  'National championship',
   'The camp-week participation goal is $100 per child.',
 ];
 
@@ -137,7 +133,6 @@ if (home.includes('From Curiosity to Creation. From Community to the World.')) f
 if (home.includes('From Curiosity to Creativity. From Africa to the World.')) fail('story heading is still the long line');
 if (home.includes('hero__tag')) fail('homepage still uses the tag sticker');
 if (home.includes('may shift') || home.includes('fee charged') || home.includes('not a new pilot')) fail('homepage still hedges in the body');
-if (!home.includes('The first national season')) fail('homepage missing the 2027 season');
 const homeCss = fs.readFileSync(path.join(root, 'home.css'), 'utf8');
 if (!home.includes('assets/photos/bamenda-circuit-team.jpg')) fail('homepage hero is missing the build photo');
 if (/body\{[^}]*width:\s*1440px/.test(homeCss)) fail('homepage css still locks the body to 1440px');
@@ -181,7 +176,7 @@ if (/coming soon/i.test(home) || /coming soon/i.test(programs)) fail('Home or Pr
 const mainNav = home.match(/<nav>[\s\S]*?<\/nav>/);
 if (!mainNav) fail('main nav missing');
 else {
-  for (const label of ['Programs', 'Get Involved', 'Partners', 'Impact', 'About']) {
+  for (const label of ['Programs', 'Get Involved', 'Stories', 'Our Why', 'About']) {
     if (!mainNav[0].includes(label)) fail('nav missing ' + label);
   }
   if (mainNav[0].includes('>More<')) fail('header nav still has More');
@@ -195,7 +190,7 @@ for (const label of ['Programs', 'Events', 'About', 'Mentors', 'Contact', 'Priva
 }
 if (!footer.includes('href="mailto:hello@afrobot.org"')) fail('footer missing email');
 if (!footer.includes('© 2026 AfroBot. AfroBot is a program of Glappy Foundation, a Texas nonprofit corporation.')) fail('footer missing the Glappy legal line');
-if (!footer.includes('assets/logo-afrobot-footer-navy.svg')) fail('footer logo missing');
+if (!footer.includes('assets/logo-wordmark-white.svg')) fail('footer logo missing');
 if (!home.includes('Sponsor a student') || !home.includes('The camp-week participation goal is $100 per child.')) fail('sponsor band missing');
 if (footer.includes('Our classrooms in Africa') || footer.includes('close__photos')) fail('footer still has the classroom photo strip');
 if (home.includes('stickycta') || programs.includes('stickycta')) fail('sticky mobile bar is still in the page');

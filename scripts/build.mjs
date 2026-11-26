@@ -65,9 +65,8 @@ const orgJson = `<script type="application/ld+json">
 
 const pages = [
   ['mentorship.html', 'mentorship.html', 'Mentorship · AfroBot', 'Coach a team during a session. University students in Dallas have expressed interest in mentoring.', '/mentorship', ''],
-  ['about.html', 'about.html', 'About · AfroBot', 'AfroBot is a program of Glappy Foundation, a Texas nonprofit corporation. Kids in Africa have been building robots since November 2022.', '/about', ''],
-  ['our-why.html', 'our-why.html', 'Our Why · AfroBot', 'AfroBot is a platform for the African dream. Why access to practical AI and robotics education matters, how students take part, and how to get involved.', '/our-why', ''],
-  ['programs.html', 'programs.html', 'Programs · AfroBot', 'Academy, League, and Innovation Lab. Discover through Advance. $100 per child for a camp week is the participation goal.', '/programs', ''],
+  ['about.html', 'about.html', 'About · AfroBot', 'AfroBot is a platform for the African dream. A program of Glappy Foundation, a Texas nonprofit corporation.', '/about', ''],
+  ['programs.html', 'programs.html', 'Programs · AfroBot', 'Academy, League, and Innovation Lab. Discover through Advance. $100 per child for a camp week is the participation goal.', '/programs', '<link rel="preload" as="image" href="assets/photos/bamenda-coding-desktop.webp" fetchpriority="high">'],
   ['usa.html', 'usa.html', 'North America · AfroBot', 'A 2024 pilot in McKinney, Texas, with about 30 students and five to six teams. The 2027 season is proposed.', '/usa', ''],
   ['africa.html', 'africa.html', 'AfroBot Africa · AfroBot', 'Classes began in November 2022. Nearly 5,000 children have trained in holiday programs. About 3,200 students are actively learning at partner schools in Africa.', '/africa', ''],
   ['impact.html', 'impact.html', 'Our Impact · AfroBot', 'Founder-reported counts: about 5,000 children trained in Africa and about 30 in the 2024 McKinney pilot.', '/impact', ''],
@@ -88,6 +87,7 @@ const pages = [
   ['partnership.html', 'partnership.html', 'Partnership inquiries · AfroBot', 'Sponsorship and partnership inquiries.', '/partnership', ''],
   ['schools.html', 'schools.html', 'Bring AfroBot to your school · AfroBot', 'Tell us about your school, and we’ll reach out to set it up.', '/schools', ''],
   ['social.html', 'social.html', 'Social · AfroBot', 'Reach AfroBot at hello@afrobot.org for session updates.', '/social', ''],
+  ['brand-preview.html', 'brand-preview.html', 'Wordmarks · AfroBot', 'Preview of AfroBot wordmark settings. Not for indexing.', '/brand-preview', '<meta name="robots" content="noindex, nofollow">'],
 ];
 
 for (const [out, src, title, description, urlPath, headExtra] of pages) {
@@ -112,6 +112,7 @@ for (const [out, src, title, description, urlPath, headExtra] of pages) {
     .replaceAll('{{DESCRIPTION}}', esc(description))
     .replaceAll('{{CANONICAL}}', 'https://afrobot.org' + urlPath)
     .replaceAll('{{HEAD_EXTRA}}', headExtra)
+    .replaceAll('{{BODY_CLASS}}', 'page-' + out.replace(/\.html$/, ''))
     .replaceAll('{{HEADER}}', header)
     .replaceAll('{{FOOTER}}', footer)
     .replaceAll('{{CONTENT}}', content);
