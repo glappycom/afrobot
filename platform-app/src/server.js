@@ -349,6 +349,9 @@ export function createApp(options = {}) {
       if (pathname === '/capture.js' && method === 'GET') {
         return send(res, 200, fs.readFileSync(path.join(ROOT, 'public', 'capture.js')), { 'content-type': 'text/javascript; charset=utf-8' });
       }
+      if (pathname === '/log-status.js' && method === 'GET') {
+        return send(res, 200, fs.readFileSync(path.join(ROOT, 'src', 'log-status.js')), { 'content-type': 'text/javascript; charset=utf-8' });
+      }
       if (pathname === '/log.js' && method === 'GET') {
         return send(res, 200, fs.readFileSync(path.join(ROOT, 'public', 'log.js')), { 'content-type': 'text/javascript; charset=utf-8' });
       }
@@ -560,7 +563,7 @@ export function createApp(options = {}) {
         const result = readPhoto(db, user, photoGet[1], now, url.searchParams.get('download') === '1');
         if (!result.ok) {
           if (json) return sendJson(res, result.status, { error: result.error });
-          return sendHtml(res, result.status, chrome({ title: 'Photo', body: `<div class="panel"><h1>Photo</h1><p class="alert" role="alert">${esc(result.error)}</p></div>` }));
+          return sendHtml(res, result.status, productShell({ title: 'Photo', user, session, section: 'logs', body: `<div class="card padcard"><h1>Photo</h1><p class="alert" role="alert">${esc(result.error)}</p></div>` }));
         }
         return send(res, 200, result.bytes, {
           'content-type': result.mediaType,
@@ -597,7 +600,7 @@ export function createApp(options = {}) {
         if (!claim || claim.submitted_by !== user.id || claim.status !== 'returned') throw notFound();
         return sendHtml(res, 200, fixPage(db, user, session, claim, pageOpts));
       }
-      if (pathname === '/coach/log' && method === 'GET') return sendHtml(res, 200, logPage(db, user, session, '1'));
+      if (pathname === '/coach/log' && method === 'GET') return sendHtml(res, 200, capturePage(db, user, now, session, pageOpts));
       if (pathname === '/coach/log/2' && method === 'GET') return sendHtml(res, 200, logPage(db, user, session, '2'));
       if (pathname === '/coach/log/saved' && method === 'GET') return sendHtml(res, 200, logPage(db, user, session, 'saved'));
       if (pathname === '/api/session-logs' && method === 'POST') {

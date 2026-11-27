@@ -1,3 +1,5 @@
+import { logUiState } from '/log-status.js';
+
 (function () {
   const capture = document.getElementById('capture-form');
   const fix = document.getElementById('fix-form');
@@ -32,6 +34,7 @@
   }
 
   async function uploadSelected(form, claimId, token) {
+    if (form.querySelector('#no-photo')?.checked) return { skipped: true };
     const file = form.querySelector('#photo-file');
     if (!file || !file.files || !file.files[0]) return { skipped: true };
     const chosen = file.files[0];
@@ -108,37 +111,39 @@
         error: existing.error || '',
       };
     }
-    function clock() {
-      return new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', hour: 'numeric', minute: '2-digit' }).format(new Date());
+    function paint(state, detailText) {
+      const send = document.getElementById('submit-capture');
+      const retry = document.getElementById('retry-capture');
+      status.textContent = state.status;
+      if (detail) detail.textContent = detailText || '';
+      if (send) send.hidden = !state.send;
+      if (retry) retry.hidden = !state.retry;
     }
     function show(draft) {
-      const retry = document.getElementById('retry-capture');
-      if (retry) retry.hidden = draft.status !== 'needs-attention';
       if (draft.recordId) {
-        status.textContent = `Sent ${clock()}.`;
-        detail.textContent = draft.error || '';
+        paint(logUiState({ confirmed: true }), draft.error || '');
         return;
       }
       if (draft.status === 'needs-attention') {
-        status.textContent = draft.error || 'Needs attention.';
-        detail.textContent = '';
+        paint(logUiState({ failed: true }), draft.error || 'The send did not finish.');
         return;
       }
-      status.textContent = `Draft saved ${clock()}. Not sent yet.`;
-      detail.textContent = '';
+      if (draft.status === 'pending-sync') {
+        paint(logUiState({ online: false }));
+        return;
+      }
+      paint(logUiState({}));
     }
     async function send() {
       const draft = current();
       document.getElementById('idempotencyKey').value = draft.idempotencyKey;
       if (!navigator.onLine) {
         draft.status = 'pending-sync';
+        draft.recordId = '';
         save(draft);
         show(draft);
         return;
       }
-      draft.status = 'pending-sync';
-      save(draft);
-      show(draft);
       try {
         const token = tokenOf(capture);
         const response = await fetch('/api/captures', {
@@ -149,6 +154,7 @@
         const body = await response.json().catch(() => ({}));
         if (!response.ok || !body.id) {
           draft.status = 'needs-attention';
+          draft.recordId = '';
           draft.error = body.error || 'The server did not confirm the record.';
           save(draft);
           show(draft);
@@ -162,6 +168,7 @@
         show(draft);
       } catch {
         draft.status = 'needs-attention';
+        draft.recordId = '';
         draft.error = 'The send did not finish.';
         save(draft);
         show(draft);
@@ -173,15 +180,6 @@
     });
     const retry = document.getElementById('retry-capture');
     if (retry) retry.addEventListener('click', send);
-    const draftBtn = document.getElementById('save-draft');
-    if (draftBtn) {
-      draftBtn.addEventListener('click', () => {
-        const draft = current();
-        draft.status = 'saved-on-device';
-        save(draft);
-        show(draft);
-      });
-    }
     document.querySelectorAll('[data-step]').forEach((button) => {
       button.addEventListener('click', () => {
         const input = document.getElementById(button.getAttribute('data-step'));

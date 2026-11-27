@@ -40,7 +40,7 @@ function roleRail(role, section, user) {
   const sets = {
     coach: [
       ['today', '/coach', 'Today', 'home'],
-      ['capture', '/coach/capture', 'Capture', 'plus'],
+      ['log', '/coach/log', 'Log a session', 'plus'],
       ['logs', '/coach/logs', 'My logs', 'inbox'],
       ['team', '/coach/team', 'Teams', 'users'],
       ['help', '/help', 'How it works', 'file'],
@@ -115,9 +115,7 @@ export function coachScreen(db, user, now, session, extras = {}) {
     : '';
   const greet = localParts(now);
   const body = phone(`<div class="greet"><div class="d">${esc(greet.day)} <span class="mtag">Fictional</span></div><h1>${esc(greet.hello)},<br>${esc(user.display_name)}</h1></div>
-    <div class="cta"><a class="btn p big xl" href="/coach/log">${icon('plus', 'lg')} Log a session<span class="sub3">Photo, skills, save. About 20 seconds.</span></a>
-    <a class="btn o big" href="/coach/capture">Capture a session</a>
-    <a class="btn o big" href="/coach/result">Send a result without a photo</a>
+    <div class="cta"><a class="btn p big xl" href="/coach/log">${icon('plus', 'lg')} Log a session<span class="sub3">Counts, attendance, then send. A photo is optional.</span></a>
     <a href="/help">How it works</a></div>
     ${extras.error ? `<p role="alert">${esc(extras.error)}</p>` : ''}
     ${gapNote}
@@ -259,9 +257,9 @@ function guardianPhotoBlock(db, user, session) {
   const consent = linked ? consentLabel(db, linked.learner_id) : { status: 'missing', text: 'No linked child.' };
   const pics = photos.map((row) => `<img src="/photos/${esc(row.id)}" alt="Private photo of Student ${esc(row.letters[0] || '')}" width="160">`).join('') || '<p>No photo of only your child.</p>';
   const action = !linked ? '' : consent.status === 'active'
-    ? `<form method="post" action="/student/photo-consent/withdraw">${hidden(session)}<input type="hidden" name="learnerId" value="${esc(linked.learner_id)}"><button type="submit">Withdraw photo consent</button></form>`
-    : `<form method="post" action="/student/photo-consent">${hidden(session)}<input type="hidden" name="learnerId" value="${esc(linked.learner_id)}"><button type="submit">Record photo consent</button></form>`;
-  return `<div class="sect family-photos"><h3>Private photos</h3><p>${esc(consent.text)}</p>${pics}${action}</div>`;
+    ? `<form method="post" action="/student/photo-consent/withdraw">${hidden(session)}<input type="hidden" name="learnerId" value="${esc(linked.learner_id)}"><button class="btn o" type="submit">Withdraw photo permission</button></form>`
+    : `<form method="post" action="/student/photo-consent">${hidden(session)}<input type="hidden" name="learnerId" value="${esc(linked.learner_id)}"><button class="btn p" type="submit">Record photo permission</button></form>`;
+  return `<div class="sect"><h3>Photo permission</h3></div><div class="permit">${esc(consent.text)}${action}</div><div class="sect"><h3>Photos</h3></div><div class="family-photos">${pics}</div>`;
 }
 
 function photoTrace(db, user, now, claim) {

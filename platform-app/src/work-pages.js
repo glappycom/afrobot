@@ -31,27 +31,38 @@ export function capturePage(db, user, now, session, extras = {}) {
   const room = photoCapacity();
   const options = meetings.map((meeting) => `<option value="${esc(meeting.id)}">${esc(meeting.label)} · ${esc(meeting.meets_on)}</option>`).join('');
   const marks = roster(learners);
-  const body = `${error}<div class="ph"><div><h1>Capture a session</h1><p>Mark who came, then the counts, the result, and an optional photo.</p></div></div>
+  const body = `${error}<div class="ph"><div><h1>Log a session</h1><p>Record what happened. A photo is optional.</p></div></div>
     <p id="sync-status" class="statusline" role="status">Not sent yet.</p>
     <p id="sync-detail" class="statusline"></p>
     <form id="capture-form" class="stack" method="post" action="/coach/captures">${hidden(session)}
-      <label for="meetingId">Session</label>
-      <select id="meetingId" class="field" name="meetingId" required>${options || '<option value="">No session scheduled</option>'}</select>
-      <h2>Roster</h2>
-      ${marks || '<p class="empty">No student with consent is on this club yet.</p>'}
       <div class="pair">
         <label for="denominator">Starters <span>Who began the session</span><span class="stepper"><button type="button" data-step="denominator" data-dir="-1" aria-label="Fewer starters">−</button><input id="denominator" name="denominator" inputmode="numeric" required><button type="button" data-step="denominator" data-dir="1" aria-label="More starters">+</button></span></label>
         <label for="numerator">Completions <span>Who finished the task</span><span class="stepper"><button type="button" data-step="numerator" data-dir="-1" aria-label="Fewer completions">−</button><input id="numerator" name="numerator" inputmode="numeric" required><button type="button" data-step="numerator" data-dir="1" aria-label="More completions">+</button></span></label>
       </div>
       <label for="projectResult">Project result <span>What the team finished</span><input id="projectResult" class="field" name="projectResult" required></label>
-      <label for="note">Note <span>No student names</span><textarea id="note" class="field" name="note" rows="3" required></textarea></label>
-      ${photoFields(learners, room)}
+      <h2>Attendance</h2>
+      <p>Mark each student who can be included in the count.</p>
+      ${marks || '<p class="empty">No student with consent is on this club yet.</p>'}
+      <label class="tag on" for="no-photo"><input id="no-photo" name="noPhoto" type="checkbox" checked><span>No photo for this session</span></label>
+      <details>
+        <summary>Notes</summary>
+        <label for="note">Note <span>No student names</span><textarea id="note" class="field" name="note" rows="3">Session log.</textarea></label>
+      </details>
+      <details>
+        <summary>Photos</summary>
+        ${photoFields(learners, room)}
+      </details>
+      <details>
+        <summary>More details</summary>
+        <label for="meetingId">Session</label>
+        <select id="meetingId" class="field" name="meetingId" required>${options || '<option value="">No session scheduled</option>'}</select>
+      </details>
       <input type="hidden" id="idempotencyKey" name="idempotencyKey" value="">
-      <div class="actions"><button id="submit-capture" class="btn p" type="submit">Send for review</button><button id="save-draft" class="btn o" type="button">Save draft</button><button id="retry-capture" class="btn g" type="button" hidden>Retry</button></div>
+      <div class="actions"><button id="submit-capture" class="btn p" type="submit">Send</button><button id="retry-capture" class="btn g" type="button" hidden>Retry</button></div>
       <div id="paper-fallback" hidden><p>This browser cannot store the draft. Keep this tab open, or print this page and enter the same counts when you are back online.</p></div>
     </form>
-    <script src="/capture.js"></script>`;
-  return page('Capture a session', user, session, 'capture', body);
+    <script type="module" src="/capture.js"></script>`;
+  return page('Log a session', user, session, 'log', body);
 }
 
 function roster(learners) {
@@ -76,7 +87,7 @@ export function fixPage(db, user, session, claim, extras = {}) {
       ${photoFields(learners, photoCapacity())}
       <div class="actions"><button class="btn p" type="submit">Send for review</button></div>
     </form>
-    <script src="/capture.js"></script>`;
+    <script type="module" src="/capture.js"></script>`;
   return page('Fix a session', user, session, 'logs', body);
 }
 
@@ -166,7 +177,7 @@ export function adminPage(db, user, now, session, extras = {}) {
   const coachRows = coaches.map((row) => `<tr><td>${esc(row.display_name)}</td><td>${esc(row.school_name)}</td></tr>`).join('');
   const learnerRows = learners.map((row) => `<tr><td>Student ${esc(row.letter)}</td><td>${esc(consentLabel(db, row.id).status)}</td><td>${esc(consentLabel(db, row.id).text)}</td></tr>`).join('');
   const body = `${error}${notice}<div class="ph"><div><h1>Admin</h1><p>Add a club, a period, a person, or a session.</p></div></div>
-    <nav class="filters" aria-label="Admin sections">${tabLink('clubs', 'Clubs')}${tabLink('periods', 'Periods')}${tabLink('people', 'People')}${tabLink('sessions', 'Sessions')}${tabLink('consent', 'Photo consent')}${tabLink('deactivate', 'Deactivate')}</nav>
+    <nav class="filters" aria-label="Admin sections">${tabLink('clubs', 'Clubs')}${tabLink('periods', 'Periods')}${tabLink('people', 'People')}${tabLink('sessions', 'Sessions')}${tabLink('consent', 'Photo permission')}${tabLink('deactivate', 'Deactivate')}</nav>
     <section class="${tab === 'clubs' ? '' : 'off'}"><h2>Clubs</h2><table><thead><tr><th>Club</th><th>Approved sessions</th><th>Rate</th></tr></thead><tbody>${clubRows || '<tr><td colspan="3">No club yet.</td></tr>'}</tbody></table>
       <details><summary>Add a club</summary><form method="post" action="/organiser/admin/clubs">${hidden(session)}
         <label>Name <input class="field" name="displayName" required></label>
@@ -212,7 +223,7 @@ export function adminPage(db, user, now, session, extras = {}) {
         <button class="btn p" type="submit">Save session</button>
         <button class="btn o" type="submit" name="cancel" value="1">Cancel session</button>
       </form></details></section>
-    <section class="${tab === 'consent' ? '' : 'off'}"><h2>Photo consent</h2>
+    <section class="${tab === 'consent' ? '' : 'off'}"><h2>Photo permission</h2>
       <table><thead><tr><th>Student</th><th>Status</th><th>Record</th></tr></thead><tbody>${learnerRows}</tbody></table>
       <details><summary>Record photo consent</summary><form method="post" action="/organiser/photo-consent">${hidden(session)}
         <label>Student <select class="field" name="learnerId">${learnerOptions}</select></label>
@@ -254,7 +265,7 @@ export function helpPage(user, session = { csrf: '' }) {
     coach: `<h1>How it works for a coach</h1>
       <ol>
         <li>Sign in.</li>
-        <li>Open Capture a session and pick the session for your club.</li>
+        <li>Open Log a session. Enter starters, completions, and the project result, then mark attendance. Notes and photos are optional. Choose "No photo for this session" to send without opening the photo controls.</li>
         <li>Mark each student present or absent. Students without consent, and deactivated students, are not on the list.</li>
         <li>Enter starters, completions, the project result, and a short note. Do not add names.</li>
         <li>A photo is optional. Use JPEG, PNG, or WebP. Tag the students in the picture, or mark that no students are shown. The server checks the real file type, shrinks it, and removes location data. If a tagged student has no photo consent, the upload is blocked and the reason is shown.</li>
