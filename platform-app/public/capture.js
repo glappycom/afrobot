@@ -111,10 +111,13 @@ import { logUiState } from '/log-status.js';
         error: existing.error || '',
       };
     }
+    const icons = { Draft: 'file', 'Pending sync': 'clock', Sending: 'hist', Sent: 'check', Failed: 'alert' };
     function paint(state, detailText) {
       const send = document.getElementById('submit-capture');
       const retry = document.getElementById('retry-capture');
-      status.textContent = state.status;
+      const icon = icons[state.status] || 'file';
+      status.className = `statuschip s-${state.status.toLowerCase().replace(/\s+/g, '-')}`;
+      status.innerHTML = `<svg class="i sm" aria-hidden="true"><use href="#i-${icon}"/></svg><span>${state.status}</span>`;
       if (detail) detail.textContent = detailText || '';
       if (send) send.hidden = !state.send;
       if (retry) retry.hidden = !state.retry;
@@ -144,6 +147,7 @@ import { logUiState } from '/log-status.js';
         show(draft);
         return;
       }
+      paint(logUiState({ sending: true }));
       try {
         const token = tokenOf(capture);
         const response = await fetch('/api/captures', {

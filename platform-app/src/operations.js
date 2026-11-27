@@ -407,6 +407,9 @@ export function submitSessionCapture(db, user, input, now) {
 
 export async function submitPhoneLog(db, user, input, now) {
   if (!user || user.role !== 'coach') throw notAvailable();
+  if (input.numerator === undefined || input.numerator === '' || input.denominator === undefined || input.denominator === '') {
+    throw new HttpError(422, 'Enter starters and completions. This log will not replace them with a headcount.');
+  }
   saveSessionLog(db, user, input, now);
   const meetings = meetingsFor(db, user, now);
   const open = meetings.find((meeting) => {
@@ -431,8 +434,8 @@ export async function submitPhoneLog(db, user, input, now) {
   const result = submitSessionCapture(db, user, {
     meetingId: open.id,
     idempotencyKey: `phone-${open.id}`.slice(0, 64),
-    numerator: learners.length,
-    denominator: learners.length,
+    numerator: input.numerator,
+    denominator: input.denominator,
     projectResult: skills.slice(0, 80) || 'Practice',
     note: 'Phone log. No names.',
     attendance: learners.map((row) => ({ learnerId: row.id, present: true })),

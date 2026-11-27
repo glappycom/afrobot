@@ -207,7 +207,7 @@ ${notice ? `<p class="notice" role="status">${esc(notice)}</p>` : ''}
 ${error ? `<p class="error" role="alert">${esc(error)}</p>` : ''}
 ${body}
 </main>`}
-<footer class="appfoot"><p>Preview v0.8</p><p>Demo records controls. Not a certification. A digest shows a later change. It does not prove the first number was true.</p></footer>
+<footer class="appfoot"><p>Preview v0.8.2</p><p>Demo records controls. Not a certification. A digest shows a later change. It does not prove the first number was true.</p></footer>
 <script src="/app.js"></script>
 </body>
 </html>`;
@@ -266,7 +266,7 @@ function showHow(claim, extra = '') {
 
 export function loginPage({ error, demoMode = false } = {}) {
   const hint = demoMode ? '<p class="infobanner">Demo sign-ins are in the PR description. On this preview, the seeded organiser and auditor can sign in without an authenticator.</p>' : '';
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sign in · afrobot</title><link rel="stylesheet" href="/home.css"></head><body class="gate"><main class="signin" id="main"><img src="/logo-afrobot-navy.svg" alt="afrobot" width="148" height="33"><form class="card padcard" method="post" action="/login"><h1>Sign in</h1>${hint}${error ? `<p class="alert" role="alert">${esc(error)}</p>` : ''}<label for="username">Username</label><input id="username" class="field" name="username" autocomplete="username" required><label for="password">Password</label><input id="password" class="field" name="password" type="password" autocomplete="current-password" required><details><summary>Use authenticator code</summary><label for="code">Authenticator code</label><input id="code" class="field" name="code" inputmode="numeric" autocomplete="one-time-code"></details><button class="btn p" type="submit">Sign in</button></form></main><footer class="appfoot"><p>Preview v0.8.1</p><p class="fine">Demo records controls. Not a certification. A digest shows a later change. It does not prove the first number was true.</p></footer></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sign in · afrobot</title><link rel="stylesheet" href="/home.css"></head><body class="gate"><main class="signin" id="main"><img src="/logo-afrobot-navy.svg" alt="afrobot" width="148" height="33"><form class="card padcard" method="post" action="/login"><h1>Sign in</h1>${hint}${error ? `<p class="alert" role="alert">${esc(error)}</p>` : ''}<label for="username">Username</label><input id="username" class="field" name="username" autocomplete="username" required><label for="password">Password</label><input id="password" class="field" name="password" type="password" autocomplete="current-password" required><details><summary>Use authenticator code</summary><label for="code">Authenticator code</label><input id="code" class="field" name="code" inputmode="numeric" autocomplete="one-time-code"></details><button class="btn p" type="submit">Sign in</button></form></main><footer class="appfoot"><p>Preview v0.8.2</p><p class="fine">Demo records controls. Not a certification. A digest shows a later change. It does not prove the first number was true.</p></footer></body></html>`;
 }
 
 export function unavailablePage() {
@@ -791,16 +791,13 @@ export function setupPage(role, user, session, db) {
 }
 
 export function settingsPage(user, session, db, saver) {
-  return layout({
-    title: 'Settings · afrobot evidence',
-    user: { ...user, csrf: session.csrf },
-    db, now: () => new Date().toISOString(), crumb: 'Settings',
-    body: `<h1>Data saver</h1><p>Lite mode is ${saver ? 'on' : 'off'}. Photos stay off until tapped.</p>
-    <form method="post" action="/settings">${hidden(session)}<input type="hidden" name="dataSaver" value="${saver ? '0' : '1'}"><button type="submit">${saver ? 'Turn data saver off' : 'Turn data saver on'}</button></form>
-    <h2>Authenticator</h2><p>Optional for a coach. Required for an organiser or auditor outside this preview.</p>
-    <form method="post" action="/settings/mfa">${hidden(session)}<button type="submit">Set up an authenticator</button></form>
-    <p><a href="/lite">Open Lite</a></p>`,
-  });
+  const body = `<div class="ph"><div><h1>Settings</h1><p>Data saver and authenticator.</p></div></div>
+    <section class="card padcard"><h2>Data saver</h2><p>Lite mode is ${saver ? 'on' : 'off'}. Photos stay off until tapped.</p>
+    <form method="post" action="/settings">${hidden(session)}<input type="hidden" name="dataSaver" value="${saver ? '0' : '1'}"><button class="btn o" type="submit">${saver ? 'Turn data saver off' : 'Turn data saver on'}</button></form></section>
+    <section class="card padcard"><h2>Authenticator</h2><p>Optional for a coach. Required for an organiser or auditor outside this preview.</p>
+    <form method="post" action="/settings/mfa">${hidden(session)}<button class="btn p" type="submit">Set up an authenticator</button></form>
+    <p><a href="/lite">Open Lite</a></p></section>`;
+  return productShell({ title: 'Settings · afrobot', user, session, section: 'settings', body });
 }
 
 export { homeFor, liteHome };

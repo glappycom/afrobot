@@ -23,6 +23,16 @@ function hidden(session) {
   return `<input type="hidden" name="csrf" value="${esc(session.csrf)}">`;
 }
 
+function fold(title, hint, inner) {
+  return `<details class="fold"><summary><span><b>${title}</b><small>${hint}</small></span><svg class="i sm chev" aria-hidden="true"><use href="#i-chev"/></svg></summary><div class="foldbody">${inner}</div></details>`;
+}
+
+function statusChip(label = 'Draft') {
+  const kind = String(label).toLowerCase().replace(/\s+/g, '-');
+  const icon = label === 'Sent' ? 'check' : label === 'Failed' ? 'alert' : label === 'Pending sync' ? 'clock' : label === 'Sending' ? 'hist' : 'file';
+  return `<p id="sync-status" class="statuschip s-${kind}" role="status"><svg class="i sm" aria-hidden="true"><use href="#i-${icon}"/></svg><span>${esc(label)}</span></p>`;
+}
+
 export function capturePage(db, user, now, session, extras = {}) {
   const meetings = meetingsFor(db, user, now);
   const membership = get(db, 'SELECT school_id FROM memberships WHERE user_id = ? AND role = ?', [user.id, 'coach']);
@@ -31,34 +41,23 @@ export function capturePage(db, user, now, session, extras = {}) {
   const room = photoCapacity();
   const options = meetings.map((meeting) => `<option value="${esc(meeting.id)}">${esc(meeting.label)} · ${esc(meeting.meets_on)}</option>`).join('');
   const marks = roster(learners);
-  const body = `${error}<div class="ph"><div><h1>Log a session</h1><p>Record what happened. A photo is optional.</p></div></div>
-    <p id="sync-status" class="statusline" role="status">Not sent yet.</p>
+  const body = `${error}<div class="ph"><div><h1>Log a session</h1><p>Record what happened. A photo is optional.</p>${statusChip('Draft')}</div></div>
     <p id="sync-detail" class="statusline"></p>
     <form id="capture-form" class="stack" method="post" action="/coach/captures">${hidden(session)}
       <div class="pair">
-        <label for="denominator">Starters <span>Who began the session</span><span class="stepper"><button type="button" data-step="denominator" data-dir="-1" aria-label="Fewer starters">−</button><input id="denominator" name="denominator" inputmode="numeric" required><button type="button" data-step="denominator" data-dir="1" aria-label="More starters">+</button></span></label>
-        <label for="numerator">Completions <span>Who finished the task</span><span class="stepper"><button type="button" data-step="numerator" data-dir="-1" aria-label="Fewer completions">−</button><input id="numerator" name="numerator" inputmode="numeric" required><button type="button" data-step="numerator" data-dir="1" aria-label="More completions">+</button></span></label>
+        <label for="denominator">Starters <span>Who began the session</span><span class="stepper"><button type="button" data-step="denominator" data-dir="-1" aria-label="Fewer starters">−</button><input id="denominator" name="denominator" inputmode="numeric" size="3" value="0" required><button type="button" data-step="denominator" data-dir="1" aria-label="More starters">+</button></span></label>
+        <label for="numerator">Completions <span>Who finished the task</span><span class="stepper"><button type="button" data-step="numerator" data-dir="-1" aria-label="Fewer completions">−</button><input id="numerator" name="numerator" inputmode="numeric" size="3" value="0" required><button type="button" data-step="numerator" data-dir="1" aria-label="More completions">+</button></span></label>
       </div>
       <label for="projectResult">Project result <span>What the team finished</span><input id="projectResult" class="field" name="projectResult" required></label>
       <h2>Attendance</h2>
       <p>Mark each student who can be included in the count.</p>
       ${marks || '<p class="empty">No student with consent is on this club yet.</p>'}
-      <label class="tag on" for="no-photo"><input id="no-photo" name="noPhoto" type="checkbox" checked><span>No photo for this session</span></label>
-      <details>
-        <summary>Notes</summary>
-        <label for="note">Note <span>No student names</span><textarea id="note" class="field" name="note" rows="3">Session log.</textarea></label>
-      </details>
-      <details>
-        <summary>Photos</summary>
-        ${photoFields(learners, room)}
-      </details>
-      <details>
-        <summary>More details</summary>
-        <label for="meetingId">Session</label>
-        <select id="meetingId" class="field" name="meetingId" required>${options || '<option value="">No session scheduled</option>'}</select>
-      </details>
+      <label class="checkrow" for="no-photo"><input id="no-photo" name="noPhoto" type="checkbox" checked><span>No photo for this session</span></label>
+      ${fold('Notes', 'Optional', '<label for="note">Note <span>No student names</span><textarea id="note" class="field" name="note" rows="3">Session log.</textarea></label>')}
+      ${fold('Photos', 'Optional', photoFields(learners, room))}
+      ${fold('More details', 'Optional', `<label for="meetingId">Session</label><select id="meetingId" class="field" name="meetingId" required>${options || '<option value="">No session scheduled</option>'}</select>`)}
       <input type="hidden" id="idempotencyKey" name="idempotencyKey" value="">
-      <div class="actions"><button id="submit-capture" class="btn p" type="submit">Send</button><button id="retry-capture" class="btn g" type="button" hidden>Retry</button></div>
+      <div class="actions sendbar"><button id="submit-capture" class="btn p" type="submit">Send</button><button id="retry-capture" class="btn g" type="button" hidden>Retry</button></div>
       <div id="paper-fallback" hidden><p>This browser cannot store the draft. Keep this tab open, or print this page and enter the same counts when you are back online.</p></div>
     </form>
     <script type="module" src="/capture.js"></script>`;
@@ -73,19 +72,20 @@ export function fixPage(db, user, session, claim, extras = {}) {
   const error = extras.error ? `<p class="alert" role="alert">${esc(extras.error)}</p>` : '';
   const membership = get(db, 'SELECT school_id FROM memberships WHERE user_id = ? AND role = ?', [user.id, 'coach']);
   const learners = membership ? learnersForSchool(db, membership.school_id, { logging: true }) : [];
-  const body = `${error}<div class="ph"><div><h1>Fix and resubmit</h1><p class="pill p-fix">Needs attention</p><p>${esc(claim.return_note || '')}</p></div></div>
+  const body = `${error}<div class="ph"><div><h1>Fix and resubmit</h1><p class="statuschip s-failed"><svg class="i sm" aria-hidden="true"><use href="#i-alert"/></svg><span>Needs attention</span></p><p>${esc(claim.return_note || '')}</p></div></div>
     <p>Version ${esc(claim.version)} stays as ${esc(claim.numerator)} of ${esc(claim.denominator)}. This sends a new version. Photos already on this version stay with it.</p>
     <p id="photo-status" class="statusline" role="status"></p>
     <form id="fix-form" class="stack" method="post" action="/coach/claims/${esc(claim.id)}/resubmit">${hidden(session)}
-      ${roster(learners)}
       <div class="pair">
         <label for="denominator">Starters<span class="stepper"><button type="button" data-step="denominator" data-dir="-1" aria-label="Fewer starters">−</button><input id="denominator" name="denominator" inputmode="numeric" value="${esc(claim.denominator)}" required><button type="button" data-step="denominator" data-dir="1" aria-label="More starters">+</button></span></label>
         <label for="numerator">Completions<span class="stepper"><button type="button" data-step="numerator" data-dir="-1" aria-label="Fewer completions">−</button><input id="numerator" name="numerator" inputmode="numeric" value="${esc(claim.numerator)}" required><button type="button" data-step="numerator" data-dir="1" aria-label="More completions">+</button></span></label>
       </div>
       <label for="projectResult">Project result<input id="projectResult" class="field" name="projectResult" value="${esc(claim.project_result || '')}" required></label>
-      <label for="note">Note <span>No student names</span><textarea id="note" class="field" name="note" rows="3" required>${esc(claim.coach_note || '')}</textarea></label>
-      ${photoFields(learners, photoCapacity())}
-      <div class="actions"><button class="btn p" type="submit">Send for review</button></div>
+      <h2>Attendance</h2>
+      ${roster(learners)}
+      ${fold('Notes', 'Optional', `<label for="note">Note <span>No student names</span><textarea id="note" class="field" name="note" rows="3" required>${esc(claim.coach_note || '')}</textarea></label>`)}
+      ${fold('Photos', 'Optional', photoFields(learners, photoCapacity()))}
+      <div class="actions sendbar"><button class="btn p" type="submit">Send</button></div>
     </form>
     <script type="module" src="/capture.js"></script>`;
   return page('Fix a session', user, session, 'logs', body);
@@ -105,16 +105,15 @@ export function sessionPhotoPage(db, user, session, claim, extras = {}) {
   const error = extras.error ? `<p class="alert" role="alert">${esc(extras.error)}</p>` : '';
   const photos = listClaimPhotos(db, user, claim.id, new Date().toISOString());
   const learners = learnersForSchool(db, claim.school_id, { logging: true });
-  const items = photos.map((row) => `<li><img src="/photos/${esc(row.id)}" alt="Private photo" width="160"><span>${row.noStudents ? 'No students shown' : row.letters.map((letter) => `Student ${esc(letter)}`).join(', ')}</span>${user.role === 'coach' && claim.status !== 'approved' ? `<form method="post" action="/coach/photos/${esc(row.id)}/remove">${hidden(session)}<button type="submit">Remove</button></form>` : ''}${user.role === 'organiser' && claim.status === 'approved' ? `<form method="post" action="/organiser/photos/${esc(row.id)}/remove">${hidden(session)}<label>Reason <input name="reason" required></label><button type="submit">Remove</button></form>` : ''}</li>`).join('');
+  const items = photos.map((row) => `<li class="logcard"><img src="/photos/${esc(row.id)}" alt="Private photo" width="160"><span>${row.noStudents ? 'No students shown' : row.letters.map((letter) => `Student ${esc(letter)}`).join(', ')}</span>${user.role === 'coach' && claim.status !== 'approved' ? `<form method="post" action="/coach/photos/${esc(row.id)}/remove">${hidden(session)}<button class="btn o" type="submit">Remove</button></form>` : ''}${user.role === 'organiser' && claim.status === 'approved' ? `<form method="post" action="/organiser/photos/${esc(row.id)}/remove">${hidden(session)}<label>Reason <input class="field" name="reason" required></label><button class="btn o" type="submit">Remove</button></form>` : ''}</li>`).join('');
   const upload = user.role === 'coach' && claim.status === 'submitted'
     ? `<form id="session-photo-form" method="post" action="/coach/claims/${esc(claim.id)}/photos">${hidden(session)}
       ${photoFields(learners, photoCapacity())}
       <p><button type="submit">Add photo</button></p>
-    </form><script src="/capture.js"></script>`
+    </form><script type="module" src="/capture.js"></script>`
     : '';
-  const body = `${error}<h1>Photos on version ${esc(claim.version)}</h1>
-    <p>These pictures belong to this version. Sending a new version keeps them here.</p>
-    <ul class="photo-row">${items || '<li class="empty">No photo on this version.</li>'}</ul>
+  const body = `${error}<div class="ph"><div><h1>Session detail</h1><p>Photos on version ${esc(claim.version)}. Sending a new version keeps them here.</p></div></div>
+    <ul class="loglist">${items || '<li class="empty">No photo on this version.</li>'}</ul>
     ${upload}`;
   return page('Session photos', user, session, user.role === 'organiser' ? 'tracking' : 'logs', body);
 }

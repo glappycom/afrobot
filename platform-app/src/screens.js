@@ -76,22 +76,43 @@ function roleRail(role, section, user) {
   return `<aside class="rail"><div class="org"><span class="av sm">${esc(String(user.display_name || 'A').slice(0, 2).toUpperCase())}</span><div><b>${esc(user.display_name)}</b><span>${esc(role)}</span></div></div>${links}<div class="bottom">Fictional records. Not a certification.</div></aside>`;
 }
 
+function phoneTabBar(role, section) {
+  const sets = {
+    coach: [
+      ['today', '/coach', 'Today', 'home'],
+      ['log', '/coach/log', 'Log', 'plus'],
+      ['logs', '/coach/logs', 'My logs', 'inbox'],
+      ['team', '/coach/team', 'Team', 'users'],
+      ['settings', '/settings', 'Settings', 'gear'],
+    ],
+    guardian: [
+      ['home', '/student/family', 'Home', 'home'],
+      ['journey', '/student/journey', 'Journey', 'compass'],
+      ['help', '/help', 'Details', 'file'],
+      ['settings', '/settings', 'Settings', 'gear'],
+    ],
+  };
+  const items = sets[role];
+  if (!items) return '';
+  return `<nav class="phonetabs" aria-label="${role === 'guardian' ? 'Family' : 'Coach'}">${items.map(([key, href, label, ic]) => `<a class="${section === key ? 'on' : ''}" href="${href}" ${section === key ? 'aria-current="page"' : ''}>${icon(ic)}${label}</a>`).join('')}</nav>`;
+}
+
 export function productShell({ title, user, session, section, body }) {
   const role = user.role === 'student' ? 'guardian' : user.role;
   const home = role === 'organiser' ? '/organiser' : role === 'auditor' ? '/auditor' : role === 'guardian' ? '/student' : '/coach';
   const roleLabel = role === 'organiser' ? 'Organiser' : role === 'auditor' ? 'Auditor' : role === 'guardian' ? 'Guardian' : 'Coach';
   const device = role === 'auditor' ? 'Read-only' : 'Desktop';
-  const wrapped = `<div class="desk ${role === 'auditor' ? 'aud' : ''}">${roleRail(role, section, user)}<div class="main">${body}</div></div>`;
+  const wrapped = `<div class="desk role-${role} ${role === 'auditor' ? 'aud' : ''}">${roleRail(role, section, user)}<div class="main">${body}</div></div>${phoneTabBar(role, section)}`;
   return shell({ title, user, session, roleLabel, device, home, body: wrapped, phone: false, bell: 0 });
 }
 
 function shell({ title, user, session, roleLabel, device, home, body, phone = false, bell = 0 }) {
   const initials = String(user.display_name || 'A').split(' ').map((part) => part[0]).join('').slice(0, 2);
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><link rel="stylesheet" href="/home.css"><style>body{font-family:PS,"Public Sans",sans-serif}</style></head><body class="${phone ? 'phone-app' : ''}">${ICONS}<a class="skip" href="#main">Skip to content</a><header class="shell"><div class="shell-in"><a href="${home}" aria-label="AfroBot platform home"><img class="mark" src="/logo-afrobot-navy.svg" alt="afrobot"></a><span class="prod">Platform</span><span class="viewas">View as</span><nav class="roles" aria-label="Signed-in role"><a class="on" href="${home}" aria-current="page">${esc(roleLabel)} <span class="dev">${esc(device)}</span></a></nav><span class="mocktag">Fictional data</span><div class="hbtns"><button class="ibtn" type="button" aria-label="Notifications, ${bell} unread">${icon('bell')}<span class="dot">${bell}</span></button><details class="menuwrap"><summary class="ibtn" aria-label="Profile and settings"><span class="me">${esc(initials)}</span></summary><div class="menu" role="menu"><b>${esc(user.display_name)}</b><a href="/settings">Settings</a><a href="/demo">Demo controls</a><form method="post" action="/logout">${hidden(session)}<button type="submit">Sign out</button></form></div></details></div></div></header><main id="main" tabindex="-1">${body}</main><footer class="appfoot"><p>Preview v0.8.1</p><p class="fine">Demo records controls. Not a certification. A digest shows a later change. It does not prove the first number was true.</p></footer><div id="toasts" aria-live="polite"></div><script src="/home.js"></script></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><link rel="stylesheet" href="/home.css"><style>body{font-family:PS,"Public Sans",sans-serif}</style></head><body class="${phone ? 'phone-app' : ''}">${ICONS}<a class="skip" href="#main">Skip to content</a><header class="shell"><div class="shell-in"><a href="${home}" aria-label="AfroBot platform home"><img class="mark" src="/logo-afrobot-navy.svg" alt="afrobot"></a><span class="prod">Platform</span><span class="viewas">View as</span><nav class="roles" aria-label="Signed-in role"><a class="on" href="${home}" aria-current="page">${esc(roleLabel)} <span class="dev">${esc(device)}</span></a></nav><span class="mocktag">Fictional data</span><div class="hbtns"><button class="ibtn" type="button" aria-label="Notifications, ${bell} unread">${icon('bell')}<span class="dot">${bell}</span></button><details class="menuwrap"><summary class="ibtn" aria-label="Profile and settings"><span class="me">${esc(initials)}</span></summary><div class="menu" role="menu"><b>${esc(user.display_name)}</b><a href="/settings">Settings</a><a href="/demo">Demo controls</a><form method="post" action="/logout">${hidden(session)}<button type="submit">Sign out</button></form></div></details></div></div></header><main id="main" tabindex="-1">${body}</main><footer class="appfoot"><p>Preview v0.8.2</p><p class="fine">Demo records controls. Not a certification. A digest shows a later change. It does not prove the first number was true.</p></footer><div id="toasts" aria-live="polite"></div><script src="/home.js"></script></body></html>`;
 }
 
 function tabs(on) {
-  const items = [['today', 'home', 'Today', '/coach'], ['team', 'users', 'Teams', '/coach/team'], ['log', 'plus', 'Log', '/coach/log'], ['subs', 'inbox', 'My logs', '/coach/logs']];
+  const items = [['today', 'home', 'Today', '/coach'], ['log', 'plus', 'Log', '/coach/log'], ['subs', 'inbox', 'My logs', '/coach/logs'], ['team', 'users', 'Team', '/coach/team'], ['settings', 'gear', 'Settings', '/settings']];
   return `<nav class="tabs" aria-label="Coach">${items.map(([key, ic, label, href]) => `<a href="${href}" class="${key === on ? 'on' : ''}" ${key === on ? 'aria-current="page"' : ''}>${icon(ic)}${label}</a>`).join('')}</nav>`;
 }
 
@@ -203,9 +224,10 @@ export function logScreen(db, user, session, step = '1') {
 export function coachLogsScreen(db, user, now, session, extras = {}) {
   const rows = coachHistory(db, user, now).filter((row) => row.meetingId);
   const notice = extras.notice ? `<p role="status">${esc(extras.notice)}</p>` : '';
+  const tone = (label) => (label === 'Needs attention' ? 'p-fix' : label === 'Sent' ? 'p-ok' : label === 'Pending review' ? 'p-sent' : 'p-draft');
   const list = rows.length
-    ? `<ul>${rows.map((row) => `<li><b>${esc(row.label)}</b> v${esc(row.version)} ${esc(row.statusLabel)} ${esc(row.figure || '')}${row.why ? ` Why: ${esc(row.why)}` : ''} <a href="/coach/sessions/${esc(row.id)}">Photos</a>${row.canFix ? ` <a href="/coach/fix/${esc(row.id)}">Fix and resubmit</a>` : ''}</li>`).join('')}</ul>`
-    : '<p>No session has been sent yet.</p>';
+    ? `<ul class="loglist">${rows.map((row) => `<li class="logcard"><div class="logtop"><b>${esc(row.label)}</b><span class="pill ${tone(row.statusLabel)}">${esc(row.statusLabel)}</span></div><p>Version ${esc(row.version)}${row.figure ? ` · ${esc(row.figure)}` : ''}</p>${row.why ? `<p>${esc(row.why)}</p>` : ''}<div class="logacts"><a class="btn g" href="/coach/sessions/${esc(row.id)}">Open</a>${row.canFix ? `<a class="btn o" href="/coach/fix/${esc(row.id)}">Fix and resubmit</a>` : ''}</div></li>`).join('')}</ul>`
+    : '<p class="empty">No session has been sent yet.</p>';
   const body = phone(`<div class="appbar"><a class="back" href="/coach" aria-label="Back">${icon('back')}</a><div><div class="t">My logs</div><h1 style="font-size:20px">Session history</h1></div></div>
     ${notice}${list}
     <p class="pad" style="padding:16px 20px">Pending sync stays on this device until Send succeeds. Sent means the server returned a record id.</p>`, 'subs');
@@ -256,10 +278,11 @@ function guardianPhotoBlock(db, user, session) {
     WHERE guardian_links.user_id = ? AND guardian_links.status = 'confirmed' ORDER BY learners.letter LIMIT 1`, [user.id]);
   const consent = linked ? consentLabel(db, linked.learner_id) : { status: 'missing', text: 'No linked child.' };
   const pics = photos.map((row) => `<img src="/photos/${esc(row.id)}" alt="Private photo of Student ${esc(row.letters[0] || '')}" width="160">`).join('') || '<p>No photo of only your child.</p>';
+  const chip = consent.status === 'active' ? 'p-ok">Given' : consent.status === 'withdrawn' ? 'p-fix">Withdrawn' : 'p-draft">Not recorded';
   const action = !linked ? '' : consent.status === 'active'
     ? `<form method="post" action="/student/photo-consent/withdraw">${hidden(session)}<input type="hidden" name="learnerId" value="${esc(linked.learner_id)}"><button class="btn o" type="submit">Withdraw photo permission</button></form>`
     : `<form method="post" action="/student/photo-consent">${hidden(session)}<input type="hidden" name="learnerId" value="${esc(linked.learner_id)}"><button class="btn p" type="submit">Record photo permission</button></form>`;
-  return `<div class="sect"><h3>Photo permission</h3></div><div class="permit">${esc(consent.text)}${action}</div><div class="sect"><h3>Photos</h3></div><div class="family-photos">${pics}</div>`;
+  return `<section class="permitcard"><div class="permithead"><h3>Photo permission</h3><span class="pill ${chip}</span></div><p>${esc(consent.text)}</p>${action}</section><div class="sect"><h3>Photos</h3></div><div class="family-photos">${pics}</div>`;
 }
 
 function photoTrace(db, user, now, claim) {

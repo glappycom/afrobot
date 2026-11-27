@@ -16,6 +16,18 @@ export function localDate(iso) {
   }).format(date);
 }
 
+export function longDate(iso) {
+  if (!iso) return '';
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return String(iso).slice(0, 10);
+  return new Intl.DateTimeFormat('en-GB', {
+    timeZone: displayZone(),
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  }).format(date);
+}
+
 export function localStamp(iso) {
   if (!iso) return '—';
   const date = new Date(iso);
