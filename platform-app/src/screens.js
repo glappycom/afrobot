@@ -10,6 +10,7 @@ import { approvedSessions, coachHistory, learnerProgress } from './operations.js
 import { consentLabel, guardianPhotos, listSeriesPhotos } from './photos.js';
 import { IDS } from './constants.js';
 import { esc, rateLabel } from './format.js';
+import { displayZone } from './time.js';
 
 const ICONS = fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), '../public/icons.html'), 'utf8');
 
@@ -27,9 +28,66 @@ function teamFor(schoolId) {
     : { name: 'Team Sunbird', short: 'SB', stage: 'Build', chip: 'c-bui' };
 }
 
+function localParts(now) {
+  const date = new Date(typeof now === 'function' ? now() : (now || new Date().toISOString()));
+  const hour = Number(new Intl.DateTimeFormat('en-GB', { timeZone: displayZone(), hour: 'numeric', hourCycle: 'h23' }).format(date));
+  const day = new Intl.DateTimeFormat('en-GB', { timeZone: displayZone(), weekday: 'long', day: 'numeric', month: 'short' }).format(date);
+  const hello = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+  return { hello, day };
+}
+
+function roleRail(role, section, user) {
+  const sets = {
+    coach: [
+      ['today', '/coach', 'Today', 'home'],
+      ['capture', '/coach/capture', 'Capture', 'plus'],
+      ['logs', '/coach/logs', 'My logs', 'inbox'],
+      ['team', '/coach/team', 'Teams', 'users'],
+      ['help', '/help', 'How it works', 'file'],
+      ['settings', '/settings', 'Settings', 'gear'],
+    ],
+    organiser: [
+      ['needs', '/organiser', 'What needs me', 'flag'],
+      ['tracking', '/organiser/tracking', 'Session tracking', 'grid'],
+      ['admin', '/organiser/admin', 'Admin', 'cal'],
+      ['grants', '/organiser/grants', 'Auditor access', 'lock'],
+      ['audit', '/audit', 'Audit log', 'hist'],
+      ['export', '/organiser/export.csv', 'Export', 'down'],
+      ['help', '/help', 'How it works', 'file'],
+      ['settings', '/settings', 'Settings', 'gear'],
+    ],
+    auditor: [
+      ['records', '/auditor', 'Records', 'file'],
+      ['audit', '/audit', 'Audit log', 'hist'],
+      ['integrity', '/integrity', 'Integrity', 'shield'],
+      ['access', '/access', 'Access review', 'lock'],
+      ['help', '/help', 'How it works', 'file'],
+      ['verify', '/verify', 'Verify pack', 'check'],
+    ],
+    guardian: [
+      ['home', '/student/family', 'This week', 'home'],
+      ['journey', '/student/journey', 'Journey', 'compass'],
+      ['help', '/help', 'How it works', 'file'],
+      ['settings', '/settings', 'Settings', 'gear'],
+    ],
+  };
+  const items = sets[role] || sets.coach;
+  const links = items.map(([key, href, label, ic]) => `<a class="${section === key ? 'on' : ''}" href="${href}" ${section === key ? 'aria-current="page"' : ''}>${icon(ic)} ${label}</a>`).join('');
+  return `<aside class="rail"><div class="org"><span class="av sm">${esc(String(user.display_name || 'A').slice(0, 2).toUpperCase())}</span><div><b>${esc(user.display_name)}</b><span>${esc(role)}</span></div></div>${links}<div class="bottom">Fictional records. Not a certification.</div></aside>`;
+}
+
+export function productShell({ title, user, session, section, body }) {
+  const role = user.role === 'student' ? 'guardian' : user.role;
+  const home = role === 'organiser' ? '/organiser' : role === 'auditor' ? '/auditor' : role === 'guardian' ? '/student' : '/coach';
+  const roleLabel = role === 'organiser' ? 'Organiser' : role === 'auditor' ? 'Auditor' : role === 'guardian' ? 'Guardian' : 'Coach';
+  const device = role === 'auditor' ? 'Read-only' : 'Desktop';
+  const wrapped = `<div class="desk ${role === 'auditor' ? 'aud' : ''}">${roleRail(role, section, user)}<div class="main">${body}</div></div>`;
+  return shell({ title, user, session, roleLabel, device, home, body: wrapped, phone: false, bell: 0 });
+}
+
 function shell({ title, user, session, roleLabel, device, home, body, phone = false, bell = 0 }) {
   const initials = String(user.display_name || 'A').split(' ').map((part) => part[0]).join('').slice(0, 2);
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><link rel="stylesheet" href="/home.css"><style>body{font-family:PS,"Public Sans",sans-serif}</style></head><body class="${phone ? 'phone-app' : ''}">${ICONS}<a class="skip" href="#main">Skip to content</a><header class="shell"><div class="shell-in"><a href="${home}" aria-label="AfroBot platform home"><img class="mark" src="/logo-afrobot-navy.svg" alt="afrobot"></a><span class="prod">Platform</span><span class="viewas">View as</span><nav class="roles" aria-label="Signed-in role"><a class="on" href="${home}" aria-current="page">${esc(roleLabel)} <span class="dev">${esc(device)}</span></a></nav><span class="mocktag">Fictional data</span><div class="hbtns"><button class="ibtn" type="button" aria-label="Notifications, ${bell} unread">${icon('bell')}<span class="dot">${bell}</span></button><details class="menuwrap"><summary class="ibtn" aria-label="Profile and settings"><span class="me">${esc(initials)}</span></summary><div class="menu" role="menu"><b>${esc(user.display_name)}</b><a href="/settings">Settings</a><a href="/demo">Demo controls</a><form method="post" action="/logout">${hidden(session)}<button type="submit">Sign out</button></form></div></details></div></div></header><main id="main" tabindex="-1">${body}</main><footer class="appfoot">Preview v0.8</footer><div id="toasts" aria-live="polite"></div><script src="/home.js"></script></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><link rel="stylesheet" href="/home.css"><style>body{font-family:PS,"Public Sans",sans-serif}</style></head><body class="${phone ? 'phone-app' : ''}">${ICONS}<a class="skip" href="#main">Skip to content</a><header class="shell"><div class="shell-in"><a href="${home}" aria-label="AfroBot platform home"><img class="mark" src="/logo-afrobot-navy.svg" alt="afrobot"></a><span class="prod">Platform</span><span class="viewas">View as</span><nav class="roles" aria-label="Signed-in role"><a class="on" href="${home}" aria-current="page">${esc(roleLabel)} <span class="dev">${esc(device)}</span></a></nav><span class="mocktag">Fictional data</span><div class="hbtns"><button class="ibtn" type="button" aria-label="Notifications, ${bell} unread">${icon('bell')}<span class="dot">${bell}</span></button><details class="menuwrap"><summary class="ibtn" aria-label="Profile and settings"><span class="me">${esc(initials)}</span></summary><div class="menu" role="menu"><b>${esc(user.display_name)}</b><a href="/settings">Settings</a><a href="/demo">Demo controls</a><form method="post" action="/logout">${hidden(session)}<button type="submit">Sign out</button></form></div></details></div></div></header><main id="main" tabindex="-1">${body}</main><footer class="appfoot"><p>Preview v0.8.1</p><p class="fine">Demo records controls. Not a certification. A digest shows a later change. It does not prove the first number was true.</p></footer><div id="toasts" aria-live="polite"></div><script src="/home.js"></script></body></html>`;
 }
 
 function tabs(on) {
@@ -55,7 +113,8 @@ export function coachScreen(db, user, now, session, extras = {}) {
   const behind = pace?.behind
     ? `<a href="/coach/logs"><span class="ic" style="background:#FBECE6;color:#8C2A0A">${icon('chart')}</span><span class="tx"><b>This team is falling behind</b><span>${pace.done} of ${pace.planned} challenges, ${pace.weeks_left} weeks left</span></span><span class="chev">${icon('chev', 'sm')}</span></a>`
     : '';
-  const body = phone(`<div class="greet"><div class="d">Thursday 26 Nov <span class="mtag">Fictional</span></div><h1>Good morning,<br>${esc(user.display_name)}</h1></div>
+  const greet = localParts(now);
+  const body = phone(`<div class="greet"><div class="d">${esc(greet.day)} <span class="mtag">Fictional</span></div><h1>${esc(greet.hello)},<br>${esc(user.display_name)}</h1></div>
     <div class="cta"><a class="btn p big xl" href="/coach/log">${icon('plus', 'lg')} Log a session<span class="sub3">Photo, skills, save. About 20 seconds.</span></a>
     <a class="btn o big" href="/coach/capture">Capture a session</a>
     <a class="btn o big" href="/coach/result">Send a result without a photo</a>
@@ -210,9 +269,9 @@ function photoTrace(db, user, now, claim) {
   const versions = [...new Set(photos.map((row) => row.version))];
   const blocks = versions.map((version) => {
     const rows = photos.filter((row) => row.version === version);
-    return `<h3>Version ${esc(version)}</h3><p>${rows.length} photo${rows.length === 1 ? '' : 's'}.</p>${rows.map((row) => `<img src="/photos/${esc(row.id)}" alt="Private photo" width="160">`).join('')}`;
+    return `<h3>Version ${esc(version)}</h3><div class="thumbs">${rows.map((row) => `<figure><img src="/photos/${esc(row.id)}" alt="Private photo" width="160"><figcaption>Version ${esc(version)}</figcaption></figure>`).join('')}</div>`;
   }).join('');
-  return `<section class="card"><h2>Private photos</h2><p>Photo count ${photos.length}.</p>${blocks}</section>`;
+  return `<section class="card padcard"><h2>Private photos</h2><p>Photo count ${photos.length}.</p>${blocks || '<p class="empty">No photo on this version.</p>'}</section>`;
 }
 
 export function familyScreen(db, user, session) {
@@ -220,7 +279,7 @@ export function familyScreen(db, user, session) {
   const code = progress?.cohortId ? joinCodeFor(db, progress.cohortId) : null;
   const letter = progress?.letter || '—';
   const body = `<div class="stage-phone"><div class="phone"><div class="sbar" aria-hidden="true"><span>9:41</span></div><div class="scr">
-    <div class="appbar"><div><div class="t">Family</div><h1 style="font-size:20px">Good afternoon</h1></div><a href="/help">How it works</a><span class="mtag" style="margin-left:auto">Fictional</span></div>
+    <div class="appbar"><div><div class="t">Family</div><h1 style="font-size:20px">${esc(localParts(new Date().toISOString()).hello)}</h1></div><a href="/help">How it works</a><span class="mtag" style="margin-left:auto">Fictional</span></div>
     <div class="kidcard card"><span class="kav" aria-hidden="true">${esc(letter)}</span><div><b>Student ${esc(letter)}</b><span>Linked child only</span><span class="lk">${icon('link', 'sm')} Linked with ${esc(code?.code || '')}</span></div><span class="chip c-bui" style="margin-left:auto">Build</span></div>
     <div class="week2 card"><div class="wk"><span>${icon('sparkle', 'sm')}</span><h3>This week</h3><span>23–26 Nov</span></div><ul><li>Came to <b>${progress ? `${progress.came} of ${progress.total}` : '0 of 0'}</b> sessions.</li><li>Session counts come from records sent by the coach.</li></ul></div>
     <div class="sect"><h3>Student ${esc(letter)}'s journey</h3><a href="/student/journey">Open</a></div>
@@ -300,15 +359,17 @@ export function traceResultScreen(db, user, now, session, claimId) {
   const snapshot = trace.snapshots.find((row) => row.subject_id === claim.id) || trace.snapshots.at(-1);
   const source = trace.evidence.map((row) => row.body_redacted).filter(Boolean).join(' ') || 'No redacted note yet.';
   const figure = rateLabel(claim.numerator, claim.denominator) || '—';
-  const body = `<div class="desk aud"><aside class="rail"><div class="org"><span class="av sm" style="background:#fff;color:#0E2747">AU</span><div><b>${esc(user.display_name)}</b><span>Read-only</span></div></div>
-    <a href="/auditor">${icon('file')} Records</a>
-    <a class="on" href="/auditor/trace/${esc(claim.id)}" aria-current="page">${icon('link')} Trace</a></aside>
-    <div class="main"><div class="ph"><div><nav class="crumbs" aria-label="Breadcrumb"><a href="/auditor">Records</a>${icon('chev')}<span>${esc(displayId(claim.id))}</span></nav>
-    <h1>${esc(figure)}</h1></div></div>
-    <p>Numerator ${esc(claim.numerator)}. Denominator ${esc(claim.denominator)}. Reporting period ${esc(claim.window_start)} to ${esc(claim.window_end)}. Approved version ${esc(claim.version)} · ${esc(displayId(claim.id))}.</p>
-    <section class="card"><h2>File integrity checks</h2><p>These checks only say whether the file is unchanged since approval. SHA-256 ${esc(snapshot?.digest_sha256 || 'not approved yet')}.</p></section>
-    <section class="card"><h2>Evidence supporting the claim</h2><p>Redacted source: ${esc(source)}</p><p>Attendance list and project result: ${esc(claim.numerator)} completions of ${esc(claim.denominator)} starters. Coach attestation is the redacted note. Organiser approval is version ${esc(claim.version)}.</p></section>
-    ${photoTrace(db, user, now, claim)}
-    </div></div>`;
-  return shell({ title: 'Trace · afrobot', user, session, roleLabel: 'Auditor', device: 'Read-only', home: '/auditor', body, phone: false, bell: 0 });
+  const rate = claim.denominator ? Math.round((Number(claim.numerator) / Number(claim.denominator)) * 1000) / 10 : null;
+  const body = `<div class="ph"><div><nav class="crumbs" aria-label="Breadcrumb"><a href="/auditor">Records</a>${icon('chev')}<span>${esc(displayId(claim.id))}</span></nav>
+    <h1 class="figure">${esc(figure)}</h1></div></div>
+    <div class="calcgrid">
+      <article class="card padcard"><h2>Numerator</h2><p class="bigline">${esc(claim.numerator)}</p><p>Completions in this version.</p></article>
+      <article class="card padcard"><h2>Denominator</h2><p class="bigline">${esc(claim.denominator)}</p><p>Starters in this version.</p></article>
+      <article class="card padcard"><h2>Rate</h2><p class="bigline">${rate === null ? '—' : `${esc(rate)}%`}</p><p>Completions divided by starters.</p></article>
+    </div>
+    <ol class="trail"><li>Count completions: ${esc(claim.numerator)}.</li><li>Count starters: ${esc(claim.denominator)}.</li><li>Divide completions by starters.</li><li>Reporting period ${esc(claim.window_start)} to ${esc(claim.window_end)}. Version ${esc(claim.version)}.</li></ol>
+    <section class="card padcard"><h2>File integrity checks</h2><p class="pill p-ok">${snapshot ? 'Verified' : 'Not approved yet'}</p><p>These checks only say whether the file is unchanged since approval.</p><details><summary>Show the hash</summary><p class="mono">${esc(snapshot?.digest_sha256 || 'No digest until approval.')}</p></details></section>
+    <section class="card padcard"><h2>Evidence supporting the claim</h2><ul class="evidence"><li>Redacted note: ${esc(source)}</li><li>${esc(claim.numerator)} completions of ${esc(claim.denominator)} starters.</li><li>Coach attestation is the redacted note.</li><li>Organiser approval is version ${esc(claim.version)}.</li></ul></section>
+    ${photoTrace(db, user, now, claim)}`;
+  return productShell({ title: 'Trace · afrobot', user, session, section: 'records', body });
 }

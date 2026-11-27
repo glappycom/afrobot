@@ -108,12 +108,24 @@
         error: existing.error || '',
       };
     }
+    function clock() {
+      return new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', hour: 'numeric', minute: '2-digit' }).format(new Date());
+    }
     function show(draft) {
-      status.textContent = labels[draft.status] || labels['saved-on-device'];
-      const who = `${draft.numerator} completions of ${draft.denominator} starters`;
-      detail.textContent = draft.recordId
-        ? `${who}. Record ${draft.recordId}.${draft.error ? ` ${draft.error}` : ''}`
-        : `${who}. ${draft.status === 'needs-attention' ? draft.error || 'Needs attention.' : 'Not sent yet.'}`;
+      const retry = document.getElementById('retry-capture');
+      if (retry) retry.hidden = draft.status !== 'needs-attention';
+      if (draft.recordId) {
+        status.textContent = `Sent ${clock()}.`;
+        detail.textContent = draft.error || '';
+        return;
+      }
+      if (draft.status === 'needs-attention') {
+        status.textContent = draft.error || 'Needs attention.';
+        detail.textContent = '';
+        return;
+      }
+      status.textContent = `Draft saved ${clock()}. Not sent yet.`;
+      detail.textContent = '';
     }
     async function send() {
       const draft = current();
@@ -159,7 +171,37 @@
       event.preventDefault();
       send();
     });
-    document.getElementById('retry-capture').addEventListener('click', send);
+    const retry = document.getElementById('retry-capture');
+    if (retry) retry.addEventListener('click', send);
+    const draftBtn = document.getElementById('save-draft');
+    if (draftBtn) {
+      draftBtn.addEventListener('click', () => {
+        const draft = current();
+        draft.status = 'saved-on-device';
+        save(draft);
+        show(draft);
+      });
+    }
+    document.querySelectorAll('[data-step]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const input = document.getElementById(button.getAttribute('data-step'));
+        if (!input) return;
+        input.value = String(Math.max(0, Number(input.value || 0) + Number(button.getAttribute('data-dir'))));
+      });
+    });
+    const file = document.getElementById('photo-file');
+    const preview = document.getElementById('photo-preview');
+    if (file && preview) {
+      file.addEventListener('change', () => {
+        const chosen = file.files && file.files[0];
+        if (!chosen) {
+          preview.hidden = true;
+          return;
+        }
+        preview.src = URL.createObjectURL(chosen);
+        preview.hidden = false;
+      });
+    }
     const saved = load();
     if (saved) show(saved);
     else show(current());

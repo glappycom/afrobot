@@ -92,6 +92,7 @@ import {
   startTotp,
 } from './auth.js';
 import { chrome } from './chrome.js';
+import { productShell } from './screens.js';
 import { esc } from './format.js';
 import { pageAllowed } from './routes.js';
 import { IDS } from './constants.js';
@@ -661,8 +662,8 @@ export function createApp(options = {}) {
         }
         return redirect(res, '/coach/logs?notice=submitted');
       }
-      if (pathname === '/organiser/tracking' && method === 'GET') return sendHtml(res, 200, trackingPage(db, user, now, session, pageOpts));
-      if (pathname === '/organiser/admin' && method === 'GET') return sendHtml(res, 200, adminPage(db, user, now, session, pageOpts));
+      if (pathname === '/organiser/tracking' && method === 'GET') return sendHtml(res, 200, trackingPage(db, user, now, session, { ...pageOpts, status: url.searchParams.get('status') || '', school: url.searchParams.get('school') || '' }));
+      if (pathname === '/organiser/admin' && method === 'GET') return sendHtml(res, 200, adminPage(db, user, now, session, { ...pageOpts, tab: url.searchParams.get('tab') || 'clubs' }));
       if (pathname === '/api/session-board' && method === 'GET') return sendJson(res, 200, sessionBoard(db, user, now));
       if (pathname === '/api/session-totals' && method === 'GET') return sendJson(res, 200, sessionTotals(db, user, now));
       if (pathname === '/student/journey' && method === 'GET') return sendHtml(res, 200, journeyPage(db, user, session));
@@ -675,10 +676,12 @@ export function createApp(options = {}) {
       }
       if (pathname === '/settings/mfa' && method === 'POST') {
         const started = await startTotp(db, user.id, now);
-        return sendHtml(res, 200, chrome({
+        return sendHtml(res, 200, productShell({
           title: 'Authenticator',
-          home: '/settings',
-          body: `<div class="panel"><h1>Authenticator</h1><p>Add this setup key to an authenticator app. The recovery codes are shown once.</p><p>Setup key</p><p><code>${esc(started.secret)}</code></p><p>Recovery codes</p><ul>${started.recoveryCodes.map((code) => `<li><code>${esc(code)}</code></li>`).join('')}</ul></div>`,
+          user,
+          session,
+          section: 'settings',
+          body: `<div class="card padcard"><h1>Authenticator</h1><p>Add this setup key to an authenticator app. The recovery codes are shown once.</p><p>Setup key</p><p class="mono">${esc(started.secret)}</p><p>Recovery codes</p><ul>${started.recoveryCodes.map((code) => `<li class="mono">${esc(code)}</li>`).join('')}</ul></div>`,
         }));
       }
       if (pathname === '/settings' && method === 'POST') {
@@ -897,7 +900,7 @@ export function createApp(options = {}) {
         const csv = clubSummaryCsv(db, user, now, Object.fromEntries(url.searchParams.entries()));
         return send(res, 200, csv, { 'content-type': 'text/csv; charset=utf-8', 'content-disposition': 'attachment; filename="club-summary.csv"' });
       }
-      if (pathname === '/help' && method === 'GET') return sendHtml(res, 200, helpPage(user));
+      if (pathname === '/help' && method === 'GET') return sendHtml(res, 200, helpPage(user, session));
       const verify = pathname.match(/^\/(?:api\/projects|organiser\/projects)\/([a-z0-9-]+)\/verify$/);
       if (verify && method === 'POST') {
         touched = { subjectType: 'project', subjectId: verify[1] };

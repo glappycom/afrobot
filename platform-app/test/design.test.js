@@ -39,7 +39,7 @@ test('the phone log stores a real session and blocks a photo without consent', a
     assert.match((await blocked.json()).error, /no photo consent/);
     const capture = await page(app.url, coach, '/coach/capture');
     assert.match(capture.text, /Preview v0\.8/);
-    assert.match(capture.text, /work\.css/);
+    assert.match(capture.text, /class="shell"/);
   } finally {
     await app.stop();
   }

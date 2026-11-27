@@ -4,7 +4,7 @@ import { all, get } from './db.js';
 import { comparisonViews, followupsFor, goalRollup, listClaims, listProjects, projectReport, traceClaim, visibleEvents } from './domain.js';
 import { esc, rateLabel, sdgLabel, show } from './format.js';
 import { consentGaps, fallingBehind, joinCodeFor, learnersForSchool, liteHome, needsQueue } from './experience.js';
-import { auditorScreen, coachLogsScreen, coachScreen, coachTeamScreen, familyScreen, journeyScreen, logScreen, organiserScreen, resultScreen, traceResultScreen } from './screens.js';
+import { auditorScreen, coachLogsScreen, coachScreen, coachTeamScreen, familyScreen, journeyScreen, logScreen, organiserScreen, productShell, resultScreen, traceResultScreen } from './screens.js';
 export { traceResultScreen, resultScreen };
 import { accessReviewRows, custodyChain, displayId, filterEvents, formatStamps, gridClaims, integrityReport, provenanceDocument, retentionFor } from './records.js';
 
@@ -265,24 +265,8 @@ function showHow(claim, extra = '') {
 }
 
 export function loginPage({ error, demoMode = false } = {}) {
-  const hint = demoMode ? '<p>Demo sign-ins are in the PR description.</p>' : '';
-  return layout({
-    title: 'Sign in · afrobot evidence',
-    body: `<p class="kicker">sign in</p>
-    <h1>Sign in</h1>
-    <form class="card" method="post" action="/login">
-      <label for="username">Username</label>
-      <input id="username" name="username" autocomplete="username" required>
-      <label for="password">Password</label>
-      <input id="password" name="password" type="password" autocomplete="current-password" required>
-      <label for="code">Authenticator code</label>
-      <input id="code" name="code" inputmode="numeric" autocomplete="one-time-code">
-      <p><button type="submit">Sign in</button></p>
-    </form>
-    ${hint}
-    ${demoMode ? '<p>On this preview, the seeded organiser and auditor can sign in without an authenticator. Anyone else in those roles needs one.</p>' : ''}`,
-    error,
-  });
+  const hint = demoMode ? '<p class="infobanner">Demo sign-ins are in the PR description. On this preview, the seeded organiser and auditor can sign in without an authenticator.</p>' : '';
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sign in · afrobot</title><link rel="stylesheet" href="/home.css"></head><body class="gate"><main class="signin" id="main"><img src="/logo-afrobot-navy.svg" alt="afrobot" width="148" height="33"><form class="card padcard" method="post" action="/login"><h1>Sign in</h1>${hint}${error ? `<p class="alert" role="alert">${esc(error)}</p>` : ''}<label for="username">Username</label><input id="username" class="field" name="username" autocomplete="username" required><label for="password">Password</label><input id="password" class="field" name="password" type="password" autocomplete="current-password" required><details><summary>Use authenticator code</summary><label for="code">Authenticator code</label><input id="code" class="field" name="code" inputmode="numeric" autocomplete="one-time-code"></details><button class="btn p" type="submit">Sign in</button></form></main><footer class="appfoot"><p>Preview v0.8.1</p><p class="fine">Demo records controls. Not a certification. A digest shows a later change. It does not prove the first number was true.</p></footer></body></html>`;
 }
 
 export function unavailablePage() {
@@ -666,28 +650,22 @@ export function recordPage(db, user, now, session, claimId, tab = 'overview') {
 export function auditPage(db, user, now, session, query) {
   const rows = filterEvents(db, user, now, query);
   const shown = rows.slice(-50).reverse();
+  const kinds = ['', 'signed-in', 'photo-viewed', 'photo-uploaded', 'photo-consent-recorded', 'photo-consent-withdrawn', 'photo-removed', 'submitted', 'approved'];
+  const chips = kinds.map((action) => `<a class="fchip ${query.action === action || (!query.action && !action) ? 'on' : ''}" href="${action ? `/audit?action=${encodeURIComponent(action)}` : '/audit'}">${esc(action || 'All')}</a>`).join('');
   const bodyRows = shown.map((event) => `<tr>
-    <td>${esc(formatStamps(event.at).utc)}<br>${esc(formatStamps(event.at).local)}</td>
-    <td>${esc(event.action)}</td>
+    <td>${esc(formatStamps(event.at).local)}</td>
+    <td><span class="pill p-sent">${esc(event.action)}</span></td>
     <td>${esc(event.actor_role)}</td>
     <td>${esc(displayId(event.subject_id))}</td>
   </tr>`).join('');
-  return layout({
-    title: 'Audit log · afrobot evidence',
-    user: { ...user, csrf: session.csrf },
-    db, now, crumb: 'Audit log', section: 'audit',
-    command: `<a href="/audit.csv">Export CSV</a>`,
-    body: `<h1>Audit log</h1>
-    <form class="command" method="get" action="/audit">
-      <label for="action">Action</label>
-      <input id="action" name="action" value="${esc(query.action || '')}">
-      <label for="from">From UTC</label>
-      <input id="from" name="from" value="${esc(query.from || '')}">
-      <label for="to">To UTC</label>
-      <input id="to" name="to" value="${esc(query.to || '')}">
-      <button type="submit">Filter</button>
-    </form>
-    ${rows.length ? `<table class="grid" aria-label="Audit log"><caption>${rows.length} events you can read. Latest ${shown.length}.</caption><thead><tr><th>When</th><th>Action</th><th>Role</th><th>Record</th></tr></thead><tbody>${bodyRows}</tbody></table>` : '<p class="state">No audit rows in this view.</p>'}`,
+  return productShell({
+    title: 'Audit log · afrobot',
+    user,
+    session,
+    section: 'audit',
+    body: `<div class="ph"><div><h1>Audit log</h1><p>${rows.length} events you can read. Latest ${shown.length}. Times are America/Chicago.</p></div><a class="btn o" href="/audit.csv">Export CSV</a></div>
+    <div class="filters" role="toolbar" aria-label="Event type">${chips}</div>
+    ${rows.length ? `<table aria-label="Audit log"><thead><tr><th>When</th><th>Action</th><th>Role</th><th>Record</th></tr></thead><tbody>${bodyRows}</tbody></table>` : '<p class="empty">No audit rows in this view.</p>'}`,
   });
 }
 
