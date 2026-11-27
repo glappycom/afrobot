@@ -1,0 +1,66 @@
+import { parentPort, workerData } from 'node:worker_threads';
+import { packBinary, unpackBinary } from './binary-json.js';
+import { Pool, neonConfig } from '@neondatabase/serverless';
+import ws from 'ws';
+
+neonConfig.webSocketConstructor = ws;
+
+const flag = new Int32Array(workerData.sab, 0, 1);
+const len = new Int32Array(workerData.sab, 4, 1);
+const bytes = new Uint8Array(workerData.sab, 8);
+
+function readRequest() {
+  return JSON.parse(Buffer.from(bytes.subarray(0, len[0])).toString());
+}
+
+function writeResponse(payload) {
+  const raw = Buffer.from(JSON.stringify(payload));
+  if (raw.length > bytes.length) {
+    const error = Buffer.from(JSON.stringify({ error: 'The database reply was too large for this preview.' }));
+    bytes.set(error);
+    len[0] = error.length;
+    return;
+  }
+  bytes.set(raw);
+  len[0] = raw.length;
+}
+
+function safe(error) {
+  return String(error?.message || error || 'database error').replace(/postgres(?:ql)?:\/\/\S+/gi, '[redacted]');
+}
+
+let client;
+try {
+  const pool = new Pool({ connectionString: workerData.connectionString });
+  client = await pool.connect();
+} catch (error) {
+  writeResponse(safe(error));
+  Atomics.store(flag, 0, 4);
+  Atomics.notify(flag, 0);
+  throw new Error(safe(error));
+}
+
+Atomics.store(flag, 0, 0);
+Atomics.notify(flag, 0);
+
+while (true) {
+  while (Atomics.load(flag, 0) !== 1) Atomics.wait(flag, 0, 0);
+  let response;
+  try {
+    const request = readRequest();
+    const result = await client.query(request.sql, (request.params || []).map((value) => unpackBinary(value)));
+    response = {
+      rows: result.rows.map((row) => {
+        const out = {};
+        for (const [key, value] of Object.entries(row)) out[key] = packBinary(value);
+        return out;
+      }),
+      rowCount: result.rowCount,
+    };
+  } catch (error) {
+    response = { error: safe(error) };
+  }
+  writeResponse(response);
+  Atomics.store(flag, 0, 2);
+  Atomics.notify(flag, 0);
+}

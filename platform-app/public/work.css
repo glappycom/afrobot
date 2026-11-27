@@ -1,0 +1,48 @@
+.work-app{margin:0;background:#F5F7FA;color:#1A2230;font:16px/1.5 PS,"Public Sans",sans-serif}
+.work-app :focus-visible{outline:2px solid #0E2747;outline-offset:3px}
+.skip{position:absolute;left:12px;top:-48px;background:#fff;color:#0E2747;padding:8px 12px;z-index:8}
+.skip:focus{top:12px}
+.workhead{height:64px;display:flex;align-items:center;padding:0 24px;background:#fff;border-bottom:1px solid #E3E7EC;position:sticky;top:0;z-index:5}
+.workhead img{height:34px;width:auto}
+.workmain,.workwide{width:min(100% - 32px,720px);margin:32px auto}
+.workwide{width:min(100% - 32px,1200px)}
+.workmain h1,.workwide h1{font-size:clamp(32px,4vw,42px);line-height:1.12;font-weight:800;letter-spacing:-.02em;color:#0E2747;margin:0 0 8px}
+.workmain h2,.workwide h2{font-size:22px;line-height:1.2;font-weight:800;color:#0E2747;margin:24px 0 8px}
+.workmain p,.workwide p{margin:0 0 12px}
+.panel{background:#fff;border:1px solid #E3E7EC;box-shadow:0 1px 2px rgba(14,39,71,.05);padding:24px;margin:0 0 16px}
+.work-app label{display:block;margin:16px 0 8px;font-size:14px;font-weight:700;color:#0E2747}
+.work-app input,.work-app select,.work-app textarea{width:100%;max-width:100%;font:16px/1.4 PS,sans-serif;padding:12px;border:1px solid #6E7E94;border-radius:4px;background:#fff;color:#1A2230;min-height:44px}
+.work-app input[type="checkbox"],.work-app input[type="radio"]{width:20px;height:20px;min-height:20px;accent-color:#0E2747}
+.work-app fieldset{border:1px solid #E3E7EC;background:#fff;padding:16px;margin:16px 0}
+.work-app legend{font-weight:800;color:#0E2747;padding:0 8px}
+.work-app button,.work-app .btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:12px 20px;border-radius:4px;border:2px solid transparent;background:#0E2747;color:#fff;font:700 15px/1 PS,sans-serif;text-decoration:none;cursor:pointer}
+.work-app button:hover,.work-app .btn:hover{background:#163A66}
+.work-app button.quiet{background:#fff;color:#0E2747;border-color:#0E2747}
+.work-app button.quiet:hover{background:#0E2747;color:#fff}
+.work-app table{width:100%;border-collapse:collapse;background:#fff;border:1px solid #E3E7EC;font-size:14px}
+.work-app th,.work-app td{padding:12px;border-bottom:1px solid #E3E7EC;text-align:left;vertical-align:top}
+.work-app th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#0E2747}
+.chip{display:inline-flex;align-items:center;min-height:24px;padding:4px 8px;font-size:12px;font-weight:700;letter-spacing:.02em}
+.chip-missing{background:#fff;color:#0E2747;box-shadow:inset 0 0 0 1px #0E2747}
+.chip-pending{background:#E9EFF7;color:#163A66}
+.chip-attention{background:#FBECE6;color:#8C2A0A}
+.chip-sent,.chip-approved{background:#E8F3EC;color:#1B6B3A}
+.chip-cancelled{background:#F4F6F8;color:#4E5D73}
+.alert{padding:12px 16px;background:#FBECE6;color:#8C2A0A;border-left:4px solid #8C2A0A;margin:0 0 16px}
+.status{padding:12px 16px;background:#E8F3EC;color:#1B6B3A;border-left:4px solid #1B6B3A;margin:0 0 16px}
+.empty{padding:32px 24px;background:#fff;border:1px solid #E3E7EC;color:#5A6472}
+.work-app details{background:#fff;border:1px solid #E3E7EC;padding:12px 16px;margin:8px 0}
+.work-app summary{cursor:pointer;font-weight:700;color:#0E2747;min-height:44px;display:flex;align-items:center}
+.photo-row{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;margin:0 0 16px;list-style:none;padding:0}
+.photo-row li{background:#fff;border:1px solid #E3E7EC;padding:12px;display:flex;flex-direction:column;gap:8px}
+.photo-row img{width:160px;height:auto;border:1px solid #E3E7EC}
+.appfoot{background:#F4F6F8;border-top:1px solid #E3E7EC;padding:24px;text-align:center;color:#0E2747}
+.appfoot p{margin:0}
+.appfoot p+p{margin-top:4px;color:#5A6472;font-size:13px}
+.family-photos{display:flex;flex-direction:column;gap:12px;margin:16px 0}
+.family-photos img{width:160px;max-width:100%;height:auto;border:1px solid #E3E7EC}
+.family-photos p{margin:0}
+@media (max-width:360px){
+  .workhead{padding:0 16px}
+  .workmain,.workwide{width:min(100% - 24px,1200px);margin:16px auto}
+}

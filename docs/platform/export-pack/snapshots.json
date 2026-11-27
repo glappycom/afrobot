@@ -1,0 +1,22 @@
+[
+  {
+    "id": "snap-claim-cm-rubric-v1",
+    "subject_id": "claim-cm-rubric-v1",
+    "version": 1,
+    "digest_sha256": "7906c75cf9645c2e5e23a01335814e43477ab4002cce0f8e0d8e2a6f7903e45f",
+    "canonical_json": "{\"activity_date\":\"2026-04-24\",\"approved_by_role\":\"organiser\",\"claim_id\":\"claim-cm-rubric-v1\",\"cohort_id\":\"coh-cm-s1\",\"correction_reason\":null,\"definition_label\":\"Qualifying rubric completions\",\"denominator\":8,\"evidence\":[{\"activity_date\":\"2026-04-20\",\"body_sha256\":\"6656dfc606110949dcb8b738bd129017c8134720f8b92d8030211a5d4d3ae051\",\"id\":\"ev-cm-test-log\",\"redaction_state\":\"redacted\",\"source_type\":\"test_log\"}],\"inclusion_rules\":\"Count a finisher only when all four rubric criteria are met on the season project. The paper/plastic sorter practice lesson does not count. Starters are the denominator.\",\"metric_version\":\"qualifying-completions-v1\",\"numerator\":6,\"prior_claim_id\":null,\"record\":\"approved_claim\",\"rubric_version_id\":\"rubric-afr-1\",\"school_id\":\"sch-cm-north\",\"scope_key\":\"intermediate|ages-12-14|season-africa-1\",\"season_id\":\"season-africa-1\",\"series_id\":\"claim-cm-rubric-v1\",\"version\":1,\"window_end\":\"2026-04-24\",\"window_start\":\"2026-03-02\"}",
+    "validation_script": "platform-app/scripts/validate-snapshot.mjs",
+    "created_at": "2026-04-24T16:00:00.000Z",
+    "created_by_role": "organiser"
+  },
+  {
+    "id": "snap-claim-cm-rubric-v2",
+    "subject_id": "claim-cm-rubric-v2",
+    "version": 2,
+    "digest_sha256": "5c9ab2b47e96bef4b9f69c20fa432dbf5ccb9db4729da89067bb4758b51596e1",
+    "canonical_json": "{\"activity_date\":\"2026-05-02\",\"approved_by_role\":\"organiser\",\"claim_id\":\"claim-cm-rubric-v2\",\"cohort_id\":\"coh-cm-s1\",\"correction_reason\":\"One finisher had only completed the paper/plastic sorter practice lesson, which cannot complete the season project.\",\"definition_label\":\"Qualifying rubric completions\",\"denominator\":8,\"evidence\":[{\"activity_date\":\"2026-04-20\",\"body_sha256\":\"6656dfc606110949dcb8b738bd129017c8134720f8b92d8030211a5d4d3ae051\",\"id\":\"ev-cm-test-log\",\"redaction_state\":\"redacted\",\"source_type\":\"test_log\"}],\"inclusion_rules\":\"Count a finisher only when all four rubric criteria are met on the season project. The paper/plastic sorter practice lesson does not count. Starters are the denominator.\",\"metric_version\":\"qualifying-completions-v1\",\"numerator\":5,\"prior_claim_id\":\"claim-cm-rubric-v1\",\"record\":\"approved_claim\",\"rubric_version_id\":\"rubric-afr-1\",\"school_id\":\"sch-cm-north\",\"scope_key\":\"intermediate|ages-12-14|season-africa-1\",\"season_id\":\"season-africa-1\",\"series_id\":\"claim-cm-rubric-v1\",\"version\":2,\"window_end\":\"2026-04-24\",\"window_start\":\"2026-03-02\"}",
+    "validation_script": "platform-app/scripts/validate-snapshot.mjs",
+    "created_at": "2026-05-03T15:00:00.000Z",
+    "created_by_role": "organiser"
+  }
+]

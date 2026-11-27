@@ -1,0 +1,11 @@
+[
+  {
+    "id": "ev-cm-test-log",
+    "source_type": "test_log",
+    "activity_date": "2026-04-20",
+    "redaction_state": "redacted",
+    "retention_class": "light_evidence",
+    "body_redacted": "Redacted test log for the season project. Eight starters. Practice sorter completions are excluded. No learner names.",
+    "body_sha256": "6656dfc606110949dcb8b738bd129017c8134720f8b92d8030211a5d4d3ae051"
+  }
+]

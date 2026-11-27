@@ -1,0 +1,68 @@
+{
+  "pack_id": "pack-claim-cm-rubric-v2",
+  "generated_at": "2026-11-26T12:00:00.000Z",
+  "claim_id": "claim-cm-rubric-v2",
+  "school_id": "sch-cm-north",
+  "redaction": "Learner identifiers removed. No rosters, raw uploads, contact details, or other schools.",
+  "calculation": {
+    "current": {
+      "numerator": 5,
+      "denominator": 8,
+      "label": "5/8 = 62.5%",
+      "digest_sha256": "5c9ab2b47e96bef4b9f69c20fa432dbf5ccb9db4729da89067bb4758b51596e1"
+    },
+    "superseded": {
+      "numerator": 6,
+      "denominator": 8,
+      "label": "6/8 = 75%",
+      "digest_sha256": "7906c75cf9645c2e5e23a01335814e43477ab4002cce0f8e0d8e2a6f7903e45f"
+    }
+  },
+  "snapshot_digests": [
+    {
+      "version": 1,
+      "subject_id": "claim-cm-rubric-v1",
+      "sha256": "7906c75cf9645c2e5e23a01335814e43477ab4002cce0f8e0d8e2a6f7903e45f",
+      "status": "superseded"
+    },
+    {
+      "version": 2,
+      "subject_id": "claim-cm-rubric-v2",
+      "sha256": "5c9ab2b47e96bef4b9f69c20fa432dbf5ccb9db4729da89067bb4758b51596e1",
+      "status": "current"
+    }
+  ],
+  "files": [
+    {
+      "name": "claim.json",
+      "sha256": "19a54fcd477fdc4c9902ef190c121a69b8d74a4348992575df4bad32ac40f2e2",
+      "bytes": 1538
+    },
+    {
+      "name": "claim.csv",
+      "sha256": "d6fb1719b5fc192da629b7630f725bd093b189cab33bfa3d513afb51689cf1d0",
+      "bytes": 850
+    },
+    {
+      "name": "evidence.json",
+      "sha256": "5d3fd4763be5a5dbd9a171da8a44763d9e3e58173270b26d34db5149e6a84b60",
+      "bytes": 410
+    },
+    {
+      "name": "evidence.csv",
+      "sha256": "e02fa1969926c88cbc1da76305286fe08d03664f079570409d491ad3c3a318fb",
+      "bytes": 166
+    },
+    {
+      "name": "snapshots.json",
+      "sha256": "a34a5129cc07a2be18eb0025840827899b576f2a2dc9182c7f79a5cc92a4f438",
+      "bytes": 2966
+    },
+    {
+      "name": "events.json",
+      "sha256": "86070a11ee9847ffbaf297b3003a331c483d02aa1164a7f19853ebf00d2b806c",
+      "bytes": 2222
+    }
+  ],
+  "validation_script": "platform-app/scripts/validate-snapshot.mjs"
+}
