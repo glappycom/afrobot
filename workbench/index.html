@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AfroBot Workbench</title>
+<meta name="description" content="Smart Sorter lesson. Train an image classifier in the browser and watch a simulated flap sort paper, plastic, or hold.">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/tokens.css">
+<link rel="stylesheet" href="/workbench/workbench.css">
+</head>
+<body>
+<a class="wb-skip" href="#main">Skip to content</a>
+<header class="wb-bar">
+<a class="wb-logo" href="/"><img src="/assets/logo-afrobot-navy.svg" alt="AfroBot" height="36"></a>
+<p class="wb-product">Workbench</p>
+<p class="wb-chip">On this device</p>
+</header>
+<main id="main">
+<noscript><p class="wb-noscript">This lesson needs JavaScript. Training happens in this browser, and images are not uploaded.</p></noscript>
+<p id="wb-boot-error" class="wb-alert" role="alert" hidden></p>
+
+<section id="wb-start" class="wb-wrap" aria-labelledby="wb-start-title">
+<h1 id="wb-start-title" tabindex="-1">New project</h1>
+<p class="wb-lead">Choose what you want to build. This lesson stays on the computer in front of you.</p>
+<div class="wb-tiles">
+<button type="button" class="wb-tile" id="wb-open-image">
+<span class="wb-tile-art" aria-hidden="true">
+<svg viewBox="0 0 72 56"><rect width="72" height="56" rx="6" fill="#E7D7C4"/><rect x="16" y="10" width="34" height="36" rx="2" fill="#fff" stroke="#C3B9AC"/><path d="M22 24h20M22 30h22M22 36h14" stroke="#8B93A0"/></svg>
+<svg viewBox="0 0 72 56"><rect width="72" height="56" rx="6" fill="#DCE6E2"/><path d="M36 8h8v8h6l4 8v16a6 6 0 0 1-6 6H28a6 6 0 0 1-6-6V24l4-8h6V8z" fill="#C9E8EA" stroke="#3E8E98"/><rect x="32" y="8" width="12" height="8" fill="#164A38"/></svg>
+<svg viewBox="0 0 72 56"><rect width="72" height="56" rx="6" fill="#E4D5C6"/><path d="M10 40h52" stroke="#B7A08A" stroke-width="2"/></svg>
+</span>
+<span class="wb-tile-name">Image project</span>
+<span class="wb-tile-copy">Teach a model to recognize objects from images.</span>
+</button>
+</div>
+<p class="wb-note">Smart Sorter is the lesson in this first release. Images and predictions stay in this browser tab.</p>
+</section>
+
+<section id="wb-model" class="wb-wrap" hidden aria-labelledby="wb-model-title">
+<p class="wb-crumb"><button type="button" class="wb-textbtn" id="wb-model-back">New project</button></p>
+<h1 id="wb-model-title" tabindex="-1">New image project</h1>
+<p class="wb-lead">Use the standard browser model. It looks at 224 by 224 color images.</p>
+<button type="button" class="wb-choice" id="wb-start-sorter">
+<strong>Standard image model</strong>
+<span>For the browser. Opens the Smart Sorter lesson.</span>
+</button>
+</section>
+
+<section id="wb-editor" class="wb-wrap" hidden aria-labelledby="wb-editor-title">
+<p class="wb-crumb"><button type="button" class="wb-textbtn" id="wb-back">New project</button> <span aria-hidden="true">/</span> Image project <span aria-hidden="true">/</span> <strong>Smart Sorter</strong></p>
+<h1 id="wb-editor-title" tabindex="-1">Smart Sorter</h1>
+<p class="wb-lead" id="wb-privacy">Teach Paper, Plastic, and No item. Then test a new picture and watch the simulated flap. Images and predictions stay in this tab. There is no account and nothing is uploaded. The first training downloads a small model from this website. The optional video loads from YouTube only if you play it.</p>
+<ol class="wb-steps">
+<li>Gather samples</li>
+<li>Train</li>
+<li>Test the sorter</li>
+</ol>
+<div class="wb-board">
+<section class="wb-col" aria-labelledby="wb-gather-title">
+<div class="wb-col-head">
+<h2 id="wb-gather-title">1. Gather samples</h2>
+<details class="wb-tutorial" id="wb-tutorial">
+<summary>Optional tutorial</summary>
+<div class="wb-tutorial-body">
+<p>A public video about gathering image samples. YouTube loads only after you press play. Open it when a coach says that is OK.</p>
+<button type="button" class="wb-btn wb-btn-secondary" id="wb-tutorial-play">Play tutorial</button>
+<a href="https://www.youtube.com/watch?v=DFBbSTvtpy4" target="_blank" rel="noopener noreferrer">Watch on YouTube (opens in a new tab)</a>
+<div id="wb-tutorial-frame" hidden></div>
+</div>
+</details>
+</div>
+<article class="wb-class" data-class="paper">
+<header class="wb-class-head"><h3>Paper</h3><span>Class 1</span></header>
+<div class="wb-class-body">
+<p class="wb-sample-label">Add image samples <span data-count>0 samples</span></p>
+<p class="wb-need" data-need></p>
+<div class="wb-actions">
+<button type="button" class="wb-btn" data-webcam>Webcam</button>
+<label class="wb-btn">Upload<input data-files type="file" accept="image/*" multiple aria-label="Upload paper images"></label>
+</div>
+<p class="wb-hint">Drop images on this card. The model uses a square from the center.</p>
+<ul class="wb-thumbs" data-thumbs></ul>
+<p class="wb-status" data-status role="status"></p>
+</div>
+</article>
+<article class="wb-class" data-class="plastic">
+<header class="wb-class-head"><h3>Plastic</h3><span>Class 2</span></header>
+<div class="wb-class-body">
+<p class="wb-sample-label">Add image samples <span data-count>0 samples</span></p>
+<p class="wb-need" data-need></p>
+<div class="wb-actions">
+<button type="button" class="wb-btn" data-webcam>Webcam</button>
+<label class="wb-btn">Upload<input data-files type="file" accept="image/*" multiple aria-label="Upload plastic images"></label>
+</div>
+<p class="wb-hint">Drop images on this card. The model uses a square from the center.</p>
+<ul class="wb-thumbs" data-thumbs></ul>
+<p class="wb-status" data-status role="status"></p>
+</div>
+</article>
+<article class="wb-class" data-class="no-item">
+<header class="wb-class-head"><h3>No item</h3><span>Class 3</span></header>
+<div class="wb-class-body">
+<p class="wb-sample-label">Add image samples <span data-count>0 samples</span></p>
+<p class="wb-need" data-need></p>
+<div class="wb-actions">
+<button type="button" class="wb-btn" data-webcam>Webcam</button>
+<label class="wb-btn">Upload<input data-files type="file" accept="image/*" multiple aria-label="Upload no item images"></label>
+</div>
+<p class="wb-hint">Show an empty table or desk. Drop images on this card.</p>
+<ul class="wb-thumbs" data-thumbs></ul>
+<p class="wb-status" data-status role="status"></p>
+</div>
+</article>
+</section>
+<section class="wb-col" aria-labelledby="wb-train-title">
+<article class="wb-panel">
+<h2 id="wb-train-title">2. Train</h2>
+<button type="button" class="wb-btn wb-btn-primary" id="wb-train" aria-describedby="wb-train-hint">Train model</button>
+<button type="button" class="wb-btn wb-btn-secondary" id="wb-cancel" hidden>Cancel training</button>
+<p id="wb-train-hint" class="wb-hint">Add at least 4 examples of Paper, Plastic, and No item.</p>
+<div id="wb-progress" class="wb-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Training progress"><span></span></div>
+<p id="wb-train-status" class="wb-status" role="status">Add examples, then train on this computer.</p>
+<p id="wb-train-error" class="wb-alert" role="alert"></p>
+<button type="button" class="wb-btn wb-btn-secondary" id="wb-practice">Add illustrated practice drawings</button>
+<p class="wb-hint">Four drawings of paper, four of a bottle, and four empty tables. They are drawings, not photos. Use them when you do not have objects yet.</p>
+<details class="wb-about">
+<summary>What training does</summary>
+<p>A small pre-trained model called MobileNet describes each image. Training then teaches a three-class layer from your examples. The first run downloads about 1.9 MB from this website. Later runs can reuse the browser’s copy. Cancel leaves the buttons usable.</p>
+</details>
+<button type="button" class="wb-textbtn" id="wb-reset">Reset lesson</button>
+</article>
+</section>
+<section class="wb-col" aria-labelledby="wb-preview-title">
+<article class="wb-panel">
+<h2 id="wb-preview-title">3. Test the sorter</h2>
+<p id="wb-preview-prompt">After training, try an object you did not train on, then try an empty frame. The flap should hold for No item, a score under 70%, a close call, or a feed that has stopped.</p>
+<div class="wb-actions">
+<button type="button" class="wb-btn" id="wb-preview-camera" disabled>Test with webcam</button>
+<button type="button" class="wb-btn wb-btn-secondary" id="wb-preview-stop" hidden>Stop camera</button>
+<label class="wb-btn">Test a saved image<input id="wb-test-file" type="file" accept="image/*" aria-label="Test a saved image" disabled></label>
+</div>
+<p class="wb-hint">Saved images let a coach show the same picture again.</p>
+<div class="wb-scene-tests" role="group" aria-label="Illustrated tests that are not in the practice set">
+<button type="button" data-scene="paper" data-variant="9" disabled>Unseen paper drawing</button>
+<button type="button" data-scene="plastic" data-variant="9" disabled>Unseen plastic drawing</button>
+<button type="button" data-scene="no-item" data-variant="9" disabled>Empty scene drawing</button>
+<button type="button" data-scene="mix" data-variant="0" disabled>Mixed object drawing</button>
+</div>
+<video id="wb-preview-video" class="wb-video" autoplay muted playsinline hidden></video>
+<canvas id="wb-still" width="224" height="224" hidden role="img" aria-label="Image being tested"></canvas>
+<p id="wb-preview-error" class="wb-alert" role="alert"></p>
+<button type="button" class="wb-btn wb-btn-secondary" id="wb-clear-test" hidden>Stop this test</button>
+<ul id="wb-scores" class="wb-scores" hidden></ul>
+<p id="wb-decision" class="wb-decision" role="status">Train a model to see a decision.</p>
+<div id="wb-machine" class="wb-machine" data-flap="hold">
+<p class="wb-machine-label">Simulated flap</p>
+<div class="wb-gate-wrap" aria-hidden="true"><span class="wb-gate"></span></div>
+<div class="wb-bins">
+<div class="wb-bin" data-bin="paper">Paper bin</div>
+<div class="wb-bin is-on" data-bin="hold" aria-current="true">Hold</div>
+<div class="wb-bin" data-bin="plastic">Plastic bin</div>
+</div>
+</div>
+<p id="wb-commands">Sorter commands sent: 0</p>
+<ol id="wb-command-log" class="wb-log" aria-label="Sorter commands"></ol>
+<p class="wb-hint">An object that stays in view is sorted once. Stopping the feed returns the flap to Hold and does not repeat the last command. No robot is connected.</p>
+</article>
+</section>
+</div>
+</section>
+</main>
+<footer class="wb-foot">AfroBot Workbench. Student images stay on this device. AfroBot is a program of Glappy Foundation.</footer>
+<dialog id="wb-sample-dialog" class="wb-dialog" aria-labelledby="wb-sample-title">
+<h2 id="wb-sample-title">Add a webcam sample</h2>
+<video id="wb-sample-video" class="wb-video" autoplay muted playsinline></video>
+<p class="wb-hint">Closing this window turns the camera off.</p>
+<p id="wb-sample-status" role="status"></p>
+<p id="wb-sample-error" class="wb-alert" role="alert"></p>
+<div class="wb-actions">
+<button type="button" class="wb-btn wb-btn-primary" id="wb-sample-capture">Capture</button>
+<button type="button" class="wb-btn wb-btn-secondary" id="wb-sample-close">Close</button>
+</div>
+</dialog>
+<script type="module" src="/workbench/app.js"></script>
+</body>
+</html>
