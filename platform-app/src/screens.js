@@ -22,6 +22,13 @@ function hidden(session) {
   return `<input type="hidden" name="csrf" value="${esc(session.csrf)}">`;
 }
 
+function dayLabel(iso) {
+  const [year, month, day] = String(iso || '').slice(0, 10).split('-').map(Number);
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  if (!year || !month || !day) return String(iso || '');
+  return `${day} ${months[month - 1]} ${year}`;
+}
+
 function teamFor(schoolId) {
   return schoolId === 'sch-tz-lakeside'
     ? { name: 'Team Kilima', short: 'KL', stage: 'Build', chip: 'c-bui' }
@@ -108,7 +115,7 @@ export function productShell({ title, user, session, section, body }) {
 
 function shell({ title, user, session, roleLabel, device, home, body, phone = false, bell = 0 }) {
   const initials = String(user.display_name || 'A').split(' ').map((part) => part[0]).join('').slice(0, 2);
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><link rel="stylesheet" href="/home.css"><style>body{font-family:PS,"Public Sans",sans-serif}</style></head><body class="${phone ? 'phone-app' : ''}">${ICONS}<a class="skip" href="#main">Skip to content</a><header class="shell"><div class="shell-in"><a href="${home}" aria-label="AfroBot platform home"><img class="mark" src="/logo-afrobot-navy.svg" alt="afrobot"></a><span class="prod">Platform</span><span class="viewas">View as</span><nav class="roles" aria-label="Signed-in role"><a class="on" href="${home}" aria-current="page">${esc(roleLabel)} <span class="dev">${esc(device)}</span></a></nav><span class="mocktag">Fictional data</span><div class="hbtns"><button class="ibtn" type="button" aria-label="Notifications, ${bell} unread">${icon('bell')}<span class="dot">${bell}</span></button><details class="menuwrap"><summary class="ibtn" aria-label="Profile and settings"><span class="me">${esc(initials)}</span></summary><div class="menu" role="menu"><b>${esc(user.display_name)}</b><a href="/settings">Settings</a><a href="/demo">Demo controls</a><form method="post" action="/logout">${hidden(session)}<button type="submit">Sign out</button></form></div></details></div></div></header><main id="main" tabindex="-1">${body}</main><footer class="appfoot"><p>Preview v0.8.2</p><p class="fine">Demo records controls. Not a certification. A digest shows a later change. It does not prove the first number was true.</p></footer><div id="toasts" aria-live="polite"></div><script src="/home.js"></script></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><link rel="stylesheet" href="/home.css"><style>body{font-family:PS,"Public Sans",sans-serif}</style></head><body class="${phone ? 'phone-app' : ''}">${ICONS}<a class="skip" href="#main">Skip to content</a><header class="shell"><div class="shell-in"><a href="${home}" aria-label="AfroBot platform home"><img class="mark" src="/logo-afrobot-navy.svg" alt="afrobot"></a><span class="prod">Platform</span><span class="viewas">View as</span><nav class="roles" aria-label="Signed-in role"><a class="on" href="${home}" aria-current="page">${esc(roleLabel)} <span class="dev">${esc(device)}</span></a></nav><span class="mocktag">Fictional data</span><div class="hbtns"><button class="ibtn" type="button" aria-label="Notifications, ${bell} unread">${icon('bell')}<span class="dot">${bell}</span></button><details class="menuwrap"><summary class="ibtn" aria-label="Profile and settings"><span class="me">${esc(initials)}</span></summary><div class="menu" role="menu"><b>${esc(user.display_name)}</b><a href="/settings">Settings</a><a href="/demo">Demo controls</a><form method="post" action="/logout">${hidden(session)}<button type="submit">Sign out</button></form></div></details></div></div></header><main id="main" tabindex="-1">${body}</main><footer class="appfoot"><p>Preview v0.8.3</p><p class="fine">Demo records controls. Not a certification. A digest shows a later change. It does not prove the first number was true.</p></footer><div id="toasts" aria-live="polite"></div><script src="/home.js"></script></body></html>`;
 }
 
 function tabs(on) {
@@ -151,7 +158,7 @@ export function coachScreen(db, user, now, session, extras = {}) {
     </div>
     <div class="sect"><h3>Needs you</h3><a href="/coach/logs">See all</a></div>
     <div class="due">
-      ${late.length ? `<p role="status"><b>Overdue</b> ${late.map((meeting) => `${esc(meeting.label)} · ${esc(meeting.meets_on)}`).join('; ')}. The date passed and nothing was sent.</p>` : ''}
+      ${late.map((meeting) => `<a href="/coach/log?meeting=${esc(meeting.id)}"><span class="ic" style="background:#FBECE6;color:#8C2A0A">${icon('alert')}</span><span class="tx"><b>${esc(meeting.label)}</b><span>Overdue · ${esc(dayLabel(meeting.meets_on))}</span></span><span class="loggo">Log</span></a>`).join('')}
       ${behind}
       <a href="/coach/logs"><span class="ic" style="background:#EEF1F4;color:#4E5D73">${icon('file')}</span><span class="tx"><b>Sessions not sent yet</b><span>Only you can see these</span></span><span class="chev">${icon('chev', 'sm')}</span></a>
       <a href="/coach/logs"><span class="ic" style="background:#E9EFF7;color:#163A66">${icon('clock')}</span><span class="tx"><b>Today, 15:30</b><span>${esc(team.name)} · ${esc(school?.display_name || '')}</span></span><span class="chev">${icon('chev', 'sm')}</span></a>
@@ -300,7 +307,7 @@ export function familyScreen(db, user, session) {
   const code = progress?.cohortId ? joinCodeFor(db, progress.cohortId) : null;
   const letter = progress?.letter || '—';
   const body = `<div class="stage-phone"><div class="phone"><div class="sbar" aria-hidden="true"><span>9:41</span></div><div class="scr">
-    <div class="appbar"><div><div class="t">Family</div><h1 style="font-size:20px">${esc(localParts(new Date().toISOString()).hello)}</h1></div><a href="/help">How it works</a><span class="mtag" style="margin-left:auto">Fictional</span></div>
+    <div class="appbar"><div><div class="t">Family</div><h1 style="font-size:20px">${esc(localParts(new Date().toISOString()).hello)}</h1><a class="underlink" href="/help">How it works</a></div><span class="mtag" style="margin-left:auto">Fictional</span></div>
     <div class="kidcard card"><span class="kav" aria-hidden="true">${esc(letter)}</span><div><b>Student ${esc(letter)}</b><span>Linked child only</span><span class="lk">${icon('link', 'sm')} Linked with ${esc(code?.code || '')}</span></div><span class="chip c-bui" style="margin-left:auto">Build</span></div>
     <div class="week2 card"><div class="wk"><span>${icon('sparkle', 'sm')}</span><h3>This week</h3><span>23–26 Nov</span></div><ul><li>Came to <b>${progress ? `${progress.came} of ${progress.total}` : '0 of 0'}</b> sessions.</li><li>Session counts come from records sent by the coach.</li></ul></div>
     <div class="sect"><h3>Student ${esc(letter)}'s journey</h3><a href="/student/journey">Open</a></div>

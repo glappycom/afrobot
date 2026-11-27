@@ -600,7 +600,7 @@ export function createApp(options = {}) {
         if (!claim || claim.submitted_by !== user.id || claim.status !== 'returned') throw notFound();
         return sendHtml(res, 200, fixPage(db, user, session, claim, pageOpts));
       }
-      if (pathname === '/coach/log' && method === 'GET') return sendHtml(res, 200, capturePage(db, user, now, session, pageOpts));
+      if (pathname === '/coach/log' && method === 'GET') return sendHtml(res, 200, capturePage(db, user, now, session, { ...pageOpts, meetingId: url.searchParams.get('meeting') || '' }));
       if (pathname === '/coach/log/2' && method === 'GET') return sendHtml(res, 200, logPage(db, user, session, '2'));
       if (pathname === '/coach/log/saved' && method === 'GET') return sendHtml(res, 200, logPage(db, user, session, 'saved'));
       if (pathname === '/api/session-logs' && method === 'POST') {

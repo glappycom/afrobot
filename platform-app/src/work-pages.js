@@ -39,7 +39,8 @@ export function capturePage(db, user, now, session, extras = {}) {
   const learners = membership ? learnersForSchool(db, membership.school_id, { logging: true }) : [];
   const error = extras.error ? `<p class="alert" role="alert">${esc(extras.error)}</p>` : '';
   const room = photoCapacity();
-  const options = meetings.map((meeting) => `<option value="${esc(meeting.id)}">${esc(meeting.label)} · ${esc(meeting.meets_on)}</option>`).join('');
+  const picked = String(extras.meetingId || '');
+  const options = meetings.map((meeting) => `<option value="${esc(meeting.id)}"${meeting.id === picked ? ' selected' : ''}>${esc(meeting.label)} · ${esc(meeting.meets_on)}</option>`).join('');
   const marks = roster(learners);
   const body = `${error}<div class="ph"><div><h1>Log a session</h1><p>Record what happened. A photo is optional.</p>${statusChip('Draft')}</div></div>
     <p id="sync-detail" class="statusline"></p>

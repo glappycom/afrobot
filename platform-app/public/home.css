@@ -1069,8 +1069,13 @@ section.off{display:none}
 .statuschip.s-sending{background:#E9EFF7;color:#163A66}
 .statuschip.s-sent{background:#E8F3EC;color:#1B6B3A}
 .statuschip.s-failed{background:#FBECE6;color:#8C2A0A}
-.checkrow{display:flex;align-items:center;gap:12px;min-height:56px;padding:12px 16px;border:1px solid var(--line);border-radius:4px;background:#fff;font-weight:650;color:var(--navy)}
-.checkrow input{width:22px;height:22px;margin:0;accent-color:var(--navy);flex:none}
+.stack>label.checkrow{display:flex;flex-direction:row;align-items:center;gap:12px;width:100%;min-height:56px;margin:0;padding:12px 16px;border:1px solid var(--line);border-radius:4px;background:#fff;font-weight:650;color:var(--navy);cursor:pointer;box-sizing:border-box}
+.stack>label.checkrow input{width:22px;height:22px;margin:0;accent-color:var(--navy);flex:none}
+.stack>label.checkrow span{font-weight:650;color:var(--navy)}
+.main .roster{margin:0;width:100%;max-width:100%;box-sizing:border-box}
+.seg label:has(input:checked){background:var(--navy);color:#fff;border-color:var(--navy)}
+.due a .loggo{margin-left:auto;min-height:44px;display:inline-flex;align-items:center;font-weight:800;color:var(--navy)}
+.appbar .underlink{display:block;margin-top:4px;font-size:14px;font-weight:650}
 .fold{border:1px solid var(--line);border-radius:4px;background:#fff}
 .fold summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:56px;padding:12px 16px;cursor:pointer;list-style:none}
 .fold summary::-webkit-details-marker{display:none}
@@ -1100,7 +1105,7 @@ section.off{display:none}
   .phonetabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));padding-bottom:8px}
   .phonetabs a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:11px;font-weight:650;color:var(--mute);min-height:44px}
   .phonetabs a.on{color:var(--navy)}
-  .main{padding:16px 16px 150px;max-width:100%}
+  .main{--tabbar:64px;--sendbar:56px;padding:16px 16px calc(var(--tabbar) + var(--sendbar) + 24px);max-width:100%;max-height:calc(100vh - 56px - var(--tabbar) - var(--sendbar));overflow:auto}
   .main h1,.ph h1{font-size:24px}
   .ph{margin-bottom:8px}
   .stack{gap:6px}
@@ -1110,7 +1115,7 @@ section.off{display:none}
   .pair label,.roster-row{min-width:0}
   .roster-row{min-height:56px;padding:8px 12px}
   .seg label{white-space:nowrap}
-  .actions.sendbar{position:fixed;left:16px;right:16px;bottom:72px;z-index:40;margin:0;padding:0;background:transparent}
+  .actions.sendbar{position:fixed;left:16px;right:16px;bottom:var(--tabbar);z-index:40;margin:0;padding:0;background:transparent}
   .actions.sendbar .btn{width:100%;min-height:48px}
 }
 .family-photos{display:flex;flex-direction:column;gap:12px;margin:0 20px 16px;align-items:stretch}
