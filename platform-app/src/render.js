@@ -64,7 +64,9 @@ button.quiet:hover{background:var(--navy);color:#fff}
 .wizard li{display:grid;grid-template-columns:2rem 1fr;gap:10px;align-items:center}
 .step{width:2rem;height:2rem;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:700}
 label{font-weight:700;font-size:14px;color:var(--navy)}
-input,textarea,select{width:100%;font:16px/1.4 PS,sans-serif;padding:12px;border:1px solid var(--line);border-radius:4px;background:#fff;color:var(--ink)}
+input,textarea,select{width:100%;font:16px/1.4 PS,sans-serif;padding:12px;border:1px solid #6E7E94;border-radius:4px;background:#fff;color:var(--ink);min-height:44px}
+.appfoot{background:var(--footer);border-top:1px solid var(--line);padding:24px;text-align:center;color:var(--navy)}
+.appfoot p{margin:0}.appfoot p+p{margin-top:4px;color:var(--mute);font-size:13px}
 details{margin:12px 0}
 summary{cursor:pointer;color:var(--navy);font-weight:700}
 summary:hover{color:var(--navy2)}
@@ -205,7 +207,7 @@ ${notice ? `<p class="notice" role="status">${esc(notice)}</p>` : ''}
 ${error ? `<p class="error" role="alert">${esc(error)}</p>` : ''}
 ${body}
 </main>`}
-<footer>Preview v0.7. Demo records controls. Not a certification. A digest shows a later change. It does not prove the first number was true.</footer>
+<footer class="appfoot"><p>Preview v0.8</p><p>Demo records controls. Not a certification. A digest shows a later change. It does not prove the first number was true.</p></footer>
 <script src="/app.js"></script>
 </body>
 </html>`;
@@ -278,8 +280,7 @@ export function loginPage({ error, demoMode = false } = {}) {
       <p><button type="submit">Sign in</button></p>
     </form>
     ${hint}
-    ${demoMode ? '<p>On this preview, the seeded organiser and auditor can sign in without an authenticator. Anyone else in those roles needs one.</p>' : ''}
-    <p>Preview v0.7</p>`,
+    ${demoMode ? '<p>On this preview, the seeded organiser and auditor can sign in without an authenticator. Anyone else in those roles needs one.</p>' : ''}`,
     error,
   });
 }
@@ -818,6 +819,8 @@ export function settingsPage(user, session, db, saver) {
     db, now: () => new Date().toISOString(), crumb: 'Settings',
     body: `<h1>Data saver</h1><p>Lite mode is ${saver ? 'on' : 'off'}. Photos stay off until tapped.</p>
     <form method="post" action="/settings">${hidden(session)}<input type="hidden" name="dataSaver" value="${saver ? '0' : '1'}"><button type="submit">${saver ? 'Turn data saver off' : 'Turn data saver on'}</button></form>
+    <h2>Authenticator</h2><p>Optional for a coach. Required for an organiser or auditor outside this preview.</p>
+    <form method="post" action="/settings/mfa">${hidden(session)}<button type="submit">Set up an authenticator</button></form>
     <p><a href="/lite">Open Lite</a></p>`,
   });
 }

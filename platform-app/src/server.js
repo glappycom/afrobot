@@ -59,6 +59,7 @@ import {
   resubmitSession,
   sessionBoard,
   sessionTotals,
+  submitPhoneLog,
   submitSessionCapture,
   setReportingPeriod,
   updateMeeting,
@@ -90,6 +91,7 @@ import {
   previewReset,
   startTotp,
 } from './auth.js';
+import { chrome } from './chrome.js';
 import { esc } from './format.js';
 import { pageAllowed } from './routes.js';
 import { IDS } from './constants.js';
@@ -346,6 +348,12 @@ export function createApp(options = {}) {
       if (pathname === '/capture.js' && method === 'GET') {
         return send(res, 200, fs.readFileSync(path.join(ROOT, 'public', 'capture.js')), { 'content-type': 'text/javascript; charset=utf-8' });
       }
+      if (pathname === '/log.js' && method === 'GET') {
+        return send(res, 200, fs.readFileSync(path.join(ROOT, 'public', 'log.js')), { 'content-type': 'text/javascript; charset=utf-8' });
+      }
+      if (pathname === '/work.css' && method === 'GET') {
+        return send(res, 200, fs.readFileSync(path.join(ROOT, 'public', 'work.css')), { 'content-type': 'text/css; charset=utf-8' });
+      }
       if (pathname === '/home.js' && method === 'GET') {
         return send(res, 200, fs.readFileSync(path.join(ROOT, 'public', 'home.js')), { 'content-type': 'text/javascript; charset=utf-8' });
       }
@@ -464,7 +472,7 @@ export function createApp(options = {}) {
         if (!owner) throw new HttpError(401, 'Sign in required');
         const started = await startTotp(db, owner.id, now);
         if (json) return sendJson(res, 200, started);
-        return sendHtml(res, 200, `<!doctype html><html><body><main><h1>Authenticator</h1><p>Secret ${esc(started.secret)}</p><p>${esc(started.uri)}</p><p>Recovery codes, shown once: ${esc(started.recoveryCodes.join(' '))}</p><p>Preview v0.7</p></main></body></html>`);
+        return sendHtml(res, 200, chrome({ title: 'Authenticator', body: `<div class="panel"><h1>Authenticator</h1><p>Secret ${esc(started.secret)}</p><p>${esc(started.uri)}</p><p>Recovery codes, shown once: ${esc(started.recoveryCodes.join(' '))}</p></div>` }));
       }
       if (pathname === '/api/mfa/confirm' && method === 'POST') {
         const owner = challengeUser(db, req.input.challenge, stamp(now)) || user;
@@ -480,7 +488,7 @@ export function createApp(options = {}) {
       if (inviteView && method === 'GET') {
         const invite = previewInvite(db, inviteView[1], stamp(now));
         if (!invite) return sendHtml(res, 422, '<!doctype html><html><body><main><h1>Invite</h1><p>This invite link is no longer valid.</p></main></body></html>');
-        return sendHtml(res, 200, `<!doctype html><html><body><main><h1>Set your password</h1><p>${esc(invite.display_name)} · ${esc(invite.role)}</p><form method="post" action="/invite/${esc(inviteView[1])}"><label>Password <input name="password" type="password" required></label><button type="submit">Save password</button></form><p>Preview v0.7</p></main></body></html>`);
+        return sendHtml(res, 200, chrome({ title: 'Set your password', body: `<div class="panel"><h1>Set your password</h1><p>${esc(invite.display_name)} · ${esc(invite.role)}</p><form method="post" action="/invite/${esc(inviteView[1])}"><label>Password <input name="password" type="password" required></label><button type="submit">Save password</button></form></div>` }));
       }
       if (inviteView && method === 'POST') {
         const created = acceptInvite(db, inviteView[1], req.input.password, now);
@@ -494,15 +502,15 @@ export function createApp(options = {}) {
       if ((pathname === '/api/invites' || pathname === '/organiser/invites') && method === 'POST') {
         const invite = createInvite(db, user, req.input, now);
         if (json || pathname.startsWith('/api/')) return sendJson(res, 201, { id: invite.id, path: invite.path, expiresAt: invite.expiresAt, username: invite.username });
-        return sendHtml(res, 201, `<!doctype html><html><body><main><h1>Invite link</h1><p>Give this link to ${esc(invite.username)}. It works once and expires in 7 days.</p><p><a href="${esc(invite.path)}">${esc(invite.path)}</a></p><p>Preview v0.7</p></main></body></html>`);
+        return sendHtml(res, 201, chrome({ title: 'Invite link', body: `<div class="panel"><h1>Invite link</h1><p>Give this link to ${esc(invite.username)}. It works once and expires in 7 days.</p><p><a href="${esc(invite.path)}">${esc(invite.path)}</a></p></div>` }));
       }
       if (pathname === '/organiser/invites' && method === 'GET') {
-        return sendHtml(res, 200, `<!doctype html><html><body><main><h1>Invite a person</h1><form method="post" action="/organiser/invites"><input type="hidden" name="csrf" value="${esc(session.csrf)}"><label>Name <input name="displayName" required></label><label>Username <input name="username" required></label><label>Role <select name="role"><option>coach</option><option>guardian</option><option>auditor</option><option>organiser</option></select></label><label>Club id <input name="schoolId"></label><button type="submit">Create invite link</button></form><p><a href="/help">How it works</a></p><p>Preview v0.7</p></main></body></html>`);
+        return sendHtml(res, 200, chrome({ title: 'Invite a person', home: '/organiser', body: `<div class="panel"><h1>Invite a person</h1><form method="post" action="/organiser/invites"><input type="hidden" name="csrf" value="${esc(session.csrf)}"><label>Name <input name="displayName" required></label><label>Username <input name="username" required></label><label>Role <select name="role"><option>coach</option><option>guardian</option><option>auditor</option><option>organiser</option></select></label><label>Club id <input name="schoolId"></label><button type="submit">Create invite link</button></form><p><a href="/help">How it works</a></p></div>` }));
       }
       const resetView = pathname.match(/^\/reset\/([A-Za-z0-9]+)$/);
       if (resetView && method === 'GET') {
         if (!previewReset(db, resetView[1], stamp(now))) return sendHtml(res, 422, '<!doctype html><html><body><main><h1>Reset</h1><p>This reset link is no longer valid.</p></main></body></html>');
-        return sendHtml(res, 200, `<!doctype html><html><body><main><h1>Choose a new password</h1><form method="post" action="/reset/${esc(resetView[1])}"><label>Password <input name="password" type="password" required></label><button type="submit">Save password</button></form><p>Preview v0.7</p></main></body></html>`);
+        return sendHtml(res, 200, chrome({ title: 'Choose a new password', body: `<div class="panel"><h1>Choose a new password</h1><form method="post" action="/reset/${esc(resetView[1])}"><label>Password <input name="password" type="password" required></label><button type="submit">Save password</button></form></div>` }));
       }
       if (resetView && method === 'POST') {
         acceptReset(db, resetView[1], req.input.password, now);
@@ -522,14 +530,14 @@ export function createApp(options = {}) {
         return sendJson(res, 201, { id: joined.user.id, username: joined.user.username, status: joined.status });
       }
       if (pathname === '/join' && method === 'GET') {
-        return sendHtml(res, 200, '<!doctype html><html><body><main><h1>Join with a team code</h1><form method="post" action="/api/join"><label>Code <input name="code" required></label><label>Your name <input name="displayName" required></label><label>Username <input name="username" required></label><label>Password <input name="password" type="password" required></label><label>Child letter <input name="letter" maxlength="1" required></label><button type="submit">Ask the organiser to link me</button></form><p>Preview v0.7</p></main></body></html>');
+        return sendHtml(res, 200, chrome({ title: 'Join with a team code', body: '<div class="panel"><h1>Join with a team code</h1><form method="post" action="/api/join"><label>Code <input name="code" required></label><label>Your name <input name="displayName" required></label><label>Username <input name="username" required></label><label>Password <input name="password" type="password" required></label><label>Child letter <input name="letter" maxlength="1" required></label><button type="submit">Ask the organiser to link me</button></form></div>' }));
       }
       if (pathname === '/organiser/guardians' && method === 'GET') {
         const pending = all(db, `SELECT guardian_links.id, users.username, learners.letter, schools.display_name FROM guardian_links
           JOIN users ON users.id = guardian_links.user_id JOIN learners ON learners.id = guardian_links.learner_id
           JOIN schools ON schools.id = learners.school_id WHERE guardian_links.status = 'pending'`);
         const rows = pending.map((row) => `<li>${esc(row.username)} · Student ${esc(row.letter)} · ${esc(row.display_name)} <form method="post" action="/organiser/guardians/${esc(row.id)}/confirm"><input type="hidden" name="csrf" value="${esc(session.csrf)}"><button type="submit">Confirm</button></form></li>`).join('');
-        return sendHtml(res, 200, `<!doctype html><html><body><main><h1>Guardian links</h1><ul>${rows || '<li>None waiting</li>'}</ul><p>Preview v0.7</p></main></body></html>`);
+        return sendHtml(res, 200, chrome({ title: 'Guardian links', home: '/organiser', wide: true, body: `<div class="panel"><h1>Guardian links</h1><ul>${rows || '<li>None waiting</li>'}</ul></div>` }));
       }
       const confirmLink = pathname.match(/^\/organiser\/guardians\/([a-z0-9-]+)\/confirm$/);
       if (confirmLink && method === 'POST') {
@@ -551,7 +559,7 @@ export function createApp(options = {}) {
         const result = readPhoto(db, user, photoGet[1], now, url.searchParams.get('download') === '1');
         if (!result.ok) {
           if (json) return sendJson(res, result.status, { error: result.error });
-          return sendHtml(res, result.status, `<!doctype html><html><body><main><h1>Photo</h1><p>${esc(result.error)}</p><p>Preview v0.7</p></main></body></html>`);
+          return sendHtml(res, result.status, chrome({ title: 'Photo', body: `<div class="panel"><h1>Photo</h1><p class="alert" role="alert">${esc(result.error)}</p></div>` }));
         }
         return send(res, 200, result.bytes, {
           'content-type': result.mediaType,
@@ -591,10 +599,15 @@ export function createApp(options = {}) {
       if (pathname === '/coach/log' && method === 'GET') return sendHtml(res, 200, logPage(db, user, session, '1'));
       if (pathname === '/coach/log/2' && method === 'GET') return sendHtml(res, 200, logPage(db, user, session, '2'));
       if (pathname === '/coach/log/saved' && method === 'GET') return sendHtml(res, 200, logPage(db, user, session, 'saved'));
-      if ((pathname === '/coach/log/save' || pathname === '/api/session-logs') && method === 'POST') {
+      if (pathname === '/api/session-logs' && method === 'POST') {
         const skills = Array.isArray(req.input.skills) ? req.input.skills.join(',') : req.input.skills;
         saveSessionLog(db, user, { ...req.input, skills }, now);
-        if (json) return sendJson(res, 201, { ok: true });
+        return sendJson(res, 201, { ok: true });
+      }
+      if ((pathname === '/coach/log/save' || pathname === '/api/phone-log') && method === 'POST') {
+        const skills = Array.isArray(req.input.skills) ? req.input.skills.join(',') : req.input.skills;
+        const result = await submitPhoneLog(db, user, { ...req.input, skills }, now);
+        if (json || pathname.startsWith('/api/')) return sendJson(res, result.already ? 200 : 201, { id: result.claim.id, photoId: result.photoId, already: result.already });
         return redirect(res, '/coach/log/saved');
       }
       if (pathname === '/coach/setup' && method === 'GET') return sendHtml(res, 200, setupPage('coach', user, session, db));
@@ -659,6 +672,14 @@ export function createApp(options = {}) {
       if (pathname === '/settings' && method === 'GET') {
         const saver = cookies(req).data_saver === '1';
         return sendHtml(res, 200, settingsPage(user, session, db, saver));
+      }
+      if (pathname === '/settings/mfa' && method === 'POST') {
+        const started = await startTotp(db, user.id, now);
+        return sendHtml(res, 200, chrome({
+          title: 'Authenticator',
+          home: '/settings',
+          body: `<div class="panel"><h1>Authenticator</h1><p>Add this setup key to an authenticator app. The recovery codes are shown once.</p><p>Setup key</p><p><code>${esc(started.secret)}</code></p><p>Recovery codes</p><ul>${started.recoveryCodes.map((code) => `<li><code>${esc(code)}</code></li>`).join('')}</ul></div>`,
+        }));
       }
       if (pathname === '/settings' && method === 'POST') {
         const on = req.input.dataSaver === '1';

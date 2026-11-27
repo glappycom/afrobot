@@ -29,7 +29,7 @@ function teamFor(schoolId) {
 
 function shell({ title, user, session, roleLabel, device, home, body, phone = false, bell = 0 }) {
   const initials = String(user.display_name || 'A').split(' ').map((part) => part[0]).join('').slice(0, 2);
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><link rel="stylesheet" href="/home.css"><style>body{font-family:PS,"Public Sans",sans-serif}</style></head><body class="${phone ? 'phone-app' : ''}">${ICONS}<a class="skip" href="#main">Skip to content</a><header class="shell"><div class="shell-in"><a href="${home}" aria-label="AfroBot platform home"><img class="mark" src="/logo-afrobot-navy.svg" alt="afrobot"></a><span class="prod">Platform</span><span class="viewas">View as</span><nav class="roles" aria-label="Signed-in role"><a class="on" href="${home}" aria-current="page">${esc(roleLabel)} <span class="dev">${esc(device)}</span></a></nav><span class="mocktag">Fictional data</span><div class="hbtns"><button class="ibtn" type="button" aria-label="Notifications, ${bell} unread">${icon('bell')}<span class="dot">${bell}</span></button><details class="menuwrap"><summary class="ibtn" aria-label="Profile and settings"><span class="me">${esc(initials)}</span></summary><div class="menu" role="menu"><b>${esc(user.display_name)}</b><a href="/settings">Settings</a><a href="/demo">Demo controls</a><form method="post" action="/logout">${hidden(session)}<button type="submit">Sign out</button></form></div></details></div></div></header><main id="main" tabindex="-1">${body}</main><footer class="appfoot">Preview v0.7</footer><div id="toasts" aria-live="polite"></div><script src="/home.js"></script></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><link rel="stylesheet" href="/home.css"><style>body{font-family:PS,"Public Sans",sans-serif}</style></head><body class="${phone ? 'phone-app' : ''}">${ICONS}<a class="skip" href="#main">Skip to content</a><header class="shell"><div class="shell-in"><a href="${home}" aria-label="AfroBot platform home"><img class="mark" src="/logo-afrobot-navy.svg" alt="afrobot"></a><span class="prod">Platform</span><span class="viewas">View as</span><nav class="roles" aria-label="Signed-in role"><a class="on" href="${home}" aria-current="page">${esc(roleLabel)} <span class="dev">${esc(device)}</span></a></nav><span class="mocktag">Fictional data</span><div class="hbtns"><button class="ibtn" type="button" aria-label="Notifications, ${bell} unread">${icon('bell')}<span class="dot">${bell}</span></button><details class="menuwrap"><summary class="ibtn" aria-label="Profile and settings"><span class="me">${esc(initials)}</span></summary><div class="menu" role="menu"><b>${esc(user.display_name)}</b><a href="/settings">Settings</a><a href="/demo">Demo controls</a><form method="post" action="/logout">${hidden(session)}<button type="submit">Sign out</button></form></div></details></div></div></header><main id="main" tabindex="-1">${body}</main><footer class="appfoot">Preview v0.8</footer><div id="toasts" aria-live="polite"></div><script src="/home.js"></script></body></html>`;
 }
 
 function tabs(on) {
@@ -114,19 +114,28 @@ export function logScreen(db, user, session, step = '1') {
   }).join('');
   let inner = '';
   if (step === '2') {
-    inner = `<h2 class="q">What did you work on?</h2><p class="qs">${esc(names)} are here. Today's plan is ticked.</p>
-      <form method="post" action="/coach/log/save">${hidden(session)}<input type="hidden" name="letters" value="${esc(kids.map((row) => row.letter).join(','))}">
+    inner = `<h2 class="q">What did you work on?</h2><p class="qs">${esc(names)} are here. Students with consent are marked present.</p>
+      <p id="log-error" class="fielderr" role="alert" hidden></p>
+      <form id="log-save" method="post" action="/coach/log/save">${hidden(session)}<input type="hidden" name="letters" value="${esc(kids.map((row) => row.letter).join(','))}">
       <div class="acts skills"><label class="act sel"><input type="checkbox" name="skills" value="line-following" checked> Line-following</label><label class="act sel"><input type="checkbox" name="skills" value="testing" checked> Testing and fixing</label></div>
-      <div class="dock"><button class="btn p big" type="submit">${icon('check', 'sm')} Save session</button></div></form>`;
+      <div class="dock"><button class="btn p big" type="submit">${icon('check', 'sm')} Save session</button></div></form>
+      <script src="/log.js"></script>`;
   } else if (step === 'saved') {
     inner = `<div class="saved"><div class="big pop">${icon('check')}</div><h2>Saved and sent</h2><p>Your organiser usually looks within 2 days.</p>
       <ol class="ptl" aria-label="What happens to this session"><li class="done"><b>Saved</b><span>Just now · by you</span></li><li class="done"><b>Sent to your organiser</b><span>Just now</span></li><li class="next"><b>Approved by your organiser</b><span>Usually within 2 days</span></li></ol>
       <a class="btn p big" href="/coach">Done</a></div>`;
   } else {
+    const tags = kids.map((row) => `<label class="act"><input type="checkbox" name="photoLearner" value="${esc(row.id)}"> Student ${esc(row.letter)} is in this photo</label>`).join('');
     inner = `<h2 class="q">Add a photo of the build</h2><p class="qs">Point the camera at the robot, not at people. ${esc(names)}.</p>
-      <div class="camgrid"><a class="camtile" href="/coach/log/2">${icon('cam', 'lg')}<b>Take photo</b><span>Stays on this phone</span></a><a class="camtile g" href="/coach/log/2">${icon('file', 'lg')}<b>Choose a photo</b><span>From this phone</span></a></div>
-      <p class="facenote">${icon('eye', 'sm')} Use Capture a session to send a private photo. It is stored for this club only, and never on a public link.</p>
-      <a class="skiplink" href="/coach/log/2">No photo today</a>`;
+      <form id="log-photo">
+      <label class="act">Picture <input id="log-file" type="file" accept="image/jpeg,image/png,image/webp"></label>
+      <label class="act sel"><input id="log-none" type="checkbox" checked> No students shown</label>
+      ${tags}
+      <a class="btn p big" id="log-next" href="/coach/log/2">Continue</a>
+      </form>
+      <p class="facenote">${icon('eye', 'sm')} A photo stays private. A student without photo consent blocks the upload.</p>
+      <a class="skiplink" href="/coach/log/2">No photo today</a>
+      <script src="/log.js"></script>`;
   }
   const body = phone(`<div class="appbar"><a class="back" href="/coach" aria-label="Back to Today">${icon('back')}</a><div><div class="t">Log a session</div></div><span class="mtag" style="margin-left:auto">Fictional</span></div>
     <div class="qctx"><span class="av sm" aria-hidden="true">${esc(team.short)}</span><span><b>${esc(team.name)} · today 15:30</b><span>${esc(names || 'No one to log')}</span></span></div>
@@ -193,7 +202,7 @@ function guardianPhotoBlock(db, user, session) {
   const action = !linked ? '' : consent.status === 'active'
     ? `<form method="post" action="/student/photo-consent/withdraw">${hidden(session)}<input type="hidden" name="learnerId" value="${esc(linked.learner_id)}"><button type="submit">Withdraw photo consent</button></form>`
     : `<form method="post" action="/student/photo-consent">${hidden(session)}<input type="hidden" name="learnerId" value="${esc(linked.learner_id)}"><button type="submit">Record photo consent</button></form>`;
-  return `<div class="sect"><h3>Private photos</h3><p>${esc(consent.text)}</p>${pics}${action}</div>`;
+  return `<div class="sect family-photos"><h3>Private photos</h3><p>${esc(consent.text)}</p>${pics}${action}</div>`;
 }
 
 function photoTrace(db, user, now, claim) {

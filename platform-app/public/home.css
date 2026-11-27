@@ -1010,3 +1010,8 @@ a.card.sub{display:block;color:inherit}
 .menuwrap .menu{position:absolute;z-index:80;right:0;top:48px}
 .menu button{background:none;color:inherit;border-radius:0;min-height:44px}
 .shell .mark{height:26px;width:auto;display:block}
+.appfoot{background:#F4F6F8;border-top:1px solid #E3E7EC;padding:16px 24px;text-align:center;color:#0E2747;font-size:14px;font-weight:700}
+.family-photos{display:flex;flex-direction:column;gap:12px;margin:16px 0;align-items:stretch}
+.family-photos img{width:160px;max-width:100%;height:auto;border:1px solid #E3E7EC}
+.family-photos p{margin:0}
+.family-photos button{width:100%}

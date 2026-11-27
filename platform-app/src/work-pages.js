@@ -1,12 +1,22 @@
 import { readableSchools } from './access.js';
+import { chrome } from './chrome.js';
 import { all, get } from './db.js';
 import { learnersForSchool } from './experience.js';
 import { esc } from './format.js';
 import { listGrants, meetingsFor, sessionBoard, sessionTotals } from './operations.js';
 import { consentLabel, listClaimPhotos, photoCapacity } from './photos.js';
 
-function page(title, home, body) {
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title></head><body><main id="main"><p><a href="${home}">Home</a></p>${body}<p>Preview v0.7</p></main></body></html>`;
+function page(title, home, body, wide = false) {
+  return chrome({ title, home, body: `<p><a href="${esc(home)}">Home</a></p>${body}`, wide });
+}
+
+function chip(status) {
+  const kind = status === 'Pending review' ? 'pending'
+    : status === 'Needs attention' ? 'attention'
+      : status === 'Sent' || status === 'Approved' ? 'sent'
+        : status === 'Cancelled' ? 'cancelled'
+          : 'missing';
+  return `<span class="chip chip-${kind}">${esc(status)}</span>`;
 }
 
 function hidden(session) {
@@ -17,7 +27,7 @@ export function capturePage(db, user, now, session, extras = {}) {
   const meetings = meetingsFor(db, user, now);
   const membership = get(db, 'SELECT school_id FROM memberships WHERE user_id = ? AND role = ?', [user.id, 'coach']);
   const learners = membership ? learnersForSchool(db, membership.school_id, { logging: true }) : [];
-  const error = extras.error ? `<p role="alert">${esc(extras.error)}</p>` : '';
+  const error = extras.error ? `<p class="alert" role="alert">${esc(extras.error)}</p>` : '';
   const room = photoCapacity();
   const options = meetings.map((meeting) => `<option value="${esc(meeting.id)}">${esc(meeting.label)} · ${esc(meeting.meets_on)}</option>`).join('');
   const marks = learners.map((row) => `<fieldset><legend>Student ${esc(row.letter)}</legend>
@@ -47,7 +57,7 @@ export function capturePage(db, user, now, session, extras = {}) {
 }
 
 export function fixPage(db, user, session, claim, extras = {}) {
-  const error = extras.error ? `<p role="alert">${esc(extras.error)}</p>` : '';
+  const error = extras.error ? `<p class="alert" role="alert">${esc(extras.error)}</p>` : '';
   const membership = get(db, 'SELECT school_id FROM memberships WHERE user_id = ? AND role = ?', [user.id, 'coach']);
   const learners = membership ? learnersForSchool(db, membership.school_id, { logging: true }) : [];
   const marks = learners.map((row) => `<fieldset><legend>Student ${esc(row.letter)}</legend>
@@ -83,7 +93,7 @@ function photoFields(learners, room) {
 }
 
 export function sessionPhotoPage(db, user, session, claim, extras = {}) {
-  const error = extras.error ? `<p role="alert">${esc(extras.error)}</p>` : '';
+  const error = extras.error ? `<p class="alert" role="alert">${esc(extras.error)}</p>` : '';
   const photos = listClaimPhotos(db, user, claim.id, new Date().toISOString());
   const learners = learnersForSchool(db, claim.school_id, { logging: true });
   const items = photos.map((row) => `<li><img src="/photos/${esc(row.id)}" alt="Private photo" width="160"><span>${row.noStudents ? 'No students shown' : row.letters.map((letter) => `Student ${esc(letter)}`).join(', ')}</span>${user.role === 'coach' && claim.status !== 'approved' ? `<form method="post" action="/coach/photos/${esc(row.id)}/remove">${hidden(session)}<button type="submit">Remove</button></form>` : ''}${user.role === 'organiser' && claim.status === 'approved' ? `<form method="post" action="/organiser/photos/${esc(row.id)}/remove">${hidden(session)}<label>Reason <input name="reason" required></label><button type="submit">Remove</button></form>` : ''}</li>`).join('');
@@ -95,35 +105,36 @@ export function sessionPhotoPage(db, user, session, claim, extras = {}) {
     : '';
   const body = `${error}<h1>Photos on version ${esc(claim.version)}</h1>
     <p>These pictures belong to this version. Sending a new version keeps them here.</p>
-    <ul>${items || '<li>No photo on this version.</li>'}</ul>
+    <ul class="photo-row">${items || '<li class="empty">No photo on this version.</li>'}</ul>
     ${upload}`;
   return page('Session photos', user.role === 'organiser' ? '/organiser/tracking' : '/coach/logs', body);
 }
 
 export function trackingPage(db, user, now, session, extras = {}) {
-  const error = extras.error ? `<p role="alert">${esc(extras.error)}</p>` : '';
-  const notice = extras.notice ? `<p role="status">${esc(extras.notice)}</p>` : '';
+  const error = extras.error ? `<p class="alert" role="alert">${esc(extras.error)}</p>` : '';
+  const notice = extras.notice ? `<p class="status" role="status">${esc(extras.notice)}</p>` : '';
   const rows = sessionBoard(db, user, now);
   const totals = sessionTotals(db, user, now);
   const totalText = totals.map((row) => `${esc(row.displayName)}: ${row.sessions ? esc(row.label) : 'no approved sessions yet'} from ${esc(row.sessions)} approved session${row.sessions === 1 ? '' : 's'}`).join('<br>');
   const bodyRows = rows.map((row) => {
     const action = row.status === 'Pending review'
       ? `<form method="post" action="/organiser/claims/${esc(row.claimId)}/approve">${hidden(session)}<button type="submit">Approve</button></form>
-         <form method="post" action="/organiser/claims/${esc(row.claimId)}/return">${hidden(session)}<label>Reason <input name="note" required></label><button type="submit">Send back</button></form>`
+         <details><summary>Send back</summary><form method="post" action="/organiser/claims/${esc(row.claimId)}/return">${hidden(session)}<label>Reason <input name="note" required></label><button type="submit">Send back with this reason</button></form></details>`
       : '';
-    return `<tr><td>${esc(row.schoolName)}</td><td>${esc(row.coachName)}</td><td>${esc(row.week)}</td><td>${esc(row.label)} · ${esc(row.meetsOn)}</td><td>${esc(row.status)}</td><td>${esc(row.figure || '')}</td><td>${esc(row.why || '')}</td><td>${action}</td></tr>`;
+    return `<tr><td>${esc(row.schoolName)}</td><td>${esc(row.coachName)}</td><td>${esc(row.week)}</td><td>${esc(row.label)} · ${esc(row.meetsOn)}</td><td>${chip(row.status)}</td><td>${esc(row.figure || '')}</td><td>${esc(row.why || '')}</td><td>${action}</td></tr>`;
   }).join('');
   const body = `${error}${notice}<h1>Session tracking</h1>
+    ${rows.length ? '' : '<p class="empty">Nothing is waiting. Approved sessions and empty weeks show up here.</p>'}
     <p>Completion rate is the sum of the latest approved version of each session.</p>
     <p>${totalText}</p>
     <table><thead><tr><th>Club</th><th>Coach</th><th>Week</th><th>Session</th><th>Status</th><th>Figure</th><th>Why</th><th></th></tr></thead><tbody>${bodyRows}</tbody></table>
     <p><a href="/audit">Audit log</a> · <a href="/organiser/admin">Add a club or session</a></p>`;
-  return page('Session tracking', '/organiser', body);
+  return page('Session tracking', '/organiser', body, true);
 }
 
 export function adminPage(db, user, now, session, extras = {}) {
-  const error = extras.error ? `<p role="alert">${esc(extras.error)}</p>` : '';
-  const notice = extras.notice ? `<p role="status">${esc(extras.notice)}</p>` : '';
+  const error = extras.error ? `<p class="alert" role="alert">${esc(extras.error)}</p>` : '';
+  const notice = extras.notice ? `<p class="status" role="status">${esc(extras.notice)}</p>` : '';
   const schools = sessionTotals(db, user, now);
   const schoolOptions = schools.map((row) => `<option value="${esc(row.schoolId)}">${esc(row.displayName)}</option>`).join('');
   const allowed = readableSchools(db, user, typeof now === 'function' ? now() : now);
@@ -201,12 +212,12 @@ export function adminPage(db, user, now, session, extras = {}) {
       <button type="submit">Deactivate</button>
     </form>
     <p><a href="/organiser/grants">Auditor access</a> · <a href="/organiser/export.csv">Export CSV</a> · <a href="/help">How it works</a></p>`;
-  return page('Add a club', '/organiser', body);
+  return page('Add a club', '/organiser', body, true);
 }
 
 export function grantsPage(db, user, now, session, extras = {}) {
-  const error = extras.error ? `<p role="alert">${esc(extras.error)}</p>` : '';
-  const notice = extras.notice ? `<p role="status">${esc(extras.notice)}</p>` : '';
+  const error = extras.error ? `<p class="alert" role="alert">${esc(extras.error)}</p>` : '';
+  const notice = extras.notice ? `<p class="status" role="status">${esc(extras.notice)}</p>` : '';
   const schools = sessionTotals(db, user, now);
   const schoolOptions = schools.map((row) => `<option value="${esc(row.schoolId)}">${esc(row.displayName)}</option>`).join('');
   const auditors = all(db, `SELECT id, display_name, username FROM users WHERE role = 'auditor' AND (active IS NULL OR active = 1) ORDER BY display_name`);
@@ -223,7 +234,7 @@ export function grantsPage(db, user, now, session, extras = {}) {
       <button type="submit">Grant read access</button>
     </form>
     <table><thead><tr><th>Club</th><th>Auditor</th><th>Period</th><th>State</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
-  return page('Auditor access', '/organiser', body);
+  return page('Auditor access', '/organiser', body, true);
 }
 
 export function helpPage(user) {

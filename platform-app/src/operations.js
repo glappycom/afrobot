@@ -11,7 +11,9 @@ import {
   requireCoach,
   requireOrganiser,
 } from './access.js';
+import { learnersForSchool, saveSessionLog } from './experience.js';
 import { HttpError, notAvailable, notFound } from './http-error.js';
+import { latestPhotoConsent, savePhoto } from './photos.js';
 
 function at(now) {
   return typeof now === 'function' ? now() : now;
@@ -293,7 +295,8 @@ function evidenceNote(marks, learners, projectResult, note) {
     if (!letter) continue;
     (mark.present ? present : absent).push(letter);
   }
-  return `Present: ${present.sort().join(', ') || 'none'}. Absent: ${absent.sort().join(', ') || 'none'}. Project result: ${projectResult}. Note: ${note}. No photo. Student names and faces are not included.`;
+  const cleanNote = String(note).replace(/[. ]+$/g, '');
+  return `Present: ${present.sort().join(', ') || 'none'}. Absent: ${absent.sort().join(', ') || 'none'}. Project result: ${projectResult}. Note: ${cleanNote}. No photo. Student names and faces are not included.`;
 }
 
 export function submitSessionCapture(db, user, input, now) {
@@ -400,6 +403,50 @@ export function submitSessionCapture(db, user, input, now) {
     });
   });
   return { claim: claimById(db, id), already: false };
+}
+
+export async function submitPhoneLog(db, user, input, now) {
+  if (!user || user.role !== 'coach') throw notAvailable();
+  saveSessionLog(db, user, input, now);
+  const meetings = meetingsFor(db, user, now);
+  const open = meetings.find((meeting) => {
+    const latest = get(db, 'SELECT status FROM claims WHERE meeting_id = ? ORDER BY version DESC LIMIT 1', [meeting.id]);
+    return !latest;
+  });
+  if (!open) throw new HttpError(422, 'No session is waiting to be logged.');
+  const learners = learnersForSchool(db, open.school_id, { logging: true });
+  if (!learners.length) throw new HttpError(422, 'Add a student with consent before logging attendance.');
+  const learnerIds = [...new Set((Array.isArray(input.learnerIds) ? input.learnerIds : String(input.learnerIds || '').split(','))
+    .map((id) => String(id || '').trim())
+    .filter(Boolean))];
+  const noStudents = input.noStudents === true || input.noStudents === '1' || input.noStudents === 'on' || learnerIds.length === 0;
+  if (input.image && !noStudents) {
+    const missing = learnerIds.filter((learnerId) => latestPhotoConsent(db, learnerId)?.status !== 'active');
+    if (missing.length) {
+      const letters = learners.filter((row) => missing.includes(row.id)).map((row) => `Student ${row.letter}`);
+      throw new HttpError(422, `${letters.join(' and ') || 'A tagged student'} has no photo consent, so this picture cannot be stored.`);
+    }
+  }
+  const skills = Array.isArray(input.skills) ? input.skills.filter(Boolean).join(', ') : String(input.skills || 'practice');
+  const result = submitSessionCapture(db, user, {
+    meetingId: open.id,
+    idempotencyKey: `phone-${open.id}`.slice(0, 64),
+    numerator: learners.length,
+    denominator: learners.length,
+    projectResult: skills.slice(0, 80) || 'Practice',
+    note: 'Phone log. No names.',
+    attendance: learners.map((row) => ({ learnerId: row.id, present: true })),
+  }, now);
+  let photoId = null;
+  if (input.image && !result.already) {
+    const saved = await savePhoto(db, user, result.claim.id, {
+      image: input.image,
+      noStudents: noStudents || learnerIds.length === 0,
+      learnerIds: noStudents ? [] : learnerIds,
+    }, now);
+    photoId = saved.id;
+  }
+  return { claim: result.claim, already: result.already, photoId };
 }
 
 export function resubmitSession(db, user, claimId, input, now) {

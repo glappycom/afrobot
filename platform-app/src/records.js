@@ -3,6 +3,7 @@ import { readableSchools } from './access.js';
 import { all, get, insert } from './db.js';
 import { listClaims, listProjects, traceClaim, visibleEvents } from './domain.js';
 import { HttpError, notAvailable, notFound } from './http-error.js';
+import { localStamp } from './time.js';
 import { zipStore } from './zip.js';
 
 const FIXED_IDS = {
@@ -18,11 +19,6 @@ const FIXED_IDS = {
   'snap-claim-cm-rubric-v2': 'AFB-SNP-000002',
 };
 
-const ZONES = {
-  Cameroon: { timeZone: 'Africa/Douala', label: 'WAT' },
-  Tanzania: { timeZone: 'Africa/Dar_es_Salaam', label: 'EAT' },
-};
-
 export function displayId(id) {
   if (FIXED_IDS[id]) return FIXED_IDS[id];
   const kind = String(id).startsWith('ev-') ? 'EVD' : String(id).startsWith('proj-') ? 'PRJ' : String(id).startsWith('snap-') ? 'SNP' : 'CLM';
@@ -30,23 +26,12 @@ export function displayId(id) {
   return `AFB-${kind}-${String(n).padStart(6, '0')}`;
 }
 
-export function formatStamps(iso, country = 'Cameroon') {
+export function formatStamps(iso) {
   if (!iso) return { utc: '—', local: '—' };
   const date = new Date(iso);
   if (Number.isNaN(date.getTime())) return { utc: iso, local: '—' };
   const utc = `${iso.replace('T', ' ').replace('.000Z', ' UTC').replace('Z', ' UTC')}`;
-  const zone = ZONES[country] || { timeZone: 'UTC', label: 'UTC' };
-  const local = new Intl.DateTimeFormat('en-GB', {
-    timeZone: zone.timeZone,
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hourCycle: 'h23',
-  }).format(date).replace(',', '');
-  return { utc, local: `${local} ${zone.label}` };
+  return { utc, local: localStamp(iso) };
 }
 
 export function retentionSchedule(db) {

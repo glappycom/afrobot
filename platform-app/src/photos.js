@@ -19,6 +19,7 @@ import { isFamilyRole, isId, canReadSchool } from './access.js';
 import { all, get, insert, run, transaction } from './db.js';
 import { addEvent } from './domain.js';
 import { HttpError, notAvailable, notFound } from './http-error.js';
+import { localDate } from './time.js';
 
 const MAX_INPUT = 5 * 1024 * 1024;
 const MAX_EDGE = 1600;
@@ -440,7 +441,7 @@ export function consentLabel(db, learnerId) {
   const row = latestPhotoConsent(db, learnerId);
   if (!row) return { status: 'missing', text: 'No photo consent on record.' };
   const person = get(db, 'SELECT display_name FROM users WHERE id = ?', [row.recorded_by]);
-  const when = String(row.recorded_at).slice(0, 10);
+  const when = localDate(row.recorded_at);
   if (row.status === 'withdrawn') return { status: 'withdrawn', text: `Photo consent withdrawn on ${when} by ${person?.display_name || 'the recorder'}.` };
   return { status: 'active', text: `Photo consent recorded on ${when} by ${person?.display_name || 'the recorder'}.` };
 }
