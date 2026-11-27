@@ -7,7 +7,7 @@ import { logUiState } from '/log-status.js';
   if (!capture && !fix && !sessionPhoto) return;
 
   function tokenOf(form) {
-    return form.querySelector('input[name="csrf"]').value;
+    return form.querySelector('input[name="_csrf"], input[name="csrf"]').value;
   }
 
   function attendanceOf(form) {
