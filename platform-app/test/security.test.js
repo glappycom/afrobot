@@ -26,7 +26,7 @@ test('demo seed stays off unless AFROBOT_DEMO_SEED is set, and passwords are has
     const signIn = await page(app.url, { cookie: '' }, '/login');
     assert.equal(signIn.text.includes('demo-coach-a'), false);
     assert.match(signIn.text, /Demo sign-ins are in the PR description/);
-    assert.match(signIn.text, /Preview v0\.6/);
+    assert.match(signIn.text, /Preview v0\.7/);
   } finally {
     await app.stop();
   }

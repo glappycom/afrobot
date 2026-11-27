@@ -2,7 +2,7 @@
   "framework": null,
   "functions": {
     "api/index.js": {
-      "includeFiles": "src/**",
+      "includeFiles": "{src/**,node_modules/@jsquash/webp/codec/**/*.wasm}",
       "maxDuration": 60
     }
   },

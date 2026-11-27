@@ -32,7 +32,7 @@ test('two clubs and two coaches can log sessions across weeks, return one, and r
     const coachB = await login(app.url, 'coach-b', 'demo-coach-b');
     const captureA = await page(app.url, coachA, '/coach/capture');
     assert.equal(captureA.status, 200);
-    assert.equal(captureA.text.includes('type="file"'), false);
+    assert.equal(captureA.text.includes('type="file"'), true);
     assert.equal(captureA.text.includes('value="6"'), false);
     assert.match(captureA.text, /Week 1/);
     const captureB = await page(app.url, coachB, '/coach/capture');

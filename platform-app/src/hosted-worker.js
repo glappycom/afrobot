@@ -1,4 +1,5 @@
 import { parentPort, workerData } from 'node:worker_threads';
+import { packBinary, unpackBinary } from './binary-json.js';
 import { Pool, neonConfig } from '@neondatabase/serverless';
 import ws from 'ws';
 
@@ -47,8 +48,15 @@ while (true) {
   let response;
   try {
     const request = readRequest();
-    const result = await client.query(request.sql, request.params);
-    response = { rows: result.rows, rowCount: result.rowCount };
+    const result = await client.query(request.sql, (request.params || []).map((value) => unpackBinary(value)));
+    response = {
+      rows: result.rows.map((row) => {
+        const out = {};
+        for (const [key, value] of Object.entries(row)) out[key] = packBinary(value);
+        return out;
+      }),
+      rowCount: result.rowCount,
+    };
   } catch (error) {
     response = { error: safe(error) };
   }

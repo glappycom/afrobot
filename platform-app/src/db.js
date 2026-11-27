@@ -663,6 +663,46 @@ function ensureSqliteWork(records) {
   records.exec(`CREATE TABLE IF NOT EXISTS mfa_challenges (
     id TEXT PRIMARY KEY, user_id TEXT NOT NULL, purpose TEXT NOT NULL, expires_at TEXT NOT NULL, used_at TEXT
   )`);
+  records.exec(`CREATE TABLE IF NOT EXISTS session_photos (
+    id TEXT PRIMARY KEY,
+    claim_id TEXT NOT NULL,
+    school_id TEXT NOT NULL,
+    bytes BLOB,
+    media_type TEXT NOT NULL,
+    sha256 TEXT NOT NULL,
+    width INTEGER NOT NULL,
+    height INTEGER NOT NULL,
+    byte_size INTEGER NOT NULL,
+    no_students INTEGER NOT NULL,
+    created_by TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    removed_at TEXT,
+    removed_by TEXT,
+    remove_reason TEXT,
+    hidden_at TEXT,
+    hidden_reason TEXT
+  )`);
+  records.exec('CREATE INDEX IF NOT EXISTS session_photos_claim ON session_photos(claim_id)');
+  records.exec('CREATE INDEX IF NOT EXISTS session_photos_school ON session_photos(school_id)');
+  records.exec(`CREATE TABLE IF NOT EXISTS photo_tags (
+    photo_id TEXT NOT NULL,
+    learner_id TEXT NOT NULL,
+    PRIMARY KEY (photo_id, learner_id)
+  )`);
+  records.exec(`CREATE TABLE IF NOT EXISTS photo_consent (
+    id TEXT PRIMARY KEY,
+    learner_id TEXT NOT NULL,
+    status TEXT NOT NULL,
+    recorded_by TEXT NOT NULL,
+    recorded_at TEXT NOT NULL
+  )`);
+  records.exec(`CREATE TABLE IF NOT EXISTS photo_deletion_queue (
+    id TEXT PRIMARY KEY,
+    photo_id TEXT NOT NULL,
+    learner_id TEXT NOT NULL,
+    queued_at TEXT NOT NULL,
+    reason TEXT NOT NULL
+  )`);
 }
 
 export const POSTGRES_WORK_SQL = [
@@ -711,6 +751,46 @@ export const POSTGRES_WORK_SQL = [
   )`,
   `CREATE TABLE IF NOT EXISTS mfa_challenges (
     id TEXT PRIMARY KEY, user_id TEXT NOT NULL, purpose TEXT NOT NULL, expires_at TEXT NOT NULL, used_at TEXT
+  )`,
+  `CREATE TABLE IF NOT EXISTS session_photos (
+    id TEXT PRIMARY KEY,
+    claim_id TEXT NOT NULL,
+    school_id TEXT NOT NULL,
+    bytes BYTEA,
+    media_type TEXT NOT NULL,
+    sha256 TEXT NOT NULL,
+    width INTEGER NOT NULL,
+    height INTEGER NOT NULL,
+    byte_size INTEGER NOT NULL,
+    no_students INTEGER NOT NULL,
+    created_by TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    removed_at TEXT,
+    removed_by TEXT,
+    remove_reason TEXT,
+    hidden_at TEXT,
+    hidden_reason TEXT
+  )`,
+  'CREATE INDEX IF NOT EXISTS session_photos_claim ON session_photos(claim_id)',
+  'CREATE INDEX IF NOT EXISTS session_photos_school ON session_photos(school_id)',
+  `CREATE TABLE IF NOT EXISTS photo_tags (
+    photo_id TEXT NOT NULL,
+    learner_id TEXT NOT NULL,
+    PRIMARY KEY (photo_id, learner_id)
+  )`,
+  `CREATE TABLE IF NOT EXISTS photo_consent (
+    id TEXT PRIMARY KEY,
+    learner_id TEXT NOT NULL,
+    status TEXT NOT NULL,
+    recorded_by TEXT NOT NULL,
+    recorded_at TEXT NOT NULL
+  )`,
+  `CREATE TABLE IF NOT EXISTS photo_deletion_queue (
+    id TEXT PRIMARY KEY,
+    photo_id TEXT NOT NULL,
+    learner_id TEXT NOT NULL,
+    queued_at TEXT NOT NULL,
+    reason TEXT NOT NULL
   )`,
 ];
 

@@ -176,7 +176,7 @@ test('an organiser can grant and revoke auditor access, edit or cancel a session
     const auditorHelp = await page(app.url, await login(app.url, 'auditor', 'demo-auditor'), '/help');
     assert.match(auditorHelp.text, /How it works for an auditor/);
     const studentHelp = await page(app.url, await login(app.url, 'student-a', 'demo-student-a'), '/help');
-    assert.match(studentHelp.text, /How it works for a student/);
+    assert.match(studentHelp.text, /How it works for a guardian/);
   } finally {
     await app.stop();
   }

@@ -7,6 +7,7 @@ import { displayId } from './records.js';
 import { get } from './db.js';
 import { consentGaps, fallingBehind, joinCodeFor, learnersForSchool, needsQueue, overdueMeetings } from './experience.js';
 import { approvedSessions, coachHistory, learnerProgress } from './operations.js';
+import { consentLabel, guardianPhotos, listSeriesPhotos } from './photos.js';
 import { IDS } from './constants.js';
 import { esc, rateLabel } from './format.js';
 
@@ -28,7 +29,7 @@ function teamFor(schoolId) {
 
 function shell({ title, user, session, roleLabel, device, home, body, phone = false, bell = 0 }) {
   const initials = String(user.display_name || 'A').split(' ').map((part) => part[0]).join('').slice(0, 2);
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><link rel="stylesheet" href="/home.css"><style>body{font-family:PS,"Public Sans",sans-serif}</style></head><body class="${phone ? 'phone-app' : ''}">${ICONS}<a class="skip" href="#main">Skip to content</a><header class="shell"><div class="shell-in"><a href="${home}" aria-label="AfroBot platform home"><img class="mark" src="/logo-afrobot-navy.svg" alt="afrobot"></a><span class="prod">Platform</span><span class="viewas">View as</span><nav class="roles" aria-label="Signed-in role"><a class="on" href="${home}" aria-current="page">${esc(roleLabel)} <span class="dev">${esc(device)}</span></a></nav><span class="mocktag">Fictional data</span><div class="hbtns"><button class="ibtn" type="button" aria-label="Notifications, ${bell} unread">${icon('bell')}<span class="dot">${bell}</span></button><details class="menuwrap"><summary class="ibtn" aria-label="Profile and settings"><span class="me">${esc(initials)}</span></summary><div class="menu" role="menu"><b>${esc(user.display_name)}</b><a href="/settings">Settings</a><a href="/demo">Demo controls</a><form method="post" action="/logout">${hidden(session)}<button type="submit">Sign out</button></form></div></details></div></div></header><main id="main" tabindex="-1">${body}</main><footer class="appfoot">Preview v0.6</footer><div id="toasts" aria-live="polite"></div><script src="/home.js"></script></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><link rel="stylesheet" href="/home.css"><style>body{font-family:PS,"Public Sans",sans-serif}</style></head><body class="${phone ? 'phone-app' : ''}">${ICONS}<a class="skip" href="#main">Skip to content</a><header class="shell"><div class="shell-in"><a href="${home}" aria-label="AfroBot platform home"><img class="mark" src="/logo-afrobot-navy.svg" alt="afrobot"></a><span class="prod">Platform</span><span class="viewas">View as</span><nav class="roles" aria-label="Signed-in role"><a class="on" href="${home}" aria-current="page">${esc(roleLabel)} <span class="dev">${esc(device)}</span></a></nav><span class="mocktag">Fictional data</span><div class="hbtns"><button class="ibtn" type="button" aria-label="Notifications, ${bell} unread">${icon('bell')}<span class="dot">${bell}</span></button><details class="menuwrap"><summary class="ibtn" aria-label="Profile and settings"><span class="me">${esc(initials)}</span></summary><div class="menu" role="menu"><b>${esc(user.display_name)}</b><a href="/settings">Settings</a><a href="/demo">Demo controls</a><form method="post" action="/logout">${hidden(session)}<button type="submit">Sign out</button></form></div></details></div></div></header><main id="main" tabindex="-1">${body}</main><footer class="appfoot">Preview v0.7</footer><div id="toasts" aria-live="polite"></div><script src="/home.js"></script></body></html>`;
 }
 
 function tabs(on) {
@@ -124,7 +125,7 @@ export function logScreen(db, user, session, step = '1') {
   } else {
     inner = `<h2 class="q">Add a photo of the build</h2><p class="qs">Point the camera at the robot, not at people. ${esc(names)}.</p>
       <div class="camgrid"><a class="camtile" href="/coach/log/2">${icon('cam', 'lg')}<b>Take photo</b><span>Stays on this phone</span></a><a class="camtile g" href="/coach/log/2">${icon('file', 'lg')}<b>Choose a photo</b><span>From this phone</span></a></div>
-      <p class="facenote">${icon('eye', 'sm')} Photos stay on this phone until you choose to send one. A picture is about 40 KB.</p>
+      <p class="facenote">${icon('eye', 'sm')} Use Capture a session to send a private photo. It is stored for this club only, and never on a public link.</p>
       <a class="skiplink" href="/coach/log/2">No photo today</a>`;
   }
   const body = phone(`<div class="appbar"><a class="back" href="/coach" aria-label="Back to Today">${icon('back')}</a><div><div class="t">Log a session</div></div><span class="mtag" style="margin-left:auto">Fictional</span></div>
@@ -137,7 +138,7 @@ export function coachLogsScreen(db, user, now, session, extras = {}) {
   const rows = coachHistory(db, user, now).filter((row) => row.meetingId);
   const notice = extras.notice ? `<p role="status">${esc(extras.notice)}</p>` : '';
   const list = rows.length
-    ? `<ul>${rows.map((row) => `<li><b>${esc(row.label)}</b> v${esc(row.version)} ${esc(row.statusLabel)} ${esc(row.figure || '')}${row.why ? ` Why: ${esc(row.why)}` : ''}${row.canFix ? ` <a href="/coach/fix/${esc(row.id)}">Fix and resubmit</a>` : ''}</li>`).join('')}</ul>`
+    ? `<ul>${rows.map((row) => `<li><b>${esc(row.label)}</b> v${esc(row.version)} ${esc(row.statusLabel)} ${esc(row.figure || '')}${row.why ? ` Why: ${esc(row.why)}` : ''} <a href="/coach/sessions/${esc(row.id)}">Photos</a>${row.canFix ? ` <a href="/coach/fix/${esc(row.id)}">Fix and resubmit</a>` : ''}</li>`).join('')}</ul>`
     : '<p>No session has been sent yet.</p>';
   const body = phone(`<div class="appbar"><a class="back" href="/coach" aria-label="Back">${icon('back')}</a><div><div class="t">My logs</div><h1 style="font-size:20px">Session history</h1></div></div>
     ${notice}${list}
@@ -182,6 +183,29 @@ export function journeyScreen(db, user, session) {
   return shell({ title: 'Journey · afrobot', user, session, roleLabel: 'Student & parent', device: 'Phone', home: '/student', body, phone: true, bell: 0 });
 }
 
+function guardianPhotoBlock(db, user, session) {
+  const photos = guardianPhotos(db, user, new Date().toISOString());
+  const linked = get(db, `SELECT learners.id AS learner_id, learners.letter AS letter FROM guardian_links
+    JOIN learners ON learners.id = guardian_links.learner_id
+    WHERE guardian_links.user_id = ? AND guardian_links.status = 'confirmed' ORDER BY learners.letter LIMIT 1`, [user.id]);
+  const consent = linked ? consentLabel(db, linked.learner_id) : { status: 'missing', text: 'No linked child.' };
+  const pics = photos.map((row) => `<img src="/photos/${esc(row.id)}" alt="Private photo of Student ${esc(row.letters[0] || '')}" width="160">`).join('') || '<p>No photo of only your child.</p>';
+  const action = !linked ? '' : consent.status === 'active'
+    ? `<form method="post" action="/student/photo-consent/withdraw">${hidden(session)}<input type="hidden" name="learnerId" value="${esc(linked.learner_id)}"><button type="submit">Withdraw photo consent</button></form>`
+    : `<form method="post" action="/student/photo-consent">${hidden(session)}<input type="hidden" name="learnerId" value="${esc(linked.learner_id)}"><button type="submit">Record photo consent</button></form>`;
+  return `<div class="sect"><h3>Private photos</h3><p>${esc(consent.text)}</p>${pics}${action}</div>`;
+}
+
+function photoTrace(db, user, now, claim) {
+  const photos = listSeriesPhotos(db, user, claim.series_id, now);
+  const versions = [...new Set(photos.map((row) => row.version))];
+  const blocks = versions.map((version) => {
+    const rows = photos.filter((row) => row.version === version);
+    return `<h3>Version ${esc(version)}</h3><p>${rows.length} photo${rows.length === 1 ? '' : 's'}.</p>${rows.map((row) => `<img src="/photos/${esc(row.id)}" alt="Private photo" width="160">`).join('')}`;
+  }).join('');
+  return `<section class="card"><h2>Private photos</h2><p>Photo count ${photos.length}.</p>${blocks}</section>`;
+}
+
 export function familyScreen(db, user, session) {
   const progress = learnerProgress(db, user);
   const code = progress?.cohortId ? joinCodeFor(db, progress.cohortId) : null;
@@ -192,6 +216,7 @@ export function familyScreen(db, user, session) {
     <div class="week2 card"><div class="wk"><span>${icon('sparkle', 'sm')}</span><h3>This week</h3><span>23–26 Nov</span></div><ul><li>Came to <b>${progress ? `${progress.came} of ${progress.total}` : '0 of 0'}</b> sessions.</li><li>Session counts come from records sent by the coach.</li></ul></div>
     <div class="sect"><h3>Student ${esc(letter)}'s journey</h3><a href="/student/journey">Open</a></div>
     <ol class="hjour" aria-label="Journey"><li class="done"><i style="background:#0E6E62">${icon('check', 'sm')}</i>Discover</li><li class="cur"><i style="background:#3A3F8C">${icon('wrench', 'sm')}</i>Build<em>Now</em></li><li><i>${icon('bulb', 'sm')}</i>Innovate</li><li><i>${icon('trophy', 'sm')}</i>Compete</li><li><i>${icon('rocket', 'sm')}</i>Advance</li></ol>
+    ${guardianPhotoBlock(db, user, session)}
     <div class="sect"><h3>Latest from the team</h3></div>
     <div class="due"><div class="rl"><span class="ic" style="background:#E8F3EC;color:#1B6B3A">${icon('check')}</span><span class="tx"><b>Tuesday's session</b><span>Sent Tue by Coach A · Approved Thu by the organiser</span></span></div></div>
   </div>${studentTabs('home', true)}</div></div>`;
@@ -274,6 +299,7 @@ export function traceResultScreen(db, user, now, session, claimId) {
     <p>Numerator ${esc(claim.numerator)}. Denominator ${esc(claim.denominator)}. Reporting period ${esc(claim.window_start)} to ${esc(claim.window_end)}. Approved version ${esc(claim.version)} · ${esc(displayId(claim.id))}.</p>
     <section class="card"><h2>File integrity checks</h2><p>These checks only say whether the file is unchanged since approval. SHA-256 ${esc(snapshot?.digest_sha256 || 'not approved yet')}.</p></section>
     <section class="card"><h2>Evidence supporting the claim</h2><p>Redacted source: ${esc(source)}</p><p>Attendance list and project result: ${esc(claim.numerator)} completions of ${esc(claim.denominator)} starters. Coach attestation is the redacted note. Organiser approval is version ${esc(claim.version)}.</p></section>
+    ${photoTrace(db, user, now, claim)}
     </div></div>`;
   return shell({ title: 'Trace · afrobot', user, session, roleLabel: 'Auditor', device: 'Read-only', home: '/auditor', body, phone: false, bell: 0 });
 }

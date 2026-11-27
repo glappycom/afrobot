@@ -205,7 +205,7 @@ ${notice ? `<p class="notice" role="status">${esc(notice)}</p>` : ''}
 ${error ? `<p class="error" role="alert">${esc(error)}</p>` : ''}
 ${body}
 </main>`}
-<footer>Preview v0.6. Demo records controls. Not a certification. A digest shows a later change. It does not prove the first number was true.</footer>
+<footer>Preview v0.7. Demo records controls. Not a certification. A digest shows a later change. It does not prove the first number was true.</footer>
 <script src="/app.js"></script>
 </body>
 </html>`;
@@ -279,7 +279,7 @@ export function loginPage({ error, demoMode = false } = {}) {
     </form>
     ${hint}
     ${demoMode ? '<p>On this preview, the seeded organiser and auditor can sign in without an authenticator. Anyone else in those roles needs one.</p>' : ''}
-    <p>Preview v0.6</p>`,
+    <p>Preview v0.7</p>`,
     error,
   });
 }

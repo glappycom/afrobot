@@ -3,6 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Worker } from 'node:worker_threads';
 import { LEDGER_SCHEMA, POSTGRES_WORK_SQL, SCHEMA } from './db.js';
+import { packBinary, unpackBinary } from './binary-json.js';
 import { bindPlaceholders, normalizeRow, postgresSetup } from './pg-sql.js';
 
 function redact(message) {
@@ -21,7 +22,14 @@ function workerFile() {
   return found;
 }
 
-const CAPACITY = 1_000_000;
+const CAPACITY = 4_000_000;
+
+function reviveBinary(row) {
+  if (!row || typeof row !== 'object') return row;
+  const out = {};
+  for (const [key, value] of Object.entries(row)) out[key] = unpackBinary(value);
+  return out;
+}
 
 function startWorker(connectionString) {
   const sab = new SharedArrayBuffer(8 + CAPACITY);
@@ -41,7 +49,7 @@ function startWorker(connectionString) {
   if (Atomics.load(flag, 0) !== 0) throw new Error('The hosted database did not connect.');
 
   function call(sql, params = []) {
-    const request = Buffer.from(JSON.stringify({ sql: bindPlaceholders(sql), params: params.map((value) => (value === undefined ? null : value)) }));
+    const request = Buffer.from(JSON.stringify({ sql: bindPlaceholders(sql), params: params.map((value) => packBinary(value)) }));
     if (request.length > bytes.length) throw new Error('That query is too large for this preview.');
     bytes.set(request);
     len[0] = request.length;
@@ -66,10 +74,10 @@ function startWorker(connectionString) {
     prepare(sql) {
       return {
         all(...params) {
-          return call(sql, params).rows.map(normalizeRow);
+          return call(sql, params).rows.map((row) => normalizeRow(reviveBinary(row)));
         },
         get(...params) {
-          return normalizeRow(call(sql, params).rows[0]);
+          return normalizeRow(reviveBinary(call(sql, params).rows[0]));
         },
         run(...params) {
           return { changes: call(sql, params).rowCount };

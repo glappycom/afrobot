@@ -63,7 +63,14 @@ import {
   setReportingPeriod,
   updateMeeting,
 } from './operations.js';
-import { adminPage, capturePage, fixPage, grantsPage, helpPage, trackingPage } from './work-pages.js';
+import { adminPage, capturePage, fixPage, grantsPage, helpPage, sessionPhotoPage, trackingPage } from './work-pages.js';
+import {
+  readPhoto,
+  recordPhotoConsent,
+  removePhoto,
+  savePhoto,
+  withdrawPhotoConsent,
+} from './photos.js';
 import { liteHome } from './experience.js';
 import { HttpError, notAvailable, notFound } from './http-error.js';
 import { hashPassword, passwordIsHashed, verifyPassword } from './passwords.js';
@@ -145,7 +152,7 @@ async function readBody(req) {
   let size = 0;
   for await (const chunk of req) {
     size += chunk.length;
-    if (size > 1_000_000) throw new HttpError(413, 'That upload is too large for this demo.');
+    if (size > 8_000_000) throw new HttpError(413, 'That upload is too large. Photos must be 5 MB or smaller.');
     chunks.push(chunk);
   }
   return Buffer.concat(chunks).toString('utf8');
@@ -457,7 +464,7 @@ export function createApp(options = {}) {
         if (!owner) throw new HttpError(401, 'Sign in required');
         const started = await startTotp(db, owner.id, now);
         if (json) return sendJson(res, 200, started);
-        return sendHtml(res, 200, `<!doctype html><html><body><main><h1>Authenticator</h1><p>Secret ${esc(started.secret)}</p><p>${esc(started.uri)}</p><p>Recovery codes, shown once: ${esc(started.recoveryCodes.join(' '))}</p><p>Preview v0.6</p></main></body></html>`);
+        return sendHtml(res, 200, `<!doctype html><html><body><main><h1>Authenticator</h1><p>Secret ${esc(started.secret)}</p><p>${esc(started.uri)}</p><p>Recovery codes, shown once: ${esc(started.recoveryCodes.join(' '))}</p><p>Preview v0.7</p></main></body></html>`);
       }
       if (pathname === '/api/mfa/confirm' && method === 'POST') {
         const owner = challengeUser(db, req.input.challenge, stamp(now)) || user;
@@ -473,7 +480,7 @@ export function createApp(options = {}) {
       if (inviteView && method === 'GET') {
         const invite = previewInvite(db, inviteView[1], stamp(now));
         if (!invite) return sendHtml(res, 422, '<!doctype html><html><body><main><h1>Invite</h1><p>This invite link is no longer valid.</p></main></body></html>');
-        return sendHtml(res, 200, `<!doctype html><html><body><main><h1>Set your password</h1><p>${esc(invite.display_name)} · ${esc(invite.role)}</p><form method="post" action="/invite/${esc(inviteView[1])}"><label>Password <input name="password" type="password" required></label><button type="submit">Save password</button></form><p>Preview v0.6</p></main></body></html>`);
+        return sendHtml(res, 200, `<!doctype html><html><body><main><h1>Set your password</h1><p>${esc(invite.display_name)} · ${esc(invite.role)}</p><form method="post" action="/invite/${esc(inviteView[1])}"><label>Password <input name="password" type="password" required></label><button type="submit">Save password</button></form><p>Preview v0.7</p></main></body></html>`);
       }
       if (inviteView && method === 'POST') {
         const created = acceptInvite(db, inviteView[1], req.input.password, now);
@@ -487,15 +494,15 @@ export function createApp(options = {}) {
       if ((pathname === '/api/invites' || pathname === '/organiser/invites') && method === 'POST') {
         const invite = createInvite(db, user, req.input, now);
         if (json || pathname.startsWith('/api/')) return sendJson(res, 201, { id: invite.id, path: invite.path, expiresAt: invite.expiresAt, username: invite.username });
-        return sendHtml(res, 201, `<!doctype html><html><body><main><h1>Invite link</h1><p>Give this link to ${esc(invite.username)}. It works once and expires in 7 days.</p><p><a href="${esc(invite.path)}">${esc(invite.path)}</a></p><p>Preview v0.6</p></main></body></html>`);
+        return sendHtml(res, 201, `<!doctype html><html><body><main><h1>Invite link</h1><p>Give this link to ${esc(invite.username)}. It works once and expires in 7 days.</p><p><a href="${esc(invite.path)}">${esc(invite.path)}</a></p><p>Preview v0.7</p></main></body></html>`);
       }
       if (pathname === '/organiser/invites' && method === 'GET') {
-        return sendHtml(res, 200, `<!doctype html><html><body><main><h1>Invite a person</h1><form method="post" action="/organiser/invites"><input type="hidden" name="csrf" value="${esc(session.csrf)}"><label>Name <input name="displayName" required></label><label>Username <input name="username" required></label><label>Role <select name="role"><option>coach</option><option>guardian</option><option>auditor</option><option>organiser</option></select></label><label>Club id <input name="schoolId"></label><button type="submit">Create invite link</button></form><p><a href="/help">How it works</a></p><p>Preview v0.6</p></main></body></html>`);
+        return sendHtml(res, 200, `<!doctype html><html><body><main><h1>Invite a person</h1><form method="post" action="/organiser/invites"><input type="hidden" name="csrf" value="${esc(session.csrf)}"><label>Name <input name="displayName" required></label><label>Username <input name="username" required></label><label>Role <select name="role"><option>coach</option><option>guardian</option><option>auditor</option><option>organiser</option></select></label><label>Club id <input name="schoolId"></label><button type="submit">Create invite link</button></form><p><a href="/help">How it works</a></p><p>Preview v0.7</p></main></body></html>`);
       }
       const resetView = pathname.match(/^\/reset\/([A-Za-z0-9]+)$/);
       if (resetView && method === 'GET') {
         if (!previewReset(db, resetView[1], stamp(now))) return sendHtml(res, 422, '<!doctype html><html><body><main><h1>Reset</h1><p>This reset link is no longer valid.</p></main></body></html>');
-        return sendHtml(res, 200, `<!doctype html><html><body><main><h1>Choose a new password</h1><form method="post" action="/reset/${esc(resetView[1])}"><label>Password <input name="password" type="password" required></label><button type="submit">Save password</button></form><p>Preview v0.6</p></main></body></html>`);
+        return sendHtml(res, 200, `<!doctype html><html><body><main><h1>Choose a new password</h1><form method="post" action="/reset/${esc(resetView[1])}"><label>Password <input name="password" type="password" required></label><button type="submit">Save password</button></form><p>Preview v0.7</p></main></body></html>`);
       }
       if (resetView && method === 'POST') {
         acceptReset(db, resetView[1], req.input.password, now);
@@ -515,14 +522,14 @@ export function createApp(options = {}) {
         return sendJson(res, 201, { id: joined.user.id, username: joined.user.username, status: joined.status });
       }
       if (pathname === '/join' && method === 'GET') {
-        return sendHtml(res, 200, '<!doctype html><html><body><main><h1>Join with a team code</h1><form method="post" action="/api/join"><label>Code <input name="code" required></label><label>Your name <input name="displayName" required></label><label>Username <input name="username" required></label><label>Password <input name="password" type="password" required></label><label>Child letter <input name="letter" maxlength="1" required></label><button type="submit">Ask the organiser to link me</button></form><p>Preview v0.6</p></main></body></html>');
+        return sendHtml(res, 200, '<!doctype html><html><body><main><h1>Join with a team code</h1><form method="post" action="/api/join"><label>Code <input name="code" required></label><label>Your name <input name="displayName" required></label><label>Username <input name="username" required></label><label>Password <input name="password" type="password" required></label><label>Child letter <input name="letter" maxlength="1" required></label><button type="submit">Ask the organiser to link me</button></form><p>Preview v0.7</p></main></body></html>');
       }
       if (pathname === '/organiser/guardians' && method === 'GET') {
         const pending = all(db, `SELECT guardian_links.id, users.username, learners.letter, schools.display_name FROM guardian_links
           JOIN users ON users.id = guardian_links.user_id JOIN learners ON learners.id = guardian_links.learner_id
           JOIN schools ON schools.id = learners.school_id WHERE guardian_links.status = 'pending'`);
         const rows = pending.map((row) => `<li>${esc(row.username)} · Student ${esc(row.letter)} · ${esc(row.display_name)} <form method="post" action="/organiser/guardians/${esc(row.id)}/confirm"><input type="hidden" name="csrf" value="${esc(session.csrf)}"><button type="submit">Confirm</button></form></li>`).join('');
-        return sendHtml(res, 200, `<!doctype html><html><body><main><h1>Guardian links</h1><ul>${rows || '<li>None waiting</li>'}</ul><p>Preview v0.6</p></main></body></html>`);
+        return sendHtml(res, 200, `<!doctype html><html><body><main><h1>Guardian links</h1><ul>${rows || '<li>None waiting</li>'}</ul><p>Preview v0.7</p></main></body></html>`);
       }
       const confirmLink = pathname.match(/^\/organiser\/guardians\/([a-z0-9-]+)\/confirm$/);
       if (confirmLink && method === 'POST') {
@@ -539,6 +546,19 @@ export function createApp(options = {}) {
         if (json) return sendJson(res, 403, { error: 'Not available' });
         return sendHtml(res, 403, unavailablePage());
       }
+      const photoGet = pathname.match(/^\/photos\/([a-z0-9-]+)$/);
+      if (photoGet && method === 'GET') {
+        const result = readPhoto(db, user, photoGet[1], now, url.searchParams.get('download') === '1');
+        if (!result.ok) {
+          if (json) return sendJson(res, result.status, { error: result.error });
+          return sendHtml(res, result.status, `<!doctype html><html><body><main><h1>Photo</h1><p>${esc(result.error)}</p><p>Preview v0.7</p></main></body></html>`);
+        }
+        return send(res, 200, result.bytes, {
+          'content-type': result.mediaType,
+          'cache-control': 'private, no-store',
+          'content-disposition': url.searchParams.get('download') === '1' ? 'attachment; filename="session-photo.jpg"' : 'inline',
+        });
+      }
       if (method === 'POST' && user.role !== 'coach' && ['/api/claims', '/coach/claims', '/api/evidence', '/coach/evidence', '/api/claims/draft', '/coach/drafts', '/api/results', '/coach/results', '/api/practice-complete', '/coach/practice-complete', '/api/captures', '/coach/captures'].includes(pathname)) {
         if (json) return sendJson(res, 403, { error: 'Not available' });
         return sendHtml(res, 403, unavailablePage());
@@ -553,6 +573,15 @@ export function createApp(options = {}) {
       if (pathname === '/coach/team' && method === 'GET') return sendHtml(res, 200, teamPage(db, user, session));
       if (pathname === '/coach/logs' && method === 'GET') return sendHtml(res, 200, logsPage(db, user, now, session, pageOpts));
       if (pathname === '/coach/capture' && method === 'GET') return sendHtml(res, 200, capturePage(db, user, now, session, pageOpts));
+      const sessionPhotos = pathname.match(/^\/(?:coach|organiser)\/sessions\/([a-z0-9-]+)$/);
+      if (sessionPhotos && method === 'GET') {
+        const claim = get(db, 'SELECT * FROM claims WHERE id = ?', [sessionPhotos[1]]);
+        if (!claim) throw notFound();
+        if (user.role === 'coach' && claim.submitted_by !== user.id) throw notFound();
+        if (user.role === 'organiser' && !readableSchools(db, user, stamp(now)).includes(claim.school_id)) throw notFound();
+        if (user.role !== 'coach' && user.role !== 'organiser') throw notAvailable();
+        return sendHtml(res, 200, sessionPhotoPage(db, user, session, claim, pageOpts));
+      }
       const fixView = pathname.match(/^\/coach\/fix\/([a-z0-9-]+)$/);
       if (fixView && method === 'GET') {
         const claim = get(db, 'SELECT * FROM claims WHERE id = ?', [fixView[1]]);
@@ -724,6 +753,30 @@ export function createApp(options = {}) {
         const claim = resubmitSession(db, user, resubmit[1], req.input, now);
         if (json || pathname.startsWith('/api/')) return sendJson(res, 200, publicClaim(claim));
         return redirect(res, '/coach/logs?notice=submitted');
+      }
+      const photoUpload = pathname.match(/^\/(?:api\/claims|coach\/claims)\/([a-z0-9-]+)\/photos$/);
+      if (photoUpload && method === 'POST') {
+        const saved = await savePhoto(db, user, photoUpload[1], req.input, now);
+        if (json || pathname.startsWith('/api/')) return sendJson(res, 201, saved);
+        return redirect(res, `/coach/sessions/${photoUpload[1]}`);
+      }
+      const photoRemove = pathname.match(/^\/(?:api\/photos|coach\/photos|organiser\/photos)\/([a-z0-9-]+)\/remove$/);
+      if (photoRemove && method === 'POST') {
+        const removed = removePhoto(db, user, photoRemove[1], req.input, now);
+        if (json || pathname.startsWith('/api/')) return sendJson(res, 200, removed);
+        return redirect(res, user.role === 'organiser' ? '/organiser/tracking' : '/coach/logs');
+      }
+      if ((pathname === '/api/photo-consent' || pathname === '/organiser/photo-consent' || pathname === '/student/photo-consent') && method === 'POST') {
+        const saved = recordPhotoConsent(db, user, req.input.learnerId, now);
+        if (json || pathname.startsWith('/api/')) return sendJson(res, 201, saved);
+        return redirect(res, user.role === 'organiser' ? '/organiser/admin?notice=saved' : '/student/family');
+      }
+      const photoWithdraw = pathname.match(/^\/(?:api\/photo-consent\/([a-z0-9-]+)\/withdraw|student\/photo-consent\/withdraw)$/);
+      if (photoWithdraw && method === 'POST') {
+        const learnerId = photoWithdraw[1] || req.input.learnerId;
+        const saved = withdrawPhotoConsent(db, user, learnerId, now);
+        if (json || pathname.startsWith('/api/')) return sendJson(res, 200, saved);
+        return redirect(res, '/student/family');
       }
       if (pathname === '/organiser/admin/clubs' && method === 'POST') {
         formErrorPage = (message) => adminPage(db, user, now, session, { error: message });
