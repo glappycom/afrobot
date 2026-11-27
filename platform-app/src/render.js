@@ -664,7 +664,8 @@ export function recordPage(db, user, now, session, claimId, tab = 'overview') {
 
 export function auditPage(db, user, now, session, query) {
   const rows = filterEvents(db, user, now, query);
-  const bodyRows = rows.slice(0, 50).map((event) => `<tr>
+  const shown = rows.slice(-50).reverse();
+  const bodyRows = shown.map((event) => `<tr>
     <td>${esc(formatStamps(event.at).utc)}<br>${esc(formatStamps(event.at).local)}</td>
     <td>${esc(event.action)}</td>
     <td>${esc(event.actor_role)}</td>
@@ -685,7 +686,7 @@ export function auditPage(db, user, now, session, query) {
       <input id="to" name="to" value="${esc(query.to || '')}">
       <button type="submit">Filter</button>
     </form>
-    ${rows.length ? `<table class="grid" aria-label="Audit log"><caption>${rows.length} events you can read</caption><thead><tr><th>When</th><th>Action</th><th>Role</th><th>Record</th></tr></thead><tbody>${bodyRows}</tbody></table>` : '<p class="state">No audit rows in this view.</p>'}`,
+    ${rows.length ? `<table class="grid" aria-label="Audit log"><caption>${rows.length} events you can read. Latest ${shown.length}.</caption><thead><tr><th>When</th><th>Action</th><th>Role</th><th>Record</th></tr></thead><tbody>${bodyRows}</tbody></table>` : '<p class="state">No audit rows in this view.</p>'}`,
   });
 }
 
